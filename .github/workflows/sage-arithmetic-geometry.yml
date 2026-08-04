@@ -17,6 +17,9 @@ jobs:
     timeout-minutes: 180
     container:
       image: sagemath/sagemath:10.8
+      # The upstream image defaults to an unprivileged user, while GitHub's
+      # container runner mounts its command files as runner-owned paths.
+      options: --user root
     steps:
       - uses: actions/checkout@v4
       - name: Record Sage version
