@@ -1,0 +1,65 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\newtheorem{theorem}{Theorem}
+\title{A density-99.998\% finite-field theorem for the quadratic--cubic case of Sharipov's second cuboid quintic}
+\author{Computational research draft}
+\date{August 4, 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give exact congruence certificates excluding a rational quadratic factor
+of the associated second cuboid quintic for a set of primitive parameter pairs
+of natural density $5689139917/5689253052$.  The result is unconditional but does not
+resolve the infinite residual family, so Sharipov's conjecture remains open.
+\end{abstract}
+
+Let $Q_{p,q}(t)=H_{p,q}(t^2)$, where $H_{p,q}\in\mathbb Z[X]$ is the monic
+quintic obtained from the standard second cuboid polynomial.
+
+\begin{theorem}
+Let $p,q$ range over positive coprime integers.  There is an explicit union of
+projective congruence classes modulo all primes at most $97$, having natural
+density
+\[
+\frac{5689139917}{5689253052},
+\]
+such that, on every class in the union,
+$H_{p,q}$ has no quadratic factor over $\mathbb Q$.
+\end{theorem}
+
+\begin{proof}
+If $H_{p,q}$ has a quadratic factor over $\mathbb Q$, monicity and Gauss's
+lemma give a monic factor in $\mathbb Z[X]$.  Its reduction is a monic
+quadratic divisor modulo every prime.  Weighted homogeneity shows that the
+existence of such a divisor depends only on $(p:q)\in\mathbb P^1(\mathbb F_\ell)$.
+Exhaustive exact division by all monic quadratics gives the complete class
+lists in the accompanying certificate.  A compact seven-prime subcertificate
+has the counts below.
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$\ell$ & $\ell+1$ & obstructed & residual\\
+\midrule
+41&42&20&22\\71&72&44&28\\83&84&44&40\\97&98&56&42\\
+101&102&64&38\\113&114&64&50\\137&138&84&54\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Projective classes are uniform for primitive pairs, and the finite local
+conditions are independent by the Chinese remainder theorem.  Hence the
+residual density is
+\[
+\frac{22}{42}\frac{28}{72}\frac{40}{84}\frac{42}{98}
+\frac{38}{102}\frac{50}{114}\frac{54}{138}
+=\frac{1375}{517293}.
+\]
+Adding all primes at most $97$ gives residual density
+$113135/5689253052$ and hence the stated complement.  The complete class lists and two
+independent exact verification algorithms accompany this draft.
+\end{proof}
+
+\end{document}
