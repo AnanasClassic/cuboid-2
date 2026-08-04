@@ -6,6 +6,12 @@ cd "$repo_dir"
 
 python_bin="${PYTHON_BIN:-python3}"
 
+# SymPy 1.14 may auto-select python-flint when it is present in the host
+# environment.  Its nmod elements are intentionally unordered, while SymPy's
+# factor-list canonicalizer still sorts them.  Pin the pure-Python ground type
+# before any interpreter starts so reproduction is backend-independent.
+export SYMPY_GROUND_TYPES="${SYMPY_GROUND_TYPES:-python}"
+
 "$python_bin" src/symbolic_reduction.py --export artifacts/polynomials.json
 "$python_bin" research/symbolic_algebra/derive_quadratic_reduction.py \
   --output artifacts/quadratic_reduction_independent.json
