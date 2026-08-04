@@ -26,19 +26,31 @@ cases are addressed by 2026 preprints; this repository independently checks
 their algebra and exactly replays the complete `5+5` Sturm certificate.  The
 central Magma--Chabauty computation for `1+4` has not been rerun locally.
 
-The new result in this branch is a rigorous finite-field theorem.  Using all
-25 primes at most 97 gives explicit projective congruence classes whose union
-has exact natural density
+The strongest new arithmetic result is a signed-square descent.  If the
+integral quintic `H_{p,q}(X)=Q_{p,q}(t)`, `X=t^2`, has a quadratic factor
+`X^2+A*X+B`, then exact Newton polygons at every prime dividing `p*q` force
 
 \[
-\frac{5689139917}{5689253052}=0.9999801142\ldots
+B=\pm d^2.
+\]
+
+Respecting this one global sign across every odd prime at most 137 gives
+explicit projective congruence classes whose union has exact natural density
+
+\[
+\frac{3917894203934863}{3917894203948032}
+=0.9999999999966388\ldots
 \]
 
 among primitive positive pairs `(p,q)`.  Thus the open `2+3` case is confined
 to an explicit infinite residual family of density
-`113135/5689253052 = 0.00198857...%`.  A smaller seven-prime certificate is
-also retained for easier inspection.  This is not a proof of the full
-conjecture.
+`13169/3917894203948032`, approximately `3.3612e-12`.  This is still not a
+proof: the residual congruence family is infinite.
+
+The square-parameter pullback now also has an explicit genus-four plane model,
+a generic inverse map, and an exact bielliptic quotient equation.  The missing
+step is a certified Weierstrass normalization and complete square-value
+computation on that elliptic quotient.
 
 See [STATUS.md](STATUS.md), [CLAIMS.md](CLAIMS.md), and
 [HANDOFF.md](HANDOFF.md) for the conservative claim ledger and next theorem.
@@ -51,8 +63,8 @@ python3 -m venv .venv
 PYTHON_BIN=.venv/bin/python scripts/reproduce.sh
 ```
 
-Expected result: four tests pass.  The run regenerates the exact obstruction
-polynomials and both finite-field certificates under `certificates/`.
+Expected result: eight tests pass.  The run regenerates the exact obstruction
+polynomials, quotient models, and finite-field certificates.
 
 To replay the embedded exact `5+5` script from arXiv:2601.04240:
 

@@ -2,16 +2,18 @@
 \usepackage[a4paper,margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,booktabs}
 \newtheorem{theorem}{Theorem}
-\title{A density-99.998\% finite-field theorem for the quadratic--cubic case of Sharipov's second cuboid quintic}
+\title{A signed-square descent and density-$99.9999999996\%$ theorem for Sharipov's second cuboid quintic}
 \author{Computational research draft}
 \date{August 4, 2026}
 \begin{document}
 \maketitle
 
 \begin{abstract}
-We give exact congruence certificates excluding a rational quadratic factor
-of the associated second cuboid quintic for a set of primitive parameter pairs
-of natural density $5689139917/5689253052$.  The result is unconditional but does not
+We prove that the constant coefficient of every hypothetical integral
+quadratic factor is a signed square.  Enforcing its one global sign in exact
+congruence certificates excludes a rational quadratic factor for a set of
+primitive parameter pairs of natural density
+$3917894203934863/3917894203948032$.  The result is unconditional but does not
 resolve the infinite residual family, so Sharipov's conjecture remains open.
 \end{abstract}
 
@@ -19,11 +21,26 @@ Let $Q_{p,q}(t)=H_{p,q}(t^2)$, where $H_{p,q}\in\mathbb Z[X]$ is the monic
 quintic obtained from the standard second cuboid polynomial.
 
 \begin{theorem}
+If $X^2+AX+B$ divides $H_{p,q}(X)$ in $\mathbb Z[X]$, then
+$B=\varepsilon d^2$ for some $d\in\mathbb Z$ and
+$\varepsilon\in\{+1,-1\}$.
+\end{theorem}
+
+\begin{proof}
+For a prime $\ell\mid pq$, put $k=v_\ell(pq)$.  Coprimality and direct
+coefficient valuations give the lower Newton polygon with vertices
+$(0,10k),(2,2k),(3,0),(5,0)$, also for $\ell=2,3$.  Thus the five root
+valuations are $4k,4k,2k,0,0$.  The valuation of the product of any two roots
+is even.  Since $B$ divides $-p^{10}q^{10}$, every prime valuation of $B$ is
+even, proving the assertion.
+\end{proof}
+
+\begin{theorem}
 Let $p,q$ range over positive coprime integers.  There is an explicit union of
-projective congruence classes modulo all primes at most $97$, having natural
+projective congruence classes modulo all odd primes at most $137$, having natural
 density
 \[
-\frac{5689139917}{5689253052},
+\frac{3917894203934863}{3917894203948032},
 \]
 such that, on every class in the union,
 $H_{p,q}$ has no quadratic factor over $\mathbb Q$.
@@ -35,31 +52,34 @@ lemma give a monic factor in $\mathbb Z[X]$.  Its reduction is a monic
 quadratic divisor modulo every prime.  Weighted homogeneity shows that the
 existence of such a divisor depends only on $(p:q)\in\mathbb P^1(\mathbb F_\ell)$.
 Exhaustive exact division by all monic quadratics gives the complete class
-lists in the accompanying certificate.  A compact seven-prime subcertificate
-has the counts below.
+lists in the accompanying certificate.  For illustration, some of the
+sign-separated residual counts are below; ``both'' means that divisors of
+both allowed signs occur in the same projective parameter class.
 
 \begin{center}
-\begin{tabular}{rrrr}
+\begin{tabular}{rrrrr}
 \toprule
-$\ell$ & $\ell+1$ & obstructed & residual\\
+$\ell$ & $\ell+1$ & square & negative square & both\\
 \midrule
-41&42&20&22\\71&72&44&28\\83&84&44&40\\97&98&56&42\\
-101&102&64&38\\113&114&64&50\\137&138&84&54\\
+43&44&20&12&4\\
+67&68&40&20&12\\
+71&72&8&24&4\\
+83&84&24&24&8\\
 \bottomrule
 \end{tabular}
 \end{center}
 
 Projective classes are uniform for primitive pairs, and the finite local
-conditions are independent by the Chinese remainder theorem.  Hence the
-residual density is
-\[
-\frac{22}{42}\frac{28}{72}\frac{40}{84}\frac{42}{98}
-\frac{38}{102}\frac{50}{114}\frac{54}{138}
-=\frac{1375}{517293}.
-\]
-Adding all primes at most $97$ gives residual density
-$113135/5689253052$ and hence the stated complement.  The complete class lists and two
+conditions are independent by the Chinese remainder theorem.  Applying CRT
+separately to each of the two global signs and then inclusion--exclusion gives
+residual density
+$13169/3917894203948032$, hence the stated complement.  Complete class lists and
 independent exact verification algorithms accompany this draft.
 \end{proof}
+
+No finite set of reduction primes can remove every parameter class: if $M$ is
+their product, the primitive pairs $p\equiv0\pmod M$, $q=1$ reduce to
+$H_{p,q}(X)=X^3(X^2+6X+1)$ at every selected prime.  Thus the theorem is a
+descent certificate, not a proof of the full conjecture.
 
 \end{document}

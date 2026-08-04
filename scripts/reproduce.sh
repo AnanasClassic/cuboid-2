@@ -17,4 +17,11 @@ python_bin="${PYTHON_BIN:-python3}"
 "$python_bin" src/modular_sieve.py \
   --scan-through 97 \
   --output certificates/modular_sieve_primes_le_97.json
+"$python_bin" src/signed_square_sieve.py \
+  --scan-through 137 \
+  --output certificates/signed_square_sieve_primes_le_137.json
+"$python_bin" research/symbolic_algebra/independent_signed_sieve_check.py
+"$python_bin" research/symbolic_algebra/reciprocal_square_quotient.py \
+  --output artifacts/reciprocal_square_quotient.json
+"$python_bin" research/arithmetic_geometry/derive_genus4_quotient.py
 "$python_bin" -m pytest -q
