@@ -63,7 +63,7 @@ python3 -m venv .venv
 PYTHON_BIN=.venv/bin/python scripts/reproduce.sh
 ```
 
-Expected result: eight tests pass.  The run regenerates the exact obstruction
+Expected result: nine tests pass.  The run regenerates the exact obstruction
 polynomials, quotient models, and finite-field certificates.
 
 To replay the embedded exact `5+5` script from arXiv:2601.04240:

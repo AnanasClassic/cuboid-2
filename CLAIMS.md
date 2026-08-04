@@ -18,5 +18,6 @@
 | C014 | PROVED | No finite fixed set of reduction primes can exhaust the remaining case. | The infinite family `p=0, q=1` modulo their product survives with divisor `X^2`; `notes/signed_square_descent.md`. |
 | C015 | MACHINE-VERIFIED | Exact equations and generic maps for the genus-four plane quotient and its bielliptic plane quotient. | `research/arithmetic_geometry/derive_genus4_quotient.py`, sparse artifact, tests. |
 | C016 | CONDITIONALLY VERIFIED | The normalizations of the displayed quotient models have genera 4 and 1 with the stated six branch points. | Riemann--Hurwitz/local branch audit; pending a second normalization system. |
+| C017 | MACHINE-VERIFIED | The squarefree `A`-discriminant quartic is not the reciprocal elliptic quotient with `q` preserved; the singularity and special-fiber diagnostics for `H` are exact. | `research/symbolic_algebra/elliptic_model_diagnostics.py`, regression test. |
 
 Statuses are deliberately not upgraded from transcripts or bounded searches.

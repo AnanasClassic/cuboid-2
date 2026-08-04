@@ -24,6 +24,9 @@ curve is presently available.
   residual density `13169/3917894203948032`.
 - Exact genus-four quotient plane equation, generic subresultant lift, and
   bielliptic plane equation `G(X,A)=X^8 H(X+1/X,A)`.
+- Exact singularity, special-fiber, and discriminant diagnostics for `H`.  In
+  particular, the squarefree discriminant quartic is rigorously shown not to
+  be the reciprocal elliptic quotient with the `q`-map preserved.
 
 ## Conditional or externally dependent
 
