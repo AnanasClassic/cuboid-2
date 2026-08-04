@@ -1,0 +1,36 @@
+name: Sage arithmetic geometry
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/second-cuboid-conjecture
+  pull_request:
+    paths:
+      - "artifacts/genus4_quotient.json"
+      - "scripts/sage_elliptic_probe.py"
+      - ".github/workflows/sage-arithmetic-geometry.yml"
+
+jobs:
+  normalize-elliptic-quotient:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    container:
+      image: sagemath/sagemath:10.8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Record Sage version
+        run: sage --version
+      - name: Normalize quotient and compute exact elliptic data
+        shell: bash
+        run: |
+          mkdir -p certificates
+          set -o pipefail
+          sage -python scripts/sage_elliptic_probe.py 2>&1 | tee certificates/sage_elliptic_probe.txt
+      - name: Upload exact transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sage-elliptic-probe
+          path: certificates/sage_elliptic_probe.txt
+          if-no-files-found: warn
