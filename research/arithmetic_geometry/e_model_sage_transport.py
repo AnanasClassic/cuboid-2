@@ -40,6 +40,7 @@ from contextlib import contextmanager
 from pathlib import Path
 
 from sage.all import (  # type: ignore
+    EllipticCurve,
     EllipticCurve_from_cubic,
     FunctionField,
     Matrix,
@@ -237,11 +238,15 @@ def main() -> None:
         RT = PolynomialRing(L, "T")
         t_symbol = RT.gen()
         t_polynomial = t_symbol**4 - qL * t_symbol**2 + 1
-        t_irreducible = t_polynomial.is_irreducible()
         cert("T_cover_polynomial", t_polynomial)
-        cert("T_cover_irreducible", t_irreducible)
-        if not t_irreducible:
-            raise AssertionError("generic T-cover polynomial unexpectedly reducible")
+        # Sage 10.9 routes ``is_irreducible`` here through Singular, which has
+        # no conversion for a polynomial ring over an algebraic function
+        # field (NotImplementedError).  Do not make that unsupported call.
+        # Connectedness/degree four is independently certified by the nonempty
+        # branch supports of q+2, q-2 and q^2-4 in
+        # new_three_square_character_covers.py.  The exact descent round-trip
+        # below is the certificate needed in this script.
+        cert("T_cover_irreducibility_source", "independent branch-divisor certificate")
         N = L.extension(t_polynomial, "T")
         TN = N.gen()
         AN = N(AL)
@@ -348,6 +353,42 @@ def main() -> None:
         certificate["cubic_to_weierstrass"] = str(cubic_to_E)
         certificate["weierstrass_to_cubic"] = str(E_to_cubic)
 
+        # Good-prime traces only identify the isogeny class 544.c.  They do
+        # not distinguish these two non-isomorphic curves.  The cubic's exact
+        # j-invariant and an explicit Sage isomorphism do distinguish them.
+        candidates = {
+            "544.c_E1": EllipticCurve(QQ, [0, 0, 0, -5, 4]),
+            "544.c_E2": EllipticCurve(QQ, [0, 0, 0, 5, 18]),
+        }
+        candidate_data = {
+            name: {
+                "ainvs": [str(value) for value in curve.a_invariants()],
+                "j": str(curve.j_invariant()),
+                "isomorphic_to_RR_curve": bool(E.is_isomorphic(curve)),
+            }
+            for name, curve in candidates.items()
+        }
+        cert("RR_curve_j", E.j_invariant())
+        cert("544c_candidate_comparison", candidate_data)
+        matches = [name for name, item in candidate_data.items() if item["isomorphic_to_RR_curve"]]
+        cert("544c_isomorphic_match_count", len(matches))
+        certificate["544c_candidate_comparison"] = candidate_data
+        certificate["RR_curve_j"] = str(E.j_invariant())
+        if len(matches) == 1:
+            matched_name = matches[0]
+            matched_curve = candidates[matched_name]
+            E_to_candidate = E.isomorphism_to(matched_curve)
+            candidate_to_E = E_to_candidate.inverse()
+            cert("544c_exact_match", matched_name)
+            cert("RR_weierstrass_to_544c", E_to_candidate)
+            cert("544c_to_RR_weierstrass", candidate_to_E)
+            certificate["544c_exact_match"] = matched_name
+            certificate["RR_weierstrass_to_544c"] = str(E_to_candidate)
+            certificate["544c_to_RR_weierstrass"] = str(candidate_to_E)
+        else:
+            cert("544c_exact_match", "NONE_OR_AMBIGUOUS; trace fingerprint not promoted")
+            certificate["544c_exact_match"] = None
+
     if args.stop_after == "cubic":
         certificate["status"] = "WEIERSTRASS_MODEL_CERTIFIED"
         args.output.write_text(json.dumps(certificate, indent=2, sort_keys=True) + "\n")
@@ -371,6 +412,12 @@ def main() -> None:
             "Apply the stored inverse Weierstrass-to-cubic morphism, set "
             "x=X/Z and y=Y/Z, then evaluate each verified rational formula."
         )
+        if certificate.get("544c_exact_match") is not None:
+            certificate["transport_from_544c_candidate"] = (
+                "First apply the stored 544c_to_RR_weierstrass isomorphism, "
+                "then weierstrass_to_cubic, set x=X/Z,y=Y/Z, and evaluate "
+                "the q,A,V formulas."
+            )
 
     if args.stop_after == "transport":
         certificate["status"] = "Q_A_V_TRANSPORT_CERTIFIED"
