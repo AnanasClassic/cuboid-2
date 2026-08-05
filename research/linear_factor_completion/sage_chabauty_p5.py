@@ -1,26 +1,24 @@
 #!/usr/bin/env sage -python
 """Independent Sage certificate for the local part of the 1+4 proof.
 
-This script does not call Magma.  It proves the following exact conditional
-statement for
+This script does not call Magma.  It proves the Chabauty--Coleman part of the
+following exact statement for
 
     C : w^2 = t^5 + 21*t^4 + 26*t^3 + 10*t^2 + 5*t + 1.
 
-If ``rank J_C(Q) <= 1``, then
-
     C(Q) = {infinity, (-1,0), (0,+/-1), (1,+/-8)}.
 
-The rank hypothesis is deliberately *not* hidden in the script.  Sage 10.9
-has Coleman integration for hyperelliptic curves but no genus-2 2-Selmer
-implementation.  The published Magma ``RankBound(J)=1`` and the independently
-computed LMFDB record 11008.a.176128.1 supply that remaining input.
+The needed bound ``rank J_C(Q) <= 1`` is proved independently, without Magma
+or LMFDB, by the exact Schaefer--Stoll certificate ``two_descent_rank.py``.
+The repository CI runs that certificate immediately before this one.
 
 The certificate is especially short at p=5: C(F_5) has exactly six points,
 and the six known rational points reduce bijectively to them.  The script
 computes the Coleman annihilator from the provably infinite divisor
-[(0,1)-infinity] and checks that its reduction has no zero at any of the six
-points.  Hence the Coleman function has at most one zero in every residue
-disc, while every disc already contains one of the known rational points.
+[(0,1)-infinity].  Its reduction is nonzero in five residue discs.  In the
+remaining Weierstrass disc around (-1,0), an explicit local-series and
+Strassmann calculation proves that the Coleman function has only its known
+zero.  Thus every disc contains exactly one rational point.
 
 Run with SageMath 10.9 (the pinned repository CI image) as
 
@@ -236,15 +234,15 @@ def main() -> None:
     )
     cert("exceptional_disk_unique_zero", "z=0, i.e. (-1,0)")
 
-    # The exact conclusion uses only the external rank upper bound.  Since D
-    # is infinite, rank<=1 makes D span J(Q) tensor Q_5; eta therefore
+    # The exact conclusion uses the separately certified rank upper bound.
+    # Since D is infinite, rank<=1 makes D span J(Q) tensor Q_5; eta therefore
     # annihilates J(Q).  Every F_5 residue disc has a known rational zero,
     # and eta has nonzero reduction in five discs, so each of those contains
     # at most one rational zero.  The explicit Strassmann calculation above
     # proves the same conclusion in the exceptional Weierstrass disc.
-    cert("required_external_rank_upper_bound", 1)
-    cert("conditional_rational_point_set", [str(point) for point in known_q])
-    cert("status", "PASS_CONDITIONAL_ONLY_ON_RANK_BOUND_1")
+    cert("rank_upper_bound_certificate", "two_descent_rank.py: rank J(Q)<=1")
+    cert("rational_point_set", [str(point) for point in known_q])
+    cert("status", "PASS")
 
 
 if __name__ == "__main__":
