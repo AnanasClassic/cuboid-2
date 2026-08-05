@@ -58,3 +58,8 @@ complete lift checks is the most promising next target.
 The fixed-point and quotient-genus calculation is presently labelled
 CONDITIONALLY VERIFIED because it has one exact implementation but no second
 independent normalization computation.
+
+The complete square condition on the elliptic quotient requires both
+`U+2` and `U-2` to be rational squares.  Combining those two characters with
+the signed-square theorem for `b` gives the exact `(Z/2)^3` covers and branch
+table in `notes/reciprocal_signed_square_covers.md`.

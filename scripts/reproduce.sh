@@ -29,5 +29,31 @@ export SYMPY_GROUND_TYPES="${SYMPY_GROUND_TYPES:-python}"
 "$python_bin" research/symbolic_algebra/independent_signed_sieve_check.py
 "$python_bin" research/symbolic_algebra/reciprocal_square_quotient.py \
   --output artifacts/reciprocal_square_quotient.json
+"$python_bin" research/symbolic_algebra/reciprocal_b_quotient.py \
+  --output artifacts/reciprocal_b_quotient.json
+"$python_bin" research/arithmetic_geometry/reciprocal_b_branch_audit.py \
+  --output artifacts/reciprocal_b_branch_audit.json
+"$python_bin" research/arithmetic_geometry/new_three_square_character_covers.py \
+  --output research/arithmetic_geometry/new_three_square_character_covers.json
 "$python_bin" research/arithmetic_geometry/derive_genus4_quotient.py
+"$python_bin" research/arithmetic_geometry/e_model_dihedral_descent.py
+"$python_bin" research/quotient_transport/derive_invariant_compact_v.py
+"$python_bin" research/quotient_transport/classify_transport_exceptions.py
+"$python_bin" research/global_descent/inert_prime_power_family.py
+"$python_bin" research/global_descent/new_local_A_B_audit.py
+"$python_bin" research/global_descent/new_two_prime_family.py
+"$python_bin" research/global_descent/new_inert_pair_endpoint.py
+"$python_bin" research/frobenius_audit/frobenius_burnside.py
+"$python_bin" research/frobenius_audit/candidate_544c_check.py
+"$python_bin" research/frobenius_audit/candidate_544c_rank_descent.py
+"$python_bin" research/arithmetic_geometry/e_model_candidate_544c.py
+"$python_bin" research/arithmetic_geometry/e_model_plane_discriminant.py
+"$python_bin" research/linear_factor_completion/exact_prerequisites.py
+"$python_bin" research/linear_factor_completion/two_descent_rank.py
+"$python_bin" research/completion_redteam/q1_exception_certificate.py
 "$python_bin" -m pytest -q
+PYTHONPATH=research/completion_redteam \
+  "$python_bin" -m pytest -q \
+  research/completion_redteam/test_q1_exception_certificate.py
+PYTHONPATH=research/mw_square_sieve \
+  "$python_bin" -m pytest -q research/mw_square_sieve/test_core.py

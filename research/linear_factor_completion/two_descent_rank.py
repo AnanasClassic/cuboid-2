@@ -291,13 +291,41 @@ def main() -> None:
     assert int(prime_two[2]) == 4
     assert int(prime_two[3]) == 1
 
-    # L = Q x K.  The full S-bounding group has the five generators below;
-    # imposing square norm gives the four displayed generators of H_bound.
+    # L = Q x K.  Class number one gives the six raw S-unit generators:
+    # two from Q (sign and the prime 2), three K-unit classes, and the unique
+    # K-prime above 2.  We enumerate all 64 classes and then impose square
+    # norm.  This directly certifies that no global squareclass is omitted.
     unit_q = (Fraction(-1), pari(1))
+    prime_two_q = (Fraction(2), pari(1))
     unit_minus_one = (Fraction(1), pari(-1))
     unit_one = (Fraction(1), epsilon_1)
     unit_two = (Fraction(1), epsilon_2)
+    prime_two_k = (Fraction(1), uniformizer)
     lift_at_two = (Fraction(2), 1 - theta)
+    raw_s_unit_basis = [
+        unit_q,
+        prime_two_q,
+        unit_minus_one,
+        unit_one,
+        unit_two,
+        prime_two_k,
+    ]
+    raw_s_unit_span = pair_span(raw_s_unit_basis)
+    assert len(raw_s_unit_span) == 64
+    assert_pairwise_distinct(raw_s_unit_span, pair_globally_equal)
+    raw_norm_kernel = [
+        value
+        for value in raw_s_unit_span
+        if rational_square(
+            value[0] * Fraction(str(pari.nfeltnorm(nf, value[1])))
+        )
+    ]
+    assert len(raw_norm_kernel) == 16
+
+    # The five-dimensional span below is a convenient supergroup containing
+    # the square-norm kernel: its valuation parities at the Q- and K-primes
+    # above 2 agree.  Imposing square norm gives the four displayed
+    # generators of H_bound.
     full_bounding_basis = [unit_q, unit_minus_one, unit_one, unit_two, lift_at_two]
     full_bounding_span = pair_span(full_bounding_basis)
     assert len(full_bounding_span) == 32
@@ -311,6 +339,11 @@ def main() -> None:
     bounding_span = pair_span(bounding_basis)
     assert len(bounding_span) == 16
     assert_pairwise_distinct(bounding_span, pair_globally_equal)
+    for value in raw_norm_kernel:
+        assert sum(
+            pair_globally_equal(value, representative)
+            for representative in bounding_span
+        ) == 1
 
     # Direct norm checks for the four generators.
     for rational_component, field_component in bounding_basis:

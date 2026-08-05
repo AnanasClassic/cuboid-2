@@ -24,7 +24,11 @@ P_s(x)={}&x^5+(2+s)(3-2s)x^4
 is a quadratic--cubic (`2+3`) split of `P_s`.  The `1+4` and symmetric `5+5`
 cases are addressed by 2026 preprints; this repository independently checks
 their algebra and exactly replays the complete `5+5` Sturm certificate.  The
-central Magma--Chabauty computation for `1+4` has not been rerun locally.
+`1+4` case is now independently proved without Magma: a certified
+Schaefer--Stoll 2-descent gives rank one and trivial `Sha[2]` for the relevant
+genus-2 Jacobian, and an exact `p=5` Coleman/Strassmann argument determines all
+six rational points.  Their complete inverse images give only `s=1`, `s=-1`,
+or poles, so no admissible rational root remains.
 
 The strongest new arithmetic result is a signed-square descent.  If the
 integral quintic `H_{p,q}(X)=Q_{p,q}(t)`, `X=t^2`, has a quadratic factor
@@ -47,10 +51,51 @@ to an explicit infinite residual family of density
 `13169/3917894203948032`, approximately `3.3612e-12`.  This is still not a
 proof: the residual congruence family is infinite.
 
-The square-parameter pullback now also has an explicit genus-four plane model,
-a generic inverse map, and an exact bielliptic quotient equation.  The missing
-step is a certified Weierstrass normalization and complete square-value
-computation on that elliptic quotient.
+Two exact global-descent theorems now cut into that residual family without
+any height bound.  The `2+3` split is impossible whenever
+
+\[
+\{p,q\}=\{1,\ell^k\}
+\]
+
+for any prime `ell` and `k>=1`.  It is also impossible for
+
+\[
+\{p,q\}=\{3,r^n\},\qquad r\ne3,\quad r\equiv3,5\pmod 8,
+\]
+
+for every `n>=1`.  The first theorem checks all ten exact branches
+`b=+/-s^m`; the second combines local Newton types with exact endpoint
+valuations of the quadratic-factor resultant.  These are infinite-family
+theorems for the remaining quadratic factor, not bounded searches.
+
+For a general pair of distinct inert prime powers, the same exact endpoints
+reduce every nonuniform branch to five explicit congruence systems.  Quadratic
+reciprocity eliminates the negative `e=8` system and sharply restricts the
+other negative systems, but does not eliminate them.  The repository records
+this as a necessary-condition theorem, not as a factorization or a complete
+two-prime result.
+
+The square-parameter pullback now also has an explicit reciprocal elliptic
+plane equation and two exact signed-square `(Z/2)^3` covers.  All seven
+character quotients have genus at most 8.  Exact good-prime point counts give
+a Frobenius fingerprint matching the two models in isogeny class `544.c`.
+The third invariant is already explicit: an exact dihedral calculation gives
+`V=a^2/b` as a rational function of the quotient coordinates `(q,A)` and
+avoids the function-field inversion that stalled the first Sage run.
+An independent invariant elimination reduces this representative to degree
+at most nine in `A`; its denominator-zero chart remains explicitly tracked.
+For the candidate `y^2=x^3-5*x+4`, an elementary 2-isogeny descent proves
+rank `1` and torsion `Z/2Z` without database input.  This remains candidate
+data until an exact map from the normalization of `H(q,A)=0` is certified;
+matching finitely many traces is not such a map.
+
+The generic inverse used after the square-character computation is also now
+complete on admissible rational points.  Exact factorization of
+`Res_A(G(T^2,A),Q1(T,A))` shows that its subresultant denominator can vanish
+over `Q` only for `T=-1,0,1`, all boundary values or the excluded parameter
+`s=1`.  The unresolved task is therefore the global rational-point problem on
+the remaining `2+3` cover, not an exceptional denominator branch.
 
 See [STATUS.md](STATUS.md), [CLAIMS.md](CLAIMS.md), and
 [HANDOFF.md](HANDOFF.md) for the conservative claim ledger and next theorem.
@@ -63,7 +108,7 @@ python3 -m venv .venv
 PYTHON_BIN=.venv/bin/python scripts/reproduce.sh
 ```
 
-Expected result: nine tests pass.  The run regenerates the exact obstruction
+The run regenerates the exact obstruction
 polynomials, quotient models, and finite-field certificates.
 
 To replay the embedded exact `5+5` script from arXiv:2601.04240:

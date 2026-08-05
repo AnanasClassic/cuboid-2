@@ -1,0 +1,476 @@
+{
+  "boundary_fibres": {
+    "-1": {
+      "admissible": false,
+      "common_A_gcd": "A**3",
+      "reason": "p=0 boundary; s is not positive",
+      "s": "0",
+      "z": "0"
+    },
+    "0": {
+      "admissible": false,
+      "common_A_gcd": "(A - 2)**3*(361*A**4 - 5272*A**3 + 16504*A**2 - 19168*A + 7696)/361",
+      "reason": "excluded p=q parameter",
+      "s": "1",
+      "z": "1"
+    },
+    "1": {
+      "admissible": false,
+      "common_A_gcd": "A**3*(A - 6)*(A**2 - 12*A + 4)**2",
+      "reason": "q=0 projective boundary",
+      "s": "infinity",
+      "z": "infinity"
+    }
+  },
+  "construction": "F_T(T,A)=G(T^2,A); eliminate A from F_T and Q1",
+  "degrees": {
+    "F_T_in_T_A": [
+      32,
+      10
+    ],
+    "Q1_in_T_A": [
+      34,
+      8
+    ],
+    "resultant_in_T": 552
+  },
+  "factorization": [
+    {
+      "degree": 1,
+      "exponent": 40,
+      "irreducible_over_QQ": true,
+      "rational_root": "-1",
+      "terms": [
+        {
+          "coefficient": "1",
+          "powers": [
+            1
+          ]
+        },
+        {
+          "coefficient": "1",
+          "powers": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "degree": 1,
+      "exponent": 44,
+      "irreducible_over_QQ": true,
+      "rational_root": "0",
+      "terms": [
+        {
+          "coefficient": "1",
+          "powers": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "degree": 1,
+      "exponent": 100,
+      "irreducible_over_QQ": true,
+      "rational_root": "1",
+      "terms": [
+        {
+          "coefficient": "1",
+          "powers": [
+            1
+          ]
+        },
+        {
+          "coefficient": "-1",
+          "powers": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "degree": 2,
+      "exponent": 4,
+      "irreducible_over_QQ": true,
+      "rational_root": null,
+      "terms": [
+        {
+          "coefficient": "1",
+          "powers": [
+            2
+          ]
+        },
+        {
+          "coefficient": "3",
+          "powers": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "degree": 2,
+      "exponent": 4,
+      "irreducible_over_QQ": true,
+      "rational_root": null,
+      "terms": [
+        {
+          "coefficient": "3",
+          "powers": [
+            2
+          ]
+        },
+        {
+          "coefficient": "1",
+          "powers": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "degree": 2,
+      "exponent": 28,
+      "irreducible_over_QQ": true,
+      "rational_root": null,
+      "terms": [
+        {
+          "coefficient": "1",
+          "powers": [
+            2
+          ]
+        },
+        {
+          "coefficient": "1",
+          "powers": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "degree": 8,
+      "exponent": 5,
+      "irreducible_over_QQ": true,
+      "rational_root": null,
+      "terms": [
+        {
+          "coefficient": "13",
+          "powers": [
+            8
+          ]
+        },
+        {
+          "coefficient": "12",
+          "powers": [
+            6
+          ]
+        },
+        {
+          "coefficient": "14",
+          "powers": [
+            4
+          ]
+        },
+        {
+          "coefficient": "12",
+          "powers": [
+            2
+          ]
+        },
+        {
+          "coefficient": "13",
+          "powers": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "degree": 8,
+      "exponent": 5,
+      "irreducible_over_QQ": true,
+      "rational_root": null,
+      "terms": [
+        {
+          "coefficient": "37",
+          "powers": [
+            8
+          ]
+        },
+        {
+          "coefficient": "-52",
+          "powers": [
+            6
+          ]
+        },
+        {
+          "coefficient": "-162",
+          "powers": [
+            4
+          ]
+        },
+        {
+          "coefficient": "-52",
+          "powers": [
+            2
+          ]
+        },
+        {
+          "coefficient": "37",
+          "powers": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "degree": 8,
+      "exponent": 12,
+      "irreducible_over_QQ": true,
+      "rational_root": null,
+      "terms": [
+        {
+          "coefficient": "5",
+          "powers": [
+            8
+          ]
+        },
+        {
+          "coefficient": "28",
+          "powers": [
+            6
+          ]
+        },
+        {
+          "coefficient": "62",
+          "powers": [
+            4
+          ]
+        },
+        {
+          "coefficient": "28",
+          "powers": [
+            2
+          ]
+        },
+        {
+          "coefficient": "5",
+          "powers": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "degree": 60,
+      "exponent": 2,
+      "irreducible_over_QQ": true,
+      "rational_root": null,
+      "terms": [
+        {
+          "coefficient": "1",
+          "powers": [
+            60
+          ]
+        },
+        {
+          "coefficient": "998",
+          "powers": [
+            58
+          ]
+        },
+        {
+          "coefficient": "328451",
+          "powers": [
+            56
+          ]
+        },
+        {
+          "coefficient": "33893260",
+          "powers": [
+            54
+          ]
+        },
+        {
+          "coefficient": "-626685795",
+          "powers": [
+            52
+          ]
+        },
+        {
+          "coefficient": "-64429992638",
+          "powers": [
+            50
+          ]
+        },
+        {
+          "coefficient": "-1372802700721",
+          "powers": [
+            48
+          ]
+        },
+        {
+          "coefficient": "-14530091333320",
+          "powers": [
+            46
+          ]
+        },
+        {
+          "coefficient": "-89791894329123",
+          "powers": [
+            44
+          ]
+        },
+        {
+          "coefficient": "-344497523489066",
+          "powers": [
+            42
+          ]
+        },
+        {
+          "coefficient": "-847182693042105",
+          "powers": [
+            40
+          ]
+        },
+        {
+          "coefficient": "-1381336446099660",
+          "powers": [
+            38
+          ]
+        },
+        {
+          "coefficient": "-1576695558948263",
+          "powers": [
+            36
+          ]
+        },
+        {
+          "coefficient": "-1431504584900606",
+          "powers": [
+            34
+          ]
+        },
+        {
+          "coefficient": "-1284851430347117",
+          "powers": [
+            32
+          ]
+        },
+        {
+          "coefficient": "-1255992647084016",
+          "powers": [
+            30
+          ]
+        },
+        {
+          "coefficient": "-1284851430347117",
+          "powers": [
+            28
+          ]
+        },
+        {
+          "coefficient": "-1431504584900606",
+          "powers": [
+            26
+          ]
+        },
+        {
+          "coefficient": "-1576695558948263",
+          "powers": [
+            24
+          ]
+        },
+        {
+          "coefficient": "-1381336446099660",
+          "powers": [
+            22
+          ]
+        },
+        {
+          "coefficient": "-847182693042105",
+          "powers": [
+            20
+          ]
+        },
+        {
+          "coefficient": "-344497523489066",
+          "powers": [
+            18
+          ]
+        },
+        {
+          "coefficient": "-89791894329123",
+          "powers": [
+            16
+          ]
+        },
+        {
+          "coefficient": "-14530091333320",
+          "powers": [
+            14
+          ]
+        },
+        {
+          "coefficient": "-1372802700721",
+          "powers": [
+            12
+          ]
+        },
+        {
+          "coefficient": "-64429992638",
+          "powers": [
+            10
+          ]
+        },
+        {
+          "coefficient": "-626685795",
+          "powers": [
+            8
+          ]
+        },
+        {
+          "coefficient": "33893260",
+          "powers": [
+            6
+          ]
+        },
+        {
+          "coefficient": "328451",
+          "powers": [
+            4
+          ]
+        },
+        {
+          "coefficient": "998",
+          "powers": [
+            2
+          ]
+        },
+        {
+          "coefficient": "1",
+          "powers": [
+            0
+          ]
+        }
+      ]
+    }
+  ],
+  "factorization_multiplication_back": true,
+  "rational_root_completeness": "Every factor is certified irreducible over QQ; every nonlinear factor therefore has no rational root.",
+  "rational_roots_with_multiplicity": {
+    "-1": 40,
+    "0": 44,
+    "1": 100
+  },
+  "resultant_content": "-452312848583266388373324160190187140051835877600158453279131187530910662656",
+  "resultant_sha256_sparse": "229fd7f03d146cd1421e926d280b509c9ed010e33f8507739cd882c81fe71158",
+  "schema": 1,
+  "sha256_without_checksum": "7127a3f9730ae16745dd067716ffdb63f53cefbbcd127e938604382174f39023",
+  "source": "artifacts/genus4_quotient.json",
+  "source_checksum": "621f3aa944d0ba3a8bfd39a36de19a21313304f8cfdfcbfb31f222736f04a7a5",
+  "status": "MACHINE-VERIFIED",
+  "theorem": "If F_T(T,A)=Q1(T,A)=0 with T,A rational, then T is -1, 0, or 1; all three values are inadmissible cuboid boundaries."
+}

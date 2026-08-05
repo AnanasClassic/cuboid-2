@@ -1,0 +1,483 @@
+{
+  "bound": 97,
+  "burnside_identity": "#E(F_p)=(#Fix(Frob_p on C)+#Fix(Frob_p*tau on C))/2",
+  "curve": "E = normalization of C/<tau>",
+  "good_reduction_certificate": {
+    "controlling_integer_factorization": {
+      "17": 4,
+      "2": 19,
+      "3": 1,
+      "43": 3,
+      "47": 6,
+      "5": 17
+    },
+    "excluded_primes": [
+      2,
+      3,
+      5,
+      17,
+      43,
+      47
+    ],
+    "h6_at_1": -86,
+    "h6_at_minus_1": -6250,
+    "h6_discriminant": -120976582094426834375000000,
+    "reason": "Outside these primes the branch sections 0, infinity, +/-1 and the six roots of H6 stay disjoint and separable; the local indices 2 and 5 are tame, the slope quartic at s=1 is separable, and the order of the splitting-field group divides the inverted bound 120. Exclusion does not assert that every listed prime is a prime of actual bad reduction.",
+    "slope_quartic_discriminant": -11008,
+    "splitting_group_order_bound": 120
+  },
+  "method": {
+    "Fp2_root_count": "deg gcd(P,X^(p^2)-X)",
+    "Fp_root_count": "deg gcd(P,X^p-X)",
+    "cross_checks": [
+      "SymPy factor degrees for every generic rational fibre",
+      "direct Fp2 root/two-subset enumeration for p<=13",
+      "Burnside integrality",
+      "Hasse bound for every reported trace"
+    ],
+    "norm_one_root_count": "deg gcd(P,X^(p+1)-1)"
+  },
+  "schema": 1,
+  "scope": "Exact good-prime Frobenius fingerprint only; it does not identify a Weierstrass model, prove an isomorphism/isogeny, or determine rank.",
+  "sha256_without_checksum": "e372ea3221d593644fd0f3a2bc1cd050a00610b19e3ed8ac52cdb00e6cfceaae",
+  "tau": "(s,{r1,r2})->(1/s,{1/r1,1/r2})",
+  "traces": [
+    {
+      "C_breakdown": {
+        "generic": 4,
+        "h6": 0,
+        "infinity": 7,
+        "s=-1": 0,
+        "s=0": 7,
+        "s=1": 0
+      },
+      "C_points": 18,
+      "E_points": 10,
+      "fp2_nonsquare": 3,
+      "frobenius_tau_breakdown": {
+        "generic": 2,
+        "h6": 0,
+        "s=-1": 0,
+        "s=1": 0
+      },
+      "frobenius_tau_fixed": 2,
+      "hasse_verified": true,
+      "p": 7,
+      "trace": -2
+    },
+    {
+      "C_breakdown": {
+        "generic": 6,
+        "h6": 0,
+        "infinity": 3,
+        "s=-1": 2,
+        "s=0": 3,
+        "s=1": 1
+      },
+      "C_points": 15,
+      "E_points": 16,
+      "fp2_nonsquare": 2,
+      "frobenius_tau_breakdown": {
+        "generic": 14,
+        "h6": 0,
+        "s=-1": 2,
+        "s=1": 1
+      },
+      "frobenius_tau_fixed": 17,
+      "hasse_verified": true,
+      "p": 11,
+      "trace": -4
+    },
+    {
+      "C_breakdown": {
+        "generic": 10,
+        "h6": 0,
+        "infinity": 3,
+        "s=-1": 0,
+        "s=0": 3,
+        "s=1": 1
+      },
+      "C_points": 17,
+      "E_points": 12,
+      "fp2_nonsquare": 2,
+      "frobenius_tau_breakdown": {
+        "generic": 6,
+        "h6": 0,
+        "s=-1": 0,
+        "s=1": 1
+      },
+      "frobenius_tau_fixed": 7,
+      "hasse_verified": true,
+      "p": 13,
+      "trace": 2
+    },
+    {
+      "C_breakdown": {
+        "generic": 16,
+        "h6": 0,
+        "infinity": 3,
+        "s=-1": 2,
+        "s=0": 3,
+        "s=1": 4
+      },
+      "C_points": 28,
+      "E_points": 24,
+      "fp2_nonsquare": 2,
+      "frobenius_tau_breakdown": {
+        "generic": 14,
+        "h6": 0,
+        "s=-1": 2,
+        "s=1": 4
+      },
+      "frobenius_tau_fixed": 20,
+      "hasse_verified": true,
+      "p": 19,
+      "trace": -4
+    },
+    {
+      "C_breakdown": {
+        "generic": 12,
+        "h6": 6,
+        "infinity": 7,
+        "s=-1": 0,
+        "s=0": 7,
+        "s=1": 1
+      },
+      "C_points": 33,
+      "E_points": 30,
+      "fp2_nonsquare": 5,
+      "frobenius_tau_breakdown": {
+        "generic": 26,
+        "h6": 0,
+        "s=-1": 0,
+        "s=1": 1
+      },
+      "frobenius_tau_fixed": 27,
+      "hasse_verified": true,
+      "p": 23,
+      "trace": -6
+    },
+    {
+      "C_breakdown": {
+        "generic": 22,
+        "h6": 0,
+        "infinity": 3,
+        "s=-1": 2,
+        "s=0": 3,
+        "s=1": 0
+      },
+      "C_points": 30,
+      "E_points": 22,
+      "fp2_nonsquare": 2,
+      "frobenius_tau_breakdown": {
+        "generic": 10,
+        "h6": 2,
+        "s=-1": 2,
+        "s=1": 0
+      },
+      "frobenius_tau_fixed": 14,
+      "hasse_verified": true,
+      "p": 29,
+      "trace": 8
+    },
+    {
+      "C_breakdown": {
+        "generic": 16,
+        "h6": 0,
+        "infinity": 7,
+        "s=-1": 2,
+        "s=0": 7,
+        "s=1": 1
+      },
+      "C_points": 33,
+      "E_points": 30,
+      "fp2_nonsquare": 3,
+      "frobenius_tau_breakdown": {
+        "generic": 24,
+        "h6": 0,
+        "s=-1": 2,
+        "s=1": 1
+      },
+      "frobenius_tau_fixed": 27,
+      "hasse_verified": true,
+      "p": 31,
+      "trace": 2
+    },
+    {
+      "C_breakdown": {
+        "generic": 24,
+        "h6": 2,
+        "infinity": 3,
+        "s=-1": 0,
+        "s=0": 3,
+        "s=1": 4
+      },
+      "C_points": 36,
+      "E_points": 34,
+      "fp2_nonsquare": 2,
+      "frobenius_tau_breakdown": {
+        "generic": 28,
+        "h6": 0,
+        "s=-1": 0,
+        "s=1": 4
+      },
+      "frobenius_tau_fixed": 32,
+      "hasse_verified": true,
+      "p": 37,
+      "trace": 4
+    },
+    {
+      "C_breakdown": {
+        "generic": 18,
+        "h6": 6,
+        "infinity": 7,
+        "s=-1": 2,
+        "s=0": 7,
+        "s=1": 1
+      },
+      "C_points": 41,
+      "E_points": 44,
+      "fp2_nonsquare": 3,
+      "frobenius_tau_breakdown": {
+        "generic": 44,
+        "h6": 0,
+        "s=-1": 2,
+        "s=1": 1
+      },
+      "frobenius_tau_fixed": 47,
+      "hasse_verified": true,
+      "p": 41,
+      "trace": -2
+    },
+    {
+      "C_breakdown": {
+        "generic": 42,
+        "h6": 0,
+        "infinity": 3,
+        "s=-1": 0,
+        "s=0": 3,
+        "s=1": 1
+      },
+      "C_points": 49,
+      "E_points": 60,
+      "fp2_nonsquare": 2,
+      "frobenius_tau_breakdown": {
+        "generic": 68,
+        "h6": 2,
+        "s=-1": 0,
+        "s=1": 1
+      },
+      "frobenius_tau_fixed": 71,
+      "hasse_verified": true,
+      "p": 53,
+      "trace": -6
+    },
+    {
+      "C_breakdown": {
+        "generic": 36,
+        "h6": 6,
+        "infinity": 3,
+        "s=-1": 2,
+        "s=0": 3,
+        "s=1": 2
+      },
+      "C_points": 52,
+      "E_points": 64,
+      "fp2_nonsquare": 2,
+      "frobenius_tau_breakdown": {
+        "generic": 72,
+        "h6": 0,
+        "s=-1": 2,
+        "s=1": 2
+      },
+      "frobenius_tau_fixed": 76,
+      "hasse_verified": true,
+      "p": 59,
+      "trace": -4
+    },
+    {
+      "C_breakdown": {
+        "generic": 46,
+        "h6": 0,
+        "infinity": 3,
+        "s=-1": 2,
+        "s=0": 3,
+        "s=1": 0
+      },
+      "C_points": 54,
+      "E_points": 58,
+      "fp2_nonsquare": 2,
+      "frobenius_tau_breakdown": {
+        "generic": 60,
+        "h6": 0,
+        "s=-1": 2,
+        "s=1": 0
+      },
+      "frobenius_tau_fixed": 62,
+      "hasse_verified": true,
+      "p": 61,
+      "trace": 4
+    },
+    {
+      "C_breakdown": {
+        "generic": 68,
+        "h6": 6,
+        "infinity": 3,
+        "s=-1": 0,
+        "s=0": 3,
+        "s=1": 1
+      },
+      "C_points": 81,
+      "E_points": 72,
+      "fp2_nonsquare": 2,
+      "frobenius_tau_breakdown": {
+        "generic": 62,
+        "h6": 0,
+        "s=-1": 0,
+        "s=1": 1
+      },
+      "frobenius_tau_fixed": 63,
+      "hasse_verified": true,
+      "p": 67,
+      "trace": -4
+    },
+    {
+      "C_breakdown": {
+        "generic": 54,
+        "h6": 0,
+        "infinity": 7,
+        "s=-1": 2,
+        "s=0": 7,
+        "s=1": 4
+      },
+      "C_points": 74,
+      "E_points": 66,
+      "fp2_nonsquare": 7,
+      "frobenius_tau_breakdown": {
+        "generic": 50,
+        "h6": 2,
+        "s=-1": 2,
+        "s=1": 4
+      },
+      "frobenius_tau_fixed": 58,
+      "hasse_verified": true,
+      "p": 71,
+      "trace": 6
+    },
+    {
+      "C_breakdown": {
+        "generic": 68,
+        "h6": 0,
+        "infinity": 7,
+        "s=-1": 0,
+        "s=0": 7,
+        "s=1": 0
+      },
+      "C_points": 82,
+      "E_points": 80,
+      "fp2_nonsquare": 5,
+      "frobenius_tau_breakdown": {
+        "generic": 78,
+        "h6": 0,
+        "s=-1": 0,
+        "s=1": 0
+      },
+      "frobenius_tau_fixed": 78,
+      "hasse_verified": true,
+      "p": 73,
+      "trace": -6
+    },
+    {
+      "C_breakdown": {
+        "generic": 72,
+        "h6": 2,
+        "infinity": 7,
+        "s=-1": 2,
+        "s=0": 7,
+        "s=1": 2
+      },
+      "C_points": 92,
+      "E_points": 70,
+      "fp2_nonsquare": 3,
+      "frobenius_tau_breakdown": {
+        "generic": 44,
+        "h6": 0,
+        "s=-1": 2,
+        "s=1": 2
+      },
+      "frobenius_tau_fixed": 48,
+      "hasse_verified": true,
+      "p": 79,
+      "trace": 10
+    },
+    {
+      "C_breakdown": {
+        "generic": 56,
+        "h6": 0,
+        "infinity": 3,
+        "s=-1": 0,
+        "s=0": 3,
+        "s=1": 1
+      },
+      "C_points": 63,
+      "E_points": 72,
+      "fp2_nonsquare": 2,
+      "frobenius_tau_breakdown": {
+        "generic": 80,
+        "h6": 0,
+        "s=-1": 0,
+        "s=1": 1
+      },
+      "frobenius_tau_fixed": 81,
+      "hasse_verified": true,
+      "p": 83,
+      "trace": 12
+    },
+    {
+      "C_breakdown": {
+        "generic": 68,
+        "h6": 0,
+        "infinity": 7,
+        "s=-1": 2,
+        "s=0": 7,
+        "s=1": 0
+      },
+      "C_points": 84,
+      "E_points": 100,
+      "fp2_nonsquare": 3,
+      "frobenius_tau_breakdown": {
+        "generic": 88,
+        "h6": 26,
+        "s=-1": 2,
+        "s=1": 0
+      },
+      "frobenius_tau_fixed": 116,
+      "hasse_verified": true,
+      "p": 89,
+      "trace": -10
+    },
+    {
+      "C_breakdown": {
+        "generic": 88,
+        "h6": 0,
+        "infinity": 7,
+        "s=-1": 0,
+        "s=0": 7,
+        "s=1": 1
+      },
+      "C_points": 103,
+      "E_points": 108,
+      "fp2_nonsquare": 5,
+      "frobenius_tau_breakdown": {
+        "generic": 106,
+        "h6": 6,
+        "s=-1": 0,
+        "s=1": 1
+      },
+      "frobenius_tau_fixed": 113,
+      "hasse_verified": true,
+      "p": 97,
+      "trace": -10
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "descent_images": {
+    "alpha_E": {
+      "O": 1,
+      "P_(-1,2)": -1,
+      "P_plus_torsion_(2,4)": 2,
+      "torsion_(0,0)": -2
+    },
+    "alpha_dual": {
+      "O": 1,
+      "torsion_(0,0)": 17
+    },
+    "sizes": [
+      4,
+      2
+    ]
+  },
+  "external_data_used": false,
+  "index_formula": "2^rank=|alpha_E(E(Q))|*|alpha_dual(E'(Q))|/4",
+  "models": {
+    "dual": "V^2=U*(U^2-6*U+17)",
+    "shifted": "Y^2=X*(X^2+3*X-2)",
+    "short": "y^2=x^3-5*x+4"
+  },
+  "non_torsion_certificate": {
+    "2P": [
+      "25/16",
+      "-3/64"
+    ],
+    "P": "(0,2)",
+    "method": "Nagell-Lutz: the nonzero torsion point 2P would be integral"
+  },
+  "proof_document": "candidate_544c_rank_proof.md",
+  "rank": 1,
+  "rank_power": 2,
+  "rational_2_torsion": {
+    "E1": [
+      "O",
+      "(1,0) in short coordinates = (0,0) shifted"
+    ],
+    "E1_quadratic_factor_discriminant": 17,
+    "dual": [
+      "O",
+      "(0,0)"
+    ]
+  },
+  "schema": 1,
+  "sha256_without_checksum": "3c33cc66f0bb3a2d659af53e833ce9a24b0e3755cdba4077df15b87c80aa1703",
+  "theorem": "E1(Q) has Mordell-Weil rank exactly 1 and torsion subgroup Z/2Z",
+  "torsion_certificate": {
+    "P_and_minus_P_non_torsion": true,
+    "nagell_lutz_integer": 68,
+    "nonzero_square_divisors": [
+      1,
+      4
+    ],
+    "only_integral_candidates": [
+      "(1,0)",
+      "(0,2)",
+      "(0,-2)"
+    ],
+    "torsion_subgroup": "Z/2Z"
+  }
+}

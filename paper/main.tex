@@ -2,9 +2,9 @@
 \usepackage[a4paper,margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,booktabs}
 \newtheorem{theorem}{Theorem}
-\title{A signed-square descent and density-$99.9999999996\%$ theorem for Sharipov's second cuboid quintic}
+\title{Signed-square and infinite-family descents for Sharipov's second cuboid quintic}
 \author{Computational research draft}
-\date{August 4, 2026}
+\date{August 5, 2026}
 \begin{document}
 \maketitle
 
@@ -15,6 +15,12 @@ congruence certificates excludes a rational quadratic factor for a set of
 primitive parameter pairs of natural density
 $3917894203934863/3917894203948032$.  The result is unconditional but does not
 resolve the infinite residual family, so Sharipov's conjecture remains open.
+We also exclude quadratic factors on two unbounded families: every
+$\{p,q\}=\{1,\ell^k\}$, and every
+$\{p,q\}=\{3,r^n\}$ with $r\equiv3,5\pmod8$ prime.
+Independently of the published Magma computation, an exact 2-descent and a
+$5$-adic Coleman--Strassmann argument completely exclude rational linear
+factors of the normalized quintic.
 \end{abstract}
 
 Let $Q_{p,q}(t)=H_{p,q}(t^2)$, where $H_{p,q}\in\mathbb Z[X]$ is the monic
@@ -34,6 +40,99 @@ valuations are $4k,4k,2k,0,0$.  The valuation of the product of any two roots
 is even.  Since $B$ divides $-p^{10}q^{10}$, every prime valuation of $B$ is
 even, proving the assertion.
 \end{proof}
+
+\begin{theorem}[Prime-power axis family]
+For every prime $\ell$ and every $k\geq1$, the quintic
+$P_{(p/q)^2}$ has no rational quadratic factor when
+\[
+ \{p,q\}=\{1,\ell^k\}.
+\]
+More generally, at every prime $r\mid pq$ a hypothetical quadratic factor
+defines an index $m_r\in\{0,1,2,3,4\}$, and these indices cannot all be equal.
+Consequently every counterexample to the quadratic-factor assertion has
+$\omega(pq)\geq2$ and nonuniform local pair type.
+\end{theorem}
+
+\begin{proof}
+Let $X^2+AX+B$ be a monic integral quadratic factor and normalize its
+constant by $b=B/q^8$.  The Newton root valuations at a prime $r\mid pq$ are
+$0,0,2k,4k,4k$, where $k=v_r(pq)$.  Hence
+\[
+ v_r(b)=m_rv_r(s),\qquad m_r\in\{0,1,2,3,4\}.
+\]
+If all $m_r$ equal $m$, then $b=\pm s^m$, because the quotient has zero
+valuation at every finite prime.  In particular this always happens when
+$pq$ has only one prime divisor.
+
+For each of the ten substitutions $b=\pm s^m$, exact Euclidean division by
+$x^2+ax+b$ gives remainders $R_1x+R_0$.  The complete factorization of
+$\operatorname{Res}_a(R_1,R_0)$ has no positive rational zero except $s=1$.
+This is certified without an irreducibility oracle: every nonlinear displayed
+factor is monic with constant term $\pm1$, and direct evaluation excludes the
+only rational-root candidates $\pm1$.  Since $s=1$ is inadmissible, the
+assertions follow.  Each resultant is independently checked as a $7\times7$
+Sylvester determinant.
+\end{proof}
+
+\begin{theorem}[A two-prime family]
+Let $r\ne3$ be prime with $r\equiv3$ or $5\pmod8$, and let $n\geq1$.
+Then $P_{(p/q)^2}$ has no rational quadratic factor when
+\[
+ \{p,q\}=\{3,r^n\}.
+\]
+\end{theorem}
+
+\begin{proof}
+At both primes, $2$ is a quadratic nonresidue.  The slope-zero residual
+quadratic is therefore irreducible and restricts both local indices to
+$\{0,3,4\}$.  Equal indices are excluded by the preceding theorem.  For the
+twelve signed unequal pairs $(u,v)$, substitute
+\[
+ s=P^2/Q^2,\qquad b=\pm P^{2u}/Q^{2v}
+\]
+in $\operatorname{Res}_a(R_1,R_0)$ and clear denominators.  The coefficient
+at the lowest $P$-power and the coefficient at the lowest $Q$-power give
+exact endpoint valuations.  A unique minimum excludes every inert prime
+except the finite set $\{5,13\}$.  Exact evaluation closes every branch at
+those two primes.  Finally, after $P=3$, the coefficient polygons in $Q$
+have a unique minimum for every $Q=r^n$; the sole threshold-two case at
+$n=1$ is one of the exact evaluations just noted.  Thus the argument covers
+all $n$, not a bounded range.  Reciprocity gives the reversed orientation.
+\end{proof}
+
+\begin{theorem}[Endpoint restrictions for two inert prime powers]
+Let $p=L^m$ and $q=R^n$, where $L,R$ are distinct odd primes and
+$(2/L)=(2/R)=-1$.  Every nonuniform local pair type $u\ne v$ in
+$\{0,3,4\}$ satisfies
+\[
+ R^{en}\equiv\varepsilon\pmod L,\qquad
+ L^{em}\equiv\varepsilon\pmod R,
+ \qquad e=2|u-v|\in\{2,6,8\},
+\]
+where $\varepsilon$ is the sign of the quadratic factor's constant.
+For $\varepsilon=-1$, the case $e=8$ is impossible.  The cases $e=2,6$
+require $L\equiv R\equiv5\pmod8$, odd $m,n$, and
+\(\left(\frac{L}{R}\right)=\left(\frac{R}{L}\right)=-1\).  If $m=n=1$,
+the positive case $e=2$ is also impossible.
+\end{theorem}
+
+\begin{proof}
+For all twelve signed ordered pairs, exact substitution in
+$\operatorname{Res}_a(R_1,R_0)$ shows that the two lowest endpoint
+coefficients have squarefree parts $X^e-\varepsilon$; their integer contents
+are one.  Reduction at $L$ and $R$ gives the displayed congruences without an
+exceptional-prime division.  An equation $x^8=-1$ requires an element of
+order $16$, impossible because an inert odd prime is $3$ or $5$ modulo $8$.
+For $e=2,6$, the $2$-primary subgroup at a surviving prime has order $4$;
+the exponent of the prime power must be odd and the powered base is a
+quadratic nonresidue.  Quadratic reciprocity gives the stated mutual symbols.
+Finally, for $m=n=1$ and $L<R$, the positive $e=2$ conditions force the odd
+prime $R$ to divide $L^2-1$, hence $R=L+1$, a contradiction.
+\end{proof}
+
+The remaining positive systems with $e=2,6,8$ and negative systems with
+$e=2,6$ are necessary only.  They have genuine infinite endpoint survivors,
+so this theorem is not a general two-prime exclusion.
 
 \begin{theorem}
 Let $p,q$ range over positive coprime integers.  There is an explicit union of
@@ -81,5 +180,148 @@ No finite set of reduction primes can remove every parameter class: if $M$ is
 their product, the primitive pairs $p\equiv0\pmod M$, $q=1$ reduce to
 $H_{p,q}(X)=X^3(X^2+6X+1)$ at every selected prime.  Thus the theorem is a
 descent certificate, not a proof of the full conjecture.
+
+\begin{theorem}[Reciprocal three-character descent]
+Let $E$ be the normalization of the reciprocal quotient of the quadratic
+factor curve, and put
+\[
+ U=s+s^{-1},\qquad W=b+b^{-1}.
+\]
+Every admissible quadratic factor maps to one of the two elementary
+$2$-covers of $E$ obtained by adjoining square roots of
+\[
+ U+2,\quad U-2,\quad W+2
+ \qquad\hbox{or}\qquad
+ U+2,\quad U-2,\quad 2-W.
+\]
+Both full covers have genus $33$.  Their seven character quotients have
+genera, respectively,
+\[
+ (4,8,4,7,5,5,6),\qquad (4,8,6,7,5,5,4),
+\]
+up to permutation.  Moreover, if $Y_\varepsilon$ is either full cover and
+$C_\chi$ are its seven character quotients, then
+\[
+ J(Y_\varepsilon)\times J(E)^6
+ \ \sim\ \prod_{\chi\ne0}J(C_\chi)
+\]
+over $\mathbb Q$.
+\end{theorem}
+
+\begin{proof}
+The square identities are
+\[
+ U+2=\frac{(s+1)^2}{s},\quad
+ U-2=\frac{(s-1)^2}{s},\quad
+ W+2=\frac{(b+1)^2}{b},\quad
+ 2-W=-\frac{(b-1)^2}{b}.
+\]
+Thus $s=z^2$ requires both $U+2$ and $U-2$ to be squares, while the signed
+square theorem for the integral constant coefficient gives the third
+character.  Exact local expansions at $s=0,1,-1,\infty$ give branch degrees
+\[
+ \deg B(U+2)=6,\quad \deg B(U-2)=14,\quad
+ \deg B(W+2)=6,\quad \deg B(2-W)=10.
+\]
+Taking symmetric differences gives the seven displayed character genera by
+Riemann--Hurwitz.  The union of the branch supports has degree $16$; every
+inertia group has order two, so
+\[
+ 2g(Y_\varepsilon)-2=2^{3-1}\cdot16,
+\]
+and hence $g(Y_\varepsilon)=33$.  The isogeny is the standard character
+decomposition for an elementary abelian $2$-cover; its dimension identity is
+$33+6=39$, the sum of the seven character genera.  All local expansions,
+branch supports, and square-class changes are included in the exact
+accompanying certificate.
+\end{proof}
+
+\begin{theorem}[Linear-factor exclusion]
+For every positive rational $s\ne1$, the normalized quintic $P_s(x)$ has no
+rational root.  Equivalently, the $1+4$ factorization pattern does not occur
+for an admissible second-cuboid parameter.
+\end{theorem}
+
+\begin{proof}
+The exact quotient construction sends any rational root to a rational point
+on
+\[
+ C:\quad w^2=t^5+21t^4+26t^3+10t^2+5t+1.
+\]
+An explicit Schaefer--Stoll descent gives
+\[
+ \dim_{\mathbf F_2}\operatorname{Sel}^{(2)}(J/\mathbf Q)=2,
+ \qquad \operatorname{rank}J(\mathbf Q)=1,
+ \qquad \operatorname{Sha}(J/\mathbf Q)[2]=0.
+\]
+The divisor $[(0,1)-\infty]$ has infinite order and therefore spans
+$J(\mathbf Q)\otimes\mathbf Q_5$.  The six known rational points reduce
+bijectively to $C(\mathbf F_5)$.  Coleman integration gives the annihilating
+differential
+\[
+ \bar\eta=(1+t)\frac{dt}{2w}.
+\]
+It is nonzero in five residue disks, so each contains at most its known
+rational point.  In the remaining disk at $(-1,0)$, using $u=w=5z$, the
+Coleman primitive has the exact form
+\[
+ \frac{G(5z)}{25}=z\bigl(\text{unit}+5z^2\mathbf Z_5[[z^2]]\bigr).
+\]
+Strassmann's theorem gives the unique zero $z=0$.  Hence
+\[
+ C(\mathbf Q)=\{\infty,(-1,0),(0,\pm1),(1,\pm8)\}.
+\]
+The exact inverse table sends these points only to $s=1$, $s=-1$, or poles;
+the remaining denominator $t^2+6t+1$ has no rational zero.  None is an
+admissible positive $s\ne1$.
+\end{proof}
+
+\begin{theorem}[Subresultant exception]
+On the rational-square pullback of the quadratic-factor curve, the linear
+subresultant denominator $Q_1(T,A)$ cannot vanish at an admissible rational
+point.
+\end{theorem}
+
+\begin{proof}
+Exact elimination gives a completely factored certificate for
+\[
+ \operatorname{Res}_A\bigl(G(T^2,A),Q_1(T,A)\bigr).
+\]
+Multiplication-back verifies the resultant, and the only linear factors over
+$\mathbf Q$ are powers of $T+1$, $T$, and $T-1$.  Thus a rational common zero
+has $T\in\{-1,0,1\}$.  Direct specialization identifies these fibers with
+$p=0$, $s=1$, or $q=0$, respectively.  All are inadmissible.
+\end{proof}
+
+\begin{theorem}[Arithmetic of the fingerprint candidate]
+The curve
+\[
+ E_1:y^2=x^3-5x+4
+\]
+has Mordell--Weil rank $1$ over $\mathbb Q$ and torsion subgroup
+$\mathbb Z/2\mathbb Z$.
+\end{theorem}
+
+\begin{proof}
+After $X=x-1$, use the 2-isogenous pair
+\[
+ Y^2=X(X^2+3X-2),\qquad
+ V^2=U(U^2-6U+17).
+\]
+The two descent images have orders $4$ and $2$: the first contains all
+classes $\{1,-1,2,-2\}$, while positivity of
+$U((U-3)^2+8)$ and the valuation lemma restrict the second to
+$\{1,17\}$.  The exact 2-isogeny index formula gives
+\[
+ 2^{\operatorname{rank}E_1(\mathbb Q)}=\frac{4\cdot2}{4}=2.
+\]
+The point $(0,2)$ is non-torsion because its double is
+$(25/16,-3/64)$, contradicting Nagell--Lutz if it were torsion.
+Nagell--Lutz leaves only $(1,0)$ as nonzero torsion.
+\end{proof}
+
+This theorem concerns a candidate suggested by the exact good-prime
+fingerprint.  It is not transferred to the cuboid quotient until an explicit
+function-field isomorphism from the normalization of $H(q,A)=0$ is certified.
 
 \end{document}

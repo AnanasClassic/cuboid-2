@@ -5,9 +5,8 @@ requires-python = ">=3.11"
 dependencies = ["sympy==1.14.0"]
 
 [project.optional-dependencies]
-test = ["pytest==9.1.1"]
+test = ["pytest==9.1.1", "cypari2==2.2.4"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
-

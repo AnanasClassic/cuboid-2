@@ -1,0 +1,293 @@
+{
+  "branches": {
+    "+s^0": {
+      "b": "1",
+      "factorization": [
+        {
+          "degree": 1,
+          "multiplicity": 1,
+          "polynomial": "s"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 2,
+          "polynomial": "s + 1"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 6,
+          "polynomial": "s - 1"
+        },
+        {
+          "degree": 2,
+          "multiplicity": 2,
+          "polynomial": "s**2 + s + 1"
+        },
+        {
+          "degree": 6,
+          "multiplicity": 1,
+          "polynomial": "s**6 - 3*s**5 - s**4 + 10*s**3 - s**2 - 3*s + 1"
+        }
+      ],
+      "positive_rational_roots": [
+        "1"
+      ],
+      "resultant_constant": "-16"
+    },
+    "+s^1": {
+      "b": "s",
+      "factorization": [
+        {
+          "degree": 1,
+          "multiplicity": 6,
+          "polynomial": "s - 1"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 9,
+          "polynomial": "s"
+        },
+        {
+          "degree": 6,
+          "multiplicity": 1,
+          "polynomial": "s**6 + 3*s**5 + 39*s**4 + 72*s**3 + 39*s**2 + 3*s + 1"
+        }
+      ],
+      "positive_rational_roots": [
+        "1"
+      ],
+      "resultant_constant": "-8"
+    },
+    "+s^2": {
+      "b": "s**2",
+      "factorization": [
+        {
+          "degree": 1,
+          "multiplicity": 2,
+          "polynomial": "s + 1"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 6,
+          "polynomial": "s - 1"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 16,
+          "polynomial": "s"
+        }
+      ],
+      "positive_rational_roots": [
+        "1"
+      ],
+      "resultant_constant": "-64"
+    },
+    "+s^3": {
+      "b": "s**3",
+      "factorization": [
+        {
+          "degree": 1,
+          "multiplicity": 6,
+          "polynomial": "s - 1"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 20,
+          "polynomial": "s"
+        },
+        {
+          "degree": 2,
+          "multiplicity": 2,
+          "polynomial": "s**2 + s + 1"
+        }
+      ],
+      "positive_rational_roots": [
+        "1"
+      ],
+      "resultant_constant": "16"
+    },
+    "+s^4": {
+      "b": "s**4",
+      "factorization": [
+        {
+          "degree": 1,
+          "multiplicity": 2,
+          "polynomial": "s + 1"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 6,
+          "polynomial": "s - 1"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 21,
+          "polynomial": "s"
+        },
+        {
+          "degree": 10,
+          "multiplicity": 1,
+          "polynomial": "s**10 + 5*s**9 + 16*s**8 + 39*s**7 + 55*s**6 + 52*s**5 + 55*s**4 + 39*s**3 + 16*s**2 + 5*s + 1"
+        }
+      ],
+      "positive_rational_roots": [
+        "1"
+      ],
+      "resultant_constant": "16"
+    },
+    "-s^0": {
+      "b": "-1",
+      "factorization": [
+        {
+          "degree": 1,
+          "multiplicity": 4,
+          "polynomial": "s - 1"
+        },
+        {
+          "degree": 16,
+          "multiplicity": 1,
+          "polynomial": "s**16 + 6*s**15 + 63*s**14 + 214*s**13 + 540*s**12 + 922*s**11 + 1417*s**10 + 1738*s**9 + 1750*s**8 + 1738*s**7 + 1417*s**6 + 922*s**5 + 540*s**4 + 214*s**3 + 63*s**2 + 6*s + 1"
+        }
+      ],
+      "positive_rational_roots": [
+        "1"
+      ],
+      "resultant_constant": "2"
+    },
+    "-s^1": {
+      "b": "-s",
+      "factorization": [
+        {
+          "degree": 1,
+          "multiplicity": 2,
+          "polynomial": "s + 1"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 4,
+          "polynomial": "s - 1"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 9,
+          "polynomial": "s"
+        },
+        {
+          "degree": 6,
+          "multiplicity": 1,
+          "polynomial": "s**6 - 29*s**5 - 93*s**4 - 62*s**3 - 93*s**2 - 29*s + 1"
+        }
+      ],
+      "positive_rational_roots": [
+        "1"
+      ],
+      "resultant_constant": "-4"
+    },
+    "-s^2": {
+      "b": "-s**2",
+      "factorization": [
+        {
+          "degree": 1,
+          "multiplicity": 4,
+          "polynomial": "s - 1"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 16,
+          "polynomial": "s"
+        },
+        {
+          "degree": 4,
+          "multiplicity": 1,
+          "polynomial": "s**4 - 32*s**3 - 62*s**2 - 32*s + 1"
+        }
+      ],
+      "positive_rational_roots": [
+        "1"
+      ],
+      "resultant_constant": "16"
+    },
+    "-s^3": {
+      "b": "-s**3",
+      "factorization": [
+        {
+          "degree": 1,
+          "multiplicity": 2,
+          "polynomial": "s + 1"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 4,
+          "polynomial": "s - 1"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 19,
+          "polynomial": "s"
+        },
+        {
+          "degree": 2,
+          "multiplicity": 1,
+          "polynomial": "s**2 - 6*s + 1"
+        },
+        {
+          "degree": 4,
+          "multiplicity": 1,
+          "polynomial": "s**4 + 9*s**3 + 24*s**2 + 9*s + 1"
+        }
+      ],
+      "positive_rational_roots": [
+        "1"
+      ],
+      "resultant_constant": "4"
+    },
+    "-s^4": {
+      "b": "-s**4",
+      "factorization": [
+        {
+          "degree": 1,
+          "multiplicity": 4,
+          "polynomial": "s - 1"
+        },
+        {
+          "degree": 1,
+          "multiplicity": 20,
+          "polynomial": "s"
+        },
+        {
+          "degree": 16,
+          "multiplicity": 1,
+          "polynomial": "s**16 - 2*s**15 - s**14 + 30*s**13 + 28*s**12 - 14*s**11 - 55*s**10 - 206*s**9 - 298*s**8 - 206*s**7 - 55*s**6 - 14*s**5 + 28*s**4 + 30*s**3 - s**2 - 2*s + 1"
+        }
+      ],
+      "positive_rational_roots": [
+        "1"
+      ],
+      "resultant_constant": "2"
+    }
+  },
+  "certificates": [
+    "each resultant agrees exactly with a directly built 7x7 Sylvester determinant",
+    "each displayed factorization multiplies exactly back to the resultant",
+    "each nonlinear factor is monic with constant +/-1 and is nonzero at +/-1"
+  ],
+  "logic": [
+    "a genuine quadratic divisor makes both exact remainders zero",
+    "hence the corresponding resultant in a must vanish",
+    "the complete QQ factorization in every branch has only s=1 as a positive rational zero",
+    "s=1 is impossible because k>=1 and ell>1"
+  ],
+  "schema": 1,
+  "sha256_without_checksum": "a3d424fe998297348ee8eb29b72223e295174c5346a67c536cdde6a88d8a09ed",
+  "status": "MACHINE-VERIFIED",
+  "stronger_obstruction": "For every hypothetical quadratic factor and every ell|pq, v_ell(b)=m_ell*v_ell(s) with m_ell in {0,1,2,3,4}; the indices m_ell cannot all be equal.  Hence every counterexample has omega(pq)>=2 and nonuniform local pair type.",
+  "theorem": "If {p,q}={1,ell^k}, k>=1, and ell is any prime, then P_(p/q)^2 has no rational quadratic factor.",
+  "valuation_input": {
+    "all_pair_sums": "v_ell(B)/k in {0,2,4,6,8}",
+    "normalization": "b=B/q^8",
+    "resulting_ten_branches": [
+      "+/-s^m for m=0,1,2,3,4"
+    ],
+    "root_valuations": "{0,0,2k,4k,4k}"
+  }
+}
