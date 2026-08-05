@@ -9,6 +9,9 @@ on:
     paths:
       - "artifacts/genus4_quotient.json"
       - "research/arithmetic_geometry/e_model_sage_transport.py"
+      - "research/arithmetic_geometry/e_model_singular_normalize.py"
+      - "research/frobenius_audit/sage_candidate_mw_basis.py"
+      - "research/linear_factor_completion/sage_chabauty_p5.py"
       - "scripts/sage_elliptic_probe.py"
       - ".github/workflows/sage-arithmetic-geometry.yml"
 
@@ -57,6 +60,9 @@ jobs:
           if-no-files-found: warn
 
   transport-to-weierstrass:
+    # The degree-eight maximal-order route is retained for its transcript,
+    # but normal runs use the Singular normalization fallback below.
+    if: ${{ false }}
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     container:
@@ -90,6 +96,109 @@ jobs:
           path: |
             certificates/e_model_transport.txt
             certificates/e_model_certificate.json
+          if-no-files-found: warn
+
+  candidate-mw-basis:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    container:
+      image: sagemath/sagemath@sha256:e068670ae5863b54b2550e72437ec637b0283acb0dc712c8584c124dbf44e667
+      options: --user root
+    env:
+      SAGE_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+      - name: Certify candidate rank and saturation
+        shell: bash
+        run: |
+          mkdir -p certificates
+          set -o pipefail
+          sage -python research/frobenius_audit/sage_candidate_mw_basis.py \
+            2>&1 | tee certificates/sage_candidate_mw_basis.txt
+          cp research/frobenius_audit/sage_candidate_mw_basis.json certificates/
+      - name: Upload candidate Mordell-Weil certificate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sage-candidate-mw-basis
+          path: |
+            certificates/sage_candidate_mw_basis.txt
+            certificates/sage_candidate_mw_basis.json
+          if-no-files-found: warn
+
+  linear-chabauty-p5:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    container:
+      image: sagemath/sagemath@sha256:e068670ae5863b54b2550e72437ec637b0283acb0dc712c8584c124dbf44e667
+      options: --user root
+    env:
+      SAGE_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+      - name: Reproduce the conditional p=5 Chabauty certificate
+        shell: bash
+        run: |
+          mkdir -p certificates
+          set -o pipefail
+          sage -python research/linear_factor_completion/sage_chabauty_p5.py \
+            2>&1 | tee certificates/sage_chabauty_p5.txt
+      - name: Upload p=5 Chabauty transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sage-linear-chabauty-p5
+          path: certificates/sage_chabauty_p5.txt
+          if-no-files-found: warn
+
+  singular-affine-normalization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    container:
+      image: sagemath/sagemath@sha256:e068670ae5863b54b2550e72437ec637b0283acb0dc712c8584c124dbf44e667
+      options: --user root
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+      - name: Generate exact Singular normalization input
+        run: |
+          mkdir -p certificates
+          python3 research/arithmetic_geometry/e_model_singular_normalize.py \
+            --chart affine \
+            --output certificates/e_model_singular_affine.sing \
+            --metadata certificates/e_model_singular_input.json
+      - name: Normalize the affine elliptic plane model
+        shell: bash
+        run: |
+          set -o pipefail
+          sage -sh -c 'Singular -q certificates/e_model_singular_affine.sing' \
+            2>&1 | tee certificates/e_model_singular_affine.txt
+          grep -q 'CERT singular_normalization_finished' \
+            certificates/e_model_singular_affine.txt
+      - name: Upload exact Singular transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: singular-affine-normalization
+          path: |
+            certificates/e_model_singular_affine.sing
+            certificates/e_model_singular_input.json
+            certificates/e_model_singular_affine.txt
           if-no-files-found: warn
 
   normalize-elliptic-quotient:
