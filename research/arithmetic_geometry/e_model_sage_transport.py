@@ -8,17 +8,13 @@ spend hours computing maximal orders/differents.  This probe deliberately does
 rational point (q,A)=(6,6/7) to construct L(2P), L(3P), a plane cubic and then
 a Weierstrass model.
 
-The invariant V=a^2/b is descended before Riemann--Roch.  Over E adjoin T with
-
-    T^4-q*T^2+1=0.
-
-The saved linear subresultant gives B=-Q0(T,A)/Q1(T,A), and
-
-    V=A^2/(1-B^2).
-
-V is invariant under the four T-conjugates.  Hence its relative trace divided
-by four lies in Q(E).  Equality after coercion back to the extension is an
-exact, independently checkable descent certificate.
+The invariant V=a^2/b is supplied by ``e_model_dihedral_descent.py`` as a
+direct rational function N(q,A)/D(q,A).  That script verifies the T -> -T and
+T -> 1/T cross-products exactly and rewrites the palindromic result through
+q=T^2+T^-2 coefficient by coefficient.  This probe checks the artifact hash
+and transports V by composition after transporting q and A.  It never inverts
+Q1 in a tower of algebraic function fields; Sage 10.9 required more than 1200
+seconds for that unnecessary xgcd.
 
 Run in SageMath 10.8 with, for example,
 
@@ -26,6 +22,9 @@ Run in SageMath 10.8 with, for example,
         --output research/arithmetic_geometry/e_model_certificate.json
 
 Use ``--stop-after descent`` to certify V without constructing maximal orders.
+Use ``--skip-v-descent`` for a q,A-only normalization/Riemann--Roch run that
+does not even read the (large) direct-V artifact.  In that mode every emitted
+status says explicitly that V descent and transport were skipped.
 No claim is emitted for a stage that times out or raises an exception.
 """
 
@@ -54,6 +53,7 @@ from sage.all import (  # type: ignore
 
 ROOT = Path(__file__).resolve().parents[2]
 ARTIFACT = ROOT / "artifacts" / "genus4_quotient.json"
+DIHEDRAL_V_ARTIFACT = Path(__file__).with_name("e_model_dihedral_V.json")
 DEFAULT_OUTPUT = Path(__file__).with_name("e_model_certificate.json")
 
 
@@ -191,7 +191,14 @@ def main() -> None:
     )
     parser.add_argument("--stage-timeout", type=int, default=1800)
     parser.add_argument("--representation-degree", type=int, default=18)
+    parser.add_argument(
+        "--skip-v-descent",
+        action="store_true",
+        help="run normalization/RR for q,A only; emit no V transport claim",
+    )
     args = parser.parse_args()
+    if args.skip_v_descent and args.stop_after == "descent":
+        parser.error("--skip-v-descent is incompatible with --stop-after descent")
     args.output.parent.mkdir(parents=True, exist_ok=True)
 
     total_started = time.monotonic()
@@ -232,39 +239,37 @@ def main() -> None:
             raise AssertionError("(q,A)=(6,6/7) is not on H")
 
     with timed_stage("descent_V", args.stage_timeout):
-        # Do this in L, before monic_integral_model/maximal_order.  Thus the
-        # inexpensive ``--stop-after descent`` run is genuinely independent
-        # of the normalization bottleneck.
-        RT = PolynomialRing(L, "T")
-        t_symbol = RT.gen()
-        t_polynomial = t_symbol**4 - qL * t_symbol**2 + 1
-        cert("T_cover_polynomial", t_polynomial)
-        # Sage 10.9 routes ``is_irreducible`` here through Singular, which has
-        # no conversion for a polynomial ring over an algebraic function
-        # field (NotImplementedError).  Do not make that unsupported call.
-        # Connectedness/degree four is independently certified by the nonempty
-        # branch supports of q+2, q-2 and q^2-4 in
-        # new_three_square_character_covers.py.  The exact descent round-trip
-        # below is the certificate needed in this script.
-        cert("T_cover_irreducibility_source", "independent branch-divisor certificate")
-        N = L.extension(t_polynomial, "T")
-        TN = N.gen()
-        AN = N(AL)
-        Q0N = evaluate_sparse(data["linear_subresultant"]["Q0_terms"], TN, AN)
-        Q1N = evaluate_sparse(data["linear_subresultant"]["Q1_terms"], TN, AN)
-        BN = -Q0N / Q1N
-        VN = AN**2 / (1 - BN**2)
-        trace_V = VN.trace()
-        VL = L(trace_V / 4)
-        descends = N(VL) == VN
-        cert("V_relative_trace_div_4", VL)
-        cert("V_descent_roundtrip", descends)
-        if not descends:
-            minpoly = VN.minimal_polynomial()
-            cert("V_failed_descent_minpoly", minpoly)
-            raise AssertionError("V is not fixed by the four T-conjugates")
-        certificate["V_in_function_field"] = str(VL)
-        certificate["V_descent"] = "trace(V_on_T_cover)/4; coercion round-trip verified"
+        # Never invert Q1 in the algebraic T-extension.  Sage 10.9 spent the
+        # full 1200-second stage in that xgcd.  The independent SymPy script
+        # e_model_dihedral_descent.py exports a direct N(q,A)/D(q,A), verified
+        # by exact dihedral cross-products and Laurent coefficients.
+        direct_V = None
+        if args.skip_v_descent:
+            cert("V_descent", "SKIPPED_BY_CLI; q,A normalization only")
+            certificate["V_descent"] = "SKIPPED_BY_CLI"
+        else:
+            direct_V = json.loads(DIHEDRAL_V_ARTIFACT.read_text(encoding="utf-8"))
+            direct_checksum = direct_V.pop("sha256_without_checksum")
+            canonical = json.dumps(direct_V, sort_keys=True, separators=(",", ":")).encode()
+            import hashlib
+
+            if hashlib.sha256(canonical).hexdigest() != direct_checksum:
+                raise AssertionError("dihedral V artifact checksum mismatch")
+            if direct_V["artifact_checksum"] != data["sha256_without_checksum"]:
+                raise AssertionError("dihedral V artifact was built from another quotient")
+            if direct_V["status"] != "MACHINE-VERIFIED":
+                raise AssertionError("dihedral V artifact is not certified")
+            direct_V["sha256_without_checksum"] = direct_checksum
+            cert("V_direct_formula", direct_V["formula"])
+            cert("V_direct_formula_degrees", direct_V["degrees"])
+            cert("V_direct_formula_checksum", direct_checksum)
+            certificate["V_descent"] = (
+                "direct dihedral N(q,A)/D(q,A); no Sage function-field inversion"
+            )
+            certificate["V_direct_formula_artifact"] = str(
+                DIHEDRAL_V_ARTIFACT.relative_to(ROOT)
+            )
+            certificate["V_direct_formula_checksum"] = direct_checksum
 
     if args.stop_after == "descent":
         certificate["status"] = "V_DESCENT_CERTIFIED"
@@ -276,11 +281,10 @@ def main() -> None:
         M, from_M, to_M = L.monic_integral_model("beta")
         qM = to_M(qL)
         AM = to_M(AL)
-        VM = to_M(VL)
-        if from_M(qM) != qL or from_M(AM) != AL or from_M(VM) != VL:
-            raise AssertionError("monic-integral isomorphism does not round-trip q,A,V")
+        if from_M(qM) != qL or from_M(AM) != AL:
+            raise AssertionError("monic-integral isomorphism does not round-trip q,A")
         cert("monic_integral_polynomial", M.polynomial())
-        cert("monic_integral_roundtrip_q_A_V", "OK")
+        cert("monic_integral_roundtrip_q_A", "OK")
 
     with timed_stage("rational_place", args.stage_timeout):
         order = M.maximal_order()
@@ -397,7 +401,7 @@ def main() -> None:
 
     with timed_stage("transport_q_A_V", args.stage_timeout):
         transported = {}
-        for name, function in (("q", qM), ("A", AM), ("V", VM)):
+        for name, function in (("q", qM), ("A", AM)):
             representation = rational_xy_representation(
                 M,
                 function,
@@ -407,20 +411,46 @@ def main() -> None:
             )
             cert(f"{name}_xy_representation", representation)
             transported[name] = representation
+        if direct_V is None:
+            transported["V"] = {"status": "SKIPPED_BY_CLI; no transport claim"}
+        else:
+            transported["V"] = {
+                "formula": direct_V["formula"],
+                "numerator_terms": direct_V["degrees"]["numerator_terms"],
+                "denominator_terms": direct_V["degrees"]["denominator_terms"],
+                "artifact": str(DIHEDRAL_V_ARTIFACT.relative_to(ROOT)),
+                "composition": (
+                    "substitute the verified transported q(x,y),A(x,y) into "
+                    "the direct dihedral numerator/denominator"
+                ),
+            }
         certificate["transport_via_cubic_coordinates"] = transported
         certificate["transport_interpretation"] = (
             "Apply the stored inverse Weierstrass-to-cubic morphism, set "
-            "x=X/Z and y=Y/Z, then evaluate each verified rational formula."
+            "x=X/Z and y=Y/Z, then evaluate the verified q,A formulas"
+            + (
+                "; V was deliberately omitted by --skip-v-descent."
+                if direct_V is None
+                else " and compose them with the certified direct V(q,A) formula."
+            )
         )
         if certificate.get("544c_exact_match") is not None:
             certificate["transport_from_544c_candidate"] = (
                 "First apply the stored 544c_to_RR_weierstrass isomorphism, "
                 "then weierstrass_to_cubic, set x=X/Z,y=Y/Z, and evaluate "
-                "the q,A,V formulas."
+                + (
+                    "the q,A formulas; V was deliberately omitted."
+                    if direct_V is None
+                    else "the q,A,V formulas."
+                )
             )
 
     if args.stop_after == "transport":
-        certificate["status"] = "Q_A_V_TRANSPORT_CERTIFIED"
+        certificate["status"] = (
+            "Q_A_TRANSPORT_CERTIFIED_V_SKIPPED"
+            if direct_V is None
+            else "Q_A_V_TRANSPORT_CERTIFIED"
+        )
         args.output.write_text(json.dumps(certificate, indent=2, sort_keys=True) + "\n")
         cert("output", args.output)
         return
@@ -451,7 +481,11 @@ def main() -> None:
             cert("generators_unavailable", repr(error))
             certificate["generators_status"] = repr(error)
 
-    certificate["status"] = "WEIERSTRASS_AND_TRANSPORT_CERTIFIED"
+    certificate["status"] = (
+        "WEIERSTRASS_Q_A_TRANSPORT_CERTIFIED_V_SKIPPED"
+        if direct_V is None
+        else "WEIERSTRASS_AND_TRANSPORT_CERTIFIED"
+    )
     certificate["elapsed_seconds"] = round(time.monotonic() - total_started, 3)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(certificate, indent=2, sort_keys=True) + "\n")
