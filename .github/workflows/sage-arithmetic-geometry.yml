@@ -15,6 +15,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: sage-arithmetic-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   descend-reciprocal-invariant:
     runs-on: ubuntu-24.04
@@ -85,6 +89,11 @@ jobs:
           if-no-files-found: warn
 
   normalize-elliptic-quotient:
+    # The generic FunctionField.genus() route was cancelled after 90 minutes
+    # while the staged field/isomorphism checks had already succeeded.  Keep
+    # the transcript-producing job in the file for manual archaeology, but do
+    # not spend hosted-runner time on it in normal research runs.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     timeout-minutes: 180
     container:
