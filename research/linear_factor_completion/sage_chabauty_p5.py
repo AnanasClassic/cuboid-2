@@ -155,7 +155,10 @@ def main() -> None:
     # Coleman log of D=[(0,1)-infinity].  Only the first two entries are the
     # holomorphic basis omega_0=dt/(2w), omega_1=t*dt/(2w).
     padics = Qp(P, PRECISION)
-    padic_ring = PolynomialRing(padics, "t")
+    # Sage 10.9's Frobenius implementation constructs its auxiliary
+    # polynomial ring with generator ``x``.  Giving the input ring the same
+    # generator avoids a parent mismatch between otherwise identical rings.
+    padic_ring = PolynomialRing(padics, "x")
     curve_p = HyperellipticCurve(padic_ring(f))
     infinity_p = curve_p(padics(1), padics(0), padics(0))
     generator_point_p = curve_p(padics(0), padics(1), padics(1))
