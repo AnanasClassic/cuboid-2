@@ -172,6 +172,11 @@ jobs:
           if-no-files-found: warn
 
   singular-affine-normalization:
+    # The direct normal.lib calculation exceeded forty minutes without
+    # producing a component.  Retain the exact input generator for manual
+    # archaeology; CI now uses the targeted Brill--Noether route staged in
+    # research/singular_transport instead.
+    if: ${{ false }}
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     container:
