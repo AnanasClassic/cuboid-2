@@ -8,10 +8,82 @@ on:
   pull_request:
     paths:
       - "artifacts/genus4_quotient.json"
+      - "research/arithmetic_geometry/e_model_sage_transport.py"
       - "scripts/sage_elliptic_probe.py"
       - ".github/workflows/sage-arithmetic-geometry.yml"
 
+permissions:
+  contents: read
+
 jobs:
+  descend-reciprocal-invariant:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    container:
+      image: sagemath/sagemath@sha256:e068670ae5863b54b2550e72437ec637b0283acb0dc712c8584c124dbf44e667
+      options: --user root
+    env:
+      SAGE_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+      - name: Record Sage version
+        run: sage --version
+      - name: Descend V before normalization
+        shell: bash
+        run: |
+          mkdir -p certificates
+          set -o pipefail
+          sage -python research/arithmetic_geometry/e_model_sage_transport.py \
+            --stop-after descent --stage-timeout 1200 \
+            2>&1 | tee certificates/e_model_descent.txt
+      - name: Upload exact descent transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sage-e-model-descent
+          path: certificates/e_model_descent.txt
+          if-no-files-found: warn
+
+  transport-to-weierstrass:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    container:
+      image: sagemath/sagemath@sha256:e068670ae5863b54b2550e72437ec637b0283acb0dc712c8584c124dbf44e667
+      options: --user root
+    env:
+      SAGE_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+      - name: Record Sage version
+        run: sage --version
+      - name: Build Weierstrass model and transport q, A, V
+        shell: bash
+        run: |
+          mkdir -p certificates
+          set -o pipefail
+          sage -python research/arithmetic_geometry/e_model_sage_transport.py \
+            --stage-timeout 1800 --output certificates/e_model_certificate.json \
+            2>&1 | tee certificates/e_model_transport.txt
+      - name: Upload exact transport certificate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sage-e-model-transport
+          path: |
+            certificates/e_model_transport.txt
+            certificates/e_model_certificate.json
+          if-no-files-found: warn
+
   normalize-elliptic-quotient:
     runs-on: ubuntu-latest
     timeout-minutes: 180
