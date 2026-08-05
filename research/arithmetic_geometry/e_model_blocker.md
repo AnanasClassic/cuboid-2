@@ -1,11 +1,36 @@
 # Exact Weierstrass-model computation: execution blocker
 
-Status recorded at 2026-08-04 23:41 UTC. This is a resource/API blocker for
-the present execution environment, not a mathematical nonexistence claim.
+Status updated at 2026-08-06.
 
-## Locally available exact systems
+## Current operational status
 
-The following read-only checks all returned no executable:
+The immediate unresolved task is an exact characteristic-zero transport from
+the normalization of `H(q,A)=0` to a Weierstrass model, with `q`, `A`, and `V`
+transported and both projective compositions verified.  The full execution
+contract is now in
+
+```text
+research/arithmetic_geometry/TRANSPORT_COMPUTE_HANDOFF.md
+```
+
+A copy-paste task specification for a compute-machine agent is in
+
+```text
+research/arithmetic_geometry/COMPUTE_AGENT_PROMPT.md
+```
+
+Recommended resources are 64 GiB RAM minimum, 128 GiB preferred, 16--32 CPU
+cores, 50 GiB scratch, and an uninterrupted 24--72 hour window.  This is a
+CPU/RAM exact-algebra workload; a GPU is not useful.  SageMath and Singular are
+required, with Magma useful as an independent cross-check.
+
+This remains an execution-resource and exact-CAS blocker.  It is not evidence
+that the elliptic transport does not exist, and no partial or modular output is
+a proof.
+
+## Locally available exact systems in the earlier environment
+
+The following read-only checks initially returned no executable:
 
 ```text
 command -v sage
@@ -14,6 +39,12 @@ command -v gp
 command -v docker
 command -v podman
 ```
+
+A temporary SageMath/Singular runtime was later assembled and used for
+exploratory characteristic-zero and finite-field calculations.  Those local
+outputs must be replayed on the persistent machine and committed with their
+inputs, hashes, versions, and full transcripts before they are promoted to
+repository claims.
 
 The repository virtual environment contains SymPy 1.14.0. It verifies the
 plane identities and discriminant factorization, but it has no function-field
@@ -36,42 +67,45 @@ running job logs through the connected GitHub API returned HTTP 404
 `BlobNotFound`; GitHub only exposed the log blob after job completion. Thus no
 partial CAS output is being promoted to a certificate.
 
-## Prepared bypass
+## Prepared direct route
 
-`e_model_sage_transport.py` avoids `FunctionField.genus()` and emits a
-certificate after each stage. In particular,
+`e_model_singular_rr_cubic.py` avoids the stalled maximal-order computation.
+It constructs `L(2P)` and `L(3P)` from the singular projective model using
+Singular's Brill--Noether machinery, constructs the cubic, calls
+`invertBirMap`, and checks both projective compositions.  The companion
+`e_model_sage_from_singular_cubic.py` converts the cubic to a Weierstrass
+model and transports `q,A`.
 
-```bash
-sage -python research/arithmetic_geometry/e_model_sage_transport.py \
-  --stop-after descent --stage-timeout 1200
+Run the direct route exactly as documented in
+`TRANSPORT_COMPUTE_HANDOFF.md`.  The transport claim may be promoted only after
+an exact `QQ` transcript reaches all required composition markers and the
+companion Sage stage verifies the maps, function round-trips, and exceptional
+fibers.
+
+## Prepared fallback
+
+If the direct Riemann--Roch route stalls, use the lower-degree affine model
+obtained from
+
+```text
+C = A - 2,
+r = q*C.
 ```
 
-first computes `V` in the degree-eight function field as the relative trace
-of its expression on `T^4-q*T^2+1`, divided by four. This stage runs before
-`monic_integral_model()` or any maximal-order computation. The full run then
-uses the rational smooth point `(q,A)=(6,6/7)`, constructs `L(2P)` and `L(3P)`,
-exports the cubic and Weierstrass maps, and represents `q`, `A`, and `V` in the
-Riemann--Roch coordinates.
+Compute the exact affine normalization `U/d` of `QQ[r,C]/(J)`, add the points
+at infinity, identify a rational point, and compute `L(2P)` and `L(3P)` on the
+normalization.  Modular normalizations are discovery tools only.  Any CRT or
+rational reconstruction must be checked over `QQ` before use.
 
-The script has passed Python syntax compilation and whitespace checks, but it
-has not been executed under Sage in this environment. Therefore the explicit
-Weierstrass equation and transported functions remain `OPEN`; the script is a
-reproducible next computation, not a completed certificate.
+The required final marker is
 
-### First staged Sage 10.9 feedback
+```text
+WEIERSTRASS_Q_A_TRANSPORT_CERTIFIED
+```
 
-Run `30962036989`, jobs `92167849754` and `92167849779`, reached the degree-8
-field construction in under 0.1 seconds and certified that `H` is irreducible
-and vanishes at `(6,6/7)`. Both then failed after 0.006 seconds at an auxiliary
-call to `is_irreducible()` for `T^4-q*T^2+1`: Sage attempted to send a
-polynomial ring over an algebraic function field to Singular, for which no
-conversion exists, and raised `NotImplementedError`. This is an API limitation,
-not evidence of reducibility. The unsupported call has been removed; degree
-four/connectedness is supplied by the independent branch-divisor certificate,
-while the trace descent still requires an exact coercion round-trip.
-
-The same run also confirms that the generic normalization was not the cause of
-this particular fast failure. A rerun of the patched staged script is required.
+and its acceptance conditions are enumerated in the runbook.  Do not emit it
+for a modular cubic, a likely isogeny class, a rank computation, a timeout, or
+a partial normalization.
 
 ## Independently completed exact triage
 
