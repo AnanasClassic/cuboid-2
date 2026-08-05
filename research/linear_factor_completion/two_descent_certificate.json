@@ -1,0 +1,72 @@
+{
+  "curve": "y^2=(x+1)(x^4+20*x^3+6*x^2+4*x+1)",
+  "etale_algebra": {
+    "field_polynomial": "z^4-2*z-1",
+    "field_discriminant": -688,
+    "signature": [2, 1],
+    "class_number": 1,
+    "theta": "8*z^3-4*z^2+2*z-17",
+    "fundamental_units": ["-z", "z^3+z-1"],
+    "fundamental_unit_norms": [-1, -1]
+  },
+  "global_norm_kernel_basis": [
+    ["1", "-1"],
+    ["2", "1-theta"],
+    ["-1", "-z"],
+    ["-1", "z^3+z-1"]
+  ],
+  "local_coordinates_at_2": {
+    "Q2_basis": ["-1", "2", "5"],
+    "K2_basis": ["z-1", "-1", "2", "z", "2-z", "2*z-1"],
+    "finite_hensel_crosscheck": {
+      "uniformizer": "z-1",
+      "uniformizer_valuation_of_2": 4,
+      "modulus": "(z-1)^9",
+      "unit_residues_exhausted": 256
+    },
+    "global_matrix": [
+      [0, 0, 0, 0, 1, 0, 0, 0, 0],
+      [0, 1, 0, 1, 0, 0, 1, 0, 0],
+      [1, 0, 0, 0, 1, 0, 1, 0, 0],
+      [1, 0, 0, 0, 0, 1, 1, 0, 0]
+    ],
+    "local_point_x_coordinates": [1, -7, 11],
+    "local_point_f_values": [64, 25152, 504384],
+    "local_image_matrix": [
+      [0, 1, 0, 1, 0, 0, 1, 0, 0],
+      [0, 1, 1, 1, 1, 0, 0, 1, 0],
+      [1, 0, 1, 0, 0, 1, 0, 1, 0]
+    ],
+    "surviving_masks": [0, 2, 9, 11]
+  },
+  "infinity": {
+    "root_order": ["theta_low", "-1", "theta_high"],
+    "global_sign_rows_in_order_minus1_theta_low_theta_high": [
+      [0, 1, 1],
+      [0, 0, 0],
+      [1, 0, 1],
+      [1, 1, 0]
+    ],
+    "allowed_signs": [[0, 0, 0], [1, 0, 1]],
+    "surviving_masks": [0, 2, 4, 6, 9, 11, 13, 15]
+  },
+  "prime_43": {
+    "discriminant_valuation": 1,
+    "factorization_mod_43": "(x-3)^2*(x+1)*(x+9)*(x+17)",
+    "condition": "automatic by Stoll Proposition 4.6 for even-valuation candidates"
+  },
+  "global_survivors": {
+    "masks": [0, 2, 9, 11],
+    "generators": {
+      "2": "delta((1,8)-infinity)",
+      "9": "rational 2-torsion from x+1"
+    },
+    "torsion_square_certificate": "(theta+1)/(z^3+z-1)=(-2*z^3+z^2+3)^2"
+  },
+  "conclusion": {
+    "selmer_dimension": 2,
+    "rational_2_torsion_dimension": 1,
+    "rank_upper_bound": 1
+  },
+  "reproduce": ".venv/bin/python research/linear_factor_completion/two_descent_rank.py"
+}
