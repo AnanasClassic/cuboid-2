@@ -21,6 +21,9 @@ concurrency:
 
 jobs:
   descend-reciprocal-invariant:
+    # The direct SymPy V(q,A) certificate is reproduced in the Python suite.
+    # Keep hosted Sage focused on the normalization/Riemann--Roch bottleneck.
+    if: ${{ false }}
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     container:
@@ -70,13 +73,14 @@ jobs:
           persist-credentials: false
       - name: Record Sage version
         run: sage --version
-      - name: Build Weierstrass model and transport q, A, V
+      - name: Build Weierstrass model and transport q, A
         shell: bash
         run: |
           mkdir -p certificates
           set -o pipefail
           sage -python research/arithmetic_geometry/e_model_sage_transport.py \
-            --stage-timeout 1800 --output certificates/e_model_certificate.json \
+            --skip-v-descent --stage-timeout 1800 \
+            --output certificates/e_model_certificate.json \
             2>&1 | tee certificates/e_model_transport.txt
       - name: Upload exact transport certificate
         if: always()
