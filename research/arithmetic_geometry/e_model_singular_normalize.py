@@ -123,7 +123,10 @@ print("CERT source_artifact_sha256={artifact_checksum}");
 print("CERT chart_polynomial_sha256={polynomial_checksum}");
 print("CERT input_degree="+string(deg(f)));
 print("CERT input_size="+string(size(f)));
-list nor = normal(input_ideal,"withDelta","prim");
+// H is independently certified irreducible over QQ.  Telling normal.lib
+// that the ideal is prime avoids recomputing a costly minimal-prime
+// decomposition; the returned normalization is still checked below.
+list nor = normal(input_ideal,"withDelta","isPrim");
 int component_count = size(nor[1]);
 print("CERT normalization_component_count="+string(component_count));
 print("BEGIN_MODULE_GENERATORS");
