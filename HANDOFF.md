@@ -1,5 +1,12 @@
 # Handoff
 
+## Compute-machine handoff
+
+The immediate blocker should now be attacked on a persistent CPU/RAM machine.
+Use [`research/arithmetic_geometry/TRANSPORT_COMPUTE_HANDOFF.md`](research/arithmetic_geometry/TRANSPORT_COMPUTE_HANDOFF.md) as the authoritative runbook.  It records the recommended resources, exact commands, fallback normalization route, required transcript markers, acceptance criteria, and the rule that a modular or partial calculation is not a characteristic-zero certificate.
+
+Recommended environment: 64 GiB RAM minimum, 128 GiB preferred, 16--32 CPU cores, 50 GiB scratch, and an uninterrupted 24--72 hour job window.  SageMath and Singular are required; Magma is useful for an independent cross-check.  A GPU is not useful for this stage.
+
 ## Best next theorem
 
 Certify an exact function-field isomorphism from the normalization of the
@@ -83,12 +90,23 @@ For the remaining `2+3` case, run the Riemann--Roch transport followed by the
 rank-one character sieve:
 
 ```bash
+mkdir -p run/transport
 python3 research/arithmetic_geometry/e_model_singular_rr_cubic.py \
-  --output /tmp/e_model_rr.sing --metadata /tmp/e_model_rr_input.json
-Singular --random=1 -q /tmp/e_model_rr.sing | tee /tmp/e_model_rr.txt
+  --output run/transport/e_model_rr.sing \
+  --metadata run/transport/e_model_rr_input.json
+/usr/bin/time -v Singular --random=1 -q run/transport/e_model_rr.sing \
+  > run/transport/e_model_rr.txt \
+  2> run/transport/e_model_rr.time.txt
 sage -python research/arithmetic_geometry/e_model_sage_from_singular_cubic.py \
-  --transcript /tmp/e_model_rr.txt --output /tmp/e_model_transport.json
+  --transcript run/transport/e_model_rr.txt \
+  --output run/transport/e_model_transport.json
 sage -python research/mw_square_sieve/sage_mw_character_sieve.py \
-  --transport /tmp/e_model_transport.json --prime-bound 500 \
-  --output /tmp/mw_character_sieve.json
+  --transport run/transport/e_model_transport.json --prime-bound 500 \
+  --output run/transport/mw_character_sieve.json
+```
+
+Do not promote the transport claim unless the exact `QQ` transcript verifies both projective compositions, round-trips `q,A,V`, and records all base loci and denominator fibers.  The required final marker is
+
+```text
+WEIERSTRASS_Q_A_TRANSPORT_CERTIFIED
 ```
