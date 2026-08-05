@@ -2,11 +2,6 @@ name: Sage genus cross-check
 
 on:
   workflow_dispatch:
-  pull_request:
-    paths:
-      - "artifacts/genus4_quotient.json"
-      - "scripts/sage_genus_crosscheck.py"
-      - ".github/workflows/sage-genus-crosscheck.yml"
 
 permissions:
   contents: read
