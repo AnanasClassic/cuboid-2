@@ -171,6 +171,58 @@ jobs:
             certificates/sage_chabauty_p5.txt
           if-no-files-found: warn
 
+  rr-cubic-transport:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    container:
+      image: sagemath/sagemath@sha256:e068670ae5863b54b2550e72437ec637b0283acb0dc712c8584c124dbf44e667
+      options: --user root
+    env:
+      SAGE_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+      - name: Generate exact Riemann--Roch input
+        run: |
+          mkdir -p certificates
+          python3 research/arithmetic_geometry/e_model_singular_rr_cubic.py \
+            --output certificates/e_model_singular_rr_cubic.sing \
+            --metadata certificates/e_model_singular_rr_cubic_input.json
+      - name: Construct and invert the cubic model
+        shell: bash
+        run: |
+          set -o pipefail
+          sage -sh -c \
+            'Singular --random=1 -q certificates/e_model_singular_rr_cubic.sing' \
+            2>&1 | tee certificates/e_model_singular_rr_cubic.txt
+          grep -q 'CERT singular_rr_cubic_finished=OK' \
+            certificates/e_model_singular_rr_cubic.txt
+      - name: Transport q and A to Weierstrass form
+        shell: bash
+        run: |
+          set -o pipefail
+          sage -python \
+            research/arithmetic_geometry/e_model_sage_from_singular_cubic.py \
+            --transcript certificates/e_model_singular_rr_cubic.txt \
+            --output certificates/e_model_singular_cubic_certificate.json \
+            2>&1 | tee certificates/e_model_sage_from_singular_cubic.txt
+      - name: Upload exact cubic transport certificate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: singular-rr-cubic-transport
+          path: |
+            certificates/e_model_singular_rr_cubic.sing
+            certificates/e_model_singular_rr_cubic_input.json
+            certificates/e_model_singular_rr_cubic.txt
+            certificates/e_model_sage_from_singular_cubic.txt
+            certificates/e_model_singular_cubic_certificate.json
+          if-no-files-found: warn
+
   singular-affine-normalization:
     # The direct normal.lib calculation exceeded forty minutes without
     # producing a component.  Retain the exact input generator for manual
