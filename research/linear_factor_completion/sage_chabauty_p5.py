@@ -180,20 +180,68 @@ def main() -> None:
     cert("coleman_common_valuation", common_valuation)
     cert("annihilator_mod_5", f"({int(residue_0)}+{int(residue_1)}*t)dt/(2w)")
 
-    # eta=(coefficient_0+coefficient_1*t)dt/(2w).  At a finite
-    # Weierstrass point dt/(2w)=dw/f'(t), so the same numerator criterion
-    # applies.  At infinity omega_0 has a double zero and omega_1 is a unit,
-    # so eta is nonzero there exactly when coefficient_1 is nonzero.
-    for x_coordinate in (field5(-1), field5(0), field5(1)):
+    # eta=(coefficient_0+coefficient_1*t)dt/(2w).  It has nonzero reduction
+    # in the four ordinary finite residue discs and at infinity.  (The two
+    # signs over each of t=0,1 have the same differential value.)
+    for x_coordinate in (field5(0), field5(1)):
         assert residue_0 + residue_1 * x_coordinate != 0
     assert residue_1 != 0
-    cert("annihilator_nonzero_at_all_C_F5_points", True)
+    cert("annihilator_nonzero_in_five_residue_discs", True)
+
+    # The remaining disc is centred at the Weierstrass point P=(-1,0),
+    # where eta reduces to zero.  It is nevertheless rigid enough to contain
+    # only P.  Put u=w and v=t+1.  The exact local equation is
+    #
+    #   u^2 = -16*v + 48*v^2 - 48*v^3 + 16*v^4 + v^5.
+    #
+    # Since -16 is a 5-adic unit, the implicit-function theorem gives a
+    # unique v=v(u^2) in u^2*Z_5[[u^2]].  Moreover
+    #
+    #   eta = h(u)du,
+    #   h(u)=(coefficient_0+coefficient_1*(-1+v(u^2)))/f'(-1+v(u^2))
+    #       = alpha + b_2*u^2 + b_4*u^4 + ... in Z_5[[u^2]],
+    #   alpha=(coefficient_0-coefficient_1)/(-16).
+    #
+    # The Coleman output proves v_5(alpha)=1.  The first two terms below are
+    # an exact formal-series cross-check; b_2/3 is the cubic coefficient of
+    # the primitive.
+    shifted = f(t - 1)
+    assert shifted == t**5 + 16 * t**4 - 48 * t**3 + 48 * t**2 - 16 * t
+    assert f.derivative()(QQ(-1)) == -16
+    exceptional_numerator = coefficient_0 - coefficient_1
+    assert exceptional_numerator.valuation() == 1
+    local_linear = exceptional_numerator / padics(-16)
+    local_cubic = (
+        6 * exceptional_numerator + coefficient_1
+    ) / padics(3 * 256)
+    assert local_linear.valuation() == 1
+    assert local_cubic.valuation() == 0
+    cert("exceptional_disk_parameter", "u=w=5*z")
+    cert("exceptional_disk_linear_coefficient_valuation", local_linear.valuation())
+    cert("exceptional_disk_cubic_coefficient_valuation", local_cubic.valuation())
+
+    # If G(u)=integral_0^u h(s)ds, then for u=5*z the general odd term of
+    # degree n>=3 has coefficient valuation at least
+    # n-2-v_5(n)>=1 after division by 25.  (For v_5(n)=e>0,
+    # n>=5^e>=e+3; the e=0 case is immediate.)  Consequently
+    #
+    #   G(5*z)/25 = z * (local_linear/5 + 5*z^2*B(z^2)),
+    #       B in Z_5[[z^2]].
+    #
+    # The parenthesised series is a unit because local_linear/5 is a unit.
+    # Strassmann therefore gives z=0 as the unique zero in this disc.
+    cert(
+        "exceptional_disk_strassmann_form",
+        "G(5*z)/25=z*(unit+5*z^2*Z_5[[z^2]])",
+    )
+    cert("exceptional_disk_unique_zero", "z=0, i.e. (-1,0)")
 
     # The exact conclusion uses only the external rank upper bound.  Since D
     # is infinite, rank<=1 makes D span J(Q) tensor Q_5; eta therefore
     # annihilates J(Q).  Every F_5 residue disc has a known rational zero,
-    # and eta has unit derivative throughout every disc, so each disc contains
-    # at most one rational zero of the Coleman function.
+    # and eta has nonzero reduction in five discs, so each of those contains
+    # at most one rational zero.  The explicit Strassmann calculation above
+    # proves the same conclusion in the exceptional Weierstrass disc.
     cert("required_external_rank_upper_bound", 1)
     cert("conditional_rational_point_set", [str(point) for point in known_q])
     cert("status", "PASS_CONDITIONAL_ONLY_ON_RANK_BOUND_1")
