@@ -1,5 +1,36 @@
 # Handoff
 
+## No-compute route (2026-08-10)
+
+If the persistent Sage/Singular machine is unavailable, use
+[`research/no_compute_completion/README.md`](research/no_compute_completion/README.md)
+as the primary strategy note.
+
+The no-compute pass does **not** upgrade C010, C020, or C025.  It does make one
+important strategic point explicit: the present Newton-endpoint / Legendre-symbol /
+`A,B`-valuation route cannot finish the general `2+3` case by itself.  Existing exact
+certificates already contain infinite formal survivors of the endpoint congruences,
+and they also exhibit nonuniform Newton pair types for a single rational quadratic
+factor.  Any successful local-global proof must therefore use more of the full
+remainder system `R1=R0=0`, or replace the normalization job by an explicit low-degree
+birational/elliptic descent.
+
+The preferred no-compute targets are:
+
+1. derive the elliptic model by an explicit rational substitution, preferably from the
+   lower-degree coordinates `C=A-2`, `r=q*C`, rather than general-purpose normalization;
+2. once on the proved rank-one candidate `E1`, turn the simultaneous square conditions
+   `q+2`, `q-2`, and `epsilon*V` into a direct 2-isogeny/Kummer or parity obstruction on
+   `nP+eT`;
+3. strengthen the local-global descent using the **full projection/remainder equations**,
+   not just endpoint coefficients;
+4. look for an additional involution/Prym splitting of the genus-4 character cover;
+5. impose the square conditions directly in the reverse-lift model and search for a
+   low-genus factorization or positivity contradiction.
+
+Do not spend another pass merely enlarging a fixed-prime sieve or propagating endpoint
+congruences: the repository already proves why those approaches are insufficient.
+
 ## Compute-machine handoff
 
 The immediate blocker should now be attacked on a persistent CPU/RAM machine.
