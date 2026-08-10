@@ -1,0 +1,124 @@
+name: Exact low-resource proof completion
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/second-cuboid-conjecture
+    paths:
+      - .github/workflows/proof-completion-small.yml
+      - research/arithmetic_geometry/e_model_singular_rr_cubic.py
+      - research/arithmetic_geometry/e_model_sage_from_singular_cubic.py
+      - research/mw_square_sieve/**
+      - artifacts/genus4_quotient.json
+
+permissions:
+  contents: write
+
+jobs:
+  exact-transport-and-sieve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    container:
+      image: sagemath/sagemath:10.8
+    steps:
+      - name: Check out the research branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/second-cuboid-conjecture
+          fetch-depth: 0
+
+      - name: Record exact software versions
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p run/proof-completion
+          sage --version | tee run/proof-completion/sage-version.txt
+          sage -sh -c 'Singular --version' | tee run/proof-completion/singular-version.txt
+          python3 --version | tee run/proof-completion/python-version.txt
+
+      - name: Generate the frozen Riemann--Roch input
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python3 research/arithmetic_geometry/e_model_singular_rr_cubic.py \
+            --output run/proof-completion/e_model_rr.sing \
+            --metadata run/proof-completion/e_model_rr_input.json
+
+      - name: Construct and certify the projective cubic
+        shell: bash
+        run: |
+          set -euxo pipefail
+          /usr/bin/time -v sage -sh -c \
+            'Singular --random=1 -q run/proof-completion/e_model_rr.sing' \
+            > run/proof-completion/e_model_rr.txt \
+            2> run/proof-completion/e_model_rr.time.txt
+          grep -F 'CERT singular_rr_cubic_finished=OK' \
+            run/proof-completion/e_model_rr.txt
+          if grep -F 'BLOCKER' run/proof-completion/e_model_rr.txt; then
+            exit 1
+          fi
+
+      - name: Convert the cubic and transport q, A and V
+        shell: bash
+        run: |
+          set -euxo pipefail
+          sage -python research/arithmetic_geometry/e_model_sage_from_singular_cubic.py \
+            --transcript run/proof-completion/e_model_rr.txt \
+            --output run/proof-completion/e_model_transport.json \
+            2>&1 | tee run/proof-completion/e_model_transport.txt
+          grep -F 'WEIERSTRASS_Q_A_TRANSPORT_CERTIFIED' \
+            run/proof-completion/e_model_transport.txt
+          grep -F '"status": "WEIERSTRASS_Q_A_TRANSPORT_CERTIFIED"' \
+            run/proof-completion/e_model_transport.json
+          grep -F '"candidate_exact_match": "544.c_E1"' \
+            run/proof-completion/e_model_transport.json
+
+      - name: Run the exact rank-one square-character sieve
+        shell: bash
+        run: |
+          set -euxo pipefail
+          sage -python research/mw_square_sieve/sage_mw_character_sieve.py \
+            --transport run/proof-completion/e_model_transport.json \
+            --prime-bound 2000 \
+            --output run/proof-completion/mw_character_sieve.json \
+            2>&1 | tee run/proof-completion/mw_character_sieve.txt
+          grep -F 'GENERIC_OPEN_EXCLUDED_BY_EXHAUSTIVE_FINITE_MW_SIEVE' \
+            run/proof-completion/mw_character_sieve.json
+
+      - name: Replay the exact regression suite
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python3 -m venv .venv
+          .venv/bin/python -m pip install -e '.[test]'
+          PYTHON_BIN=.venv/bin/python scripts/reproduce.sh \
+            2>&1 | tee run/proof-completion/reproduce.txt
+          PYTHON_BIN=.venv/bin/python scripts/replay_5plus5.sh \
+            2>&1 | tee run/proof-completion/replay_5plus5.txt
+
+      - name: Freeze successful exact certificates on the branch
+        if: success()
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p certificates/proof-completion
+          cp run/proof-completion/* certificates/proof-completion/
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add certificates/proof-completion
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'Certify elliptic transport and finite MW sieve'
+          git push origin HEAD:research/second-cuboid-conjecture
+
+      - name: Upload diagnostic transcripts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: exact-proof-completion
+          path: run/proof-completion
+          if-no-files-found: warn
+          retention-days: 30
