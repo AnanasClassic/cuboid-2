@@ -19,8 +19,15 @@ squares.  The single condition U+2=square is only a necessary quotient
 condition and does not by itself recover rational s=z^2.
 
 For a signed-square constant term, V is a square (b>0 branch) or -V is a
-square (b<0 branch).  Its square class agrees respectively with W+2 or 2-W,
-where W=b+1/b.  Thus the exact branch certificate for W can be reused for V.
+square (b<0 branch).  On E one has [V]=[W+2], but one must be more careful
+in the negative branch: [2-W] is not literally [-V].  Instead
+
+    [-V] = [q+2] + [2-W]
+
+in E's square-class group.  Since the full cover already adjoins a square
+root of q+2, using 2-W as its third negative-branch generator gives the same
+full cover.  The negative character table below is labeled in that chosen
+basis, rather than incorrectly calling 2-W ``signed_V``.
 
 The full cover is generically a (Z/2Z)^3-cover of the elliptic normalization
 E.  This script exports all seven character double covers, their exact branch
@@ -72,8 +79,17 @@ def verify() -> dict[str, object]:
 
     q, U, W, a, b, A, B, T, X = sp.symbols("q U W a b A B T X")
 
-    # Exact changes of coordinates and square-class identities.
+    # Exact changes of coordinates and square-class identities.  The direct
+    # ratio (-V)/(2-W) is a square on the factor curve, but its displayed
+    # square root a/(b-1) is anti-invariant under the reciprocal involution
+    # and therefore does not descend to E.  Multiplication by q+2 supplies
+    # the second anti-invariant factor needed for an invariant square root.
     U_of_q = 2 * (q + 6) / (q - 2)
+    q_of_T = T**2 + T**-2
+    V_in_AB = A**2 / (1 - B**2)
+    W_in_B = 2 * (1 + B**2) / (1 - B**2)
+    negative_basis_root = A * T / (2 * B * (T**2 + 1))
+    upstairs_negative_root = a / (b - 1)
     identities = {
         "q_minus_2_over_U_minus_2": sp.factor(
             (q - 2) / (U_of_q - 2)
@@ -84,11 +100,14 @@ def verify() -> dict[str, object]:
         "q_squared_minus_4_over_U_plus_2": sp.factor(
             (q**2 - 4) / (U_of_q + 2)
         ),
-        "V_over_W_plus_2": sp.factor(
-            (a**2 / b) / (b + 1 / b + 2)
+        "V_over_W_plus_2_on_E": sp.factor(
+            V_in_AB / (W_in_B + 2)
         ),
-        "minus_V_over_2_minus_W": sp.factor(
+        "minus_V_over_2_minus_W_upstairs": sp.factor(
             (-a**2 / b) / (2 - b - 1 / b)
+        ),
+        "minus_V_over_product_q_plus_2_two_minus_W_on_E": sp.factor(
+            (-V_in_AB) / ((q_of_T + 2) * (2 - W_in_B))
         ),
         "V_in_AB_chart": sp.factor(
             (A**2 / (1 - B**2)).subs(
@@ -101,11 +120,27 @@ def verify() -> dict[str, object]:
         "q_minus_2_over_U_minus_2": (q - 2) ** 2 / 16,
         "q_plus_2_over_product_U_pm_2": (q - 2) ** 2 / 64,
         "q_squared_minus_4_over_U_plus_2": (q - 2) ** 2 / 4,
-        "V_over_W_plus_2": a**2 / (b + 1) ** 2,
-        "minus_V_over_2_minus_W": a**2 / (b - 1) ** 2,
+        "V_over_W_plus_2_on_E": A**2 / 4,
+        "minus_V_over_2_minus_W_upstairs": a**2 / (b - 1) ** 2,
+        "minus_V_over_product_q_plus_2_two_minus_W_on_E": (
+            A**2 * T**2 / (4 * B**2 * (T**2 + 1) ** 2)
+        ),
         "V_in_AB_chart": a**2 / b,
     }
     assert all(sp.cancel(identities[name] - value) == 0 for name, value in expected.items())
+    assert sp.cancel(negative_basis_root**2 - identities[
+        "minus_V_over_product_q_plus_2_two_minus_W_on_E"
+    ]) == 0
+    assert sp.cancel(
+        negative_basis_root.subs({T: -T, B: -B}, simultaneous=True)
+        - negative_basis_root
+    ) == 0
+    assert sp.cancel(negative_basis_root.subs(T, 1 / T) - negative_basis_root) == 0
+    assert sp.cancel(
+        upstairs_negative_root.subs(
+            {a: a / b, b: 1 / b}, simultaneous=True
+        ) + upstairs_negative_root
+    ) == 0
 
     # Check the q-model and the two successive quotient identities from the
     # saved exact artifact.  This also fixes which q is being used here.
@@ -138,12 +173,12 @@ def verify() -> dict[str, object]:
 
     U_plus = Z | L
     U_minus = Z | M | N
-    V_positive = Zb | M
-    V_negative = Zb | L | N
+    V_support = Zb | M
+    two_minus_W = Zb | L | N
 
     assert len(U_plus) == branch["branch_totals"]["U_plus_2"] == 6
-    assert len(V_positive) == branch["branch_totals"]["W_plus_2"] == 6
-    assert len(V_negative) == branch["branch_totals"]["two_minus_W"] == 10
+    assert len(V_support) == branch["branch_totals"]["W_plus_2"] == 6
+    assert len(two_minus_W) == branch["branch_totals"]["two_minus_W"] == 10
     # U-2 is the missing square.  Its ten s=1 fixed branches and four
     # zero/infinity branches give 14; this is also the genus-7 -> genus-1
     # reciprocal double cover via Riemann--Hurwitz.
@@ -164,9 +199,16 @@ def verify() -> dict[str, object]:
     # V4 Kani--Rosen check for adjoining sqrt(q+2) and sqrt(q-2).
     assert square_pullback_genus + 2 == 7 + 8 + 4
 
-    def characters(v_branch: set[str]) -> dict[str, dict[str, object]]:
-        basis = [q_plus, q_minus, v_branch]
-        names = ["q+2", "q-2", "signed_V"]
+    # The negative-b table uses (q+2,q-2,2-W).  Literal -V differs from the
+    # third generator by q+2, so physical bits (a,b,c) in
+    # (q+2,q-2,-V) correspond to stored bits (a+c,b,c).
+    assert symmetric_difference(q_plus, two_minus_W) == V_support
+
+    def characters(
+        third_branch: set[str], third_name: str
+    ) -> dict[str, dict[str, object]]:
+        basis = [q_plus, q_minus, third_branch]
+        names = ["q+2", "q-2", third_name]
         result: dict[str, dict[str, object]] = {}
         for bits in product((0, 1), repeat=3):
             if bits == (0, 0, 0):
@@ -189,8 +231,8 @@ def verify() -> dict[str, object]:
             }
         return result
 
-    chars_positive = characters(V_positive)
-    chars_negative = characters(V_negative)
+    chars_positive = characters(V_support, "V")
+    chars_negative = characters(two_minus_W, "2-W")
 
     expected_positive = {
         "100": 7,  # q+2
@@ -204,7 +246,7 @@ def verify() -> dict[str, object]:
     expected_negative = {
         "100": 7,
         "010": 8,
-        "001": 6,  # -V
+        "001": 6,  # 2-W in the chosen negative basis, not literal -V
         "110": 4,
         "101": 4,
         "011": 5,
@@ -212,6 +254,28 @@ def verify() -> dict[str, object]:
     }
     assert {key: value["genus"] for key, value in chars_positive.items()} == expected_positive
     assert {key: value["genus"] for key, value in chars_negative.items()} == expected_negative
+
+    literal_basis = [q_plus, q_minus, V_support]
+    literal_character_branch_degrees = {}
+    for bits in product((0, 1), repeat=3):
+        if bits == (0, 0, 0):
+            continue
+        support = symmetric_difference(
+            *(literal_basis[i] for i, bit in enumerate(bits) if bit)
+        )
+        literal_character_branch_degrees["".join(str(bit) for bit in bits)] = len(
+            support
+        )
+    assert literal_character_branch_degrees == {
+        "001": 6,
+        "010": 14,
+        "011": 8,
+        "100": 12,
+        "101": 10,
+        "110": 6,
+        "111": 8,
+    }
+    assert all(literal_character_branch_degrees.values())
 
     # For an elementary 2-cover of a genus-one base, every branch place has
     # inertia order two.  The union is Z | L | M | N, of degree 16, hence
@@ -252,7 +316,7 @@ def verify() -> dict[str, object]:
     }
 
     payload: dict[str, object] = {
-        "schema": 1,
+        "schema": 2,
         "status": {
             "cover_and_character_decomposition": "MACHINE-VERIFIED",
             "branch_input": "MACHINE-VERIFIED by reciprocal_b_branch_audit.py",
@@ -269,6 +333,29 @@ def verify() -> dict[str, object]:
             "q": "T^2+T^(-2)",
             "U": "2*(q+6)/(q-2)",
             "V": "a^2/b=A^2/(1-B^2)",
+        },
+        "character_bases": {
+            "positive": {
+                "stored_basis": ["q+2", "q-2", "V"],
+                "physical_signed_square": "V",
+            },
+            "negative": {
+                "stored_basis": ["q+2", "q-2", "2-W"],
+                "physical_basis": ["q+2", "q-2", "-V"],
+                "square_class_relation_on_E": "[-V]=[q+2]+[2-W]",
+                "physical_to_stored_bits": "(a,b,c)->(a+c,b,c)",
+                "literal_minus_V_stored_bits": "101",
+                "reason_cover_is_unchanged": (
+                    "q+2 is already a square on the full cover"
+                ),
+            },
+            "literal_signed_V_character_branch_degrees": (
+                literal_character_branch_degrees
+            ),
+            "ramification_consequence": (
+                "all seven nontrivial characters in the literal "
+                "(q+2,q-2,epsilon*V) basis are ramified for either sign"
+            ),
         },
         "full_cover": {
             "equations_over_E": [
@@ -373,7 +460,8 @@ def main() -> None:
     args.output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
     print("full signed-square covers: (Z/2)^3, genus 33 for both signs")
     print("positive character genera: 7,8,4,4,6,5,5")
-    print("negative character genera: 7,8,6,4,4,5,5")
+    print("negative chosen-basis (q+2,q-2,2-W) genera: 7,8,6,4,4,5,5")
+    print("all seven literal signed-V characters are ramified")
     print("Mordell-Weil ranks and rational points: OPEN")
     try:
         display_path = args.output.resolve().relative_to(ROOT)

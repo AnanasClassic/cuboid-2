@@ -162,6 +162,33 @@ On the normalization, `U+2` has odd order at two points above `q=-2` and
 four points above `q=2`.  Therefore the double cover has six branch points,
 and Riemann--Hurwitz gives genus four.
 
+## Character/Kummer ramification obstruction
+
+The exact odd-divisor audit for the literal basis
+
+```text
+q+2, q-2, epsilon*V
+```
+
+has nonzero branch degrees `6,14,8,12,10,6,8` for its seven nontrivial
+characters.  Thus no nontrivial product is an unramified square class.  This
+is a theorem on the normalization of `H` and does not assume the open
+transport to the candidate elliptic curve.
+
+The negative-b character table uses the chosen basis
+`(q+2,q-2,2-W)`.  Its exact relation to the physical basis is
+
+```text
+[-V] = [q+2] + [2-W].
+```
+
+Thus the full cover is unchanged, but literal `-V` is character `101`, not
+`001`, in the chosen negative table.  The proof, including the invariant
+square root and the conditional obstruction to identifying a character with
+the unramified `E1` 2-isogeny Kummer class, is in
+`notes/reciprocal_signed_square_covers.md`.  It is reproduced by
+`character_kummer_obstruction.py`.
+
 ## Coordinate exceptions
 
 - `z=-1` is outside the `T` chart, but has `s=1`, already excluded.
@@ -171,6 +198,20 @@ and Riemann--Hurwitz gives genus four.
   positive.  Hence for real `s>0` this exception occurs only at `s=1`.
 - `Q1=0` is the finite exceptional locus of the displayed birational inverse;
   use the exact gcd in `B` there.
+
+## Low-degree transport no-gos
+
+The exact certificate `e_model_low_degree_no_go.py` proves that the proposed
+family `C=A-c, r=(q-q0)C` cannot directly expose a cubic or quartic: only
+`c=2` has a common `C`-factor, and the primitive equation has total degree
+12 for every rational `q0`.  Its rational-singularity line pencils have
+degree at least 8.  Independently, the unique unramified rational point above
+`q=6` proves that `q` cannot factor through any rationally defined
+degree-2 quotient.  The note `e_model_low_degree_no_go.md` also records the
+complete rational boundary audit and exact degree-10 `q`-passport.
+
+These are scoped no-go theorems, not a normalization or an obstruction to a
+birational map using both elliptic coordinates.
 
 ## Current arithmetic status
 

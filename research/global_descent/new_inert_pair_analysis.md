@@ -86,3 +86,13 @@ In particular, the displayed survivor \((5,13,1,1)\) only survives the
 lowest-endpoint test.  Exact substitution in the full projection is nonzero
 for all four negative \(e=2,6\) branches, so it is not a resultant point and
 does not define a quadratic factor.
+
+## Subsequent full-projection closure
+
+The no-go above remains important: endpoint congruences and reciprocity alone
+do not close the family.  The later certificate
+`second_endpoint_layer.py` goes beyond them.  It uses the two-power gap to the
+next coefficient, then exact positive-coefficient charts of the **full**
+projection.  All five survivor systems are thereby excluded, proving that no
+quadratic factor exists when \(p,q\) are powers of two distinct inert odd
+primes.  See `second_endpoint_layer.md` for the proof and its explicit scope.

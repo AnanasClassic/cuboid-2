@@ -51,7 +51,7 @@ to an explicit infinite residual family of density
 `13169/3917894203948032`, approximately `3.3612e-12`.  This is still not a
 proof: the residual congruence family is infinite.
 
-Two exact global-descent theorems now cut into that residual family without
+Three exact global-descent theorems now cut into that residual family without
 any height bound.  The `2+3` split is impossible whenever
 
 \[
@@ -69,12 +69,19 @@ for every `n>=1`.  The first theorem checks all ten exact branches
 valuations of the quadratic-factor resultant.  These are infinite-family
 theorems for the remaining quadratic factor, not bounded searches.
 
-For a general pair of distinct inert prime powers, the same exact endpoints
-reduce every nonuniform branch to five explicit congruence systems.  Quadratic
-reciprocity eliminates the negative `e=8` system and sharply restricts the
-other negative systems, but does not eliminate them.  The repository records
-this as a necessary-condition theorem, not as a factorization or a complete
-two-prime result.
+The third theorem closes the general pair
+
+\[
+p=L^m,\qquad q=R^n,
+\]
+
+when `L,R` are distinct odd primes and `2` is a quadratic nonresidue at both.
+The formerly surviving endpoint systems are eliminated by using the next
+coefficient layer and the full projection equation.  Exact
+positive-coefficient charts close all `e=6,8` branches, while an elementary
+divisibility descent closes `e=2`.  This is a complete two-prime-power
+theorem, but it does not cover general multi-prime `p,q`, where one factor may
+choose different local types at different primes.
 
 The square-parameter pullback now also has an explicit reciprocal elliptic
 plane equation and two exact signed-square `(Z/2)^3` covers.  All seven
@@ -90,12 +97,29 @@ rank `1` and torsion `Z/2Z` without database input.  This remains candidate
 data until an exact map from the normalization of `H(q,A)=0` is certified;
 matching finitely many traces is not such a map.
 
+The suggested low-degree transport shortcut has been audited exactly.  In
+the whole family `C=A-c, r=(q-q0)C`, the only rational shift producing a
+common boundary factor is `c=2`, and its primitive plane equation still has
+total degree 12.  Rational singularity pencils have degree at least 8, while
+the unique unramified rational point above `q=6` rules out expressing `q`
+through a rational degree-2 quotient.  A different birational transport using
+both elliptic coordinates is not excluded.
+
 The generic inverse used after the square-character computation is also now
 complete on admissible rational points.  Exact factorization of
 `Res_A(G(T^2,A),Q1(T,A))` shows that its subresultant denominator can vanish
 over `Q` only for `T=-1,0,1`, all boundary values or the excluded parameter
 `s=1`.  The unresolved task is therefore the global rational-point problem on
 the remaining `2+3` cover, not an exceptional denominator branch.
+
+The full signed-square locus now has a smaller exact presentation as well.
+For each sign it is birational on every admissible rational point to an
+explicit irreducible 71-term plane curve `Q_epsilon(z,k)=0`; the rational
+inverse and all denominator exceptions are certified in
+`research/compact_signed_square/`.  This does not determine its rational
+points.  A separate character audit proves that all seven nontrivial products
+of `q+2`, `q-2`, and `epsilon*V` are ramified, ruling out the simplest direct
+identification with the unramified 2-isogeny Kummer character.
 
 See [STATUS.md](STATUS.md), [CLAIMS.md](CLAIMS.md), and
 [HANDOFF.md](HANDOFF.md) for the conservative claim ledger and next theorem.

@@ -12,6 +12,27 @@ The exact remaining obstruction is still the `2+3` split: an admissible rational
 quadratic-factor curve must survive the reverse lift and the three simultaneous square-character
 conditions on the reciprocal elliptic quotient.
 
+## Results obtained after the initial strategy audit
+
+The endpoint no-go below remains correct, but the next coefficient layer and
+the **full** projection now close all of its formal survivors when
+`p=L^m,q=R^n` are powers of two distinct inert odd primes.  This is C034,
+reproduced by `research/global_descent/second_endpoint_layer.py`.  It does
+not extend automatically to multi-prime `p,q`, because different prime
+divisors may carry different local types.
+
+Imposing the square equations early also produced C035: an exact 71-term
+compact curve `Q_epsilon(z,k)=0` equivalent to the signed-square factor
+locus at every admissible rational point, with a complete rational inverse
+and no denominator exception.  Its rational points remain open.
+
+The direct Kummer-identity target in item 2 is now an exact no-go: all seven
+nontrivial products of `q+2,q-2,epsilon*V` are ramified, while the standard
+2-isogeny Kummer character is unramified.  Likewise, the ambient
+Möbius/monomial V4 shortcut in item 4 is excluded.  Arithmetic evaluation
+after an explicit transport, nonlinear automorphisms, and Prym splittings
+without automorphisms remain possible.
+
 ## What was checked in the no-compute pass
 
 The first natural attempt was to replace the elliptic normalization/Mordell--Weil computation by a

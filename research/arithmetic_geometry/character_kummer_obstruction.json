@@ -1,0 +1,57 @@
+{
+  "all_nontrivial_literal_characters_ramified": true,
+  "candidate_E1_kummer": {
+    "alpha_nP_plus_eT": "(-1)^n*(-2)^e",
+    "divisor": "2*(T)-2*(O)",
+    "divisor_is_even": true,
+    "function": "X",
+    "model": "Y^2=X*(X^2+3*X-2), X=x-1",
+    "parity_table": {
+      "n_mod_2=0,e=0": 1,
+      "n_mod_2=0,e=1": -2,
+      "n_mod_2=1,e=0": -1,
+      "n_mod_2=1,e=1": 2
+    }
+  },
+  "conditional_corollary": "After any exact identification of normalization(H) with E1, the standard unramified 2-isogeny Kummer class is not a constant times any nontrivial product of the three cuboid characters modulo squares.",
+  "cover_source_checksum": "0dad6bf27c17abbc2165b7daa1adafadf585c4b34db0f104d7875a5eacdf427d",
+  "global_square_class_identities": {
+    "negative_basis": "(-V)/((q+2)(2-W))=(A*T/(2*B*(T^2+1)))^2",
+    "positive_V": "V/(W+2)=(A/2)^2",
+    "q_minus_2": "(q-2)/(U-2)=(q-2)^2/16",
+    "q_plus_2": "(q+2)/((U+2)(U-2))=(q-2)^2/64"
+  },
+  "literal_basis": [
+    "q+2",
+    "q-2",
+    "epsilon*V"
+  ],
+  "literal_character_branch_degrees": {
+    "001": 6,
+    "010": 14,
+    "011": 8,
+    "100": 12,
+    "101": 10,
+    "110": 6,
+    "111": 8
+  },
+  "logical_scope": "The ramification theorem is unconditional and does not assume C025. The comparison with E1 is conditional on C025 and rules out only a direct function-field square-class identity; it does not classify rational points.",
+  "negative_basis_audit": {
+    "full_cover_unchanged": true,
+    "literal_minus_V_stored_bits": "101",
+    "physical_basis": [
+      "q+2",
+      "q-2",
+      "-V"
+    ],
+    "relation": "[-V]=[q+2]+[2-W]",
+    "stored_basis": [
+      "q+2",
+      "q-2",
+      "2-W"
+    ]
+  },
+  "schema": 1,
+  "sha256_without_checksum": "5b61b455fab93cbe11a836d9559473afc9841fda96464d696acdb372cf83f3e6",
+  "theorem": "Every nontrivial product of q+2, q-2 and epsilon*V is ramified on the normalization of H, for epsilon=+1 or -1."
+}

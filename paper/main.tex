@@ -4,7 +4,7 @@
 \newtheorem{theorem}{Theorem}
 \title{Signed-square and infinite-family descents for Sharipov's second cuboid quintic}
 \author{Computational research draft}
-\date{August 5, 2026}
+\date{August 10, 2026}
 \begin{document}
 \maketitle
 
@@ -15,9 +15,11 @@ congruence certificates excludes a rational quadratic factor for a set of
 primitive parameter pairs of natural density
 $3917894203934863/3917894203948032$.  The result is unconditional but does not
 resolve the infinite residual family, so Sharipov's conjecture remains open.
-We also exclude quadratic factors on two unbounded families: every
+We also exclude quadratic factors on three unbounded families: every
 $\{p,q\}=\{1,\ell^k\}$, and every
-$\{p,q\}=\{3,r^n\}$ with $r\equiv3,5\pmod8$ prime.
+$\{p,q\}=\{3,r^n\}$ with $r\equiv3,5\pmod8$ prime, as well as
+$p=L^m,q=R^n$ for arbitrary distinct odd primes at which $2$ is a quadratic
+nonresidue.
 Independently of the published Magma computation, an exact 2-descent and a
 $5$-adic Coleman--Strassmann argument completely exclude rational linear
 factors of the normalized quintic.
@@ -130,9 +132,81 @@ Finally, for $m=n=1$ and $L<R$, the positive $e=2$ conditions force the odd
 prime $R$ to divide $L^2-1$, hence $R=L+1$, a contradiction.
 \end{proof}
 
-The remaining positive systems with $e=2,6,8$ and negative systems with
-$e=2,6$ are necessary only.  They have genuine infinite endpoint survivors,
-so this theorem is not a general two-prime exclusion.
+The remaining endpoint systems are necessary only.  They have genuine
+infinite endpoint survivors, so endpoint congruences and reciprocity alone do
+not give a general two-prime exclusion.  The next theorem uses the following
+coefficient layer and the full projection equation to close those survivors.
+
+\begin{theorem}[Two inert prime powers]
+Let $p=L^m$ and $q=R^n$, where $L,R$ are distinct odd primes,
+$m,n\geq1$, and $(2/L)=(2/R)=-1$.  Then $P_{(p/q)^2}(x)$ has no rational
+quadratic factor.
+\end{theorem}
+
+\begin{proof}
+After clearing the boundary monomial in each nonuniform branch, the powers of
+$P,Q$ occur in steps of two.  Keeping the next coefficient after each
+endpoint strengthens the preceding congruences to the following
+prime-power divisibilities; reversing $(u,v)$ swaps $p,q$:
+\[
+\begin{array}{c|c}
+(u,v)&\text{necessary divisibilities}\\ \hline
+(3,4)&p\mid q^2-\varepsilon,\quad q^2\mid p^2-\varepsilon,\\
+(0,3)&p^2\mid q^6-\varepsilon,\quad q\mid p^6-\varepsilon,\\
+(0,4)&p^2\mid q^8-\varepsilon,\quad q^2\mid p^8-\varepsilon.
+\end{array}
+\]
+The endpoint multiplicities are respectively $(2,1),(1,2),(1,1)$;
+their remaining cofactors are signed pure powers of the opposite variable,
+so coprimality loses no valuation.
+
+For $e=2$ and $\varepsilon=1$, the second divisibility gives $p>q$.
+Since $p$ is an odd prime power and
+$\gcd(q-1,q+1)=2$, the first divisibility forces all of $p$ into one of
+$q-1,q+1$, contradicting $p>q$.  For $\varepsilon=-1$, put
+$c=(q^2+1)/p$.  Again $p>q$, so $1\leq c\leq q-1$.  Modulo $q^2$ one has
+$pc\equiv1$ and $p^2\equiv-1$, whence $q^2\mid p+c$.  If $c=1$, then
+$p+c=q^2+2$; if $c\geq2$, then
+\[
+0<p+c=\frac{q^2+1}{c}+c
+\leq\frac{q^2+1}{2}+q-1<q^2.
+\]
+Here $q\geq3$.  Both alternatives are impossible.
+
+For negative $e=6$, and for both signs at $e=8$, write
+$X=P^2$, $Y=Q^2$ in the normalized full projection branch and substitute
+\[
+X=U+9,\qquad Y=V+9.
+\]
+Exact expansion gives respectively $269$ and $441$ nonzero integer
+coefficients, every one strictly positive.  Thus none of these branches
+vanishes for odd prime powers $P,Q\geq3$.
+
+It remains to treat positive $e=6$ in the orientation
+$q\mid p^6-1$.  Write $q=R^n$.  If $R\ne3$, all $R$-adic valuation lies in
+one of the four cyclotomic factors of $p^6-1$, hence
+$q\leq p^2+p+1$.  If $R=3$, LTE gives
+$v_3(p^6-1)=v_3(p^2-1)+1$, hence $q\leq3(p^2-1)$.
+For either bound $B(p)$ put
+\[
+p=U+3,\qquad q=\frac{3+B(p)W}{1+W}.
+\]
+After multiplication by $(1+W)^{24}$, the normalized full projection is a
+polynomial in $U,W$ with $1619$ nonzero coefficients, all strictly positive,
+for both $B=p^2+p+1$ and $B=3(p^2-1)$.  This covers
+$3\leq q\leq B(p)$; the endpoint $q=B(p)$ is the positive leading
+$W$-coefficient.  Reciprocity in $P,Q$ closes the other orientation.
+
+The exact endpoint factorizations, coefficient tables, and their checksums
+are reproduced by
+\texttt{research/global\_descent/second\_endpoint\_layer.py}.
+Equal local indices were already excluded by the uniform resultant theorem,
+so every branch is closed.
+\end{proof}
+
+This theorem still does not cover general $p,q$ having several prime
+divisors: one global factor can select different Newton pairs at different
+primes.
 
 \begin{theorem}
 Let $p,q$ range over positive coprime integers.  There is an explicit union of

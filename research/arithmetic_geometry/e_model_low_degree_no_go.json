@@ -1,0 +1,115 @@
+{
+  "C_equals_zero_boundary": {
+    "conclusion": "The C=0 and projective boundary supports no rational normalization point: the two q=-2 branches require sqrt(5), and the ten q=infinity branches lie in irreducible degree-6 and degree-4 orbits.",
+    "irreducible_q_infinity_sextic": "r**6 - 128*r**5 + 1024*r**4 + 327680*r**3 - 1048576*r**2 - 134217728*r - 1073741824",
+    "q=-2_first_simple_edge_after_repeated_edge": "1099511627776*y**2 - 603979776*y + 77824",
+    "q=-2_inner_discriminant": "1342177280",
+    "q=-2_repeated_edge": "1099511627776*edge_parameter**2 + 536870912*edge_parameter + 65536",
+    "remaining_q_infinity_tangent_quartic": "361*c**4 - 2384*c**3*z - 6464*c**2*z**2 - 4864*c*z**3 - 1024*z**4"
+  },
+  "artifact_checksum": "621f3aa944d0ba3a8bfd39a36de19a21313304f8cfdfcbfb31f222736f04a7a5",
+  "degree_two_q_map_obstruction": {
+    "H_A_at_point": "137438953472000000/823543",
+    "conclusion": "q does not factor through any QQ-defined degree-2 genus-zero quotient.",
+    "irreducible_factor_degrees": [
+      1,
+      3,
+      6
+    ],
+    "proof": "A QQ-defined degree-2 map has a QQ-defined deck involution. The unique rational point P in the q=6 fibre is unramified, so the involution would send P to a distinct rational point with the same q-value, contradicting uniqueness.",
+    "q=6_factorization": "65536*(7*A - 6)*(7*A**3 - 114*A**2 + 500*A - 88)*(4769*A**6 - 79372*A**5 + 331260*A**4 - 458400*A**3 + 230640*A**2 - 30912*A + 3136)",
+    "unique_rational_point": "(q,A)=(6,6/7)"
+  },
+  "logical_scope": {
+    "not_proved": "No normalization of H, birational map to E1/E2, degree-three map, or rational-point classification is supplied.",
+    "proved": "These statements rule out the proposed shifted-monomial degree drop, rational-singularity line pencils, and every q-preserving degree-two elliptic-coordinate shortcut."
+  },
+  "q_map_passport": {
+    "at_each_collision_root": "2^3 1^4",
+    "collision_branch_polynomial": "43*q**3 + 11870*q**2 - 50684*q + 51496",
+    "degree": 10,
+    "local_input_scope": "Uses the exact local inertia forms already audited in src/geometry_audit.py; this script independently checks the reciprocal branch-value conversion and induced two-subset cycles.",
+    "q=-2": "5^2",
+    "q=2": "2^3 1^4",
+    "q=infinity": "1^10",
+    "ramification_sum": 20,
+    "riemann_hurwitz_genus": 1
+  },
+  "rational_singularities": {
+    "affine": [
+      {
+        "C": "-2",
+        "line_pencil_degree": 9,
+        "multiplicity": 3,
+        "r": "-4",
+        "tangent_cone": "-805306368*v*(u - 18*v)**2"
+      },
+      {
+        "C": "0",
+        "line_pencil_degree": 10,
+        "multiplicity": 2,
+        "r": "0",
+        "tangent_cone": "1099511627776*(u + 2*v)**2"
+      }
+    ],
+    "conclusion": "Every line pencil based at a rational singular point has degree at least 8; it does not produce a degree-2 or degree-3 map.",
+    "projective_infinity": {
+      "line_pencil_degree": 8,
+      "multiplicity": 4,
+      "point": "[r:C:Z]=[1:0:0]",
+      "tangent_cone": "361*c**4 - 2384*c**3*z - 6464*c**2*z**2 - 4864*c*z**3 - 1024*z**4",
+      "tangent_cone_irreducible": true
+    },
+    "resultant_gcd_factors": [
+      {
+        "degree": 1,
+        "exponent": 7,
+        "polynomial": "r + 4"
+      },
+      {
+        "degree": 1,
+        "exponent": 13,
+        "polynomial": "r"
+      },
+      {
+        "degree": 2,
+        "exponent": 1,
+        "polynomial": "7*r**2 - 240*r + 1600"
+      },
+      {
+        "degree": 2,
+        "exponent": 7,
+        "polynomial": "r**2 - 16*r - 64"
+      },
+      {
+        "degree": 2,
+        "exponent": 9,
+        "polynomial": "5*r**2 - 112*r + 832"
+      },
+      {
+        "degree": 15,
+        "exponent": 1,
+        "polynomial": "16033*r**15 - 1914440*r**14 - 464213664*r**13 + 61422318592*r**12 + 2151543232512*r**11 - 350583522983936*r**10 - 7433406288363520*r**9 + 886422318190952448*r**8 - 5964304310689857536*r**7 - 650091730662009602048*r**6 + 6174857699930515963904*r**5 - 23550597333105246208000*r**4 - 20487389242780721086464*r**3 + 321158880535101910810624*r**2 - 651817020196352105119744*r - 1064276956038461061595136"
+      }
+    ]
+  },
+  "schema": 1,
+  "sha256_without_checksum": "891e8ac26f1ddccd46f3a82e2cdcf14c0fed339a05699853c438cc2371a0510c",
+  "shift_family": {
+    "J_sha256_sparse": "19f8c22903b1b45ce376ca7fbabc2d35f90a703a78cd0111a1b6faf0f8642157",
+    "common_factor_for_symbolic_q0": "C^6",
+    "leading_q_coefficient": "(A - 2)**6*(361*A**4 - 5272*A**3 + 16504*A**2 - 19168*A + 7696)",
+    "noncancelling_degree_twelve_coefficient": "coeff(r^8*C^4)=361",
+    "only_rational_shift_with_common_C_factor": "c=2",
+    "primitive_degrees_for_every_rational_q0": {
+      "C": 12,
+      "r": 8,
+      "total": 12
+    },
+    "q0=-2_terms": 63,
+    "q0=0_terms": 78,
+    "residual_quartic_discriminant": "-45088768000000000000",
+    "residual_quartic_irreducible": true
+  },
+  "status": "MACHINE-VERIFIED"
+}

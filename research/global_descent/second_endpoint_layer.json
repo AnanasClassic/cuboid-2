@@ -1,0 +1,185 @@
+{
+  "conclusion": "Every nonuniform branch is nonzero.  Together with the existing uniform-pair exclusion, no quadratic factor exists when p and q are powers of distinct inert primes.",
+  "e2_elementary_elimination": {
+    "negative": "If p|(q^2+1) and q^2|(p^2+1), put c=(q^2+1)/p.  Then p>q, 1<=c<=q-1, and q^2|p+c.  For c=1, p+c=q^2+2; for c>=2, 0<p+c<q^2, both contradictions.",
+    "positive": "If p|(q^2-1) and q^2|(p^2-1), then p>q.  Since p is an odd prime power, all of p divides one of q-1,q+1, forcing p=q+1, impossible for odd p,q."
+  },
+  "endpoint_records": [
+    {
+      "P_endpoint": "-Q**36*(Q - 1)**2*(Q + 1)**2",
+      "P_endpoint_target_cofactor": "-Q**36",
+      "P_target_multiplicity": 2,
+      "Q_endpoint": "-P**22*(P - 1)*(P + 1)",
+      "Q_endpoint_target_cofactor": "-P**22",
+      "Q_target_multiplicity": 1,
+      "e": 2,
+      "next_exponent_gap_P": 2,
+      "next_exponent_gap_Q": 2,
+      "sign": 1,
+      "u": 3,
+      "v": 4
+    },
+    {
+      "P_endpoint": "-Q**2*(Q - 1)*(Q + 1)*(Q**2 - Q + 1)*(Q**2 + Q + 1)",
+      "P_endpoint_target_cofactor": "-Q**2",
+      "P_target_multiplicity": 1,
+      "Q_endpoint": "-P**8*(P - 1)**2*(P + 1)**2*(P**2 - P + 1)**2*(P**2 + P + 1)**2",
+      "Q_endpoint_target_cofactor": "-P**8",
+      "Q_target_multiplicity": 2,
+      "e": 6,
+      "next_exponent_gap_P": 2,
+      "next_exponent_gap_Q": 2,
+      "sign": 1,
+      "u": 0,
+      "v": 3
+    },
+    {
+      "P_endpoint": "-(Q - 1)*(Q + 1)*(Q**2 + 1)*(Q**4 + 1)",
+      "P_endpoint_target_cofactor": "-1",
+      "P_target_multiplicity": 1,
+      "Q_endpoint": "-(P - 1)*(P + 1)*(P**2 + 1)*(P**4 + 1)",
+      "Q_endpoint_target_cofactor": "-1",
+      "Q_target_multiplicity": 1,
+      "e": 8,
+      "next_exponent_gap_P": 2,
+      "next_exponent_gap_Q": 2,
+      "sign": 1,
+      "u": 0,
+      "v": 4
+    },
+    {
+      "P_endpoint": "Q**36*(Q**2 + 1)**2",
+      "P_endpoint_target_cofactor": "Q**36",
+      "P_target_multiplicity": 2,
+      "Q_endpoint": "P**22*(P**2 + 1)",
+      "Q_endpoint_target_cofactor": "P**22",
+      "Q_target_multiplicity": 1,
+      "e": 2,
+      "next_exponent_gap_P": 2,
+      "next_exponent_gap_Q": 2,
+      "sign": -1,
+      "u": 3,
+      "v": 4
+    },
+    {
+      "P_endpoint": "Q**2*(Q**2 + 1)*(Q**4 - Q**2 + 1)",
+      "P_endpoint_target_cofactor": "Q**2",
+      "P_target_multiplicity": 1,
+      "Q_endpoint": "P**8*(P**2 + 1)**2*(P**4 - P**2 + 1)**2",
+      "Q_endpoint_target_cofactor": "P**8",
+      "Q_target_multiplicity": 2,
+      "e": 6,
+      "next_exponent_gap_P": 2,
+      "next_exponent_gap_Q": 2,
+      "sign": -1,
+      "u": 0,
+      "v": 3
+    },
+    {
+      "P_endpoint": "Q**8 + 1",
+      "P_endpoint_target_cofactor": "1",
+      "P_target_multiplicity": 1,
+      "Q_endpoint": "P**8 + 1",
+      "Q_endpoint_target_cofactor": "1",
+      "Q_target_multiplicity": 1,
+      "e": 8,
+      "next_exponent_gap_P": 2,
+      "next_exponent_gap_Q": 2,
+      "sign": -1,
+      "u": 0,
+      "v": 4
+    }
+  ],
+  "full_projection_positive_coefficients": {
+    "negative_e6": {
+      "all_coefficients_strictly_positive": true,
+      "coefficient_sha256": "c848dbf99c3c3294632f13412f4098618115924b37c9066c2c00bce89428f31b",
+      "degree_first": 20,
+      "degree_second": 12,
+      "maximum_coefficient": "1096321468160992454213624064000",
+      "minimum_coefficient": "1",
+      "substitution": "P^2=U+9, Q^2=V+9",
+      "terms": 269
+    },
+    "negative_e8": {
+      "all_coefficients_strictly_positive": true,
+      "coefficient_sha256": "ac285f6f3eed2f18f0757992e05be5c1ef09789adca1c265b157a64ae41e99e9",
+      "degree_first": 20,
+      "degree_second": 20,
+      "maximum_coefficient": "813433855367692053536822675603335712128",
+      "minimum_coefficient": "1",
+      "substitution": "P^2=U+9, Q^2=V+9",
+      "terms": 441
+    },
+    "positive_e8": {
+      "all_coefficients_strictly_positive": true,
+      "coefficient_sha256": "1601cc260f2be49e671ecbf2859b94ba7f3dabbf44198e3546daad2a92e3b4d0",
+      "degree_first": 20,
+      "degree_second": 20,
+      "maximum_coefficient": "813116500595105655968993288944969318400",
+      "minimum_coefficient": "1",
+      "substitution": "P^2=U+9, Q^2=V+9",
+      "terms": 441
+    }
+  },
+  "positive_e6_bounded_charts": {
+    "R_equals_3": {
+      "all_coefficients_strictly_positive": true,
+      "bound": "B(p)=3*(p^2-1)",
+      "bound_after_p_equals_U_plus_3": [
+        24,
+        18,
+        3
+      ],
+      "clearing_factor": "(1+W)^24",
+      "coefficient_sha256": "fb3434aeacd36933ef0a78583af93cb4fdd1f87523a963ee13732173e91023a7",
+      "degree_first": 84,
+      "degree_second": 24,
+      "maximum_coefficient": "1410973314342035111706778787819584216762030279647570505484016",
+      "minimum_coefficient": "31338012888",
+      "substitution": "p=U+3, q=(3+B(p)*W)/(1+W)",
+      "terms": 1619
+    },
+    "R_not_3": {
+      "all_coefficients_strictly_positive": true,
+      "bound": "B(p)=p^2+p+1",
+      "bound_after_p_equals_U_plus_3": [
+        13,
+        7,
+        1
+      ],
+      "clearing_factor": "(1+W)^24",
+      "coefficient_sha256": "5503968adbe41efedc27347549381c2b9c35c5749520045a0f173084a52b2c27",
+      "degree_first": 84,
+      "degree_second": 24,
+      "maximum_coefficient": "265512016102935038637245248300435937585103832448041520",
+      "minimum_coefficient": "1",
+      "substitution": "p=U+3, q=(3+B(p)*W)/(1+W)",
+      "terms": 1619
+    }
+  },
+  "positive_e6_size_bounds": {
+    "R_equals_3": "LTE gives v_3(p^6-1)=v_3(p^2-1)+1, so q<=3*(p^2-1).",
+    "R_not_3": "q|p^6-1 and q=R^n.  For R!=3, all R-adic valuation lies in one of Phi_1,Phi_2,Phi_3,Phi_6, so q<=p^2+p+1."
+  },
+  "schema": 1,
+  "scope": "p=L^m and q=R^n, where L,R are distinct odd inert primes; all nonuniform local pairs u,v in {0,3,4}",
+  "scope_warning": "This does not treat general p,q with several prime divisors, because one global factor may select different local Newton pairs.",
+  "second_layer_divisibilities_for_orientation_shown": {
+    "e=2, (u,v)=(3,4)": [
+      "p divides q^2-sign",
+      "q^2 divides p^2-sign"
+    ],
+    "e=6, (u,v)=(0,3)": [
+      "p^2 divides q^6-sign",
+      "q divides p^6-sign"
+    ],
+    "e=8, (u,v)=(0,4)": [
+      "p^2 divides q^8-sign",
+      "q^2 divides p^8-sign"
+    ],
+    "reason": "the next exponent is two larger; a simple target therefore absorbs p^2, while a squared target absorbs p",
+    "reverse_orientation": "swap p and q"
+  },
+  "status": "EXACT_SECOND_LAYER_AND_POSITIVITY_CERTIFICATE"
+}

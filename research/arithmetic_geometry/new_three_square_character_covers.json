@@ -6,6 +6,42 @@
     "genus": 1,
     "q": "T^2+T^(-2)"
   },
+  "character_bases": {
+    "literal_signed_V_character_branch_degrees": {
+      "001": 6,
+      "010": 14,
+      "011": 8,
+      "100": 12,
+      "101": 10,
+      "110": 6,
+      "111": 8
+    },
+    "negative": {
+      "literal_minus_V_stored_bits": "101",
+      "physical_basis": [
+        "q+2",
+        "q-2",
+        "-V"
+      ],
+      "physical_to_stored_bits": "(a,b,c)->(a+c,b,c)",
+      "reason_cover_is_unchanged": "q+2 is already a square on the full cover",
+      "square_class_relation_on_E": "[-V]=[q+2]+[2-W]",
+      "stored_basis": [
+        "q+2",
+        "q-2",
+        "2-W"
+      ]
+    },
+    "positive": {
+      "physical_signed_square": "V",
+      "stored_basis": [
+        "q+2",
+        "q-2",
+        "V"
+      ]
+    },
+    "ramification_consequence": "all seven nontrivial characters in the literal (q+2,q-2,epsilon*V) basis are ramified for either sign"
+  },
   "characters_negative": {
     "001": {
       "branch_degree": 10,
@@ -21,10 +57,10 @@
         "Z_AC",
         "Z_BC"
       ],
-      "equation": "Y^2=(signed_V)",
+      "equation": "Y^2=(2-W)",
       "genus": 6,
       "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
-      "label": "signed_V",
+      "label": "2-W",
       "prym_dimension": 5
     },
     "010": {
@@ -63,10 +99,10 @@
         "Z_AB",
         "Z_DE"
       ],
-      "equation": "Y^2=(q-2 * signed_V)",
+      "equation": "Y^2=(q-2 * 2-W)",
       "genus": 5,
       "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
-      "label": "q-2 * signed_V",
+      "label": "q-2 * 2-W",
       "prym_dimension": 4
     },
     "100": {
@@ -101,10 +137,10 @@
         "Z_AC",
         "Z_BC"
       ],
-      "equation": "Y^2=(q+2 * signed_V)",
+      "equation": "Y^2=(q+2 * 2-W)",
       "genus": 4,
       "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
-      "label": "q+2 * signed_V",
+      "label": "q+2 * 2-W",
       "prym_dimension": 3
     },
     "110": {
@@ -135,10 +171,10 @@
         "Z_AB",
         "Z_DE"
       ],
-      "equation": "Y^2=(q+2 * q-2 * signed_V)",
+      "equation": "Y^2=(q+2 * q-2 * 2-W)",
       "genus": 5,
       "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
-      "label": "q+2 * q-2 * signed_V",
+      "label": "q+2 * q-2 * 2-W",
       "prym_dimension": 4
     }
   },
@@ -153,10 +189,10 @@
         "Z_AC",
         "Z_BC"
       ],
-      "equation": "Y^2=(signed_V)",
+      "equation": "Y^2=(V)",
       "genus": 4,
       "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
-      "label": "signed_V",
+      "label": "V",
       "prym_dimension": 3
     },
     "010": {
@@ -195,10 +231,10 @@
         "Z_AB",
         "Z_DE"
       ],
-      "equation": "Y^2=(q-2 * signed_V)",
+      "equation": "Y^2=(q-2 * V)",
       "genus": 5,
       "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
-      "label": "q-2 * signed_V",
+      "label": "q-2 * V",
       "prym_dimension": 4
     },
     "100": {
@@ -237,10 +273,10 @@
         "Z_AC",
         "Z_BC"
       ],
-      "equation": "Y^2=(q+2 * signed_V)",
+      "equation": "Y^2=(q+2 * V)",
       "genus": 6,
       "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
-      "label": "q+2 * signed_V",
+      "label": "q+2 * V",
       "prym_dimension": 5
     },
     "110": {
@@ -271,10 +307,10 @@
         "Z_AB",
         "Z_DE"
       ],
-      "equation": "Y^2=(q+2 * q-2 * signed_V)",
+      "equation": "Y^2=(q+2 * q-2 * V)",
       "genus": 5,
       "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
-      "label": "q+2 * q-2 * signed_V",
+      "label": "q+2 * q-2 * V",
       "prym_dimension": 4
     }
   },
@@ -345,16 +381,17 @@
     ],
     "statement": "Every character curve has genus at least 4 and is bielliptic. It cannot also be hyperelliptic: independent degree-two maps to E and P1 would contradict Castelnuovo-Severi for genus >=4."
   },
-  "schema": 1,
-  "sha256_without_checksum": "b22435fd385a83081aff8d862e6b4a41c4106a9dccc32643575f490c10524220",
+  "schema": 2,
+  "sha256_without_checksum": "0dad6bf27c17abbc2165b7daa1adafadf585c4b34db0f104d7875a5eacdf427d",
   "source_hashes": {
     "genus4_quotient": "621f3aa944d0ba3a8bfd39a36de19a21313304f8cfdfcbfb31f222736f04a7a5",
     "reciprocal_b_branch_audit": "2e5ca88cfb175ced173119b638b0e514518e39071520071cfaa0f77f68513be2"
   },
   "square_class_identities": {
     "V_in_AB_chart": "a**2/b",
-    "V_over_W_plus_2": "a**2/(b + 1)**2",
-    "minus_V_over_2_minus_W": "a**2/(b - 1)**2",
+    "V_over_W_plus_2_on_E": "A**2/4",
+    "minus_V_over_2_minus_W_upstairs": "a**2/(b - 1)**2",
+    "minus_V_over_product_q_plus_2_two_minus_W_on_E": "A**2*T**2/(4*B**2*(T**2 + 1)**2)",
     "q_minus_2_over_U_minus_2": "(q - 2)**2/16",
     "q_plus_2_over_product_U_pm_2": "(q - 2)**2/64",
     "q_squared_minus_4_over_U_plus_2": "(q - 2)**2/4"

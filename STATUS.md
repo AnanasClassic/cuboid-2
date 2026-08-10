@@ -1,6 +1,6 @@
 # Status
 
-Date: 2026-08-05
+Date: 2026-08-10
 
 ## Bottom line
 
@@ -36,12 +36,31 @@ curve is presently available.
 - Exact singularity, special-fiber, and discriminant diagnostics for `H`.  In
   particular, the squarefree discriminant quartic is rigorously shown not to
   be the reciprocal elliptic quotient with the `q`-map preserved.
+- Exact low-degree transport no-gos for `H`.  The proposed
+  `C=A-c, r=(q-q0)C` family has a common `C`-factor only at `c=2`, where
+  the primitive equation still has total degree 12; its rational-singularity
+  line pencils have degrees 10, 9, and 8.  The unique unramified rational
+  point over `q=6` also proves that `q` cannot factor through any
+  rationally defined degree-2 genus-zero quotient.  These results narrow, but
+  do not supply, the open elliptic transport C025.
 - Exact reciprocal elimination in `U=s+1/s`, `W=b+1/b`, producing an
   irreducible bidegree-`(20,10)` equation `K(U,W)=0` and a perfect-square
   resultant certificate.
 - Complete branch table for the three required square characters
   `U+2`, `U-2`, and `W+2` or `2-W`.  The seven character quotients have
-  genera at most 8, while each full signed-square cover has genus 33.
+  genera at most 8, while each full signed-square cover has genus 33.  The
+  negative table's third generator is now correctly labeled `2-W`, with
+  `[-V]=[q+2]+[2-W]`; the full cover was unchanged by this basis correction.
+- Every nontrivial product of the literal characters `q+2`, `q-2`, and
+  `epsilon*V` is ramified.  Thus the direct strategy of identifying one such
+  product with the unramified standard 2-isogeny Kummer character cannot
+  work, even after the open elliptic transport is supplied.
+- A complete compact model for the signed-square locus: for each sign,
+  admissible factors are equivalent to rational points on an irreducible
+  71-term equation `Q_epsilon(z,k)=0`.  Its explicit subresultant inverse has
+  no admissible rational denominator-zero branch.  The normalization remains
+  the genus-33 full cover, so this is a reduction rather than a point
+  classification.
 - Exact global exclusion of the `2+3` split for every prime-power axis family
   `{p,q}={1,ell^k}`.  More generally, a hypothetical counterexample needs at
   least two primes in `pq` and different Newton pair types at two of them.
@@ -50,13 +69,20 @@ curve is presently available.
   and every `n>=1`.
   The proof uses exact resultant endpoint valuations and separately closes
   the only intermediate primes `5` and `13`.
-- For two distinct prime powers `p=L^m,q=R^n` with `2` a quadratic
-  nonresidue at both primes, all nonuniform Newton branches satisfy five
-  explicit endpoint systems.  Reciprocity removes negative sign with
-  `e=8`; the remaining negative branches require `L,R=5 mod 8`, odd `m,n`,
-  and mutual quadratic nonresiduosity.  These endpoint conditions are only
-  necessary: the exact certificate records surviving infinite systems rather
-  than claiming a general two-prime theorem.
+- Complete exclusion of the `2+3` split when
+  `p=L^m,q=R^n` are powers of distinct odd primes at which `2` is a quadratic
+  nonresidue.  The proof goes beyond the known surviving endpoint
+  congruences: the next coefficient layer gives prime-power divisibilities;
+  elementary descent closes `e=2`, and exact positive-coefficient expansions
+  of the full projection close both signs of `e=8`, negative `e=6`, and the
+  two bounded positive `e=6` charts.  This theorem does not assume a uniform
+  local type and is not a bounded search.
+- Exact no-go audits for the most immediate genus-4 splitting shortcuts: the
+  only ambient automorphisms induced by independent rational Möbius changes
+  are the identity and known reciprocity, and the compact Newton support has
+  no additional coefficient-compatible Laurent-monomial symmetry.  Arbitrary
+  nonlinear automorphisms or a Prym splitting without automorphisms remain
+  possible.
 - An independently audited Frobenius/Burnside fingerprint for the reciprocal
   elliptic quotient at nineteen certified good primes.  Both curves in the
   candidate class `544.c` match every trace and their explicit 2-isogenies are
@@ -122,6 +148,18 @@ The two signs give explicit `(Z/2)^3` covers.  A point on `K` or on one
 character quotient is only necessary: all compatible characters and the
 reverse lift to `s,a,b` must be checked.
 
+There is now also a lossless compact formulation.  For `epsilon=+1` or `-1`,
+classify the rational points
+
+```text
+Q_epsilon(z,k)=0,  z>0, z!=1, k!=0.
+```
+
+The exact inverse `y=-L0/L1`, followed by
+`s=z^2, b=epsilon*z^4*k^2, a=z^2*k*y`, has no admissible exceptional fiber.
+Thus this plane problem is equivalent to the full signed-square factor locus,
+not merely another one-way resultant condition.
+
 The generic reverse lift no longer has an unresolved linear-subresultant
 branch: C033 proves that `Q1(T,A)=0` occurs over `Q` only at inadmissible
 values.  What remains is the global rational-point computation, not another
@@ -132,8 +170,9 @@ classes stored in the certificate, but the residual set is infinite.  No
 finite fixed-prime sieve can finish the proof: `p=0 mod ell, q=1 mod ell`
 survives every selected prime.
 
-Any residual counterexample must additionally avoid the two infinite-family
+Any residual counterexample must additionally avoid all three infinite-family
 theorems above: `pq` has at least two distinct prime factors with nonuniform
-local pair types, and it is not in the certified `{3,r^n}` inert family.  If
-`p,q` are powers of two distinct inert odd primes, their local types must also
-lie in one of the five endpoint systems recorded in C026--C027.
+local pair types, it is not in the certified `{3,r^n}` family, and `p,q`
+cannot themselves be powers of two distinct inert odd primes.  General
+multi-prime pairs remain because a single factor may select different Newton
+types at different prime divisors.

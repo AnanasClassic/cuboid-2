@@ -58,8 +58,10 @@ show that a genuine factor with `s=z^2` and `b=+c^2` lies on the
 U+2, U-2, W+2.
 ```
 
-For `b=-c^2`, replace `W+2` by `2-W`.  Both `U+2` and `U-2` are required:
-if they have rational square roots `v,r`, then
+For `b=-c^2`, the full cover may replace `-V` by `2-W`, but this is a
+basis change rather than a literal equality of square classes on `E`; the
+precise relation is proved below.  Both `U+2` and `U-2` are required: if they
+have rational square roots `v,r`, then
 `z=(v+r)/2` and `1/z=(v-r)/2`.  Imposing only `U+2` gives a useful necessary
 genus-4 quotient but is not equivalent to the square-parameter condition.
 
@@ -105,6 +107,113 @@ The change to the lower-degree `q` coordinate, all seven labeled branch
 supports, the compact open model, and the generic inverse formulas are
 exported by
 `research/arithmetic_geometry/new_three_square_character_covers.py`.
+
+## Negative-b basis correction
+
+The tempting identity
+
+```text
+(-V)/(2-W) = (a/(b-1))^2
+```
+
+holds on the factor curve before quotienting.  It does **not** say that
+`[-V]=[2-W]` on `E`: under `(a,b) -> (a/b,1/b)` the displayed square root
+changes sign, so it is not a function on the quotient.
+
+In the `T,B,A` chart,
+
+```text
+q = T^2+T^(-2),
+V = A^2/(1-B^2),
+W = 2*(1+B^2)/(1-B^2).
+```
+
+The function
+
+```text
+R = A*T/(2*B*(T^2+1))
+```
+
+is invariant under both deck transformations
+`(T,B,A)->(-T,-B,A)` and `T->1/T`, and exact cancellation gives
+
+```text
+R^2 = (-V)/((q+2)*(2-W)).
+```
+
+Therefore the correct relation in `Q(E)^*/Q(E)^{*2}` is
+
+```text
+[-V] = [q+2] + [2-W].
+```
+
+Since the full negative cover already adjoins `sqrt(q+2)`, its chosen basis
+`(q+2,q-2,2-W)` defines exactly the same full cover as the physical basis
+`(q+2,q-2,-V)`.  For individual character quotients, however, the labels
+must be converted by
+
+```text
+(a,b,c)_physical -> (a+c,b,c)_chosen.
+```
+
+In particular, literal `-V` is chosen-basis character `101`, not `001`.
+The corrected labels and this basis conversion are recorded in
+`research/arithmetic_geometry/new_three_square_character_covers.json`.
+
+## All seven literal characters are ramified
+
+Write `Zb`, `Zn`, `L`, `M`, and `N` for the disjoint atomic normalization
+sets in the branch certificate, of degrees `2,2,2,4,6`.  The global
+identities
+
+```text
+(q-2)/(U-2) = (q-2)^2/16,
+(q+2)/((U+2)*(U-2)) = (q-2)^2/64,
+V/(W+2) = (A/2)^2
+```
+
+include zeros and poles, not merely affine intersections.  They give
+
+```text
+odd(q+2) = L + M + N,
+odd(q-2) = Zb + Zn + M + N,
+odd(V)   = Zb + M.
+```
+
+Symmetric difference then gives the following odd-divisor degrees for the
+literal basis `(q+2,q-2,epsilon*V)`; multiplying by the constant `-1` does
+not change a divisor.
+
+| bits | odd-divisor degree |
+|---|---:|
+| `001` | 6 |
+| `010` | 14 |
+| `011` | 8 |
+| `100` | 12 |
+| `101` | 10 |
+| `110` | 6 |
+| `111` | 8 |
+
+Every nonzero combination is therefore ramified.  Equivalently, the span of
+the three cuboid characters meets the subgroup of square classes with even
+divisor only in the identity.  This statement is on the normalization of
+`H` itself and does not assume the still-open identification C025.
+
+Conditionally on an eventual identification with
+
+```text
+E1: y^2=x^3-5*x+4,
+```
+
+put `X=x-1`.  Then `div(X)=2*(T)-2*(O)`, so the standard 2-isogeny Kummer
+class is unramified.  It cannot be a constant times a nontrivial product of
+the three ramified characters modulo squares.  This rules out a direct
+function-field Kummer identity; it does not rule out a later arithmetic
+argument using explicit transport and local evaluations.
+
+The lightweight exact regression is
+`research/arithmetic_geometry/character_kummer_obstruction.py`, with saved
+certificate `character_kummer_obstruction.json`.
 
 ## What would finish the proof
 

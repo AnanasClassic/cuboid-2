@@ -1,7 +1,20 @@
-# Global descent: a prime-power family
+# Global descent: exact infinite families
 
 This directory contains an exact unconditional exclusion of the remaining
 quadratic--cubic split for a new infinite family.
+
+It now also contains a complete two-inert-prime-power theorem.  If
+
+\[
+p=L^m,\qquad q=R^n,
+\]
+
+where \(L,R\) are distinct odd primes and \(2\) is a quadratic nonresidue at
+both, then \(P_{(p/q)^2}\) has no rational quadratic factor.  The first
+endpoint congruences alone do not prove this: they have infinite formal
+survivors.  `second_endpoint_layer.py` uses the next coefficient layer and
+strictly positive expansions of the full projection to close every one of
+those survivor branches.  The proof is in `second_endpoint_layer.md`.
 
 ## Theorem
 
@@ -89,6 +102,7 @@ reverse-lifting or saturation assumption is hidden in the proof.
 
 ```bash
 .venv/bin/python research/global_descent/inert_prime_power_family.py
+.venv/bin/python research/global_descent/second_endpoint_layer.py
 ```
 
 The generated JSON records every exact factor and a checksum.
