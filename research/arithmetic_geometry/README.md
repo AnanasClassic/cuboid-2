@@ -215,15 +215,44 @@ birational map using both elliptic coordinates.
 
 ## Current arithmetic status
 
-No Weierstrass normalization, Mordell--Weil rank bound, or complete set of
-rational points is claimed here.  The smooth rational point
+The direct normalization of the displayed `H(q,A)=0` model remains open in
+the narrow sense of C025.  It is no longer a blocker.  Starting instead from
+the lossless compact signed-square locus C035 gives a smaller simultaneous
+reciprocal quotient `C8(U,V)=0`.  The exact certificates
 
 ```text
-(q,A) = (6,6/7)
+../compact_signed_square/reciprocal_quotient/derive.py
+low_degree_transport.py
 ```
 
-lies on the elliptic plane model and has `U=6`; it does not lift to `D4(Q)`
-because `U+2=8` is not a rational square.  A search is not a completeness
-argument.  The next rigorous step is to normalize `H`, convert it to a
-Weierstrass model, compute `E(Q)` with a certified rank bound, and solve the
-square-value condition by descent or elliptic Chabauty.
+identify its admissible normalization birationally with
+
+```text
+E1: y^2=x^3-5*x+4.
+```
+
+Both physical signs reach the same `C8`, and their common required square
+characters are `UV` and `1-UV`.  The transport includes both rational maps,
+their exact function-field identities, and a complete classification of
+every rational denominator or projective exception.
+
+After translation by the 2-torsion point, `product_character_simplification.py`
+proves the scalar-sensitive identity
+
+```text
+1-UV = 2*(X+1)*L*M*g^2.
+```
+
+The valuation theorem in `product_squareclass_valuation.py` reduces every
+nonexceptional simultaneous square point to a point with square abscissa on
+
+```text
+R^2=4*a^5-8*a^2+5*a.
+```
+
+The exact 2-descent, index-independent `7/23` Mordell--Weil sieve, and `p=7`
+formal-log certificate prove that the only square-abscissa points are
+`infinity`, `(0,0)`, and `(1,+/-1)`.  The lift table makes all four
+inadmissible.  Therefore the `2+3` locus is empty and C010 is proved.  See
+`product_genus2_square_abscissa.md` and
+`../../notes/quadratic_cubic_completion.md` for the complete argument.

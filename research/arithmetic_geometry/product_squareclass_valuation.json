@@ -1,0 +1,44 @@
+{
+  "definitions": {
+    "h": "X+1 (not the original cuboid parameter s)",
+    "k": "(Y+2)/X"
+  },
+  "elliptic_model": "Y^2=X^3-5*X+4",
+  "logical_scope": "This is an exact reduction.  The rational square-abscissa classification is supplied by the separate genus-two sieve.",
+  "negative_sign": {
+    "auxiliary_curve": "W^2=-(v^2+2)*(v^4+v^2-4)",
+    "parity_audit": {
+      "m_even_n_odd": {
+        "v2_negative_product_if_m_v2_1": 5,
+        "v2_negative_product_if_m_v2_ge_2": 3
+      },
+      "m_odd_n_even_mod8": {
+        "negative_product_if_n_v2_1": 3,
+        "negative_product_if_n_v2_ge_2": 7
+      },
+      "m_odd_n_odd_mod8": {
+        "first_factor": 3,
+        "negative_product": 6,
+        "second_factor": 6
+      }
+    },
+    "rational_points_compatible_with_square_character": false
+  },
+  "positive_sign": {
+    "genus_two_curve": "R^2=4*a^5-8*a^2+5*a",
+    "map": "a=u^2, R=u*r",
+    "octic": "r^2=4*u^8-8*u^2+5",
+    "remaining_condition": "a is a rational square"
+  },
+  "quadratic_discriminant": "k^4-16k+20",
+  "quadratic_relation": "h^2-(k^2+2)h+(k^2+4k-4)=0",
+  "schema": 1,
+  "sha256_without_checksum": "4176f629628d73f435819d89ec3c1ca1df02a8e283e2f37542b7f38cf1b32941",
+  "square_character_equation": "z^2=2*k*h",
+  "theorem": "Every nonexceptional rational point satisfying the product square character has positive sign and maps to a rational point on R^2=4a^5-8a^2+5a with square abscissa.",
+  "valuation_conclusion": {
+    "odd_primes": "v_l(k) is even",
+    "prime_2": "v_2(k) is odd",
+    "squareclasses": "k=2*epsilon*u^2 and h=epsilon*v^2"
+  }
+}

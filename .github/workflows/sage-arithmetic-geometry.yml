@@ -5,6 +5,17 @@ on:
   push:
     branches:
       - research/second-cuboid-conjecture
+    paths:
+      - "artifacts/genus4_quotient.json"
+      - "research/arithmetic_geometry/e_model_sage_transport.py"
+      - "research/arithmetic_geometry/e_model_singular_normalize.py"
+      - "research/arithmetic_geometry/e_model_singular_rr_cubic.py"
+      - "research/arithmetic_geometry/e_model_sage_from_singular_cubic.py"
+      - "research/frobenius_audit/sage_candidate_mw_basis.py"
+      - "research/linear_factor_completion/sage_chabauty_p5.py"
+      - "research/linear_factor_completion/two_descent_rank.py"
+      - "scripts/sage_elliptic_probe.py"
+      - ".github/workflows/sage-arithmetic-geometry.yml"
   pull_request:
     paths:
       - "artifacts/genus4_quotient.json"

@@ -20,7 +20,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import time
 from collections import defaultdict
 from pathlib import Path
 
@@ -155,7 +154,6 @@ def specialized_factor(poly: sp.Poly, q_value: sp.Rational) -> sp.Expr:
 
 
 def verify() -> dict[str, object]:
-    started = time.monotonic()
     genus4 = json.loads(GENUS4.read_text(encoding="utf-8"))
     compact = json.loads(COMPACT.read_text(encoding="utf-8"))
     H_q = sparse_to_poly(genus4["elliptic_plane_model"]["terms"], (q, A))
@@ -425,9 +423,9 @@ def verify() -> dict[str, object]:
             "They contain no Q-rational U and hence no Q-rational factor data. "
             "Their individual algebraic lifts are not classified here."
         ),
-        "reference_runtime_seconds_python_flint": round(
-            time.monotonic() - started, 3
-        ),
+        # Keep the certificate byte-reproducible.  Runtime is provenance from
+        # the reference run, not part of the mathematical computation.
+        "reference_runtime_seconds_python_flint": 59.648,
     }
     canonical = json.dumps(
         payload, sort_keys=True, separators=(",", ":")

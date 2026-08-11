@@ -79,7 +79,7 @@ Create a clean environment and reproduce the existing exact suite first:
 python3 -m venv .venv
 .venv/bin/python -m pip install -e '.[test]'
 PYTHON_BIN=.venv/bin/python scripts/reproduce.sh
-PYTHON_BIN=.venv/bin/python scripts/replay_5plus5.sh
+PYTHON_BIN=.venv/bin/python bash scripts/replay_5plus5.sh
 ```
 
 Then generate and execute the Singular Riemann--Roch route:

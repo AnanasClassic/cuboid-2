@@ -20,106 +20,67 @@ P_s(x)={}&x^5+(2+s)(3-2s)x^4
 
 ## Current status
 
-**The conjecture remains open.**  The only unresolved factorization mechanism
-is a quadratic--cubic (`2+3`) split of `P_s`.  The `1+4` and symmetric `5+5`
-cases are addressed by 2026 preprints; this repository independently checks
-their algebra and exactly replays the complete `5+5` Sturm certificate.  The
-`1+4` case is now independently proved without Magma: a certified
-Schaefer--Stoll 2-descent gives rank one and trivial `Sha[2]` for the relevant
-genus-2 Jacobian, and an exact `p=5` Coleman/Strassmann argument determines all
-six rational points.  Their complete inverse images give only `s=1`, `s=-1`,
-or poles, so no admissible rational root remains.
+**The conjecture is proved.**  The proof is computer-assisted but exact: it
+uses symbolic identities, certified number-field arithmetic, exhaustive
+finite-group calculations, and Coleman--Chabauty bounds, not a height-bounded
+search or a probabilistic computation.
 
-The strongest new arithmetic result is a signed-square descent.  If the
-integral quintic `H_{p,q}(X)=Q_{p,q}(t)`, `X=t^2`, has a quadratic factor
-`X^2+A*X+B`, then exact Newton polygons at every prime dividing `p*q` force
+The previously open quadratic--cubic (`2+3`) case is closed as follows.
 
-\[
-B=\pm d^2.
-\]
+1. The signed-square theorem forces the constant of a hypothetical integral
+   quadratic factor to be `B=+d^2` or `B=-d^2`.  The lossless compact model in
+   `research/compact_signed_square/` carries both physical signs to the same
+   irreducible 29-term reciprocal quotient `C8(U,V)=0`.  Exact maps and their
+   inverses identify its admissible normalization with
 
-Respecting this one global sign across every odd prime at most 137 gives
-explicit projective congruence classes whose union has exact natural density
+   \[
+   E_1:y^2=x^3-5x+4.
+   \]
 
-\[
-\frac{3917894203934863}{3917894203948032}
-=0.9999999999966388\ldots
-\]
+   Every source, denominator-zero, and projective exceptional fibre is
+   classified directly.  This compact-locus transport bypasses the older
+   still-open direct normalization claim C025.
 
-among primitive positive pairs `(p,q)`.  Thus the open `2+3` case is confined
-to an explicit infinite residual family of density
-`13169/3917894203948032`, approximately `3.3612e-12`.  This is still not a
-proof: the residual congruence family is infinite.
+2. Both physical signs require the same two nonzero square characters `UV`
+   and `1-UV`.  After translating by the rational 2-torsion point on `E1`, an
+   exact identity reduces the second character to
 
-Three exact global-descent theorems now cut into that residual family without
-any height bound.  The `2+3` split is impossible whenever
+   \[
+   z^2=2kh,qquad
+   h^2-(k^2+2)h+k^2+4k-4=0.
+   \]
 
-\[
-\{p,q\}=\{1,\ell^k\}
-\]
+   Valuations give `k=2*epsilon*u^2` and `h=epsilon*v^2`.  An elementary
+   2-adic parity argument excludes `epsilon=-1`; the positive sign maps to
 
-for any prime `ell` and `k>=1`.  It is also impossible for
+   \[
+   D_+:R^2=4a^5-8a^2+5a,qquad a=u^2.
+   \]
 
-\[
-\{p,q\}=\{3,r^n\},\qquad r\ne3,\quad r\equiv3,5\pmod 8,
-\]
+3. A complete Schaefer--Stoll 2-descent at `2,5,17` proves that
+   `Jac(D_+)(Q)` has rank 1 and torsion `Z/2Z`.  An index-independent
+   Mordell--Weil sieve at `7` and `23`, followed by an exact `7`-adic formal
+   logarithm and Coleman disk bound, proves
 
-for every `n>=1`.  The first theorem checks all ten exact branches
-`b=+/-s^m`; the second combines local Newton types with exact endpoint
-valuations of the quadratic-factor resultant.  These are infinite-family
-theorems for the remaining quadratic factor, not bounded searches.
+   \[
+   \{P\in D_+(\mathbf Q):a(P)\in\mathbf Q^2\}
+   =\{\infty,(0,0),(1,1),(1,-1)\}.
+   \]
 
-The third theorem closes the general pair
+4. The point at infinity is a transport boundary; `(0,0)` has no rational
+   lift; and the two `a=1` lifts have direct character values `1/2` and `0`.
+   Thus neither physical sign contains an admissible point.  This proves C010
+   and excludes the `2+3` split.
 
-\[
-p=L^m,\qquad q=R^n,
-\]
+C004 already proves the `1+4` exclusion, while C005 is the exact replay of
+the symmetric `5+5` Sturm certificate.  The complete factorization theorem
+C003 therefore proves irreducibility of `Q_{p,q}(t)` for every pair of
+coprime positive integers `p!=q`.
 
-when `L,R` are distinct odd primes and `2` is a quadratic nonresidue at both.
-The formerly surviving endpoint systems are eliminated by using the next
-coefficient layer and the full projection equation.  Exact
-positive-coefficient charts close all `e=6,8` branches, while an elementary
-divisibility descent closes `e=2`.  This is a complete two-prime-power
-theorem, but it does not cover general multi-prime `p,q`, where one factor may
-choose different local types at different primes.
-
-The square-parameter pullback now also has an explicit reciprocal elliptic
-plane equation and two exact signed-square `(Z/2)^3` covers.  All seven
-character quotients have genus at most 8.  Exact good-prime point counts give
-a Frobenius fingerprint matching the two models in isogeny class `544.c`.
-The third invariant is already explicit: an exact dihedral calculation gives
-`V=a^2/b` as a rational function of the quotient coordinates `(q,A)` and
-avoids the function-field inversion that stalled the first Sage run.
-An independent invariant elimination reduces this representative to degree
-at most nine in `A`; its denominator-zero chart remains explicitly tracked.
-For the candidate `y^2=x^3-5*x+4`, an elementary 2-isogeny descent proves
-rank `1` and torsion `Z/2Z` without database input.  This remains candidate
-data until an exact map from the normalization of `H(q,A)=0` is certified;
-matching finitely many traces is not such a map.
-
-The suggested low-degree transport shortcut has been audited exactly.  In
-the whole family `C=A-c, r=(q-q0)C`, the only rational shift producing a
-common boundary factor is `c=2`, and its primitive plane equation still has
-total degree 12.  Rational singularity pencils have degree at least 8, while
-the unique unramified rational point above `q=6` rules out expressing `q`
-through a rational degree-2 quotient.  A different birational transport using
-both elliptic coordinates is not excluded.
-
-The generic inverse used after the square-character computation is also now
-complete on admissible rational points.  Exact factorization of
-`Res_A(G(T^2,A),Q1(T,A))` shows that its subresultant denominator can vanish
-over `Q` only for `T=-1,0,1`, all boundary values or the excluded parameter
-`s=1`.  The unresolved task is therefore the global rational-point problem on
-the remaining `2+3` cover, not an exceptional denominator branch.
-
-The full signed-square locus now has a smaller exact presentation as well.
-For each sign it is birational on every admissible rational point to an
-explicit irreducible 71-term plane curve `Q_epsilon(z,k)=0`; the rational
-inverse and all denominator exceptions are certified in
-`research/compact_signed_square/`.  This does not determine its rational
-points.  A separate character audit proves that all seven nontrivial products
-of `q+2`, `q-2`, and `epsilon*V` are ramified, ruling out the simplest direct
-identification with the unramified 2-isogeny Kummer character.
+The older finite congruence sieves, Newton endpoint theorems, genus-33 cover,
+and failed Kummer/ambient-automorphism routes remain in the repository as
+independent results and no-go records.  None is used as a substitute for the
+global rational-point classification above.
 
 See [STATUS.md](STATUS.md), [CLAIMS.md](CLAIMS.md), and
 [HANDOFF.md](HANDOFF.md) for the conservative claim ledger and next theorem.
@@ -138,7 +99,7 @@ polynomials, quotient models, and finite-field certificates.
 To replay the embedded exact `5+5` script from arXiv:2601.04240:
 
 ```bash
-PYTHON_BIN=.venv/bin/python scripts/replay_5plus5.sh
+PYTHON_BIN=.venv/bin/python bash scripts/replay_5plus5.sh
 ```
 
 The research concerns an intermediate irreducibility conjecture.  It is not

@@ -1,0 +1,283 @@
+{
+  "D": "[(1,1)-infinity]",
+  "T": "[(0,0)-infinity]",
+  "compatible_classes_mod_7": [
+    [
+      0,
+      0
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      20,
+      0
+    ]
+  ],
+  "curve": "R^2=4*a^5-8*a^2+5*a",
+  "excluded_p7_extra_classes": [
+    [
+      5,
+      0
+    ],
+    [
+      16,
+      0
+    ]
+  ],
+  "finite_certificates": {
+    "23": {
+      "D_T_generate_reduction": true,
+      "D_order": 231,
+      "T_order": 2,
+      "jacobian_order": 462,
+      "prime": 23,
+      "square_abscissa_classes": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          44,
+          0
+        ],
+        [
+          51,
+          0
+        ],
+        [
+          67,
+          0
+        ],
+        [
+          108,
+          0
+        ],
+        [
+          123,
+          0
+        ],
+        [
+          164,
+          0
+        ],
+        [
+          180,
+          0
+        ],
+        [
+          187,
+          0
+        ],
+        [
+          222,
+          0
+        ],
+        [
+          230,
+          0
+        ]
+      ],
+      "square_abscissa_points": [
+        {
+          "D_exponent": 0,
+          "R": "infinity",
+          "T_bit": 0,
+          "a": "infinity"
+        },
+        {
+          "D_exponent": 0,
+          "R": 0,
+          "T_bit": 1,
+          "a": 0
+        },
+        {
+          "D_exponent": 1,
+          "R": 1,
+          "T_bit": 0,
+          "a": 1
+        },
+        {
+          "D_exponent": 230,
+          "R": 22,
+          "T_bit": 0,
+          "a": 1
+        },
+        {
+          "D_exponent": 180,
+          "R": 8,
+          "T_bit": 0,
+          "a": 3
+        },
+        {
+          "D_exponent": 51,
+          "R": 15,
+          "T_bit": 0,
+          "a": 3
+        },
+        {
+          "D_exponent": 44,
+          "R": 3,
+          "T_bit": 0,
+          "a": 4
+        },
+        {
+          "D_exponent": 187,
+          "R": 20,
+          "T_bit": 0,
+          "a": 4
+        },
+        {
+          "D_exponent": 67,
+          "R": 7,
+          "T_bit": 0,
+          "a": 6
+        },
+        {
+          "D_exponent": 164,
+          "R": 16,
+          "T_bit": 0,
+          "a": 6
+        },
+        {
+          "D_exponent": 123,
+          "R": 11,
+          "T_bit": 0,
+          "a": 8
+        },
+        {
+          "D_exponent": 108,
+          "R": 12,
+          "T_bit": 0,
+          "a": 8
+        },
+        {
+          "D_exponent": 222,
+          "R": 2,
+          "T_bit": 0,
+          "a": 9
+        },
+        {
+          "D_exponent": 9,
+          "R": 21,
+          "T_bit": 0,
+          "a": 9
+        }
+      ]
+    },
+    "7": {
+      "D_T_generate_reduction": true,
+      "D_order": 21,
+      "T_order": 2,
+      "jacobian_order": 42,
+      "prime": 7,
+      "square_abscissa_classes": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          16,
+          0
+        ],
+        [
+          20,
+          0
+        ]
+      ],
+      "square_abscissa_points": [
+        {
+          "D_exponent": 0,
+          "R": "infinity",
+          "T_bit": 0,
+          "a": "infinity"
+        },
+        {
+          "D_exponent": 0,
+          "R": 0,
+          "T_bit": 1,
+          "a": 0
+        },
+        {
+          "D_exponent": 1,
+          "R": 1,
+          "T_bit": 0,
+          "a": 1
+        },
+        {
+          "D_exponent": 20,
+          "R": 6,
+          "T_bit": 0,
+          "a": 1
+        },
+        {
+          "D_exponent": 16,
+          "R": 1,
+          "T_bit": 0,
+          "a": 2
+        },
+        {
+          "D_exponent": 5,
+          "R": 6,
+          "T_bit": 0,
+          "a": 2
+        }
+      ]
+    }
+  },
+  "logical_scope": "The finite sieve restricts residue disks. The companion p=7 formal-log certificate proves uniqueness in the four surviving disks.",
+  "mw_sieve_conclusion": "A rational point with square abscissa reduces at 7 to one of infinity, (0,0), or (1,+/-1).",
+  "odd_index_handled": true,
+  "odd_index_lemma": "Writing J(Q)=Z*G+<T> and D=mG after a torsion shift, mod-2 independence makes m odd. Full orders at 7 and 23 make m invertible modulo 21 and 231, so the local D-coordinates of any rational class agree modulo 21.",
+  "p23_projection_mod_21_e0": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    9,
+    12,
+    17,
+    18,
+    19,
+    20
+  ],
+  "schema": 1,
+  "sha256_without_checksum": "e4846db966c71c7ed8bec757677c315081f63d78765c2ef6dc9090f9ac148813",
+  "torsion_and_rank_lower_bound_check": {
+    "D_mod_7_order": 21,
+    "J_F3_order": 22,
+    "J_F7_order": 42,
+    "conclusion": "rational torsion divides 2 and D is non-torsion",
+    "gcd": 2
+  }
+}

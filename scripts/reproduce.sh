@@ -4,6 +4,11 @@ set -euo pipefail
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_dir"
 
+# Several exact certificates share frozen polynomial definitions through the
+# repository namespace.  Make direct script execution behave the same way as
+# pytest and `python -m`, including in a clean checkout.
+export PYTHONPATH="${repo_dir}${PYTHONPATH:+:${PYTHONPATH}}"
+
 python_bin="${PYTHON_BIN:-python3}"
 
 # SymPy 1.14 may auto-select python-flint when it is present in the host
@@ -48,6 +53,22 @@ export SYMPY_GROUND_TYPES="${SYMPY_GROUND_TYPES:-python}"
 "$python_bin" research/global_descent/second_endpoint_layer.py
 "$python_bin" research/compact_signed_square/compact_signed_square.py \
   --output research/compact_signed_square/compact_signed_square.json
+"$python_bin" research/compact_signed_square/reciprocal_quotient/derive.py \
+  --output research/compact_signed_square/reciprocal_quotient/reciprocal_quotient.json
+"$python_bin" research/arithmetic_geometry/low_degree_transport.py \
+  --output research/arithmetic_geometry/low_degree_transport.json
+"$python_bin" research/arithmetic_geometry/product_character_simplification.py \
+  --output research/arithmetic_geometry/product_character_simplification.json
+"$python_bin" research/arithmetic_geometry/product_squareclass_valuation.py \
+  --output research/arithmetic_geometry/product_squareclass_valuation.json
+"$python_bin" research/arithmetic_geometry/product_genus2_two_descent.py \
+  --output research/arithmetic_geometry/product_genus2_two_descent.json
+"$python_bin" research/arithmetic_geometry/product_genus2_square_sieve.py \
+  --output research/arithmetic_geometry/product_genus2_square_sieve.json
+"$python_bin" research/arithmetic_geometry/product_genus2_p7_formal_log.py \
+  --output research/arithmetic_geometry/product_genus2_p7_formal_log.json
+"$python_bin" research/compact_signed_square/independent_genus2_square_sieve.py \
+  --output research/compact_signed_square/independent_genus2_square_sieve.json
 "$python_bin" research/frobenius_audit/frobenius_burnside.py
 "$python_bin" research/frobenius_audit/candidate_544c_check.py
 "$python_bin" research/frobenius_audit/candidate_544c_rank_descent.py

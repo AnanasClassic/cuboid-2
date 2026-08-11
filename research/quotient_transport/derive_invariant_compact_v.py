@@ -31,7 +31,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import time
 from collections import defaultdict
 from pathlib import Path
 
@@ -175,7 +174,6 @@ def evaluate(poly: sp.Poly, q_value: sp.Rational, a_value: sp.Rational):
 
 
 def verify() -> dict[str, object]:
-    started = time.monotonic()
     genus4 = json.loads(GENUS4.read_text(encoding="utf-8"))
     source = json.loads(SOURCE_V.read_text(encoding="utf-8"))
     H = sparse_to_bivariate(genus4["elliptic_plane_model"]["terms"])
@@ -330,7 +328,6 @@ def verify() -> dict[str, object]:
     )
     assert value_at_base == -36
 
-    elapsed = time.monotonic() - started
     payload: dict[str, object] = {
         "schema": 1,
         "status": "MACHINE-VERIFIED",
@@ -447,7 +444,9 @@ def verify() -> dict[str, object]:
             "denominator_nonzero": True,
             "V": str(value_at_base),
         },
-        "reference_runtime_seconds_python_flint": round(elapsed, 3),
+        # Keep the certificate byte-reproducible.  Runtime is provenance from
+        # the reference run, not part of the mathematical computation.
+        "reference_runtime_seconds_python_flint": 24.234,
         "logical_scope": (
             "This certifies an exact compact representative of V in the "
             "function field of H. It does not identify the normalization of "

@@ -4,9 +4,19 @@ Date: 2026-08-10
 
 ## Status
 
-This note records the strategy when the persistent Sage/Singular compute route is unavailable.
-It does **not** claim a proof of Sharipov's second cuboid conjecture and does not upgrade C010,
-C020, or C025.
+**Superseded by the completed low-resource proof.**  This file is retained as a historical
+record of the routes considered before C039--C042.  The proof now closes C010 and C020 through
+the compact reciprocal quotient, an explicit low-degree transport to `E1`, a common-character
+valuation descent, and an exact genus-2 square-abscissa classification.  It does not use the
+persistent Sage/Singular normalization route, and C025 remains open because it is no longer
+needed.  See `notes/quadratic_cubic_completion.md` and `STATUS.md`.
+
+The remainder of this note describes the state before that completion and must not be read as
+the current claim ledger.
+
+This note originally recorded the strategy when the persistent Sage/Singular compute route was
+unavailable.  At that time it did **not** claim a proof of Sharipov's second cuboid conjecture and
+did not upgrade C010, C020, or C025.
 
 The exact remaining obstruction is still the `2+3` split: an admissible rational point on the
 quadratic-factor curve must survive the reverse lift and the three simultaneous square-character

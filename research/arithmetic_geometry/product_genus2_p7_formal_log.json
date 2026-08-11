@@ -1,0 +1,49 @@
+{
+  "annihilating_differential_reduction": "(4-a)*da/R",
+  "annihilator_nonzero_on_surviving_disks": true,
+  "coleman_bound_condition": "p=7>2g=4",
+  "conclusion": "Each of the four surviving residue disks contains at most one rational point.",
+  "curve": "R^2=4*a^5-8*a^2+5*a",
+  "divisor": "D=[(1,1)-infinity]",
+  "exact_7_adic_data": {
+    "shifted_u_constant": {
+      "unit_mod_7": 3,
+      "valuation": 2
+    },
+    "shifted_u_linear": {
+      "unit_mod_7": 5,
+      "valuation": 1
+    },
+    "u_discriminant": {
+      "unit_mod_7": 6,
+      "valuation": 2
+    },
+    "v_R_at_4": {
+      "unit_mod_7": 6,
+      "valuation": 0
+    },
+    "v_R_slope": {
+      "unit_mod_7": 1,
+      "valuation": -1
+    }
+  },
+  "logical_scope": "Rank one is supplied by the exact 2-descent. This certificate computes the annihilator reduction and local uniqueness; the p=7/p=23 sieve supplies the list of surviving disks.",
+  "multiple_used": "42*D",
+  "normalized_log_direction_mod_7": [
+    1,
+    4
+  ],
+  "scaled_root_equations_mod_7": {
+    "R": "tau+6",
+    "u": "tau^2+5*tau+3",
+    "u_discriminant": 6
+  },
+  "schema": 1,
+  "sha256_without_checksum": "bc2dc15be0c2fb5901f98efb56f3d5cc6d057f875cc1e03edf0c90893b926306",
+  "surviving_disks": [
+    "infinity",
+    "(0,0)",
+    "(1,1)",
+    "(1,-1)"
+  ]
+}
