@@ -160,7 +160,7 @@
       "coefficient comparison modulo 21/231"
     ],
     "retained": [
-      "rank Jac(D+)(Q)=1 from the Schaefer--Stoll 2-descent",
+      "rank Jac(D+)(Q)=1 from the Richelot isogeny descent",
       "#J(F7)=42 and ord(D mod 7)=21 for rank and 3-saturation"
     ]
   },
@@ -169,7 +169,7 @@
     "annihilator_dimension": 1,
     "checked_artifacts": [
       "research/frobenius_audit/candidate_544c_rank_descent.json",
-      "research/arithmetic_geometry/product_genus2_two_descent.json",
+      "research/proof_simplification_2/richelot_isogeny_descent.json",
       "research/proof_simplification/c041_structure.json"
     ],
     "good_reduction_at_3": true,
@@ -219,7 +219,7 @@
     "total": 10
   },
   "schema": 1,
-  "sha256_without_checksum": "b82d3d2d1bdfe49317ed1bc2d43441adfc28fee47d7663e1e39d84faffcb8521",
+  "sha256_without_checksum": "4dc48f10afb65413295706677da57ee638bbed5e33a7134f9354296211c0fc7a",
   "status": "PASS",
   "target_A_conclusion": "SUCCESS.  Direct p=3 Chabauty plus the integral Mordell--Weil lattice refinement proves that C3(Q) consists exactly of the two infinities and (u,r)=(+/-1,+/-1)."
 }

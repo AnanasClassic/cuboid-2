@@ -74,6 +74,10 @@ export SYMPY_GROUND_TYPES="${SYMPY_GROUND_TYPES:-python}"
 "$python_bin" research/frobenius_audit/frobenius_burnside.py
 "$python_bin" research/frobenius_audit/candidate_544c_check.py
 "$python_bin" research/frobenius_audit/candidate_544c_rank_descent.py
+"$python_bin" research/proof_simplification_2/richelot_isogeny_descent.py \
+  --output research/proof_simplification_2/richelot_isogeny_descent.json
+"$python_bin" research/proof_simplification_2/c3_p3_chabauty.py \
+  --output research/proof_simplification_2/c3_p3_chabauty.json
 "$python_bin" research/arithmetic_geometry/e_model_candidate_544c.py
 "$python_bin" research/arithmetic_geometry/e_model_plane_discriminant.py
 "$python_bin" research/arithmetic_geometry/e_model_low_degree_no_go.py \
