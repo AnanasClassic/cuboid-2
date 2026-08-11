@@ -1,1 +1,9 @@
 import Cuboid2.Main
+import Cuboid2.QuadraticReduction.SignedSquare
+import Cuboid2.QuadraticReduction.CompactModel
+import Cuboid2.QuadraticReduction.Reciprocal
+import Cuboid2.QuadraticReduction.CharacterDescent
+import Cuboid2.QuadraticReduction.ExceptionalFibers
+import Cuboid2.QuadraticReduction.ProjectionCertificate
+import Cuboid2.QuadraticReduction.ProjectionCertificateNegative
+import Cuboid2.DPlus.Saturation
