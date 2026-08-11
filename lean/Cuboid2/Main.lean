@@ -1,4 +1,4 @@
-import Cuboid2.Factorization
+import Cuboid2.FactorizationClassification
 import Cuboid2.DPlus.Basic
 
 /-!
@@ -17,8 +17,21 @@ open Polynomial
 noncomputable section
 
 /--
-Specialized scaling/Capell classification for the exact Sharipov polynomial.
-This is the remaining algebraic-shell gap.
+The remaining scaling/Capell bridge.  Reducibility of the exact degree-ten
+polynomial either comes from reducibility of the normalized quintic or from
+the symmetric `5+5` composition mechanism.
+-/
+theorem sharipov_composition_reduction
+    {p q : ℕ} (hq : 0 < q) :
+    ¬ Irreducible (sharipovPolynomialQ p q) →
+      ¬ Irreducible (normalizedQuintic (sharipovParameter p q)) ∨
+      SymmetricFiveFiveCase (sharipovParameter p q) := by
+  sorry
+
+/--
+Specialized factorization classification for the exact Sharipov polynomial.
+The reducible-quintic degree split is kernel-checked in
+`FactorizationClassification`; only the scaling/Capell bridge above remains.
 -/
 theorem sharipov_factorization_classification
     {p q : ℕ}
@@ -28,7 +41,12 @@ theorem sharipov_factorization_classification
       LinearQuarticCase (sharipovParameter p q) ∨
       QuadraticCubicCase (sharipovParameter p q) ∨
       SymmetricFiveFiveCase (sharipovParameter p q) := by
-  sorry
+  intro hred
+  rcases sharipov_composition_reduction hq hred with hnormalized | hsymmetric
+  · rcases normalizedQuintic_reducible_cases hnormalized with hlinear | hquadratic
+    · exact Or.inl hlinear
+    · exact Or.inr (Or.inl hquadratic)
+  · exact Or.inr (Or.inr hsymmetric)
 
 /-- The exact linear-factor completion from `research/linear_factor_completion/`. -/
 theorem linear_quartic_impossible
