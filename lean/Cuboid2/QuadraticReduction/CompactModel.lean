@@ -148,7 +148,14 @@ def compactRecoveredY (ε : PhysicalSign) (z k : ℚ) : ℚ :=
 
 /-- `z=0` is exactly the discarded parameter fibre `s=0`. -/
 theorem square_parameter_eq_zero_iff (z : ℚ) : z ^ 2 = 0 ↔ z = 0 := by
-  simpa using pow_eq_zero (R := ℚ) (n := 2)
+  constructor
+  · intro h
+    have hz : z * z = 0 := by simpa [pow_two] using h
+    rcases mul_eq_zero.mp hz with hz | hz
+    · exact hz
+    · exact hz
+  · intro hz
+    simp [hz]
 
 end
 
