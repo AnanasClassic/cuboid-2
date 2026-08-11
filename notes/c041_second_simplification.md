@@ -2,6 +2,13 @@
 
 ## Status
 
+This note records the successful genus-three Level-1 route from the first
+stage of PR \#6.  The subsequent direct genus-two proof in
+`notes/c041_direct_dplus_simplification.md` is now the recommended clean
+dependency: it removes \(C_3\), the rank of \(E_1\), and the
+\(\operatorname{Jac}(C_3)\) quotient decomposition from C041.  The theorem
+below remains a valid independently replayable result.
+
 Target A succeeds, with one qualification that is essential to the proof:
 plain Chabauty/Strassmann on the full \(3\)-adic residue disks does **not**
 classify the rational points.  The unique annihilating Coleman function has

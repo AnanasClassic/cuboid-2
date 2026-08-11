@@ -78,6 +78,8 @@ export SYMPY_GROUND_TYPES="${SYMPY_GROUND_TYPES:-python}"
   --output research/proof_simplification_2/richelot_isogeny_descent.json
 "$python_bin" research/proof_simplification_2/c3_p3_chabauty.py \
   --output research/proof_simplification_2/c3_p3_chabauty.json
+"$python_bin" research/proof_simplification_3/dplus_p3_square_abscissa.py \
+  --output research/proof_simplification_3/dplus_p3_square_abscissa.json
 "$python_bin" research/arithmetic_geometry/e_model_candidate_544c.py
 "$python_bin" research/arithmetic_geometry/e_model_plane_discriminant.py
 "$python_bin" research/arithmetic_geometry/e_model_low_degree_no_go.py \

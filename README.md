@@ -25,8 +25,10 @@ uses symbolic identities, certified number-field arithmetic, exhaustive
 finite-group calculations, and Coleman--Chabauty bounds, not a height-bounded
 search or a probabilistic computation.
 
-For reading, start with [`paper/clean.tex`](paper/clean.tex), the streamlined
-five-page proof.  [`paper/main.tex`](paper/main.tex) is the frozen full
+For reading, start with [`paper/clean3.tex`](paper/clean3.tex), the direct
+four-page proof using square-abscissa arithmetic on \(D_+\).
+[`paper/clean.tex`](paper/clean.tex) is the earlier streamlined five-page
+proof, and [`paper/main.tex`](paper/main.tex) is the frozen full
 research exposition.  Both prove the same theorem and use the same
 proof-critical certificates.
 
