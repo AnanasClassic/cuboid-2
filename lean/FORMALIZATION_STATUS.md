@@ -17,13 +17,15 @@ quotient soundness are acceptable.
 
 ## Remaining proof gaps
 
-There are currently **four** source `sorry`s.  The elementary factorization
-classification and the complete weighted scaling from `Q_{p,q}` to
-`P_s(u^2)` are now represented by ordinary Lean proofs.  The former broad
-factorization-shell gap has therefore been reduced to the single specialized
-Capell implication below.
+There are currently **four** source `sorry`s.  The source tree now contains
+explicit Lean proofs for the elementary factorization classification, exact
+weighted scaling, and the reflection/even-polynomial algebra needed for the
+specialized Capell step.  The former broad factorization-shell gap has
+therefore been reduced to the single specialized implication below.
 
-No gap is hidden behind a custom axiom.
+No gap is hidden behind a custom axiom.  Because the current execution
+environment cannot run Lean, all new proof scripts in this update remain
+**pending an actual `lake build`** and are not yet described as kernel-checked.
 
 ### 1. `normalizedEven_capell_reduction`
 
@@ -31,30 +33,47 @@ No gap is hidden behind a custom axiom.
 reducible or the composition has a symmetric irreducible `5+5`
 factorization.
 
-**Already formalized downstream.**
+**Implemented in Lean source, pending build.**
 
 - `monic_quintic_reducible_cases` proves that a reducible monic quintic has a
   rational linear factor or a monic quadratic factor with monic cubic
   quotient.
 - `normalizedQuintic_reducible_cases` specializes this to `P_s`.
-- `sharipovPolynomialQ_eq_scaleRoots` proves the exact polynomial identity
-  `Q_{p,q}=scaleRoots(P_s(u^2),q^2)`.
+- `sharipovPolynomialQ_eq_scaleRoots` states and proves the exact polynomial
+  identity `Q_{p,q}=scaleRoots(P_s(u^2),q^2)`.
 - `irreducible_scaleRoots_iff` proves that nonzero root scaling preserves and
   reflects irreducibility.
-- `sharipov_factorization_classification` is therefore now an ordinary Lean
-  proof conditional only on the specialized Capell statement.
+- `reflectPolynomial` implements the involution `X ↦ -X`; its involutivity,
+  preservation of divisibility and irreducibility, and coefficient signs are
+  proved in `Capell.lean`.
+- `expand_contract_two_of_reflectPolynomial_eq` proves that every polynomial
+  fixed by reflection is exactly `G(X^2)`, with
+  `G = Polynomial.contract 2 F`.
+- `symmetric_product_eq_expand_contract` applies this to
+  `R(X)R(-X)`, providing the descent mechanism needed to rule out factors of
+  degree below five when `P_s` is irreducible.
+- `sharipov_factorization_classification` is now an ordinary Lean proof
+  conditional only on the remaining specialized Capell implication.
 
-**Why open in Lean.** Mathlib does not currently expose the exact specialized
-Capell composition theorem required here.  The remaining task is to pass to
-a root `α` of irreducible `P_s`, show that reducibility of `u^2-α` is
-squarehood of `α` in `ℚ(α)`, and reconstruct the symmetric degree-five
-minimal polynomial of a square root.
+**What remains.** Choose an irreducible factor `R` of reducible `P_s(X^2)`,
+pair it with its reflected factor, descend the symmetric product through
+`contract 2`, and prove that irreducibility of `P_s` forces `deg R = 5` and
+
+```text
+P_s(X^2) = R(X) * (-R(-X)).
+```
+
+The only exceptional subcase is an irreducible factor associated to its own
+reflection; it must be reduced separately to a proper factor of `P_s` or a
+factor `X`, both incompatible with irreducibility and the nonzero constant
+term.
 
 **External proof.** `notes/factorization_classification.md`,
 `paper/clean3.tex`, Proposition “Complete factorization reduction”.
 
-**Estimated burden.** Medium.  This should remain a specialized field-quotient
-argument rather than a general formalization of Capell's theorem.
+**Estimated burden.** Medium.  The required infrastructure is now explicit;
+the remaining work is a UFD/divisibility and degree argument rather than a
+formalization of general Capell theory.
 
 **Downstream dependencies.** The rational and integer final theorem.
 
@@ -85,11 +104,12 @@ fibres, reciprocal transport, common-character valuation descent, direct
 `p=3` square-abscissa theorem on `D+`, and exceptional lifts are not yet fully
 formalized.
 
-**Already kernel-checked in this branch.** The exact quadratic remainder
-identities, both physical compact equations, reciprocal character identities,
-the essential factor `2` in the cleared `E1` character identity, positive
-map to `D+`, both 71-term projection Bézout certificates, boundary-fibre
-identities, and the abstract `p=7` integral 3-saturation argument.
+**Implemented in source before the present update.** The exact quadratic
+remainder identities, both physical compact equations, reciprocal character
+identities, the essential factor `2` in the cleared `E1` character identity,
+positive map to `D+`, both 71-term projection Bézout certificates,
+boundary-fibre identities, and the abstract `p=7` integral 3-saturation
+argument.  These declarations also remain subject to the full build gate.
 
 **External proof.** The C012/C035/C039/C040/direct-C041 chain cited in
 `STATUS.md`, with the recommended endpoint in
@@ -116,10 +136,11 @@ certificates should avoid a large general real-algebraic library.
 
 **Downstream dependencies.** The `5+5` branch of the final contradiction.
 
-## Kernel-checked declarations already downstream of the gaps
+## Declarations already downstream of the gaps
 
-The following are ordinary Lean proofs and will become axiom-clean
-immediately when the four gaps above are closed:
+The following theorem bodies contain no local `sorry`; they will become
+axiom-clean when the four gaps above are closed and the complete project
+builds:
 
 - `sharipov_composition_reduction`;
 - `sharipov_factorization_classification`;
@@ -129,11 +150,19 @@ immediately when the four gaps above are closed:
 
 ## Validation limitation in the current environment
 
-GitHub Actions did not start because of the repository owner's Actions billing
-state.  The current execution environment also has no installed Lean binary
-and no outbound package download.  Therefore new commits are source-audited
-against the pinned mathlib API but must still pass an actual `lake build`
-before any milestone is called compiling.
+GitHub Actions did not start because the repository owner's Actions billing
+or spending-limit state prevented job allocation.  The current execution
+environment has no installed Lean binary and cannot resolve outbound package
+hosts, so it cannot install the pinned toolchain.  Consequently the commits
+in this update were checked against the exact pinned mathlib source API, but
+must still pass a real
+
+```bash
+cd lean
+lake build
+```
+
+before any compiling milestone is claimed.
 
 ## Audit commands
 
