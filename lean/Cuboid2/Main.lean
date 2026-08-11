@@ -1,14 +1,14 @@
 import Cuboid2.FactorizationClassification
-import Cuboid2.CapellFactor
+import Cuboid2.CapellQuintic
 import Cuboid2.DPlus.Basic
 
 /-!
 # Final theorem assembly
 
 The theorem below already has the intended public signature and the intended
-contradiction structure.  Four narrowly named research gaps remain.  They are
-tracked in `lean/FORMALIZATION_STATUS.md`; none is represented by a custom
-axiom declaration.
+contradiction structure.  Three proof-critical arithmetic gaps remain.  They
+are tracked in `lean/FORMALIZATION_STATUS.md`; none is represented by a
+custom axiom declaration.
 -/
 
 namespace Cuboid2
@@ -18,21 +18,10 @@ open Polynomial
 noncomputable section
 
 /--
-The remaining specialized Capell bridge.  Once the normalized quintic is
-irreducible, reducibility of its composition with `u^2` must be the symmetric
-irreducible `5+5` mechanism.
--/
-theorem normalizedEven_capell_reduction
-    {s : ℚ} :
-    ¬ Irreducible (normalizedEvenPolynomial s) →
-      ¬ Irreducible (normalizedQuintic s) ∨ SymmetricFiveFiveCase s := by
-  sorry
-
-/--
 Reducibility of the exact degree-ten polynomial either comes from
 reducibility of the normalized quintic or from the symmetric `5+5`
-composition mechanism.  The weighted variable scaling is kernel-checked in
-`Scaling.lean`; only the specialized Capell theorem above remains open.
+composition mechanism.  Both weighted scaling and the specialized Capell
+argument are contained in the imported Lean development.
 -/
 theorem sharipov_composition_reduction
     {p q : ℕ} (hq : 0 < q) :
@@ -49,8 +38,8 @@ theorem sharipov_composition_reduction
 
 /--
 Specialized factorization classification for the exact Sharipov polynomial.
-The scaling and reducible-quintic degree split are kernel-checked; the only
-remaining input in this branch is `normalizedEven_capell_reduction`.
+The scaling, Capell composition step, and reducible-quintic degree split are
+all explicit Lean proofs.
 -/
 theorem sharipov_factorization_classification
     {p q : ℕ}

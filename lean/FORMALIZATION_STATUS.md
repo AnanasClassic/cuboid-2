@@ -17,67 +17,56 @@ quotient soundness are acceptable.
 
 ## Remaining proof gaps
 
-There are currently **four** source `sorry`s.  The source tree now contains
-explicit Lean proofs for the elementary factorization classification, exact
-weighted scaling, and the reflection/even-polynomial algebra needed for the
-specialized Capell step.  The former broad factorization-shell gap has
-therefore been reduced to the single specialized implication below.
+There are now **three** source `sorry`s:
 
-No gap is hidden behind a custom axiom.  Because the current execution
-environment cannot run Lean, all new proof scripts in this update remain
-**pending an actual `lake build`** and are not yet described as kernel-checked.
+1. `linear_quartic_impossible`;
+2. `quadratic_cubic_impossible`;
+3. `symmetric_five_five_impossible`.
 
-### 1. `normalizedEven_capell_reduction`
+The former fourth gap, the complete factorization-classification/Capell shell,
+has been replaced by explicit Lean source with no local `sorry`.  No gap is
+hidden behind a custom axiom.
 
-**Statement.** If `P_s(u^2)` is reducible, then either `P_s` itself is
-reducible or the composition has a symmetric irreducible `5+5`
-factorization.
+Because the current execution environment cannot run Lean, the newly added
+algebraic files are **pending an actual `lake build`**.  They must not yet be
+described as kernel-checked merely because their source is present.
 
-**Implemented in Lean source, pending build.**
+## Closed algebraic shell in Lean source
 
-- `monic_quintic_reducible_cases` proves that a reducible monic quintic has a
-  rational linear factor or a monic quadratic factor with monic cubic
-  quotient.
-- `normalizedQuintic_reducible_cases` specializes this to `P_s`.
-- `sharipovPolynomialQ_eq_scaleRoots` states and proves the exact polynomial
-  identity `Q_{p,q}=scaleRoots(P_s(u^2),q^2)`.
-- `irreducible_scaleRoots_iff` proves that nonzero root scaling preserves and
-  reflects irreducibility.
-- `reflectPolynomial` implements the involution `X ↦ -X`; its involutivity,
-  preservation of divisibility and irreducibility, and coefficient signs are
-  proved in `Capell.lean`.
-- `expand_contract_two_of_reflectPolynomial_eq` proves that every polynomial
-  fixed by reflection is exactly `G(X^2)`, with
-  `G = Polynomial.contract 2 F`.
-- `symmetric_product_eq_expand_contract` applies this to
-  `R(X)R(-X)`, providing the descent mechanism needed to rule out factors of
-  degree below five when `P_s` is irreducible.
-- `sharipov_factorization_classification` is now an ordinary Lean proof
-  conditional only on the remaining specialized Capell implication.
+The following declarations now contain ordinary Lean proof terms rather than
+placeholders:
 
-**What remains.** Choose an irreducible factor `R` of reducible `P_s(X^2)`,
-pair it with its reflected factor, descend the symmetric product through
-`contract 2`, and prove that irreducibility of `P_s` forces `deg R = 5` and
+- `monic_quintic_reducible_cases`: a reducible monic quintic has a rational
+  linear factor or a monic quadratic factor with monic cubic quotient;
+- `normalizedQuintic_reducible_cases`: specialization to `P_s`;
+- `sharipovPolynomialQ_eq_scaleRoots`: exact polynomial identity
+  `Q_{p,q}=scaleRoots(P_s(X^2),q^2)`;
+- `irreducible_scaleRoots_iff`: nonzero root scaling preserves and reflects
+  irreducibility;
+- the reflection involution `X ↦ -X`, including preservation of divisibility,
+  units, irreducibility, and degree;
+- `expand_contract_two_of_reflectPolynomial_eq`: every reflection-fixed
+  polynomial is exactly a polynomial in `X^2`;
+- contraction of `R(X)R(-X)` to a divisor of the original polynomial;
+- the symmetric-factor degree descent;
+- exclusion of an irreducible factor associated to its own reflection;
+- `normalizedEven_capell_reduction`: the specialized Capell implication for
+  an irreducible quintic;
+- `sharipov_factorization_classification`: the exact `1+4 / 2+3 / 5+5`
+  classification used by the final theorem.
+
+These files are:
 
 ```text
-P_s(X^2) = R(X) * (-R(-X)).
+Cuboid2/FactorizationClassification.lean
+Cuboid2/Scaling.lean
+Cuboid2/Capell.lean
+Cuboid2/CapellDegree.lean
+Cuboid2/CapellFactor.lean
+Cuboid2/CapellQuintic.lean
 ```
 
-The only exceptional subcase is an irreducible factor associated to its own
-reflection; it must be reduced separately to a proper factor of `P_s` or a
-factor `X`, both incompatible with irreducibility and the nonzero constant
-term.
-
-**External proof.** `notes/factorization_classification.md`,
-`paper/clean3.tex`, Proposition “Complete factorization reduction”.
-
-**Estimated burden.** Medium.  The required infrastructure is now explicit;
-the remaining work is a UFD/divisibility and degree argument rather than a
-formalization of general Capell theory.
-
-**Downstream dependencies.** The rational and integer final theorem.
-
-### 2. `linear_quartic_impossible`
+## Gap 1 — `linear_quartic_impossible`
 
 **Statement.** For `s>0`, `s≠1`, the normalized quintic has no rational root.
 
@@ -89,12 +78,10 @@ inverse/denominator table are not yet kernel-checked.
 `two_descent_rank.py`, `two_descent_proof.md`, `sage_chabauty_p5.py`,
 `chabauty_p5_proof.md`, and `exact_prerequisites.py`.
 
-**Estimated burden.** High.  It should reuse the same explicit Mumford/Cantor
-and descent-certificate infrastructure as the direct `D+` block.
+**Estimated burden.** High.  It should reuse the explicit Mumford/Cantor and
+descent-certificate infrastructure also needed for `D+`.
 
-**Downstream dependencies.** The `1+4` branch of the final contradiction.
-
-### 3. `quadratic_cubic_impossible`
+## Gap 2 — `quadratic_cubic_impossible`
 
 **Statement.** For `s>0`, `s≠1`, the normalized quintic has no monic
 quadratic-times-cubic factorization.
@@ -104,43 +91,37 @@ fibres, reciprocal transport, common-character valuation descent, direct
 `p=3` square-abscissa theorem on `D+`, and exceptional lifts are not yet fully
 formalized.
 
-**Implemented in source before the present update.** The exact quadratic
-remainder identities, both physical compact equations, reciprocal character
-identities, the essential factor `2` in the cleared `E1` character identity,
-positive map to `D+`, both 71-term projection Bézout certificates,
-boundary-fibre identities, and the abstract `p=7` integral 3-saturation
-argument.  These declarations also remain subject to the full build gate.
+**Already represented in Lean source.** Exact quadratic remainder identities,
+both physical compact equations, reciprocal character identities, the
+essential factor `2` in the cleared `E1` identity, the positive map to `D+`,
+both 71-term projection Bézout certificates, boundary-fibre identities, and
+the abstract `p=7` integral 3-saturation argument.
 
 **External proof.** The C012/C035/C039/C040/direct-C041 chain cited in
-`STATUS.md`, with the recommended endpoint in
+`STATUS.md`, ending at
 `research/proof_simplification_3/dplus_p3_square_abscissa.py`.
 
-**Estimated burden.** Very high.  The two main subgaps are the exact
-Schaefer--Stoll rank certificate and specialized `3`-adic local analysis.
+**Estimated burden.** Very high.  The main subgaps are the exact
+Schaefer--Stoll rank certificate and the specialized `3`-adic local analysis.
 
-**Downstream dependencies.** The `2+3` branch of the final contradiction.
-
-### 4. `symmetric_five_five_impossible`
+## Gap 3 — `symmetric_five_five_impossible`
 
 **Statement.** For `s>0`, `s≠1`, no symmetric irreducible `5+5`
 factorization exists.
 
 **Why open in Lean.** The seven pinned real-root exclusion obligations have
-not yet been converted into Lean-checked Sturm/positivity certificates.
+not yet been converted into Lean-checked Sturm or positivity certificates.
 
-**External proof.** `scripts/replay_5plus5.sh` and the pinned scripts and data
-it invokes.
+**External proof.** `scripts/replay_5plus5.sh` and the pinned scripts/data it
+invokes.
 
 **Estimated burden.** Medium.  Explicit checked Sturm chains or positivity
 certificates should avoid a large general real-algebraic library.
 
-**Downstream dependencies.** The `5+5` branch of the final contradiction.
+## Downstream theorem bodies without local `sorry`
 
-## Declarations already downstream of the gaps
-
-The following theorem bodies contain no local `sorry`; they will become
-axiom-clean when the four gaps above are closed and the complete project
-builds:
+The following theorem bodies become axiom-clean immediately when the three
+remaining gaps are discharged and the complete project builds:
 
 - `sharipov_composition_reduction`;
 - `sharipov_factorization_classification`;
@@ -153,9 +134,9 @@ builds:
 GitHub Actions did not start because the repository owner's Actions billing
 or spending-limit state prevented job allocation.  The current execution
 environment has no installed Lean binary and cannot resolve outbound package
-hosts, so it cannot install the pinned toolchain.  Consequently the commits
-in this update were checked against the exact pinned mathlib source API, but
-must still pass a real
+hosts, so it cannot install the pinned toolchain.  Consequently the new
+commits were source-audited against the exact pinned mathlib revision, but
+must still pass:
 
 ```bash
 cd lean
@@ -173,6 +154,5 @@ bash scripts/reproduce_lean.sh
 bash scripts/reproduce_lean.sh complete
 ```
 
-The development-mode axiom audit is expected to report `sorryAx` until the
-four entries above are discharged.  That output must not be described as a
-completed formal verification.
+Development mode is expected to report `sorryAx` until the three entries
+above are discharged.  The project is not yet a complete formal verification.

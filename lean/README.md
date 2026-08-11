@@ -7,9 +7,15 @@ completed proof in `paper/clean3.tex`.
 
 The project is **not yet a complete formal verification**.  The exact public
 theorem is present and the final proof is assembled through the three cases
-`1+4`, `2+3`, and symmetric `5+5`, but four proof-critical theorems still use
-temporary `sorry` placeholders.  Their exact statements and dependencies are
-listed in [FORMALIZATION_STATUS.md](FORMALIZATION_STATUS.md).
+`1+4`, `2+3`, and symmetric `5+5`.  Three proof-critical arithmetic theorems
+still use temporary `sorry` placeholders; their exact statements and
+certificate dependencies are listed in
+[FORMALIZATION_STATUS.md](FORMALIZATION_STATUS.md).
+
+The polynomial/scaling/factorization-classification shell, including the
+specialized Capell reduction for `P_s(X^2)`, is now written as ordinary Lean
+proof source without local placeholders.  It still requires a real
+`lake build` before being called kernel-checked.
 
 No project-specific `axiom` declarations are used.
 
@@ -52,15 +58,18 @@ results and checksums are not proof premises.  Every imported certificate must
 ultimately be checked by Lean as explicit polynomial identities, finite-field
 arithmetic, matrices, group tables, valuation bounds, or local-series data.
 
-The current kernel-checked layer includes:
+The Lean source currently covers:
 
 - the exact normalized quintic and integer degree-ten polynomial;
 - coefficient, degree, monicity, and primitivity facts;
-- the pointwise weighted scaling identity;
+- pointwise and exact-polynomial weighted scaling identities;
 - Gauss-lemma transfer from `Polynomial ℤ` to `Polynomial ℚ`;
+- the reducible-quintic `1+4 / 2+3` split;
+- the reflection, contraction, and UFD proof of the specialized symmetric
+  `5+5` Capell alternative;
 - the logical three-case contradiction assembly;
-- the exact octic-to-`D+` map and its square-abscissa property;
-- the initial infinity-chart algebra.
+- substantial exact algebra from the `2+3` reduction;
+- the exact octic-to-`D+` map and initial local/infinity algebra.
 
 The arithmetic-geometric certificate checkers remain under construction.
 
@@ -94,9 +103,14 @@ lake env lean Cuboid2/AxiomAudit.lean
 
 ## Source layout
 
-- `Cuboid2/Polynomial.lean`: exact polynomials, scaling, degree, Gauss transfer.
+- `Cuboid2/Polynomial.lean`: exact polynomials, degree facts, and Gauss transfer.
 - `Cuboid2/Factorization.lean`: precise definitions of the three cases.
-- `Cuboid2/DPlus/Basic.lean`: exact algebra on the direct genus-two route.
+- `Cuboid2/FactorizationClassification.lean`: reducible monic quintic split.
+- `Cuboid2/Scaling.lean`: exact root scaling from `Q_{p,q}` to `P_s(X^2)`.
+- `Cuboid2/Capell*.lean`: reflection, contraction, degree descent, factor orbit,
+  and the specialized quintic Capell reduction.
+- `Cuboid2/QuadraticReduction/`: exact algebraic `2+3` certificates.
+- `Cuboid2/DPlus/`: direct genus-two route and saturation infrastructure.
 - `Cuboid2/Main.lean`: public theorem and contradiction assembly.
 - `Cuboid2/AxiomAudit.lean`: `#check` and `#print axioms` audit.
 
