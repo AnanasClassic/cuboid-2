@@ -95,7 +95,7 @@ See [STATUS.md](STATUS.md), [CLAIMS.md](CLAIMS.md), and
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install -e '.[test]'
-PYTHON_BIN=.venv/bin/python scripts/reproduce.sh
+PYTHON_BIN=.venv/bin/python bash scripts/reproduce.sh
 ```
 
 The run regenerates the exact obstruction

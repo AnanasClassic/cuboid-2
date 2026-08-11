@@ -42,17 +42,18 @@ The JSON artifact is canonical and checksum-protected.  The calculation uses
 exact rational and finite-field arithmetic; no finite-precision \(3\)-adic
 approximation is used.
 
-Target B also succeeds.  An exact rational Richelot isogeny descent proves
-the rank-one, torsion, and modulo-\(2\) independence inputs needed by Target
-A.  A separate correspondence certificate verifies the forward and dual
-maps, their transpose relation, Galois descent, and
-\(\widehat\phi\circ\phi=[2]\); the Selmer certificate checks both possible
-Galois-equivariant pairing conventions and all local images.  The old full
-Schaefer--Stoll descent is retained and replayed as an independent proof, but
-it is not a dependency of the new clean argument.
+Target B is mathematically successful but is **not adopted as a
+simplification**.  The exact rational Richelot descent proves the same
+rank-one, torsion, and modulo-\(2\) inputs, and every correspondence, twist,
+local image, and pairing convention is certified.  However, its complete
+proof object is substantially larger than the existing Schaefer--Stoll
+certificate.  Under the explicit criterion in the task, this is a valid
+alternative proof, not Level 2.
 
-Thus this audit reaches Level 3: both prioritized targets succeed with the
-same theorem and with the original proof still independently runnable.
+Thus the audit reaches Level 1.  `paper/clean2.tex` uses the direct \(C_3\)
+classification while retaining the shorter existing rank certificate.  The
+original proof and the Richelot alternative both remain independently
+runnable.
 
 ## 1. Inputs and scope
 
@@ -111,22 +112,21 @@ research/proof_simplification/c041_structure.json
 
 The genus-two statements in (4), together with the independence of \(D,T\)
 modulo \(2\), are now independently certified in two ways.  The new clean
-proof uses
+proof retains
+
+```text
+research/arithmetic_geometry/product_genus2_two_descent.json
+```
+
+The alternative Richelot audit is
 
 ```text
 research/proof_simplification_2/richelot_composition_check.py
 research/proof_simplification_2/richelot_isogeny_descent.json
 ```
 
-while the old proof uses
-
-```text
-research/arithmetic_geometry/product_genus2_two_descent.json
-```
-
 The relevant embedded checksums are verified before their conclusions are
-used.  The old full-descent artifact is an independent comparison, not a
-premise of the Richelot certificate.
+used.  Neither rank certificate assumes that \(D\) is primitive.
 The degree of the quotient isogeny in (3) is a power of \(2\), hence a
 \(3\)-adic unit.  Its tangent-space decomposition is therefore exact at
 \(p=3\):
@@ -600,21 +600,20 @@ the clean proof, the following are no longer proof dependencies:
 
 The following remain:
 
-* a proof that \(\operatorname{rank}J(\mathbf Q)=1\), now supplied in the
-  clean proof by the rational Richelot isogeny descent in Section 7;
+* the Schaefer--Stoll proof that \(\operatorname{rank}J(\mathbf Q)=1\),
+  including torsion and \(D,T\) independence modulo \(2\);
 * the rank-one proof for \(E_1\);
 * the exact quotient isogeny (3);
 * the small finite-group facts
-  \(\#J(\mathbf F_7)=42\) and
-  \(\operatorname{ord}(\bar D)=21\), both for the non-torsion/rank input
-  and for the \(3\)-saturation step (19);
+  \(\#J(\mathbf F_3)=22\), \(\#J(\mathbf F_7)=42\), and
+  \(\operatorname{ord}(\bar D)=21\), for torsion and the non-torsion/rank
+  input, with the \(p=7\) facts also used in the \(3\)-saturation step (19);
 * the compact-locus, common-character, and exceptional-fibre certificates
   preceding and following the arithmetic classification.
 
-The full Schaefer--Stoll \(2\)-descent at \(2,5,17\) is no longer a
-dependency of `paper/clean2.tex`; it remains runnable as part of the frozen
-original proof and as an optional exact comparison for the Richelot
-certificate.
+The full Schaefer--Stoll \(2\)-descent at \(2,5,17\) remains a dependency of
+`paper/clean2.tex`.  The Richelot certificate in Section 7 is an independently
+replayable alternative, not an ancestor of the clean theorem.
 
 The old C041 scripts remain runnable and provide an independent proof.  The
 new script currently imports generic exact Cantor/polynomial helpers from
@@ -631,7 +630,8 @@ module.
 
 ### 7.1 Status and exact certificates
 
-Target B succeeds.  The exact replays are
+The Target B mathematics succeeds, but the route is not adopted as the
+shorter rank proof.  The exact alternative replays are
 
 ```text
 research/proof_simplification_2/richelot_composition_check.py
@@ -660,7 +660,9 @@ Then
 q_1q_2q_3=a(4a^4-8a+5),
 \]
 
-and the coefficient determinant is \(-8i\).  With
+and, in the stable order \((q_2,q_3,q_1)\), the coefficient determinant
+is \(-8i\) in descending-coefficient convention, equivalently \(+8i\) in
+Bruin--Doerksen's constant--linear--quadratic convention.  With
 \([f,g]=f'g-fg'\), the exact brackets are
 
 \[
@@ -672,111 +674,96 @@ and the coefficient determinant is \(-8i\).  With
 \tag{26}
 \]
 
-They give the rational Richelot neighbour
-
-\[
-\widehat D:\quad
-Y^2=-2(2a^2-4a+1)(4a^4+4a^2+5).
-\tag{27}
-\]
-
-For
+Put
 
 \[
 h_1=2a^2-4a+1,\quad
 h_2=2a^2+1-2i,\quad
-h_3=2a^2+1+2i,
+h_3=2a^2+1+2i.
 \]
 
-the dual brackets recover the source factors up to the expected constants:
+The normalized brackets for the stable order are
 
 \[
-[h_2,h_3]=16ia,\qquad
-[h_3,h_1]=-4q_2,\qquad
-[h_1,h_2]=4q_3.
+\left(-\frac{i}{8}h_2,\ \frac{i}{8}h_3,\ -\frac12h_1\right),
+\qquad
+\prod G_j=-\frac{h_1h_2h_3}{128}.                 \tag{27}
+\]
+
+The coefficient étale algebra is
+\(\mathbf Q\times\mathbf Q(i)\), whose discriminant has squareclass
+\(d=-1\).  The stable-splitting theorem gives
+\(d\widetilde Y^2=\prod G_j\), not the untwisted bracket curve.  Hence
+\(\widetilde Y^2=h_1h_2h_3/128\), and \(Y=16\widetilde Y\) gives the
+rational Richelot neighbour
+
+\[
+\widehat D:\quad
+Y^2=2(2a^2-4a+1)(4a^4+4a^2+5).
 \tag{28}
 \]
 
-Equations (26)--(28) are supplemented by an exact correspondence certificate;
-composition is not inferred from degrees or bracket recovery alone.
+The sign in (28) is proof-critical.  The negative model is the untwisted
+bracket curve, not the rational quotient attached to this nonsplit stable
+factorization.  The exact certificate checks the twist and the
+correspondences below; composition is not inferred from degrees or bracket
+recovery alone.
 
 ### 7.2 Exact forward and reverse correspondences
 
-Use \(x\) on \(D_+\) and \(t\) on \(\widehat D\).  Let
-\(p_j\) denote the source factors \(q_j\), and let
-
+Use \(x\) on \(D_+\) and \(t\) on \(\widehat D\), and write
 \[
-(r_1,r_2,r_3)=([p_2,p_3],[p_3,p_1],[p_1,p_2]).
+f(x)=x(4x^4-8x+5),\qquad
+\widehat f(t)=2h_1(t)h_2(t)h_3(t).
 \]
-
-The raw bracket curve is identified with the displayed model (27) by
-\(Y=2w\).  The forward Richelot correspondence on
-\(D_+\times\widehat D\) is certified by the exact equations
+The forward Richelot correspondence on
+\(D_+\times\widehat D\) has the following genuinely rational equations:
 
 \[
 \begin{aligned}
-E(x,t)&=p_1(x)r_1(t)+p_2(x)r_2(t)=0,\\
-yY&=B(x,t)
-   =2i\,p_1(x)r_1(t)(x-t).
+E(x,t)&=2t^2x-2t^2-2x^2+x=0,\\
+yY&=B(x,t)\\
+&=-2(x-t)\bigl(4t^2x^2-2t^2+2x^2+4x-5\bigr).
 \end{aligned}
 \tag{29}
 \]
 
-The script proves exact polynomial divisibility of
+Over \(\mathbf Q(i)\), the standard split ordinate is
+\[
+B_K=-2q_2(x)h_2(t)(x-t),\qquad
+B_K-B=-4i(x-t)E.
+\]
+It therefore induces exactly (29) on \(E=0\), rather than merely a
+Galois-conjugate correspondence.  The script proves exact polynomial
+divisibility of
 
 \[
 f(x)\widehat f(t)-B(x,t)^2
 \]
 
-by \(E(x,t)\), where \(y^2=f(x)\) and \(Y^2=\widehat f(t)\).
-Thus (29) is a correspondence on the product of the two displayed curves,
-not a point sample.
+by \(E(x,t)\).  Thus (29) is a correspondence on the product of the two
+displayed curves, not a point sample.
 
-For the reverse construction use the scaled target triple
-
-\[
-H_1=-2(2t^2-4t+1),\qquad
-H_2=2t^2+1-2i,\qquad
-H_3=2t^2+1+2i.
-\]
-
-Its determinant is \(-64i\), and its brackets are exactly
+For the reverse construction use the stable target order
 
 \[
-s_1=16ip_1,\qquad s_2=8p_2,\qquad s_3=-8p_3.
+H=(h_2,h_3,2h_1).
 \]
 
-The recovered curve is
+Its normalized brackets are
 
 \[
-Z^2=16f(x),
+\left(-\frac{i}{8}q_2,\ \frac{i}{8}q_3,\ -\frac14q_1\right),
+\qquad
+\prod S_j=-\frac{f}{256}.
 \]
 
-and the reverse correspondence is
-
-\[
-\begin{aligned}
-\widehat E(t,x)&=H_1(t)s_1(x)+H_2(t)s_2(x)=0,\\
-YZ&=\widehat B(t,x)
-   =-i\,H_1(t)s_1(x)(t-x).
-\end{aligned}
-\tag{30}
-\]
-
-Exact symbolic arithmetic proves the three model-identification identities
-
-\[
-\boxed{\widehat E=8E,\qquad
-\widehat B=4B,\qquad
-Z=4y.}
-\tag{31}
-\]
-
-It also proves exact divisibility of
-\(\widehat f(t)\,16f(x)-\widehat B(t,x)^2\) by
-\(\widehat E(t,x)\).  Equations (29)--(31) show that the reverse
-correspondence is literally the transpose of the forward correspondence
-after the displayed source-model scaling.
+Applying the same squareclass \(d=-1\) gives
+\(\widetilde Z^2=f/256\); with \(Z=-16\widetilde Z\) the recovered curve is
+exactly \(Z^2=f(x)\).  Exact symbolic reduction of the split reverse
+equations gives \(E/2\) and the same rational ordinate \(B\) modulo \(E\).
+Consequently the reverse correspondence is literally the transpose of
+(29), after the displayed ordinate normalization.
 
 If \(Z\subset D_+\times\widehat D\) is the exact correspondence (29), the
 forward map on degree-zero divisor classes is the usual pull--push
@@ -788,7 +775,7 @@ forward map on degree-zero divisor classes is the usual pull--push
 \]
 
 and the reverse map is the same construction for
-\(Z^{\mathsf t}\).  The identities (30)--(31) prove exactly that the
+\(Z^{\mathsf t}\).  The reverse identities prove exactly that the
 second polynomial correspondence defines \(Z^{\mathsf t}\); they do not
 merely show that its source and target curves have the expected equations.
 
@@ -802,18 +789,16 @@ script checks smoothness and both nonzero determinants, so the theorem gives
 \widehat\phi\circ\phi=[2],
 \qquad
 \phi\circ\widehat\phi=[2]
-\tag{32}
+\tag{30}
 \]
 
 over \(\mathbf Q(i)\).
 
-Complex conjugation fixes \(p_1,H_1\) and exchanges
-\(p_2,p_3\) and \(H_2,H_3\).  Hence both unordered quadratic splittings are
-Galois stable.  The stable-splitting construction of Bruin--Doerksen,
-Section 4 and Proposition 11, makes both Richelot maps
-\(\mathbf Q\)-rational even though the individual conjugate factors are not.
+The equations \(E,B\) are rational, and both unordered quadratic splittings
+are Galois stable.  Bruin--Doerksen, Section 4 and Proposition 4.3, identifies
+the required squareclass twist and descends both maps to \(\mathbf Q\).
 Faithfulness of base extension for homomorphisms of abelian varieties then
-descends (32) to \(\mathbf Q\).  These theorem-backed exact correspondence
+descends (30) to \(\mathbf Q\).  These theorem-backed exact correspondence
 identities satisfy the composition obligation without a degree-only
 argument or a bounded divisor sample.
 
@@ -824,7 +809,7 @@ References:
   Section 3; Cassels--Flynn, Section 8.4.
 * Bruin--Doerksen, [*The arithmetic of genus two curves with
   \((4,4)\)-split Jacobians*](https://arxiv.org/abs/0902.3480), Section 4
-  and Proposition 11.
+  and Proposition 4.3.
 
 ### 7.3 Global groups
 
@@ -842,6 +827,15 @@ Thus the exact global local-condition set is
 S=\{2,5,17\}.
 \tag{33}
 \]
+
+At the real place,
+\(H^1(\mathbf R,\operatorname{Res}_{\mathbf C/\mathbf R}\mu_2)=0\), so
+there is no omitted archimedean condition.  Correcting the target by the
+\(-1\) twist does not alter the two-torsion modules: its cocycle is the
+hyperelliptic involution, which acts as \([-1]\) on the Jacobian and hence
+trivially on two-torsion.  The source descent function and both local
+Tate-pairing conventions below are therefore unchanged; the certificate
+nevertheless recomputes every survivor mask after the correction.
 
 The associated Gaussian \(S\)-unit squareclass space has \(64\) elements.
 The corrected connecting function is
@@ -962,9 +956,10 @@ visible \(T\), then give
 J(\mathbf Q)_{\rm tors}=\langle T\rangle\simeq\mathbf Z/2\mathbf Z.
 \]
 
-Thus the Target B certificate supplies all three global inputs used by
+Thus the Target B certificate could supply all three global inputs to
 Target A: rank one, torsion \(\langle T\rangle\), and independence of \(D,T\)
-modulo \(2\).
+modulo \(2\).  The canonical Target A artifact instead retains the shorter
+Schaefer--Stoll certificate.
 
 Computationally this replaces the quartic-etale-algebra enumeration
 
@@ -973,9 +968,14 @@ Computationally this replaces the quartic-etale-algebra enumeration
 \ \longrightarrow\ 4
 \]
 
-by two \(64\)-class Gaussian calculations, (38) and (39).  It is therefore
-a genuine simplification, not merely the same enumeration in
-different coordinates.
+by two \(64\)-class Gaussian calculations, (38) and (39).  This reduces the
+ambient class enumeration, but not the complete proof object: the existing
+rank script has \(315\) lines and a \(1{,}871\)-byte artifact, whereas the
+Richelot route needs a \(572\)-line correspondence certificate, a
+\(1{,}586\)-line descent certificate, and a roughly \(20\) KB artifact.
+It also requires the twist, transpose, local-completeness, and both
+Cartier-pairing arguments recorded above.  It is therefore not a
+substantially shorter descent under the task's stated standard.
 
 ### 7.6 Certification gates
 
@@ -1004,7 +1004,9 @@ All seven Target B gates pass:
    comparison, not an input to the new `PASS`.
 
 The old full descent remains in `scripts/reproduce.sh` to preserve and replay
-the original proof, not because (40) depends on it.
+the original proof and because it is the rank input retained by the clean
+Level-1 proof.  It is not an input to the alternative Richelot certificate
+itself.
 
 ## 8. Direct \(\operatorname{Jac}(C_3)\) rank approach
 
@@ -1022,9 +1024,11 @@ factor conditions and was not constructed.  It would not improve the
 annihilator calculation: (5) is what proves that the annihilator is
 one-dimensional and identifies it with (8).
 
-The Richelot certificate replaces the old full-descent rank and
-modulo-\(2\) inputs for the \(J\)-factor.  The elliptic rank proof, quotient
-isogeny, and \(p=3\) logarithm/lattice calculation remain necessary.
+The Richelot certificate can replace the old full-descent rank and
+modulo-\(2\) inputs for the \(J\)-factor, but its complete proof object is
+larger, so `paper/clean2.tex` retains the Schaefer--Stoll input.  The
+elliptic rank proof, quotient isogeny, and \(p=3\) logarithm/lattice
+calculation remain necessary in either version.
 
 ## 9. Adversarial logic audit
 
@@ -1055,9 +1059,16 @@ The following tempting but invalid shortcuts were explicitly excluded.
   logarithms are used only after that input.
 * **Target B is fail-closed.**  Survivor counts or bracket identities alone
   do not constitute an isogeny descent.  All seven gates now pass, including
-  exact forward/reverse correspondences and the transpose model scalings;
+  the stable-splitting twist, exact rational forward correspondence, and its
+  transpose;
   any mismatch makes the certificate fail rather than fall back to the old
   rank result.
+* **The Richelot twist is not optional.**  A preliminary certificate used
+  the negative, untwisted bracket curve.  Although its factor set was Galois
+  stable, its individual correspondence graph was not.  The corrected
+  certificate computes the coefficient étale discriminant squareclass
+  \(-1\), uses the positive model (28), and verifies rational equations for
+  the correspondence itself.
 * **The surrounding factor proof is unchanged.**  The physical sign and
   valuation squareclass remain distinct, the factor \(2\) in
   \(1-UV=2(X+1)LMg^2\) is untouched, C025 is not invoked, and the existing
@@ -1079,6 +1090,16 @@ The certificate verifies the checksums of its rank and quotient inputs,
 recomputes all six residue classes, performs exact Cantor arithmetic for
 \(11D\), proves the coefficient congruences and tail bounds used in every
 disk, recomputes (17), and writes its own checksum-protected JSON artifact.
+The canonical replay uses the existing Schaefer--Stoll rank certificate.
+The independently valid Richelot rank input can be tested without
+overwriting that canonical artifact by
+
+```bash
+.venv/bin/python \
+  research/proof_simplification_2/c3_p3_chabauty.py \
+  --rank-source richelot \
+  --output /tmp/c3_p3_chabauty_richelot.json
+```
 
 Target B can be replayed independently of the old descent with
 
@@ -1105,6 +1126,16 @@ independent comparison is
 That flag does not alter the default Target B theorem or its dependency
 graph.
 
+The Richelot replay uses SymPy exact polynomial arithmetic and PARI through
+cypari2.  The canonical artifact records SymPy and cypari2 versions; the
+PARI library version is deliberately not hashed because supported
+distribution packages differ, while all accepted outputs are exact.  The
+Gaussian number-field setup is accepted only after
+`bnfcertify(bnf) == 1`.  Local square tests use exact
+`nfislocalpower(..., 2)` calls and local Tate pairings use exact
+`nfhilbert` symbols.  No database rank, floating-point approximation, or
+heuristic class/unit-group output is treated as a proof.
+
 The old C041 proof should continue to be replayed independently with
 
 ```bash
@@ -1124,12 +1155,15 @@ Target A is Level 1: direct \(p=3\) Chabauty plus an exact integral
 Mordell--Weil lattice refinement proves \(C_3(\mathbf Q)\) and removes the
 old \(7/23\) square-abscissa sieve/Coleman block from the clean proof.
 
-Target B is Level 2: the exact rational Richelot isogeny descent replaces the
-full Schaefer--Stoll rank certificate in the clean proof while also supplying
-the torsion and \(D,T\) modulo-\(2\) independence used by Target A.
+Target B is a complete, independently replayable Richelot-isogeny descent,
+but it does **not** meet the task's Level-2 requirement of a substantially
+shorter rank proof: its two smaller \(64\)-class enumerations require a
+larger correspondence, twist, local-completeness, and pairing certificate
+than the existing descent.  It is therefore recorded as a valid alternative
+and not adopted as a replacement dependency.
 
-Together they give Level 3.  `paper/clean2.tex` may use the direct \(C_3\)
-rational-point theorem and the smaller Richelot rank certificate.  The old
-Schaefer--Stoll and \(7/23\) C041 machinery remains intact and reproducible
-as an independent proof, but it is not an ancestor of the theorem in the
-new clean dependency graph.
+The overall result is Level 1.  `paper/clean2.tex` uses the direct \(C_3\)
+rational-point theorem and retains the shorter Schaefer--Stoll rank
+certificate.  The old \(7/23\) square-abscissa machinery remains intact and
+reproducible as an independent proof, but is no longer an ancestor of the
+theorem in the new clean dependency graph.

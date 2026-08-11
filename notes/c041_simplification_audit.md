@@ -2,9 +2,13 @@
 
 ## Result
 
-No proof-quality replacement for C041 was found.  The existing
-Schaefer--Stoll descent, index-independent `7/23` Mordell--Weil sieve, and
-exact `p=7` Coleman step remain proof-critical.
+This first structural audit found no proof-quality replacement for C041.
+At that stage the existing Schaefer--Stoll descent, index-independent
+`7/23` Mordell--Weil sieve, and exact `p=7` Coleman step remained
+proof-critical.  The subsequent
+`notes/c041_second_simplification.md` proves a direct \(p=3\) replacement
+for the `7/23` local block; the historical negative conclusions below are
+qualified accordingly.
 
 The investigation did produce exact structural negative results:
 
@@ -219,19 +223,33 @@ The quartic factor of `D+` has Galois group `D4` and factors over `Q(i)` as
 \]
 
 Pairing the branch points `0` and infinity supplies the third Richelot
-factor.  The determinant is `-8i`, and the exact bracket construction
-descends to the rational dual model
+factor.  The determinant is `-8i` in descending-coefficient convention,
+or `+8i` in the constant--linear--quadratic convention.  The coefficient
+étale algebra is `Q x Q(i)`, with discriminant squareclass `-1`; the
+stable-splitting construction therefore descends to the positive rational
+twist
 
 \[
 \widehat D:\quad
-Y^2=-2(2a^2-4a+1)(4a^4+4a^2+5).
+Y^2=2(2a^2-4a+1)(4a^4+4a^2+5).
 \]
+
+The negative model recorded in the first version of this audit is only the
+untwisted bracket curve.  Its individual correspondence graph is not
+Galois-stable, so it is not the rational quotient.  The exact correction,
+including rational forward and transpose equations, is certified in
+`research/proof_simplification_2/richelot_composition_check.py`.
 
 The quartic factor on the right is irreducible over `Q`.  More importantly,
 the source Jacobian is geometrically simple, so its Richelot-isogenous target
 is also geometrically simple.  This is a genuine rational `(2,2)`-isogeny,
 but it changes one genus-two Jacobian into another and does not turn the rank
-or square-abscissa problem into elliptic arithmetic.
+or square-abscissa problem into elliptic arithmetic.  The subsequent audit
+`notes/c041_second_simplification.md` nevertheless shows that descent along
+this isogeny gives a valid alternative rank certificate.  Its complete proof
+object is larger than the existing descent, so it is not adopted as a
+simplification; the construction does not rely on an elliptic-product
+splitting.
 
 The bracket convention is the standard one
 `[A,B]=A'B-AB'`; see the explicit Richelot formulas in the
@@ -248,7 +266,7 @@ This route is attractive because
 =1+1=2<3.
 \]
 
-It does not, however, remove the existing local work.
+In this first audit it did not, however, remove the existing local work.
 
 At `p=3`,
 
@@ -266,8 +284,10 @@ differential inherited from the `D+` factor reduces to a multiple of
 
 It vanishes in all four affine disks, and `3<=2g`.  The ordinary one-disk
 Coleman bound therefore does not apply.  A new exact four-disk
-Strassmann calculation would be required.  No such proof-quality
-calculation was obtained, so the discarded `p=3` shortcut was not restored.
+Strassmann calculation would be required.  No such proof-quality calculation
+was obtained in this first audit.  The subsequent audit supplies the missing
+exceptional-disk argument by combining exact Coleman expansions with a small
+integral \(p=7\) saturation lemma.
 
 At `p=7`, exact enumeration gives
 
@@ -282,9 +302,10 @@ u=3,4,\qquad r=2,5.
 \]
 
 Under the map to `D+`, these are exactly the two extra square-abscissa
-classes `+/-5` in the torsion-zero component.  The existing `p=23`
-Mordell--Weil sieve is what proves that no rational point occupies them.
-Direct genus-three Chabauty therefore repackages the same sieve obligation.
+classes `+/-5` in the torsion-zero component.  At this stage the existing
+`p=23` Mordell--Weil sieve was what proved that no rational point occupied
+them.  The later \(p=3\) argument bypasses these \(p=7\) residue disks
+entirely.
 
 ## 5. Can the existing C041 proof itself be shortened?
 
@@ -292,8 +313,10 @@ Direct genus-three Chabauty therefore repackages the same sieve obligation.
 
 The geometric simplicity result rules out an elliptic-factor rank proof.
 The rational Richelot neighbour does not split.  No smaller unconditional
-rank-one certificate was found.  The current Schaefer--Stoll computation is
-therefore retained.  Within that computation the local condition at `17` is
+rank-one certificate was found in this audit.  The subsequent Richelot
+computation is an exact independent alternative, but its complete proof
+object is larger, so the Schaefer--Stoll computation remains the clean-paper
+rank input.  Within that computation the local condition at `17` is
 genuinely active:
 
 ```text
@@ -306,17 +329,19 @@ Omitting `17` leaves an eight-class upper bound and does not prove rank one.
 
 At `7`, the exact square-abscissa list contains the extra classes `+/-5`.
 The `23` table, compared modulo `21` with the index-independent argument,
-removes precisely those classes.  A proof that uses the current `p=7`
-Coleman calculation but simply deletes the `p=23` step is invalid.  No
-single-prime replacement with a complete exact local argument was found.
+removes precisely those classes.  A proof that uses the old `p=7` Coleman
+calculation but simply deletes the `p=23` step is invalid.  No single-prime
+replacement with a complete exact local argument was found in this first
+audit; the later direct \(p=3\) proof uses a different integral-lattice
+refinement.
 
 ### Better Chabauty prime
 
 The tempting prime `3` has the minimal residue set but a vanishing
 annihilator in the four affine disks.  The prime `7` has a nonvanishing
 annihilator on the surviving disks but four unoccupied square-abscissa
-disks before the MW sieve.  The current pairing of the `7/23` sieve with the
-`p=7` formal logarithm remains the shortest fully certified route found.
+disks before the MW sieve.  At this stage the pairing of the `7/23` sieve
+with the `p=7` formal logarithm was the shortest fully certified route found.
 
 ### Covering collections and local/global shortcuts
 
@@ -329,14 +354,15 @@ classifies `C3(Q)` or the square abscissas on `D+`.
 
 ## 6. Final status
 
-This audit improves exposition and closes tempting structural detours, but it
-does **not** establish Level 2 or Level 3:
+This first audit improved exposition and closed tempting structural detours,
+but by itself it did **not** establish Level 1, Level 2, or Level 3:
 
 - no proof dependency of C041 is replaced;
-- `p=23` remains necessary in the current argument;
+- `p=23` remained necessary in the argument available at that stage;
 - the full exact 2-descent remains the certified rank proof;
 - the theorem remains fully proved by the original C041 machinery.
 
-The negative results are intentionally kept outside the clean paper's main
-logical chain.  They belong in this audit, not as additional prerequisites
-for the conjecture.
+The negative structural results remain outside the clean paper's logical
+chain.  The later Level-1 proof and its exact dependency change are recorded
+in `notes/c041_second_simplification.md`; this document remains a historical
+audit, not an additional prerequisite for the conjecture.

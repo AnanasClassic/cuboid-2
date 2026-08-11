@@ -14,6 +14,7 @@
           0,
           2
         ],
+        "tail_scope": "all primitive degrees, with no cutoff",
         "u_center": 1,
         "zeros_per_r_disk": 2
       },
@@ -29,12 +30,44 @@
           0,
           1
         ],
+        "tail_scope": "all primitive degrees, with no cutoff",
         "u_center": -1,
         "zeros_per_r_disk": 2
       }
     ],
     "total_affine_coleman_zeros": 8,
     "total_affine_disks": 4,
+    "universal_tail_lemmas": {
+      "method": "base cases plus symbolic induction slack; no degree cutoff",
+      "power_bounds": [
+        {
+          "base_gap": 0,
+          "bound": "3^k>=k+2",
+          "domain": "all integers k>=1",
+          "first_step_slack": 5,
+          "status": "PASS",
+          "step_slack": "2*k+3"
+        },
+        {
+          "base_gap": 3,
+          "bound": "3^k>=k+4",
+          "domain": "all integers k>=2",
+          "first_step_slack": 11,
+          "status": "PASS",
+          "step_slack": "2*k+7"
+        }
+      ],
+      "prime": 3,
+      "status": "PASS",
+      "v3_n_le_n_minus_2": {
+        "domain": "all integers n>=2",
+        "proof": "v=0 is immediate; v>=1 uses 3^v<=n and 3^v>=v+2"
+      },
+      "v3_n_le_n_minus_4": {
+        "domain": "all integers n>=4",
+        "proof": "v=0 is immediate; v=1 forces n>=6; v>=2 uses 3^v<=n and 3^v>=v+4"
+      }
+    },
     "weierstrass_degree_per_affine_disk": 2
   },
   "annihilator": {
@@ -50,6 +83,7 @@
       "valuation": 1
     },
     "lambda_mod_27": 7,
+    "lambda_valuation": 0,
     "log_0_11D_valuation": 2,
     "log_0_D_valuation": 2,
     "logarithm_direction": "[log_0(D),log_1(D)]",
@@ -57,10 +91,31 @@
       "115*t**3/24 - 9*t**2/4 + t",
       "79*t**3/24 - 7*t**2/4 + t"
     ],
-    "tail_after_difference_quotient": "3^3*Z_3",
+    "tail_after_difference_quotient": "3^3*Z_3 for every degree n>=4",
+    "tail_certificate": {
+      "integer_bound": "v_3(n)<=n-4 for every integer n>=4",
+      "inverse_square_root": {
+        "branch_at_center": "1",
+        "coefficient_ring": "Z_3",
+        "context": "annihilator logarithms",
+        "status": "PASS",
+        "universal_series": "(-1)^k*binomial(2*k,k)/4^k for every k>=0"
+      },
+      "power_difference_quotients": {
+        "base_valuations": [
+          0,
+          1
+        ],
+        "bound": "v_3(S_n)>=n-1",
+        "domain": "all integers n>=1",
+        "recurrence": "S_n=-b*S_(n-1)-c*S_(n-2)",
+        "status": "PASS"
+      }
+    },
     "valuation_reason": "The root difference has valuation 2 and the divided first logarithm is a unit; 11 is a 3-adic unit."
   },
   "curve": "C3: r^2=4*u^8-8*u^2+5",
+  "failure_policy": "Every gate raises CertificateFailure; optimization cannot remove proof checks, and imported helper outputs are validated.",
   "finite_reduction": {
     "affine_rows": [
       [
@@ -138,7 +193,17 @@
         "zeros_in_disk": 1
       }
     ],
-    "total_infinity_coleman_zeros": 2
+    "total_infinity_coleman_zeros": 2,
+    "universal_tail": {
+      "integer_bound": "v_3(n)<=n-2 for every integer n>=2",
+      "inverse_square_root": {
+        "branch_at_center": "2",
+        "coefficient_ring": "Z_3",
+        "context": "C3 infinity branches",
+        "status": "PASS",
+        "universal_series": "(-1)^k*binomial(2*k,k)/4^k for every k>=0"
+      }
+    }
   },
   "prime": 3,
   "prime_7_index_audit": {
@@ -148,7 +213,7 @@
     "possible_order_of_G_mod_7": [
       21
     ],
-    "scope": "Only the finite group order and the order of D are used.  No p=7 square-abscissa table, sieve class, or formal logarithm is used.",
+    "scope": "Only the complete finite group and the order of D are used. Every imported finite Mumford output is validated.",
     "unknown_index": "D=mG with m odd"
   },
   "proof_dependency_change": {
@@ -160,7 +225,7 @@
       "coefficient comparison modulo 21/231"
     ],
     "retained": [
-      "rank Jac(D+)(Q)=1 from the Richelot isogeny descent",
+      "rank Jac(D+)(Q)=1 from the pinned Schaefer--Stoll descent",
       "#J(F7)=42 and ord(D mod 7)=21 for rank and 3-saturation"
     ]
   },
@@ -169,9 +234,36 @@
     "annihilator_dimension": 1,
     "checked_artifacts": [
       "research/frobenius_audit/candidate_544c_rank_descent.json",
-      "research/proof_simplification_2/richelot_isogeny_descent.json",
-      "research/proof_simplification/c041_structure.json"
+      "research/proof_simplification/c041_structure.json",
+      "research/arithmetic_geometry/product_genus2_two_descent.json"
     ],
+    "dependency_contracts": [
+      {
+        "checksum": "3c33cc66f0bb3a2d659af53e833ce9a24b0e3755cdba4077df15b87c80aa1703",
+        "legacy_metadata_adapter": true,
+        "path": "research/frobenius_audit/candidate_544c_rank_descent.json",
+        "schema": 1,
+        "status": "PASS",
+        "target": "rank E1(Q)=1"
+      },
+      {
+        "checksum": "31a990b98138affb577a6a59bf8fef05ba811156a3eb5b8c32780a1db87fd7db",
+        "legacy_metadata_adapter": "target only",
+        "path": "research/proof_simplification/c041_structure.json",
+        "schema": 1,
+        "status": "PASS",
+        "target": "C3 quotient structure"
+      },
+      {
+        "checksum": "8cd90ba46311943ac32f7d9b810994a3dbb86913fdeb11b64c8d0e1ae13c19a2",
+        "legacy_metadata_adapter": true,
+        "path": "research/arithmetic_geometry/product_genus2_two_descent.json",
+        "schema": 1,
+        "status": "PASS",
+        "target": "rank Jac(D+)(Q)=1 and D,T independent modulo 2"
+      }
+    ],
+    "genus_two_rank_source": "legacy",
     "good_reduction_at_3": true,
     "primitive_generator_assumed": false,
     "rank_E1_Q": 1,
@@ -180,12 +272,26 @@
     "reason": "Both non-torsion factor logarithms are nonzero; the prime-to-3 quotient isogeny separates their tangent directions."
   },
   "rational_lattice_refinement": {
-    "argument": "For Q in the same affine disk as P, log_0([Q-P]) is an integral multiple of log_0(G), hence lies in 9*Z_3.  The local first integral is x times a unit, so x=a(Q)-1 lies in 9*Z_3. The annihilating primitive is then z times a unit.",
-    "conclusion": "The additional Coleman zero has a-1 congruent to 3 modulo 9 and cannot be rational.  Every rational affine point has a=1.",
+    "argument": "For Q in the same affine disk as P, log_0([Q-P]) is an integral multiple of log_0(G), hence lies in 9*Z_3. The universal formal-series certificate proves H_0(x)=x times a unit on the entire disk, so x=a(Q)-1 lies in 9*Z_3. The annihilating primitive is then z times a unit.",
+    "conclusion": "The additional Coleman zero has a-1 congruent to 3 modulo 9 and cannot be rational. Every rational affine point has a=1.",
     "records": [
       {
         "D_plus_center": "(1,1)",
-        "first_log": "H_0(x)=x*unit for x in 3*Z_3",
+        "H0_universal_certificate": {
+          "domain": "all x in 3*Z_3",
+          "identity": "H_0(x)=x*U(x), U(x)=1 mod 3",
+          "integer_lemma": "v_3(n)<=n-2 for every integer n>=2",
+          "inverse_square_root": {
+            "branch_at_center": "1",
+            "coefficient_ring": "Z_3",
+            "context": "H0 branch 1",
+            "status": "PASS",
+            "universal_series": "(-1)^k*binomial(2*k,k)/4^k for every k>=0"
+          },
+          "status": "PASS",
+          "tail": "v_3(c_(n-1)*x^(n-1)/n)>=n-1-v_3(n)>=1 for every n>=2"
+        },
+        "first_log": "H_0(x)=x*unit for every x in 3*Z_3",
         "local_coordinate": "x=a-1",
         "normalized_annihilator_reduction": "2*z over F_3",
         "rational_lattice_constraint": "x in 9*Z_3",
@@ -194,14 +300,59 @@
       },
       {
         "D_plus_center": "(1,-1)",
-        "first_log": "H_0(x)=x*unit for x in 3*Z_3",
+        "H0_universal_certificate": {
+          "domain": "all x in 3*Z_3",
+          "identity": "H_0(x)=x*U(x), U(x)=-1 mod 3",
+          "integer_lemma": "v_3(n)<=n-2 for every integer n>=2",
+          "inverse_square_root": {
+            "branch_at_center": "1",
+            "coefficient_ring": "Z_3",
+            "context": "H0 branch -1",
+            "status": "PASS",
+            "universal_series": "(-1)^k*binomial(2*k,k)/4^k for every k>=0"
+          },
+          "status": "PASS",
+          "tail": "v_3(c_(n-1)*x^(n-1)/n)>=n-1-v_3(n)>=1 for every n>=2"
+        },
+        "first_log": "H_0(x)=x*unit for every x in 3*Z_3",
         "local_coordinate": "x=a-1",
         "normalized_annihilator_reduction": "1*z over F_3",
         "rational_lattice_constraint": "x in 9*Z_3",
         "rational_zero": "z=0 only",
         "refined_parameter": "x=9*z"
       }
-    ]
+    ],
+    "universal_tail_lemmas": {
+      "method": "base cases plus symbolic induction slack; no degree cutoff",
+      "power_bounds": [
+        {
+          "base_gap": 0,
+          "bound": "3^k>=k+2",
+          "domain": "all integers k>=1",
+          "first_step_slack": 5,
+          "status": "PASS",
+          "step_slack": "2*k+3"
+        },
+        {
+          "base_gap": 3,
+          "bound": "3^k>=k+4",
+          "domain": "all integers k>=2",
+          "first_step_slack": 11,
+          "status": "PASS",
+          "step_slack": "2*k+7"
+        }
+      ],
+      "prime": 3,
+      "status": "PASS",
+      "v3_n_le_n_minus_2": {
+        "domain": "all integers n>=2",
+        "proof": "v=0 is immediate; v>=1 uses 3^v<=n and 3^v>=v+2"
+      },
+      "v3_n_le_n_minus_4": {
+        "domain": "all integers n>=4",
+        "proof": "v=0 is immediate; v=1 forces n>=6; v>=2 uses 3^v<=n and 3^v>=v+4"
+      }
+    }
   },
   "rational_points": [
     "infinity_+",
@@ -219,7 +370,39 @@
     "total": 10
   },
   "schema": 1,
-  "sha256_without_checksum": "4dc48f10afb65413295706677da57ee638bbed5e33a7134f9354296211c0fc7a",
+  "sha256_without_checksum": "af19163a4241fe672597dcc0b5483d51c66a86cca696fdc2d3210241ac669f21",
   "status": "PASS",
-  "target_A_conclusion": "SUCCESS.  Direct p=3 Chabauty plus the integral Mordell--Weil lattice refinement proves that C3(Q) consists exactly of the two infinities and (u,r)=(+/-1,+/-1)."
+  "target": "A",
+  "target_A_conclusion": "SUCCESS. Direct p=3 Chabauty plus the integral Mordell--Weil lattice refinement proves that C3(Q) consists exactly of the two infinities and (u,r)=(+/-1,+/-1).",
+  "universal_integer_lemmas": {
+    "method": "base cases plus symbolic induction slack; no degree cutoff",
+    "power_bounds": [
+      {
+        "base_gap": 0,
+        "bound": "3^k>=k+2",
+        "domain": "all integers k>=1",
+        "first_step_slack": 5,
+        "status": "PASS",
+        "step_slack": "2*k+3"
+      },
+      {
+        "base_gap": 3,
+        "bound": "3^k>=k+4",
+        "domain": "all integers k>=2",
+        "first_step_slack": 11,
+        "status": "PASS",
+        "step_slack": "2*k+7"
+      }
+    ],
+    "prime": 3,
+    "status": "PASS",
+    "v3_n_le_n_minus_2": {
+      "domain": "all integers n>=2",
+      "proof": "v=0 is immediate; v>=1 uses 3^v<=n and 3^v>=v+2"
+    },
+    "v3_n_le_n_minus_4": {
+      "domain": "all integers n>=4",
+      "proof": "v=0 is immediate; v=1 forces n>=6; v>=2 uses 3^v<=n and 3^v>=v+4"
+    }
+  }
 }
