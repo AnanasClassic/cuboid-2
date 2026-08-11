@@ -22,6 +22,13 @@ No project-specific `axiom` declarations are used.
 The revision is pinned in `lakefile.toml`; the toolchain is pinned in
 `lean-toolchain`.
 
+For a manual bootstrap, use the official Lean release source archive
+[`v4.33.0.tar.gz`](https://github.com/leanprover/lean4/archive/refs/tags/v4.33.0.tar.gz)
+or the official prebuilt Linux archive
+[`lean-4.33.0-linux.tar.zst`](https://github.com/leanprover/lean4/releases/download/v4.33.0/lean-4.33.0-linux.tar.zst).
+The published SHA-256 digest of the Linux archive is
+`4b3fb03c29a1e0a253fb1d11f9bae3725f19a0dc6fc09b3ea16d2c9df3349e2c`.
+
 ## Public theorem
 
 ```lean
