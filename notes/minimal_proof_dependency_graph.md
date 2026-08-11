@@ -34,7 +34,9 @@ C035 lossless compact signed-square locus                                    |
 C039 common reciprocal quotient and exact C8 <-> E1 transport                |
   |                                                                         |
   v                                                                         |
-C040 common-character valuation descent --> C041 square-abscissa theorem     |
+C040 common-character valuation descent -----------+                         |
+  |                                               |                         |
+  |                      C041 square-abscissa theorem                         |
   |                                               |                         |
   +----------------------+------------------------+                         |
                          v                                                  |
@@ -46,6 +48,11 @@ C040 common-character valuation descent --> C041 square-abscissa theorem     |
                                                                             v
                                                    C042 irreducibility theorem
 ```
+
+Thus C040 and C041 are parallel inputs to the final `2+3` exclusion: C040
+reduces an admissible factor to a square-abscissa point on `D+`, while C041
+classifies those points.  C041 does not depend on C040 as an arithmetic
+statement about `D+`.
 
 The exceptional-fibre audit is written inside
 `notes/quadratic_cubic_completion.md` and replayed across C035, C039,
@@ -82,7 +89,7 @@ Jacobian orders and class tables.  It is not a logically additional premise.
 | C035 | Gives a lossless compact model, inverse, and denominator audit for both physical signs. |
 | C039 | Gives the common `C8` quotient and exact two-way transport to `E1`, including all exceptional fibres. |
 | C040 | Keeps the factor `2`, separates the valuation sign from the physical sign, excludes the negative valuation class, and maps the positive class to `D+` with square abscissa. |
-| C041 | Classifies the square-abscissa points on `D+` and supplies the final exceptional lifts. |
+| C041 | Classifies the square-abscissa points on `D+`; the separate exceptional-fibre audit excludes their lifts. |
 | C042 | Combines the three factorization exclusions. |
 
 C020 is a valid reformulation/consequence of the completed `2+3` argument,
