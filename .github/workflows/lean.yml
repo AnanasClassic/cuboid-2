@@ -1,0 +1,34 @@
+name: Lean formalization
+
+on:
+  push:
+    branches:
+      - formalization/lean
+    paths:
+      - "lean/**"
+      - "scripts/reproduce_lean.sh"
+      - ".github/workflows/lean.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "lean/**"
+      - "scripts/reproduce_lean.sh"
+      - ".github/workflows/lean.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: lean
+          build: true
+          use-mathlib-cache: true
+      - name: Public theorem axiom audit
+        run: CUBOID_SKIP_BUILD=1 bash scripts/reproduce_lean.sh development
