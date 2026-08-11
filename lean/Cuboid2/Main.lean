@@ -1,5 +1,5 @@
 import Cuboid2.FactorizationClassification
-import Cuboid2.Capell
+import Cuboid2.CapellDegree
 import Cuboid2.DPlus.Basic
 
 /-!
