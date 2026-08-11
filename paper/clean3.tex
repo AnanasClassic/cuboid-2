@@ -1,0 +1,318 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,array}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Q}{\mathbf Q}
+\title{A streamlined computer-assisted proof of\\
+Sharipov's second cuboid conjecture}
+\author{Computational research draft}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove that Sharipov's second cuboid polynomial is irreducible for every
+pair of coprime positive integers \(p\ne q\).  The completed factor argument
+is compressed to the \(1+4\), \(2+3\), and symmetric \(5+5\) cases.  The
+remaining arithmetic core is a direct \(3\)-adic classification of the
+rational-square abscissas on
+\[
+ D_+:\quad R^2=4a^5-8a^2+5a.
+\]
+It uses the existing rank-one descent and one small integral
+\(3\)-saturation lemma at \(7\), but no genus-three rational-point theorem,
+\(p=23\) sieve, or \(7\)-adic Coleman calculation.  All exceptional fibres
+and formal-series tails are certified exactly.
+\end{abstract}
+
+\section{Factorization reduction}
+
+For \(s=(p/q)^2\), put
+\[
+\begin{aligned}
+P_s(x)={}&x^5+(2+s)(3-2s)x^4
+ +(1+10s+4s^2-14s^3+s^4)x^3\\
+&-s(1-14s+4s^2+10s^3+s^4)x^2\\
+&-s^3(1+2s)(-2+3s)x-s^5
+\end{aligned}
+\]
+and \(Q_{p,q}(t)=q^{20}P_s(t^2/q^4)\).  Here \(s>0\), \(s\ne1\).
+
+\begin{proposition}[Complete reduction]\label{prop:factor}
+It is enough to exclude a rational linear factor of \(P_s\), a rational
+quadratic factor of \(P_s\), and a symmetric factorization
+\[
+ P_s(u^2)=R(u)(-R(-u))
+\]
+with \(R\) irreducible of degree five.
+\end{proposition}
+
+\begin{proof}
+Scaling and Gauss's lemma preserve reducibility.  A reducible monic quintic
+has a factor of degree at most two.  If \(P_s\) is irreducible, Capell's
+criterion says that \(P_s(u^2)\) is reducible exactly when a root \(\alpha\)
+of \(P_s\) is a square in \(\Q(\alpha)\).  Writing \(\alpha=\beta^2\), the
+minimal polynomial of \(\beta\) has degree five and conjugation
+\(\beta\mapsto-\beta\) gives the displayed factorization; the converse is
+immediate.
+\end{proof}
+
+\section{The linear--quartic case}
+
+\begin{theorem}[Linear-factor exclusion]\label{thm:linear}
+For positive rational \(s\ne1\), the quintic \(P_s\) has no rational root.
+\end{theorem}
+
+\begin{proof}
+The exact reciprocal quotient sends a root to
+\[
+ C_1:\quad w^2=t^5+21t^4+26t^3+10t^2+5t+1.
+\]
+A certified Schaefer--Stoll descent proves
+\[
+ \dim_{\mathbf F_2}\operatorname{Sel}_2(J_1/\Q)=2,\qquad
+ \operatorname{rank}J_1(\Q)=1,\qquad
+ \operatorname{Sha}(J_1/\Q)[2]=0.
+\]
+At \(5\), the six known points occupy \(C_1(\mathbf F_5)\).
+The annihilator \((1+t)dt/(2w)\) is nonzero in five disks; at
+\((-1,0)\), \(w=5z\) gives
+\[
+ \frac{G(5z)}{25}
+ =z\bigl(\text{\rm unit}+5z^2\mathbf Z_5[[z^2]]\bigr).
+\]
+Hence
+\[
+ C_1(\Q)=\{\infty,(-1,0),(0,\pm1),(1,\pm8)\}.
+\]
+The exact inverse sends these only to \(s=\pm1\) or poles.  Its remaining
+denominator has discriminant \(32\), so no admissible \(s\) occurs.
+\end{proof}
+
+\section{A lossless reduction of the \(2+3\) case}
+
+\begin{lemma}[Signed-square constant]\label{lem:square}
+If \(X^2+AX+B\) is an integral monic factor of the quintic in \(X=t^2\),
+then \(B=\sigma d^2\), where \(\sigma\in\{\pm1\}\), \(d\in\mathbf Z\).
+\end{lemma}
+
+\begin{proof}
+For every prime \(\ell\mid pq\), including \(\ell=2,3\), the coefficient
+Newton polygon has vertices
+\[
+(0,10k),\quad(2,2k),\quad(3,0),\quad(5,0).
+\]
+Its root
+valuations are \(4k,4k,2k,0,0\), so the product of any two roots has even
+valuation.  Since \(B\mid-p^{10}q^{10}\), all valuations of \(B\) are even.
+\end{proof}
+
+\begin{theorem}[Consolidated \(2+3\) reduction]\label{thm:reduction}
+Every admissible rational quadratic factor determines a rational point
+\[
+ (a,R)\in D_+:\quad R^2=4a^5-8a^2+5a
+\]
+with \(a\in\Q^2\).  Every omitted source, base-locus, denominator-zero, and
+exceptional fibre is finite and inadmissible.
+\end{theorem}
+
+\begin{proof}
+Write \(s=z^2\), normalize the constant as \(b=\sigma z^4k^2\), and write
+the linear coefficient as \(z^2ky\).  The two exact remainder equations
+eliminate \(y\) to an irreducible 71-term curve \(Q_\sigma(z,k)=0\); the
+linear penultimate subresultant recovers \(y\).  The resultant of
+\(Q_\sigma\) with its inverse denominator has only
+\(z=0,\pm1\), hence only \(s=0,1\), as rational exceptional values.
+
+Putting \(S=z^2,K=k^2\) and applying two Cayley transforms gives the same
+irreducible 29-term reciprocal quotient \(C_8(\mathcal U,\mathcal V)=0\)
+for both physical signs.  The two common characters
+\[
+ \mathcal U\mathcal V,\qquad1-\mathcal U\mathcal V                 \tag{1}
+\]
+must be nonzero rational squares.  Exact quartic maps identify the complete
+admissible normalization of \(C_8\) with
+\[
+ E_1:\quad y^2=x^3-5x+4.
+\]
+Subresultants, multiplication-back, and source/projective denominator
+resultants verify both directions and every lost fibre.
+
+After translation by the rational two-torsion point, put
+\[
+ L=2X+Y-2,\quad M=X^2+2Y-1,\quad
+ \kappa=\frac{Y+2}{X},\quad h=X+1.
+\]
+In the function field,
+\[
+ XM=(Y+2)L,\qquad
+ 1-\mathcal U\mathcal V=2(X+1)LMg^2.               \tag{2}
+\]
+The factor \(2\) is essential.  Away from the separately audited
+zeros and poles, (1)--(2) give
+\[
+ \xi^2=2\kappa h,\qquad
+ h^2-(\kappa^2+2)h+\kappa^2+4\kappa-4=0.           \tag{3}
+\]
+Valuation parity gives
+\[
+ \kappa=2\epsilon u^2,\qquad h=\epsilon v^2,
+ \qquad\epsilon\in\{\pm1\}.
+\]
+This valuation sign is unrelated to the physical sign \(\sigma\).
+For \(\epsilon=-1\), clearing denominators yields
+\[
+ W^2=-(v^2+2)(v^4+v^2-4),
+\]
+excluded by the coprime parity cases modulo \(8\).  For \(\epsilon=1\),
+the discriminant of (3) gives the displayed \(D_+\) equation with
+\(a=u^2\).  Direct substitution in the original characters checks all
+zeros and poles, including \(L=M=0\).
+\end{proof}
+
+\section{Square abscissas directly on \(D_+\)}
+
+Let \(J=\operatorname{Jac}(D_+)\),
+\[
+ D=[(1,1)-\infty],\qquad T=[(0,0)-\infty].
+\]
+
+\begin{lemma}[Rank and \(3\)-adic annihilator]\label{lem:ann}
+One has
+\[
+ \operatorname{rank}J(\Q)=1,\quad
+ J(\Q)_{\rm tors}=\langle T\rangle\simeq\mathbf Z/2\mathbf Z,
+\]
+and \(D,T\) are independent modulo \(2\).  The annihilator is
+\[
+ \eta=(\lambda-a)\frac{da}{R},\qquad
+ \lambda\equiv7\pmod{27},\quad v_3(\lambda-1)=1,\quad
+ v_3(\log_0D)=2.                                    \tag{4}
+\]
+\end{lemma}
+
+\begin{proof}
+The existing exact Schaefer--Stoll descent has survivor chain
+\[
+ 512\longrightarrow64\longrightarrow8\longrightarrow4
+\]
+at \(2,5,17\), ending in \(0,D,T,D+T\); good reductions give the torsion.
+Exact Cantor arithmetic for \(11D\), followed by divided formal integration
+of \(da/R,a\,da/R\), gives (4).  The inverse-square-root and
+power-difference tails are universally bounded by
+\(n-1-v_3(n)\), not by a fixed truncation.
+\end{proof}
+
+\begin{theorem}[Square-abscissa theorem]\label{thm:square}
+\[
+\{P\in D_+(\Q):a(P)\in\Q^2\}
+=\{\infty,(0,0),(1,1),(1,-1)\}.                    \tag{5}
+\]
+\end{theorem}
+
+\begin{proof}
+A \(3\)-adic square \(a\) has even valuation.  If \(v_3(a)>0\) and
+\(a=u^2\ne0\), then
+\[
+ (R/u)^2=4a^4-8a+5\equiv2\pmod3,
+\]
+impossible.  Thus only \((0,0)\) occurs in that disk; \(R\) is its valid
+uniformizer since the derivative with respect to \(a\) is \(-5\).
+If \(v_3(a)=0\), then \(a\equiv1\pmod3\), so the point lies in a disk of
+\((1,\pm1)\).
+
+Do not assume \(D\) primitive.  After a torsion shift write \(D=mG\).
+Modulo-\(2\) independence makes \(m\) odd, while
+\[
+ \#J(\mathbf F_7)=42,\qquad\operatorname{ord}(\bar D)=21
+\]
+imply \(\gcd(m,21)=1\).  Hence \(v_3(\log_0G)=2\).
+For \(Q\) in a disk of \(P=(1,\pm1)\), the first logarithm of
+\([Q-P]=nG+eT\) lies in \(9\mathbf Z_3\).  Its local primitive is
+\((a-1)\) times a unit, so \(a-1=9z\).  Dividing the primitive of (4) by
+\(27\) gives a nonzero scalar times \(z\) modulo \(3\).  The omitted terms
+have bounds \(2n-2-v_3(n)\ge1\) and \(2n-3-v_3(n)\ge1\);
+Strassmann gives \(z=0\).
+
+Finally, for \(v_3(a)<0\), use the rational infinity parameter
+\[
+ t=\frac{2a^2}{R},\qquad w=\frac1a.
+\]
+The exact relation and differential are
+\[
+ w=t^2\left(1-2w^3+\frac54w^4\right),\qquad
+ \eta=\frac{t}{2w}(1-\lambda w)\,dw.                \tag{6}
+\]
+The first equation has formal derivative \(1\) in \(w\), so
+\(w\in t^2\mathbf Z_3[[t]]\); the second has unit constant coefficient in
+\(dt\).  Thus the primitive satisfies \(F(3z)/3\equiv z\pmod3\), with
+universal tail \(n-1-v_3(n)\ge1\).  The odd-degree model has one infinity,
+which is therefore alone in its disk.  These cases prove (5).
+\end{proof}
+
+\section{Exceptional lifts and conclusion}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{.20\textwidth}
+>{\raggedright\arraybackslash}p{.31\textwidth}
+>{\raggedright\arraybackslash}p{.39\textwidth}}
+\toprule
+Stage & Rational candidate & Exact disposition\\
+\midrule
+Compact inverse & \(z=0,\pm1\) & \(s=0\) or \(s=1\).\\
+Reciprocal charts & \(S,K=0,\pm1\), negative radial zero &
+Boundary; irreducible constant-one quartic; radial discriminant
+\(2^8\cdot5\).\\
+\(C_8\leftrightarrow E_1\) &
+\(\mathcal U=0,\pm1,1/2\), \(x=2,x^2=5,\pm4P,\infty\) &
+No rational inverse, boundary/wrong sign, irreducible fibre, or odd
+\(2\)-adic character; infinity has \(\mathcal U\mathcal V=1/2\).\\
+Character identity & \(X=0,1,3,-1\), zeros/poles of \(g,L,M\) &
+Boundary or nonsquare; at \(L=M=0\) the undivided value is \(1/2\).\\
+Final \(D_+\) points & \(\infty,(0,0),(1,\pm1)\) &
+Infinity is boundary; \(a=0\) would require \(r^2=5\); \(a=1\) has
+character \(1/2\) or \(0\).\\
+\bottomrule
+\end{tabular}
+\caption{Exact exceptional-fibre audit for Theorem~\ref{thm:reduction}.}
+\label{tab:exceptions}
+\end{table}
+
+\begin{theorem}[Sharipov's second cuboid conjecture]
+For coprime positive integers \(p\ne q\), the polynomial \(Q_{p,q}(t)\) is
+irreducible over \(\Q\).
+\end{theorem}
+
+\begin{proof}
+Theorem~\ref{thm:square} and Table~\ref{tab:exceptions} exclude every
+\(2+3\) lift.  Theorem~\ref{thm:linear} excludes \(1+4\).  For the symmetric
+\(5+5\) case, the pinned source archive of arXiv:2601.04240 has SHA--256
+\[
+\texttt{96d7e4b7d3cb75af238a0ca8cd143a8d555daf6ac9e8c2cc94a099b5aea04760}.
+\]
+Its exact replay recomputes the elimination polynomial, discriminant,
+rational-root exclusions, positive-root isolations, and seven Sturm counts.
+Every admissible positive interval has zero candidate roots; \(s=1\) is
+factored separately and is inadmissible.  Proposition~\ref{prop:factor}
+then excludes every factorization.
+\end{proof}
+
+\begingroup\small
+\paragraph{Reproducibility and dependencies.}
+\begin{verbatim}
+PYTHON_BIN=.venv/bin/python bash scripts/reproduce.sh
+PYTHON_BIN=.venv/bin/python bash scripts/replay_5plus5.sh
+tectonic paper/clean3.tex
+\end{verbatim}
+The rank descent remains.  Direct \(D_+\) arithmetic replaces the genus-three
+rank/decomposition and all old \(7/23\) square-abscissa/Coleman machinery.
+The only retained \(p=7\) input is the integral \(3\)-saturation above.
+C025, bounded searches, finite sieves as completeness premises, and
+fingerprints are not dependencies.
+\endgroup
+
+\end{document}

@@ -11,7 +11,7 @@ the square-abscissa theorem.  It checks:
 * absolute simplicity of Jac(D+) by good reduction at 3;
 * the absence of nontrivial Q-rational endomorphisms, using the incompatible
   Frobenius fields at 3 and 13;
-* the rational Richelot neighbour of D+; and
+* the correctly twisted rational Richelot neighbour of D+; and
 * the finite-field obstruction to replacing the existing 7/23 sieve by the
   most obvious direct Chabauty argument on C3.
 
@@ -327,7 +327,7 @@ def quotient_audit() -> dict[str, object]:
 
 
 def richelot_audit() -> dict[str, object]:
-    """Construct the rational Richelot neighbour and show it does not split."""
+    """Construct the stable-splitting Richelot twist and show it does not split."""
 
     a = sp.symbols("a")
     imaginary = sp.I
@@ -337,15 +337,24 @@ def richelot_audit() -> dict[str, object]:
     original = a * (4 * a**4 - 8 * a + 5)
     assert sp.expand(first * second * third - original) == 0
 
-    coefficient_matrix = sp.Matrix(
+    descending_coefficient_matrix = sp.Matrix(
         [
             [0, 1, 0],
             [2, 2 * imaginary, -1 - 2 * imaginary],
             [2, -2 * imaginary, -1 + 2 * imaginary],
         ]
     )
-    determinant = sp.expand(coefficient_matrix.det())
-    assert determinant == -8 * imaginary
+    descending_determinant = sp.expand(descending_coefficient_matrix.det())
+    assert descending_determinant == -8 * imaginary
+    stable_factors = (second, third, first)
+    ascending_coefficient_matrix = sp.Matrix(
+        [
+            [sp.Poly(factor, a).nth(index) for index in range(3)]
+            for factor in stable_factors
+        ]
+    )
+    ascending_determinant = sp.expand(ascending_coefficient_matrix.det())
+    assert ascending_determinant == 8 * imaginary
 
     def bracket(left: sp.Expr, right: sp.Expr) -> sp.Expr:
         return sp.expand(sp.diff(left, a) * right - left * sp.diff(right, a))
@@ -355,30 +364,45 @@ def richelot_audit() -> dict[str, object]:
         bracket(third, first),
         bracket(first, second),
     ]
-    product = sp.expand(sp.prod(brackets))
-    quotient = sp.factor(product / determinant)
-    expected_quotient = -(
-        2 * a**2 - 4 * a + 1
-    ) * (4 * a**4 + 4 * a**2 + 5) / 2
-    assert sp.expand(quotient - expected_quotient) == 0
-    integral_dual = sp.factor(4 * quotient)
+    h1 = 2 * a**2 - 4 * a + 1
+    h2 = 2 * a**2 + 1 - 2 * imaginary
+    h3 = 2 * a**2 + 1 + 2 * imaginary
+    normalized_brackets = (
+        -imaginary * h2 / 8,
+        imaginary * h3 / 8,
+        -h1 / 2,
+    )
+    untwisted_product = sp.factor(sp.prod(normalized_brackets))
+    assert sp.expand(untwisted_product + h1 * h2 * h3 / 128) == 0
+
+    kernel_etale_discriminant = sp.discriminant(a**2 + 1, a)
+    assert kernel_etale_discriminant == -4
+    rational_dual = sp.factor(2 * h1 * (4 * a**4 + 4 * a**2 + 5))
     assert sp.expand(
-        integral_dual
-        + 2
-        * (2 * a**2 - 4 * a + 1)
-        * (4 * a**4 + 4 * a**2 + 5)
+        rational_dual
+        - 2 * h1 * h2 * h3
     ) == 0
     assert sp.Poly(4 * a**4 + 4 * a**2 + 5, a).is_irreducible
 
     return {
         "quadratic_splitting_field": "Q(i)",
         "quadratic_factors": [str(first), str(second), str(third)],
-        "determinant": str(determinant),
+        "stable_order": ["q2", "q3", "q1"],
+        "determinant_descending_convention": str(descending_determinant),
+        "determinant_constant_linear_quadratic": str(ascending_determinant),
         "brackets": [str(sp.factor(item)) for item in brackets],
-        "rational_dual_curve": f"Y^2={integral_dual}",
+        "normalized_brackets": [
+            str(sp.factor(item)) for item in normalized_brackets
+        ],
+        "untwisted_bracket_product": str(untwisted_product),
+        "kernel_etale_algebra": "Q x Q(i)",
+        "kernel_etale_discriminant": int(kernel_etale_discriminant),
+        "Bruin_Doerksen_twist_squareclass": -1,
+        "rational_dual_curve": f"Y^2={rational_dual}",
         "dual_factor_degrees_over_Q": [2, 4],
         "conclusion": (
-            "A rational (2,2)-Richelot isogeny exists, but absolute "
+            "The stable-splitting -1 twist gives a rational (2,2)-Richelot "
+            "isogeny to the positive displayed model, but absolute "
             "simplicity of Jac(D+) implies that the target is not an "
             "elliptic product; this does not simplify the rank or point problem."
         ),

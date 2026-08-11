@@ -220,16 +220,25 @@
     "prym_of_C3_to_E1": "Jac(D+) up to Q-isogeny"
   },
   "richelot": {
+    "Bruin_Doerksen_twist_squareclass": -1,
     "brackets": [
       "-4*I*(2*a**2 - 4*a + 1)",
       "2*a**2 + 1 - 2*I",
       "-2*a**2 - 1 - 2*I"
     ],
-    "conclusion": "A rational (2,2)-Richelot isogeny exists, but absolute simplicity of Jac(D+) implies that the target is not an elliptic product; this does not simplify the rank or point problem.",
-    "determinant": "-8*I",
+    "conclusion": "The stable-splitting -1 twist gives a rational (2,2)-Richelot isogeny to the positive displayed model, but absolute simplicity of Jac(D+) implies that the target is not an elliptic product; this does not simplify the rank or point problem.",
+    "determinant_constant_linear_quadratic": "8*I",
+    "determinant_descending_convention": "-8*I",
     "dual_factor_degrees_over_Q": [
       2,
       4
+    ],
+    "kernel_etale_algebra": "Q x Q(i)",
+    "kernel_etale_discriminant": -4,
+    "normalized_brackets": [
+      "-I*(2*a**2 + 1 - 2*I)/8",
+      "I*(2*a**2 + 1 + 2*I)/8",
+      "-(2*a**2 - 4*a + 1)/2"
     ],
     "quadratic_factors": [
       "a",
@@ -237,9 +246,15 @@
       "2*a**2 - 2*I*a - 1 + 2*I"
     ],
     "quadratic_splitting_field": "Q(i)",
-    "rational_dual_curve": "Y^2=-2*(2*a**2 - 4*a + 1)*(4*a**4 + 4*a**2 + 5)"
+    "rational_dual_curve": "Y^2=2*(2*a**2 - 4*a + 1)*(4*a**4 + 4*a**2 + 5)",
+    "stable_order": [
+      "q2",
+      "q3",
+      "q1"
+    ],
+    "untwisted_bracket_product": "-(2*a**2 + 1 - 2*I)*(2*a**2 + 1 + 2*I)*(2*a**2 - 4*a + 1)/128"
   },
   "schema": 1,
-  "sha256_without_checksum": "8593176d9deecf8906c19ca0eaf501cafda04c10c8959cb7151b4814485cf2d8",
+  "sha256_without_checksum": "31a990b98138affb577a6a59bf8fef05ba811156a3eb5b8c32780a1db87fd7db",
   "status": "PASS"
 }
