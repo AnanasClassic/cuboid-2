@@ -1,0 +1,245 @@
+{
+  "automorphisms": {
+    "PGL2_branch_stabilizer": [
+      "u",
+      "-u"
+    ],
+    "branch_polynomial": "4*u**8 - 8*u**2 + 5",
+    "curve_automorphisms": [
+      "(u,r)->(u,r)",
+      "(u,r)->(u,-r)",
+      "(u,r)->(-u,r)",
+      "(u,r)->(-u,-r)"
+    ],
+    "finite_chart_saturated_groebner_basis": [
+      "-alpha + inverse_det",
+      "lambda - 1",
+      "(alpha - 1)*(alpha + 1)",
+      "beta",
+      "gamma"
+    ],
+    "geometric_curve_automorphism_group": "C2 x C2",
+    "infinite_chart_saturated_groebner_basis": [
+      "1"
+    ],
+    "valid_over": "Qbar (hence no extra automorphisms over any extension)"
+  },
+  "direct_C3_chabauty": {
+    "C3_F3": 6,
+    "C3_F3_affine_points": [
+      [
+        1,
+        [
+          1,
+          2
+        ]
+      ],
+      [
+        2,
+        [
+          1,
+          2
+        ]
+      ]
+    ],
+    "C3_F7": 10,
+    "C3_F7_affine_points": [
+      [
+        1,
+        [
+          1,
+          6
+        ]
+      ],
+      [
+        3,
+        [
+          2,
+          5
+        ]
+      ],
+      [
+        4,
+        [
+          2,
+          5
+        ]
+      ],
+      [
+        6,
+        [
+          1,
+          6
+        ]
+      ]
+    ],
+    "known_Q_points": "two infinities and (u,r)=(+/-1,+/-1)",
+    "p3_obstruction": "All six residue disks are known, but the rank-two Chabauty annihilator reduces to a multiple of (1-u^2)du/r, which vanishes in the four affine disks; moreover 3 <= 2g.  A new exact exceptional-disk calculation would still be required.",
+    "p7_obstruction": "The four additional disks u=+/-3 with r=+/-2 are precisely unoccupied square-abscissa disks.  The existing p=23 Mordell-Weil sieve is what removes them."
+  },
+  "genus_two_jacobian": {
+    "Q_rational_endomorphisms": {
+      "conclusion": "End_Q(Jac(D+)) tensor Q = Q",
+      "intersection": "Q",
+      "p13_frobenius_field_galois_group": "D4",
+      "p13_unique_quadratic_subfield": "Q(sqrt(29))",
+      "p3_frobenius_field_galois_group": "D4",
+      "p3_unique_quadratic_subfield": "Q(sqrt(3))",
+      "scope": "This rules out rational RM/correspondences.  It does not by itself determine every geometric endomorphism of the absolutely simple surface."
+    },
+    "consequences": [
+      "not Q-isogenous to a product of elliptic curves",
+      "not geometrically isogenous to a product of elliptic curves",
+      "D+ has no degree-two elliptic quotient over any extension",
+      "no Richelot isogeny from Jac(D+) can have an elliptic-product target"
+    ],
+    "geometric_simplicity": "The reduction at 3 is absolutely simple, so Jac(D+) is absolutely/geometrically simple over Q.",
+    "good_reduction_at_13": {
+      "C_Fp": 16,
+      "C_Fp2": 162,
+      "J_Fp": 196,
+      "absolutely_simple_reduction": true,
+      "cyclotomic_orders_tested": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        20,
+        21,
+        22,
+        24,
+        26,
+        28,
+        30,
+        32,
+        34,
+        36,
+        40,
+        42,
+        48,
+        60
+      ],
+      "off_diagonal_root_of_unity_orders": [],
+      "ordinary": true,
+      "prime": 13,
+      "ratio_resultant": "28561*(z - 1)**4*(13*z**4 + 28*z**3 + 34*z**2 + 28*z + 13)**2*(169*z**4 - 104*z**3 + 238*z**2 - 104*z + 169)",
+      "real_frobenius_subfield_discriminant": 116,
+      "real_frobenius_subfield_polynomial": "z**2 + 2*z - 28",
+      "weil_polynomial": "T**4 + 2*T**3 - 2*T**2 + 26*T + 169",
+      "weil_polynomial_irreducible": true
+    },
+    "good_reduction_at_3": {
+      "C_Fp": 6,
+      "C_Fp2": 14,
+      "J_Fp": 22,
+      "absolutely_simple_reduction": true,
+      "cyclotomic_orders_tested": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        20,
+        21,
+        22,
+        24,
+        26,
+        28,
+        30,
+        32,
+        34,
+        36,
+        40,
+        42,
+        48,
+        60
+      ],
+      "off_diagonal_root_of_unity_orders": [],
+      "ordinary": true,
+      "prime": 3,
+      "ratio_resultant": "81*(z - 1)**4*(3*z**4 + 2*z**3 + 2*z**2 + 2*z + 3)**2*(9*z**4 + 12*z**3 + 10*z**2 + 12*z + 9)",
+      "real_frobenius_subfield_discriminant": 12,
+      "real_frobenius_subfield_polynomial": "z**2 + 2*z - 2",
+      "weil_polynomial": "T**4 + 2*T**3 + 4*T**2 + 6*T + 9",
+      "weil_polynomial_irreducible": true
+    }
+  },
+  "overall_conclusion": "The genus-three quotient decomposition exposes E1 and Jac(D+) but does not remove the geometrically simple genus-two Prym. No proof-quality replacement for the existing descent, 7/23 sieve, and p=7 Coleman step is obtained.",
+  "proof_status": "Structural negative result only; the existing C041 proof is retained.",
+  "quotients": {
+    "C3": "r^2=4*u^8-8*u^2+5",
+    "differential_decomposition": {
+      "elliptic_factor": "span(u*du/r)",
+      "genus_two_factor": "span(du/r,u^2*du/r)"
+    },
+    "elliptic_quotient": {
+      "birational_E1": {
+        "E1": "y^2=x^3-5*x+4",
+        "inverse_m": "4-2*x",
+        "inverse_t": "4*(y-m+2)/(m^2-4)",
+        "m": "(r-1-4*t)/t^2",
+        "t": "a-1",
+        "x": "2-m/2",
+        "y": "((m^2-4)*t+4*m-8)/4"
+      },
+      "curve": "r^2=4*a^4-8*a+5",
+      "involution": "(u,r)->(-u,r)",
+      "map": "a=u^2, r=r"
+    },
+    "genus_two_quotient": {
+      "curve": "R^2=4*a^5-8*a^2+5*a",
+      "involution": "(u,r)->(-u,-r)",
+      "map": "a=u^2, R=u*r"
+    },
+    "jacobian_isogeny": "Jac(C3) ~ E1 x Jac(D+) over Q",
+    "prym_of_C3_to_E1": "Jac(D+) up to Q-isogeny"
+  },
+  "richelot": {
+    "brackets": [
+      "-4*I*(2*a**2 - 4*a + 1)",
+      "2*a**2 + 1 - 2*I",
+      "-2*a**2 - 1 - 2*I"
+    ],
+    "conclusion": "A rational (2,2)-Richelot isogeny exists, but absolute simplicity of Jac(D+) implies that the target is not an elliptic product; this does not simplify the rank or point problem.",
+    "determinant": "-8*I",
+    "dual_factor_degrees_over_Q": [
+      2,
+      4
+    ],
+    "quadratic_factors": [
+      "a",
+      "2*a**2 + 2*I*a - 1 - 2*I",
+      "2*a**2 - 2*I*a - 1 + 2*I"
+    ],
+    "quadratic_splitting_field": "Q(i)",
+    "rational_dual_curve": "Y^2=-2*(2*a**2 - 4*a + 1)*(4*a**4 + 4*a**2 + 5)"
+  },
+  "schema": 1,
+  "sha256_without_checksum": "8593176d9deecf8906c19ca0eaf501cafda04c10c8959cb7151b4814485cf2d8",
+  "status": "PASS"
+}

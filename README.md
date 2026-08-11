@@ -25,6 +25,11 @@ uses symbolic identities, certified number-field arithmetic, exhaustive
 finite-group calculations, and Coleman--Chabauty bounds, not a height-bounded
 search or a probabilistic computation.
 
+For reading, start with [`paper/clean.tex`](paper/clean.tex), the streamlined
+five-page proof.  [`paper/main.tex`](paper/main.tex) is the frozen full
+research exposition.  Both prove the same theorem and use the same
+proof-critical certificates.
+
 The previously open quadratic--cubic (`2+3`) case is closed as follows.
 
 1. The signed-square theorem forces the constant of a hypothetical integral
@@ -46,7 +51,7 @@ The previously open quadratic--cubic (`2+3`) case is closed as follows.
    exact identity reduces the second character to
 
    \[
-   z^2=2kh,qquad
+   z^2=2kh,\qquad
    h^2-(k^2+2)h+k^2+4k-4=0.
    \]
 
@@ -54,7 +59,7 @@ The previously open quadratic--cubic (`2+3`) case is closed as follows.
    2-adic parity argument excludes `epsilon=-1`; the positive sign maps to
 
    \[
-   D_+:R^2=4a^5-8a^2+5a,qquad a=u^2.
+   D_+:R^2=4a^5-8a^2+5a,\qquad a=u^2.
    \]
 
 3. A complete Schaefer--Stoll 2-descent at `2,5,17` proves that

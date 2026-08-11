@@ -69,6 +69,8 @@ export SYMPY_GROUND_TYPES="${SYMPY_GROUND_TYPES:-python}"
   --output research/arithmetic_geometry/product_genus2_p7_formal_log.json
 "$python_bin" research/compact_signed_square/independent_genus2_square_sieve.py \
   --output research/compact_signed_square/independent_genus2_square_sieve.json
+"$python_bin" research/proof_simplification/c041_structure.py \
+  --output research/proof_simplification/c041_structure.json
 "$python_bin" research/frobenius_audit/frobenius_burnside.py
 "$python_bin" research/frobenius_audit/candidate_544c_check.py
 "$python_bin" research/frobenius_audit/candidate_544c_rank_descent.py
