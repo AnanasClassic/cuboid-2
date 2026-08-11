@@ -1,0 +1,383 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Q}{\mathbf Q}
+\title{A streamlined computer-assisted proof of\\
+Sharipov's second cuboid conjecture}
+\author{Computational research draft}
+\date{August 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove that Sharipov's second cuboid polynomial is irreducible for every
+pair of coprime positive integers $p\ne q$.  The proof reduces factorization
+to the $1+4$, $2+3$, and symmetric $5+5$ cases.  We compress the completed
+$2+3$ argument into one lossless reduction to
+\[
+ r^2=4u^8-8u^2+5
+\]
+and a square-abscissa theorem on
+$R^2=4a^5-8a^2+5a$.  The latter uses an exact genus-two 2-descent, an
+index-independent Mordell--Weil sieve at $7$ and $23$, and a $7$-adic
+Coleman bound.  All denominator and exceptional fibres are retained in
+exact certificates.  The proof uses neither a height-bounded search, a
+finite congruence sieve as a completeness premise, nor the open direct
+normalization claim for the older plane model.
+\end{abstract}
+
+\section{Factorization reduction}
+
+For $s=(p/q)^2$, put
+\[
+\begin{aligned}
+P_s(x)={}&x^5+(2+s)(3-2s)x^4
+ +(1+10s+4s^2-14s^3+s^4)x^3\\
+&-s(1-14s+4s^2+10s^3+s^4)x^2\\
+&-s^3(1+2s)(-2+3s)x-s^5
+\end{aligned}
+\]
+and
+\[
+ Q_{p,q}(t)=q^{20}P_s(t^2/q^4).
+\]
+The admissible domain is $p,q>0$, $\gcd(p,q)=1$, and $p\ne q$; hence
+$s>0$ and $s\ne1$.
+
+\begin{proposition}[Complete factorization reduction]\label{prop:factor}
+It is enough to exclude a rational linear factor of $P_s$, a rational
+quadratic factor of $P_s$, and a symmetric factorization
+\[
+ P_s(u^2)=R(u)(-R(-u))
+\]
+with $R$ irreducible of degree five.
+\end{proposition}
+
+\begin{proof}
+The scaling $u=t/q^2$ and the nonzero factor $q^{20}$ preserve
+reducibility.  If the monic quintic $P_s$ is reducible, one of its
+irreducible factors has degree at most two, giving the first two cases.
+If $P_s$ is irreducible and $\alpha$ is a root, Capell's composition
+criterion says that $P_s(u^2)$ is reducible precisely when $\alpha$ is a
+square in $\Q(\alpha)$.  Writing $\alpha=\beta^2$, one has
+$\Q(\beta)=\Q(\alpha)$, so the minimal polynomial $R$ of $\beta$ has degree
+five and conjugating $\beta$ to $-\beta$ gives the displayed factorization.
+Conversely that factorization is reducible.  Finally, monicity and Gauss's
+lemma identify rational and integral factorizations of $Q_{p,q}$.
+\end{proof}
+
+\section{The linear--quartic case}
+
+\begin{theorem}[Linear-factor exclusion]\label{thm:linear}
+For positive rational $s\ne1$, the quintic $P_s$ has no rational root.
+\end{theorem}
+
+\begin{proof}
+The exact reciprocal quotient sends a rational root to a rational point on
+\[
+ C_1:\quad w^2=t^5+21t^4+26t^3+10t^2+5t+1.
+\]
+A Schaefer--Stoll descent in
+$\Q\times\Q[z]/(z^4-2z-1)$, with certified class and unit groups, proves
+\[
+ \dim_{\mathbf F_2}\operatorname{Sel}_2(J_1/\Q)=2,\qquad
+ \operatorname{rank}J_1(\Q)=1,\qquad
+ \operatorname{Sha}(J_1/\Q)[2]=0.
+\]
+At $5$, the six known rational points reduce bijectively to
+$C_1(\mathbf F_5)$.  An annihilating differential reduces to
+\[
+ (1+t)\frac{dt}{2w}.
+\]
+It is nonzero in five disks.  In the remaining disk at $(-1,0)$, the
+parameter $w=5z$ gives the exact Strassmann form
+\[
+ \frac{G(5z)}{25}
+ =z\bigl(\text{\rm unit}+5z^2\mathbf Z_5[[z^2]]\bigr).
+\]
+Thus
+\[
+ C_1(\Q)=\{\infty,(-1,0),(0,\pm1),(1,\pm8)\}.
+\]
+The inverse quotient sends these points only to $s=1$, $s=-1$, or poles.
+The remaining denominator $t^2+6t+1$ has discriminant $32$ and no rational
+zero.  Hence no admissible $s$ occurs.  The descent, local series, quotient
+identities, and lift table are replayed by the certificates in
+\texttt{research/linear\_factor\_completion/}.
+\end{proof}
+
+\section{A lossless reduction of the quadratic--cubic case}
+
+\begin{lemma}[Signed-square constant]\label{lem:signed}
+If $X^2+AX+B$ is an integral monic factor of the quintic in $X=t^2$, then
+\[
+ B=\sigma d^2,\qquad \sigma\in\{+1,-1\},\quad d\in\mathbf Z.
+\]
+\end{lemma}
+
+\begin{proof}
+For a prime $\ell\mid pq$, put $k=v_\ell(pq)$.  Direct coefficient
+valuations give the lower Newton polygon with vertices
+\[
+ (0,10k),(2,2k),(3,0),(5,0),
+\]
+including $\ell=2,3$.  The root valuations are
+$4k,4k,2k,0,0$, so the product of any two roots has even valuation.
+Since $B$ divides $-p^{10}q^{10}$, all valuations of $B$ are even.  The
+single sign $\sigma$ is physical and global.
+\end{proof}
+
+\begin{theorem}[Consolidated $2+3$ reduction]\label{thm:reduction}
+Every admissible rational quadratic factor of $P_s$ determines a rational
+solution of
+\[
+ C_3:\quad r^2=4u^8-8u^2+5,                         \tag{1}
+\]
+and hence a point
+\[
+ (a,R)=(u^2,ur)
+\quad\hbox{on}\quad
+ D_+:\ R^2=4a^5-8a^2+5a,                            \tag{2}
+\]
+with square abscissa.  Every source, base-locus, denominator-zero, and
+exceptional fibre omitted by the generic formulas is explicitly finite and
+inadmissible.
+\end{theorem}
+
+\begin{proof}
+We give the exact chain while suppressing large coordinates from the
+statement.  Write $s=z^2$, normalize the constant of the quadratic factor as
+$b=\sigma z^4k^2$, and write its linear coefficient as $z^2ky$.
+Substitution in the two exact remainder equations and elimination of $y$
+gives an irreducible $71$-term curve
+\[
+ Q_\sigma(z,k)=0.
+\]
+The penultimate subresultant is $L_1y+L_0$ and recovers
+$y=-L_0/L_1$.  The resultant of $Q_\sigma$ with the non-boundary factor of
+$L_1$ is
+\[
+\begin{aligned}
+2^{20}z^{24}(z-1)^{12}(z+1)^{12}
+ &(z^2-z+1)^4(z^2+z+1)^4(z^2+1)^{12}\\
+ &\cdot\Phi_{32}(z)^4,
+\end{aligned}
+\]
+where $\Phi_{32}$ is monic with constant $1$ and
+$\Phi_{32}(\pm1)=512$.  The quadratic factors have negative discriminant.
+Thus the only rational exceptional values are $z=0,\pm1$, namely
+$s=0,1$.  This proves that the compact model and inverse are lossless on
+the admissible locus.
+
+After putting $S=z^2$, $K=k^2$ and applying two Cayley transforms, the
+simultaneous reciprocal involution has fixed generators
+$\mathcal U,\mathcal V$.  Both physical signs give the same irreducible
+$29$-term curve $C_8(\mathcal U,\mathcal V)=0$ and require
+\[
+ \mathcal U\mathcal V,\qquad 1-\mathcal U\mathcal V       \tag{3}
+\]
+to be nonzero rational squares.  Exact quartic functions give maps in both
+directions between the admissible normalization of $C_8$ and
+\[
+ E_1:\quad y^2=x^3-5x+4.                                \tag{4}
+\]
+Substitution, linear subresultants, and multiplication-back verify both
+round trips.  The factored source and inverse denominator resultants leave
+only the fibres in Table~\ref{tab:exceptions}; each is a boundary,
+nonrational, sign-incompatible, or already fails (3).  In particular the
+negative source chart's potentially lost radial fibre has discriminant
+$2^8\cdot5$, and the removable elliptic base point has odd $2$-adic
+valuation of $\mathcal U\mathcal V$.  No generic open-set assertion replaces
+this audit.
+
+Translate (4) by its rational two-torsion point, obtaining coordinates
+$(X,Y)$, and put
+\[
+L=2X+Y-2,\quad M=X^2+2Y-1,\quad
+\kappa=\frac{Y+2}{X},\quad h=X+1.
+\]
+Exact reduction in the function field gives
+\[
+ XM=(Y+2)L,\qquad
+ 1-\mathcal U\mathcal V
+ =2(X+1)LMg^2                                      \tag{5}
+\]
+for a recorded rational function $g$.  The factor $2$ in (5) is essential.
+Away from the separately audited zeros and poles, (3) implies
+\[
+ \xi^2=2\kappa h,\qquad
+ h^2-(\kappa^2+2)h+\kappa^2+4\kappa-4=0.           \tag{6}
+\]
+
+For every odd prime, the Newton polygon of the second equation and the first
+equation in (6) show that $v(\kappa)$ is even.  At $2$, the discriminant
+$\kappa^4-16\kappa+20$ excludes $v_2(\kappa)=0$ and
+$v_2(\kappa)\ge2$; negative valuation has root valuations $0$ and
+$2v_2(\kappa)$.  Hence
+\[
+ \kappa=2\epsilon u^2,\qquad h=\epsilon v^2,\qquad
+ \epsilon\in\{+1,-1\}.                               \tag{7}
+\]
+This valuation sign is unrelated to the physical sign $\sigma$.
+For $\epsilon=-1$, clearing denominators gives
+\[
+ W^2=-(v^2+2)(v^4+v^2-4).
+\]
+The coprime parity cases give $3$, $6$, or $7$ modulo $8$, or an odd
+$2$-adic valuation, so there is no rational point.  For $\epsilon=1$, the
+discriminant of (6) is exactly (1), and (2) follows.
+
+The zeros and poles divided out above are precisely those in
+Table~\ref{tab:exceptions}.  Direct evaluation uses the original characters,
+so even the fibre $L=M=0$ is not lost.
+\end{proof}
+
+\section{Square abscissas}
+
+\begin{theorem}[Square-abscissa theorem]\label{thm:square}
+The points of $D_+(\Q)$ with rational-square affine abscissa, together with
+the point at infinity, are exactly
+\[
+ \infty,\qquad(0,0),\qquad(1,1),\qquad(1,-1).        \tag{8}
+\]
+\end{theorem}
+
+\begin{proof}
+Let $J=\operatorname{Jac}(D_+)$,
+$D=[(1,1)-\infty]$, and $T=[(0,0)-\infty]$.
+A complete Schaefer--Stoll descent in
+\[
+ \Q\times\Q[z]/(z^4-16z+20),\qquad S=\{2,5,17\},
+\]
+starts with $512$ square-norm classes and leaves
+\[
+ 512\longrightarrow64\longrightarrow8\longrightarrow4.
+\]
+The last four are $0,D,T,D+T$.  The condition at $17$ is active.  Exact
+good-reduction arithmetic proves
+\[
+ \operatorname{rank}J(\Q)=1,\qquad
+ J(\Q)_{\rm tors}=\langle T\rangle\simeq\mathbf Z/2\mathbf Z,
+\]
+and $D,T$ are independent modulo $2$.
+
+No primitive-generator assumption is used.  Write
+$J(\Q)=\mathbf ZG\oplus\langle T\rangle$ and, after a torsion shift,
+$D=mG$ with $m$ odd.  Exact Cantor arithmetic gives
+\[
+\begin{array}{c|cc}
+p&\#J(\mathbf F_p)&\operatorname{ord}(\bar D)\\ \hline
+7&42&21\\
+23&462&231.
+\end{array}
+\]
+If $r=\operatorname{ord}(\bar G)$ and $N$ is $21$ or $231$, then
+$r/\gcd(r,m)=N$ and $r\mid2N$.  Oddness of $m$ excludes $r=2N$; hence
+$r=N$ and $m$ is invertible modulo $N$.  The local $D$-coordinates of a
+global class therefore agree modulo $21$.
+
+At $7$, square abscissas give
+\[
+ (c,e)=(0,0),(\pm1,0),(\pm5,0),(0,1).
+\]
+At $23$, the torsion-zero coordinates reduce modulo $21$ to
+\[
+ c=0,\pm1,\pm2,\pm3,\pm4,\pm9,
+\]
+and the only torsion-one class is $(0,1)$.  Thus $\pm5$ are removed and only
+the four disks containing the points in (8) survive.
+
+Exact rational Cantor arithmetic for $42D$ gives normalized $7$-adic
+logarithm direction $(1,4)$.  An annihilating differential therefore has
+reduction
+\[
+ (4-a)\frac{da}{R}.
+\]
+It is nonzero in every surviving disk.  The only possible affine zero is
+$a=4$, where the right side of (2) is the nonsquare $5$ modulo $7$; the
+second basis differential is a unit at infinity.  Since $7>2g=4$, the
+Coleman disk bound gives at most one rational point in each surviving disk.
+The four points in (8) occupy them.  A second implementation independently
+recomputes the finite Jacobian orders from exhaustive counts over
+$\mathbf F_p$ and $\mathbf F_{p^2}$.
+\end{proof}
+
+\section{Exceptional lifts and conclusion}
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{p{.20\textwidth}p{.31\textwidth}p{.39\textwidth}}
+\toprule
+Stage & Rational candidate & Exact disposition\\
+\midrule
+Compact inverse & $z=0,\pm1$ & $s=0$ or $s=1$.\\
+Reciprocal charts & $S,K=0,\pm1$ and the negative radial zero &
+Boundary; a constant-one quartic has no rational root; the radial
+quadratic has discriminant $2^8\cdot5$.\\
+$C_8\leftrightarrow E_1$ & $\mathcal U=0,\pm1,1/2$; $x=2$, $x^2=5$,
+$\pm4P$, infinity & No rational inverse, boundary or wrong sign,
+irreducible fibre, or a common character with odd $2$-adic valuation;
+infinity has $\mathcal U\mathcal V=1/2$.\\
+Character identity & $X=0,1,3,-1$ and zeros/poles of $g,L,M$ &
+Direct values are boundary or nonsquare.  At $(X,Y)=(1,0)$,
+$L=M=0$ but the undivided character is $1/2$.\\
+Final map to $D_+$ & $\infty,(0,0),(1,\pm1)$ &
+Infinity is boundary; $(0,0)$ would require $r^2=5$; the $a=1$ fibres
+have character $1/2$ or $0$.\\
+\bottomrule
+\end{tabular}
+\caption{Exact exceptional-fibre audit for Theorem~\ref{thm:reduction}.}
+\label{tab:exceptions}
+\end{table}
+
+\begin{theorem}[Sharipov's second cuboid conjecture]
+For coprime positive integers $p\ne q$, the polynomial $Q_{p,q}(t)$ is
+irreducible over $\Q$.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:square}, a point arising from
+Theorem~\ref{thm:reduction} must lie above one of the four values in (8).
+Table~\ref{tab:exceptions} excludes every lift: in particular, at $a=1$ the
+two translated elliptic points are $(1,0)$ and $(3,4)$, with undivided
+common-character values $1/2$ and $0$.  Thus no $2+3$ factor exists.
+
+Theorem~\ref{thm:linear} excludes $1+4$.  For the symmetric $5+5$ case, the
+pinned source archive of arXiv:2601.04240 has SHA--256
+\[
+\texttt{96d7e4b7d3cb75af238a0ca8cd143a8d555daf6ac9e8c2cc94a099b5aea04760}.
+\]
+The replay extracts its complete second code block and exactly recomputes the
+elimination polynomial, discriminant factorization, rational-root tests,
+positive-root isolations, and all seven Sturm counts.  Every admissible
+positive parameter interval has zero real candidate roots; the special
+parameter $s=1$ is factored separately and is inadmissible.  Hence the
+symmetric $5+5$ split is impossible.  Proposition~\ref{prop:factor} now
+excludes every proper factorization.
+\end{proof}
+
+\section*{Reproducibility}
+
+The proof-critical commands are:
+\begin{verbatim}
+PYTHON_BIN=.venv/bin/python bash scripts/reproduce.sh
+PYTHON_BIN=.venv/bin/python bash scripts/replay_5plus5.sh
+tectonic paper/main.tex
+tectonic paper/clean.tex
+\end{verbatim}
+The reproduction script runs, in order, the compact model, reciprocal
+quotient, elliptic transport, common-character and valuation descents,
+genus-two 2-descent, two-prime sieve, formal logarithm, and independent
+finite-Jacobian replay.  Their JSON outputs are regenerated and compared
+exactly by the test suite.
+
+The direct normalization claim C025, finite congruence sieves, Frobenius
+fingerprints, genus-$33$ covers, and bounded-height searches are not
+dependencies of this proof.
+
+\end{document}
