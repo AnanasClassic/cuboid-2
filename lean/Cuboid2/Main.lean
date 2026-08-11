@@ -1,4 +1,5 @@
 import Cuboid2.FactorizationClassification
+import Cuboid2.Scaling
 import Cuboid2.DPlus.Basic
 
 /-!
@@ -17,21 +18,39 @@ open Polynomial
 noncomputable section
 
 /--
-The remaining scaling/Capell bridge.  Reducibility of the exact degree-ten
-polynomial either comes from reducibility of the normalized quintic or from
-the symmetric `5+5` composition mechanism.
+The remaining specialized Capell bridge.  Once the normalized quintic is
+irreducible, reducibility of its composition with `u^2` must be the symmetric
+irreducible `5+5` mechanism.
+-/
+theorem normalizedEven_capell_reduction
+    {s : ℚ} :
+    ¬ Irreducible (normalizedEvenPolynomial s) →
+      ¬ Irreducible (normalizedQuintic s) ∨ SymmetricFiveFiveCase s := by
+  sorry
+
+/--
+Reducibility of the exact degree-ten polynomial either comes from
+reducibility of the normalized quintic or from the symmetric `5+5`
+composition mechanism.  The weighted variable scaling is kernel-checked in
+`Scaling.lean`; only the specialized Capell theorem above remains open.
 -/
 theorem sharipov_composition_reduction
     {p q : ℕ} (hq : 0 < q) :
     ¬ Irreducible (sharipovPolynomialQ p q) →
       ¬ Irreducible (normalizedQuintic (sharipovParameter p q)) ∨
       SymmetricFiveFiveCase (sharipovParameter p q) := by
-  sorry
+  intro hQ
+  have hEven :
+      ¬ Irreducible (normalizedEvenPolynomial (sharipovParameter p q)) := by
+    intro hEvenIrr
+    exact hQ
+      ((sharipovPolynomialQ_irreducible_iff_normalizedEven hq).2 hEvenIrr)
+  exact normalizedEven_capell_reduction hEven
 
 /--
 Specialized factorization classification for the exact Sharipov polynomial.
-The reducible-quintic degree split is kernel-checked in
-`FactorizationClassification`; only the scaling/Capell bridge above remains.
+The scaling and reducible-quintic degree split are kernel-checked; the only
+remaining input in this branch is `normalizedEven_capell_reduction`.
 -/
 theorem sharipov_factorization_classification
     {p q : ℕ}

@@ -18,35 +18,43 @@ quotient soundness are acceptable.
 ## Remaining proof gaps
 
 There are currently **four** source `sorry`s.  The elementary factorization
-classification is now kernel-checked: a reducible monic quintic yields either
-a rational root or a monic `2+3` factorization.  The former broad
-`sharipov_factorization_classification` gap has therefore been replaced by the
-strictly narrower scaling/Capell bridge below.
+classification and the complete weighted scaling from `Q_{p,q}` to
+`P_s(u^2)` are now represented by ordinary Lean proofs.  The former broad
+factorization-shell gap has therefore been reduced to the single specialized
+Capell implication below.
 
 No gap is hidden behind a custom axiom.
 
-### 1. `sharipov_composition_reduction`
+### 1. `normalizedEven_capell_reduction`
 
-**Statement.** Reducibility of the exact rational polynomial
-`sharipovPolynomialQ p q` implies either reducibility of the normalized
-quintic `P_s`, or a symmetric irreducible `5+5` factorization of
-`P_s(u^2)`.
+**Statement.** If `P_s(u^2)` is reducible, then either `P_s` itself is
+reducible or the composition has a symmetric irreducible `5+5`
+factorization.
 
-**Already formalized downstream.** `monic_quintic_reducible_cases` and
-`normalizedQuintic_reducible_cases` prove without `sorry` that reducibility of
-`P_s` gives exactly the `1+4` or `2+3` branch.  Consequently
-`sharipov_factorization_classification` itself is now an ordinary Lean proof.
+**Already formalized downstream.**
 
-**Why open in Lean.** It remains to connect the exact weighted variable
-scaling to factorization and prove the specialized Capell statement for
-composition with `u^2`.
+- `monic_quintic_reducible_cases` proves that a reducible monic quintic has a
+  rational linear factor or a monic quadratic factor with monic cubic
+  quotient.
+- `normalizedQuintic_reducible_cases` specializes this to `P_s`.
+- `sharipovPolynomialQ_eq_scaleRoots` proves the exact polynomial identity
+  `Q_{p,q}=scaleRoots(P_s(u^2),q^2)`.
+- `irreducible_scaleRoots_iff` proves that nonzero root scaling preserves and
+  reflects irreducibility.
+- `sharipov_factorization_classification` is therefore now an ordinary Lean
+  proof conditional only on the specialized Capell statement.
+
+**Why open in Lean.** Mathlib does not currently expose the exact specialized
+Capell composition theorem required here.  The remaining task is to pass to
+a root `α` of irreducible `P_s`, show that reducibility of `u^2-α` is
+squarehood of `α` in `ℚ(α)`, and reconstruct the symmetric degree-five
+minimal polynomial of a square root.
 
 **External proof.** `notes/factorization_classification.md`,
 `paper/clean3.tex`, Proposition “Complete factorization reduction”.
 
-**Estimated burden.** Medium.  The intended implementation is a small
-specialized composition lemma rather than a general formalization of Capell's
-theorem.
+**Estimated burden.** Medium.  This should remain a specialized field-quotient
+argument rather than a general formalization of Capell's theorem.
 
 **Downstream dependencies.** The rational and integer final theorem.
 
@@ -113,6 +121,7 @@ certificates should avoid a large general real-algebraic library.
 The following are ordinary Lean proofs and will become axiom-clean
 immediately when the four gaps above are closed:
 
+- `sharipov_composition_reduction`;
 - `sharipov_factorization_classification`;
 - `sharipovPolynomialQ_irreducible`;
 - `sharipov_second_cuboid_conjecture`;
