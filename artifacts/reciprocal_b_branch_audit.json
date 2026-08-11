@@ -1,0 +1,134 @@
+{
+  "base_genus": 1,
+  "branch_intersections": {
+    "U_minus_2_and_negative": 8,
+    "U_minus_2_and_positive": 6,
+    "U_plus_2_and_U_minus_2": 4,
+    "U_plus_2_and_negative": 4,
+    "U_plus_2_and_positive": 2
+  },
+  "branch_sets": {
+    "U_minus_2": {
+      "s=0/infinity": 4,
+      "s=1_all_pairs": 10
+    },
+    "U_plus_2": {
+      "s=-1": 2,
+      "s=0/infinity": 4
+    },
+    "W_plus_2": {
+      "s=0/infinity": 2,
+      "s=1_mixed_pairs": 4
+    },
+    "two_minus_W": {
+      "s=-1": 2,
+      "s=0/infinity": 2,
+      "s=1_negative_pairs": 6
+    }
+  },
+  "branch_totals": {
+    "U_minus_2": 14,
+    "U_plus_2": 6,
+    "W_plus_2": 6,
+    "two_minus_W": 10
+  },
+  "double_cover_genera": {
+    "negative_constant": 6,
+    "positive_constant": 4,
+    "square_parameter_minus": 8,
+    "square_parameter_plus": 4
+  },
+  "full_character_genera": {
+    "negative": [
+      4,
+      8,
+      6,
+      7,
+      5,
+      5,
+      4
+    ],
+    "positive": [
+      4,
+      8,
+      4,
+      7,
+      5,
+      5,
+      6
+    ]
+  },
+  "full_signed_square_cover_genera": {
+    "negative": 33,
+    "positive": 33
+  },
+  "function_identities": {
+    "U_minus_2": "(s - 1)**2/s",
+    "U_plus_2": "(s + 1)**2/s",
+    "W_plus_2": "(b + 1)**2/b",
+    "two_minus_W": "-(b - 1)**2/b"
+  },
+  "kani_rosen_v4": "J(Y) x J(E)^2 ~ J(C_s) x J(C_b) x J(C_product)",
+  "pair_character_branch_totals": {
+    "minus_with_negative": 8,
+    "minus_with_positive": 8,
+    "parameter_product": 12,
+    "plus_with_negative": 8,
+    "plus_with_positive": 8
+  },
+  "pair_character_genera": {
+    "minus_with_negative": 5,
+    "minus_with_positive": 5,
+    "parameter_product": 7,
+    "plus_with_negative": 5,
+    "plus_with_positive": 5
+  },
+  "s_equals_0_and_infinity": {
+    "normalization_places": 7,
+    "odd_b_places": [
+      "AC",
+      "BC"
+    ],
+    "odd_s_places": [
+      "AB",
+      "AC",
+      "BC",
+      "DE"
+    ],
+    "root_valuations": {
+      "A": 0,
+      "B": 0,
+      "C": 1,
+      "D": 2,
+      "E": 2
+    }
+  },
+  "s_equals_1": {
+    "gcd_qc_qminus_c": "1",
+    "mixed_pairs_b_equals_minus_1": 4,
+    "negative_pairs_b_equals_1": 6,
+    "negative_slope_quartic": "c**4 - 8*c**2 - 12*c - 4",
+    "positive_root_slope": 5,
+    "q_at_5": 361,
+    "slope_discriminant": -11008
+  },
+  "s_equals_minus_1": {
+    "pair_sum_nonzero_certificate": "gcd(omega^5-1,omega+1)=1",
+    "two_pair_orbits": 2
+  },
+  "schema": 1,
+  "sha256_without_checksum": "2e5ca88cfb175ced173119b638b0e514518e39071520071cfaa0f77f68513be2",
+  "square_parameter_warning": "U+2 square alone is necessary but not sufficient; U-2 must also be square",
+  "triple_character_branch_totals": {
+    "negative": 6,
+    "positive": 10
+  },
+  "triple_character_genera": {
+    "negative": 4,
+    "positive": 6
+  },
+  "v4_cover_genera": {
+    "negative": 13,
+    "positive": 11
+  }
+}

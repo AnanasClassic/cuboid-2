@@ -1,0 +1,889 @@
+{
+  "C8_degrees_U_V_total": [
+    6,
+    6,
+    8
+  ],
+  "C8_irreducible_over_QQ": true,
+  "C8_term_count": 29,
+  "C8_terms": [
+    {
+      "coefficient": "16",
+      "powers": [
+        6,
+        0
+      ]
+    },
+    {
+      "coefficient": "-128",
+      "powers": [
+        5,
+        1
+      ]
+    },
+    {
+      "coefficient": "44",
+      "powers": [
+        4,
+        3
+      ]
+    },
+    {
+      "coefficient": "272",
+      "powers": [
+        4,
+        2
+      ]
+    },
+    {
+      "coefficient": "32",
+      "powers": [
+        4,
+        1
+      ]
+    },
+    {
+      "coefficient": "64",
+      "powers": [
+        4,
+        0
+      ]
+    },
+    {
+      "coefficient": "-76",
+      "powers": [
+        3,
+        4
+      ]
+    },
+    {
+      "coefficient": "-256",
+      "powers": [
+        3,
+        3
+      ]
+    },
+    {
+      "coefficient": "-180",
+      "powers": [
+        3,
+        2
+      ]
+    },
+    {
+      "coefficient": "-128",
+      "powers": [
+        3,
+        1
+      ]
+    },
+    {
+      "coefficient": "-32",
+      "powers": [
+        3,
+        0
+      ]
+    },
+    {
+      "coefficient": "-1",
+      "powers": [
+        2,
+        6
+      ]
+    },
+    {
+      "coefficient": "32",
+      "powers": [
+        2,
+        5
+      ]
+    },
+    {
+      "coefficient": "134",
+      "powers": [
+        2,
+        4
+      ]
+    },
+    {
+      "coefficient": "228",
+      "powers": [
+        2,
+        3
+      ]
+    },
+    {
+      "coefficient": "87",
+      "powers": [
+        2,
+        2
+      ]
+    },
+    {
+      "coefficient": "148",
+      "powers": [
+        2,
+        1
+      ]
+    },
+    {
+      "coefficient": "-44",
+      "powers": [
+        2,
+        0
+      ]
+    },
+    {
+      "coefficient": "-34",
+      "powers": [
+        1,
+        5
+      ]
+    },
+    {
+      "coefficient": "-80",
+      "powers": [
+        1,
+        4
+      ]
+    },
+    {
+      "coefficient": "-60",
+      "powers": [
+        1,
+        3
+      ]
+    },
+    {
+      "coefficient": "-164",
+      "powers": [
+        1,
+        2
+      ]
+    },
+    {
+      "coefficient": "94",
+      "powers": [
+        1,
+        1
+      ]
+    },
+    {
+      "coefficient": "-12",
+      "powers": [
+        1,
+        0
+      ]
+    },
+    {
+      "coefficient": "31",
+      "powers": [
+        0,
+        4
+      ]
+    },
+    {
+      "coefficient": "48",
+      "powers": [
+        0,
+        3
+      ]
+    },
+    {
+      "coefficient": "-46",
+      "powers": [
+        0,
+        2
+      ]
+    },
+    {
+      "coefficient": "12",
+      "powers": [
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "-1",
+      "powers": [
+        0,
+        0
+      ]
+    }
+  ],
+  "F_terms": [
+    {
+      "coefficient": "1",
+      "powers": [
+        6,
+        10
+      ]
+    },
+    {
+      "coefficient": "34",
+      "powers": [
+        5,
+        10
+      ]
+    },
+    {
+      "coefficient": "-32",
+      "powers": [
+        5,
+        9
+      ]
+    },
+    {
+      "coefficient": "-31",
+      "powers": [
+        4,
+        10
+      ]
+    },
+    {
+      "coefficient": "80",
+      "powers": [
+        4,
+        9
+      ]
+    },
+    {
+      "coefficient": "-134",
+      "powers": [
+        4,
+        8
+      ]
+    },
+    {
+      "coefficient": "76",
+      "powers": [
+        4,
+        7
+      ]
+    },
+    {
+      "coefficient": "-48",
+      "powers": [
+        3,
+        9
+      ]
+    },
+    {
+      "coefficient": "60",
+      "powers": [
+        3,
+        8
+      ]
+    },
+    {
+      "coefficient": "-228",
+      "powers": [
+        3,
+        7
+      ]
+    },
+    {
+      "coefficient": "256",
+      "powers": [
+        3,
+        6
+      ]
+    },
+    {
+      "coefficient": "-44",
+      "powers": [
+        3,
+        5
+      ]
+    },
+    {
+      "coefficient": "46",
+      "powers": [
+        2,
+        8
+      ]
+    },
+    {
+      "coefficient": "164",
+      "powers": [
+        2,
+        7
+      ]
+    },
+    {
+      "coefficient": "-87",
+      "powers": [
+        2,
+        6
+      ]
+    },
+    {
+      "coefficient": "180",
+      "powers": [
+        2,
+        5
+      ]
+    },
+    {
+      "coefficient": "-272",
+      "powers": [
+        2,
+        4
+      ]
+    },
+    {
+      "coefficient": "-12",
+      "powers": [
+        1,
+        7
+      ]
+    },
+    {
+      "coefficient": "-94",
+      "powers": [
+        1,
+        6
+      ]
+    },
+    {
+      "coefficient": "-148",
+      "powers": [
+        1,
+        5
+      ]
+    },
+    {
+      "coefficient": "128",
+      "powers": [
+        1,
+        4
+      ]
+    },
+    {
+      "coefficient": "-32",
+      "powers": [
+        1,
+        3
+      ]
+    },
+    {
+      "coefficient": "128",
+      "powers": [
+        1,
+        2
+      ]
+    },
+    {
+      "coefficient": "1",
+      "powers": [
+        0,
+        6
+      ]
+    },
+    {
+      "coefficient": "12",
+      "powers": [
+        0,
+        5
+      ]
+    },
+    {
+      "coefficient": "44",
+      "powers": [
+        0,
+        4
+      ]
+    },
+    {
+      "coefficient": "32",
+      "powers": [
+        0,
+        3
+      ]
+    },
+    {
+      "coefficient": "-64",
+      "powers": [
+        0,
+        2
+      ]
+    },
+    {
+      "coefficient": "-16",
+      "powers": [
+        0,
+        0
+      ]
+    }
+  ],
+  "P_terms": [
+    {
+      "coefficient": "1",
+      "powers": [
+        8,
+        10
+      ]
+    },
+    {
+      "coefficient": "-32",
+      "powers": [
+        7,
+        9
+      ]
+    },
+    {
+      "coefficient": "76",
+      "powers": [
+        7,
+        7
+      ]
+    },
+    {
+      "coefficient": "-44",
+      "powers": [
+        7,
+        5
+      ]
+    },
+    {
+      "coefficient": "34",
+      "powers": [
+        6,
+        10
+      ]
+    },
+    {
+      "coefficient": "-134",
+      "powers": [
+        6,
+        8
+      ]
+    },
+    {
+      "coefficient": "256",
+      "powers": [
+        6,
+        6
+      ]
+    },
+    {
+      "coefficient": "-272",
+      "powers": [
+        6,
+        4
+      ]
+    },
+    {
+      "coefficient": "128",
+      "powers": [
+        6,
+        2
+      ]
+    },
+    {
+      "coefficient": "-16",
+      "powers": [
+        6,
+        0
+      ]
+    },
+    {
+      "coefficient": "80",
+      "powers": [
+        5,
+        9
+      ]
+    },
+    {
+      "coefficient": "-228",
+      "powers": [
+        5,
+        7
+      ]
+    },
+    {
+      "coefficient": "180",
+      "powers": [
+        5,
+        5
+      ]
+    },
+    {
+      "coefficient": "-32",
+      "powers": [
+        5,
+        3
+      ]
+    },
+    {
+      "coefficient": "-31",
+      "powers": [
+        4,
+        10
+      ]
+    },
+    {
+      "coefficient": "60",
+      "powers": [
+        4,
+        8
+      ]
+    },
+    {
+      "coefficient": "-87",
+      "powers": [
+        4,
+        6
+      ]
+    },
+    {
+      "coefficient": "128",
+      "powers": [
+        4,
+        4
+      ]
+    },
+    {
+      "coefficient": "-64",
+      "powers": [
+        4,
+        2
+      ]
+    },
+    {
+      "coefficient": "-48",
+      "powers": [
+        3,
+        9
+      ]
+    },
+    {
+      "coefficient": "164",
+      "powers": [
+        3,
+        7
+      ]
+    },
+    {
+      "coefficient": "-148",
+      "powers": [
+        3,
+        5
+      ]
+    },
+    {
+      "coefficient": "32",
+      "powers": [
+        3,
+        3
+      ]
+    },
+    {
+      "coefficient": "46",
+      "powers": [
+        2,
+        8
+      ]
+    },
+    {
+      "coefficient": "-94",
+      "powers": [
+        2,
+        6
+      ]
+    },
+    {
+      "coefficient": "44",
+      "powers": [
+        2,
+        4
+      ]
+    },
+    {
+      "coefficient": "-12",
+      "powers": [
+        1,
+        7
+      ]
+    },
+    {
+      "coefficient": "12",
+      "powers": [
+        1,
+        5
+      ]
+    },
+    {
+      "coefficient": "1",
+      "powers": [
+        0,
+        6
+      ]
+    }
+  ],
+  "cayley_coordinates": {
+    "action": "(x,y)->(-x,-y)",
+    "fixed_generators": {
+      "U": "x/y",
+      "V": "x*y"
+    },
+    "x": "(S-1)/(S+1)",
+    "y": "(K-1)/(K+1)"
+  },
+  "cayley_identity": "Qbar((1+x)/(1-x),(1+y)/(1-y))=-2^10*P(x,y)/((x-1)^8*(y-1)^10)",
+  "characters": {
+    "common": [
+      "UV=x^2",
+      "1-UV=4*S/(S+1)^2"
+    ],
+    "negative_third": "1-U/V=-4*K/(K-1)^2",
+    "positive_third": "1-V/U=4*K/(K+1)^2"
+  },
+  "chart_exception_fibres": {
+    "negative": {
+      "K=-1": "-64*(S - 1)**6*(S + 1)**2",
+      "K=0": "S**4",
+      "K=1": "16*(S - 1)**4*(S**4 - 32*S**3 - 62*S**2 - 32*S + 1)",
+      "S=-1": "(K + 1)**10",
+      "S=0": "K**3*(K**2 - 6*K + 1)**2",
+      "S=1": "(K - 1)**4*(K + 1)**6"
+    },
+    "positive": {
+      "K=-1": "-16*(S - 1)**4*(S**4 - 32*S**3 - 62*S**2 - 32*S + 1)",
+      "K=0": "-S**4",
+      "K=1": "64*(S - 1)**6*(S + 1)**2",
+      "S=-1": "-(K - 1)**10",
+      "S=0": "K**3*(K**2 + 6*K + 1)**2",
+      "S=1": "-(K - 1)**6*(K + 1)**4"
+    }
+  },
+  "chart_exception_proof": "For physical S>0, S!=1.  On the positive branch K=1 forces S=+/-1 and K=-1 leaves the displayed quartic; on the negative branch these two roles are reversed.  The quartic is monic with constant one, so its possible rational roots are +/-1, neither a root.  K=0 and S=0 are boundary.  Thus every admissible rational datum reaches a finite affine quotient point.",
+  "involution": "(S,K)->(1/S,1/K)",
+  "logical_scope": "This is an exact quotient and character reduction.  It does not classify C8(Q) or prove C010.",
+  "negative_branch": {
+    "F_relation": "F_-(X,r)=r^10*X^6*F_+(X,1/(X*r))",
+    "F_terms": [
+      {
+        "coefficient": "-16",
+        "powers": [
+          6,
+          10
+        ]
+      },
+      {
+        "coefficient": "128",
+        "powers": [
+          5,
+          8
+        ]
+      },
+      {
+        "coefficient": "-64",
+        "powers": [
+          4,
+          8
+        ]
+      },
+      {
+        "coefficient": "-32",
+        "powers": [
+          4,
+          7
+        ]
+      },
+      {
+        "coefficient": "-272",
+        "powers": [
+          4,
+          6
+        ]
+      },
+      {
+        "coefficient": "-44",
+        "powers": [
+          4,
+          5
+        ]
+      },
+      {
+        "coefficient": "32",
+        "powers": [
+          3,
+          7
+        ]
+      },
+      {
+        "coefficient": "128",
+        "powers": [
+          3,
+          6
+        ]
+      },
+      {
+        "coefficient": "180",
+        "powers": [
+          3,
+          5
+        ]
+      },
+      {
+        "coefficient": "256",
+        "powers": [
+          3,
+          4
+        ]
+      },
+      {
+        "coefficient": "76",
+        "powers": [
+          3,
+          3
+        ]
+      },
+      {
+        "coefficient": "44",
+        "powers": [
+          2,
+          6
+        ]
+      },
+      {
+        "coefficient": "-148",
+        "powers": [
+          2,
+          5
+        ]
+      },
+      {
+        "coefficient": "-87",
+        "powers": [
+          2,
+          4
+        ]
+      },
+      {
+        "coefficient": "-228",
+        "powers": [
+          2,
+          3
+        ]
+      },
+      {
+        "coefficient": "-134",
+        "powers": [
+          2,
+          2
+        ]
+      },
+      {
+        "coefficient": "-32",
+        "powers": [
+          2,
+          1
+        ]
+      },
+      {
+        "coefficient": "1",
+        "powers": [
+          2,
+          0
+        ]
+      },
+      {
+        "coefficient": "12",
+        "powers": [
+          1,
+          5
+        ]
+      },
+      {
+        "coefficient": "-94",
+        "powers": [
+          1,
+          4
+        ]
+      },
+      {
+        "coefficient": "164",
+        "powers": [
+          1,
+          3
+        ]
+      },
+      {
+        "coefficient": "60",
+        "powers": [
+          1,
+          2
+        ]
+      },
+      {
+        "coefficient": "80",
+        "powers": [
+          1,
+          1
+        ]
+      },
+      {
+        "coefficient": "34",
+        "powers": [
+          1,
+          0
+        ]
+      },
+      {
+        "coefficient": "1",
+        "powers": [
+          0,
+          4
+        ]
+      },
+      {
+        "coefficient": "-12",
+        "powers": [
+          0,
+          3
+        ]
+      },
+      {
+        "coefficient": "46",
+        "powers": [
+          0,
+          2
+        ]
+      },
+      {
+        "coefficient": "-48",
+        "powers": [
+          0,
+          1
+        ]
+      },
+      {
+        "coefficient": "-31",
+        "powers": [
+          0,
+          0
+        ]
+      }
+    ],
+    "P_relation": "P_-(x,y)=y^10*P_+(x,1/y)",
+    "cayley_identity": "Qbar_-((1+x)/(1-x),(1+y)/(1-y))=+2^10*P_-(x,y)/((x-1)^8*(y-1)^10)",
+    "coordinate_relation": "r_+=1/(X*r_-)",
+    "lost_r_minus_zero_discriminant": "2^8*5",
+    "lost_r_minus_zero_fibre": "F_-(X,0)=X^2+34*X-31",
+    "lost_r_minus_zero_rational_points": [],
+    "natural_quotient": "C8(V_-,U_-)=0 for U_-=1/r_-, V_-=X*r_-",
+    "radial_identity": "P_-(x,r_-*x)=x^4*F_-(x^2,r_-)",
+    "same_C8_map": "(U,V)=(V_-,U_-)",
+    "twist": "Qbar_-(S,K)=-Qbar_+(S,-K)"
+  },
+  "quotient_identity": "C8(U,V)=-U^6*F(U*V,1/U)",
+  "radial_identity": "P(x,r*x)=x^6*F(x^2,r)",
+  "schema": 1,
+  "sha256_without_checksum": "b43041bbbb4546a9bbb59e014b08f9ebd7793700da442955f66ff82e1662f598",
+  "source": "both 71-term compact signed-square models Q_+(z,k), Q_-(z,k)",
+  "source_checksum": "a9fe466100438a485dd6a882d2db15276a7cdf5c0cc122aa7b071c59f348efd9",
+  "source_relabeling": "S=z^2, K=k^2",
+  "status": "MACHINE-VERIFIED"
+}

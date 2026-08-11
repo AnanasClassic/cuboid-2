@@ -1,0 +1,605 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\newtheorem{theorem}{Theorem}
+\title{A computer-assisted proof of Sharipov's second cuboid conjecture}
+\author{Computational research draft}
+\date{August 10, 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove Sharipov's second cuboid conjecture for every pair of coprime
+positive integers $p\ne q$.  The previously open quadratic--cubic
+factorization case is carried by an exact reciprocal quotient to
+$E:y^2=x^3-5x+4$.  Two square characters common to both possible signs of the
+quadratic factor reduce, by a valuation descent, to rational points with
+square abscissa on
+\[
+ R^2=4a^5-8a^2+5a.
+\]
+A Schaefer--Stoll 2-descent, an index-independent Mordell--Weil sieve at
+$7$ and $23$, and an exact $7$-adic Coleman calculation show that the only
+such points are $\infty,(0,0),(1,\pm1)$; direct lifting makes every one
+inadmissible.  This excludes the quadratic--cubic case.  The linear--quartic
+case is independently closed by a genus-two descent and
+Coleman--Strassmann argument, and the symmetric $5+5$ case by an exact Sturm
+certificate.  All symbolic and arithmetic certificates use exact
+characteristic-zero or finite-field arithmetic; no height bound or
+large-memory normalization is a premise.
+\end{abstract}
+
+Let $Q_{p,q}(t)=H_{p,q}(t^2)$, where $H_{p,q}\in\mathbb Z[X]$ is the monic
+quintic obtained from the standard second cuboid polynomial.
+
+\begin{theorem}
+If $X^2+AX+B$ divides $H_{p,q}(X)$ in $\mathbb Z[X]$, then
+$B=\varepsilon d^2$ for some $d\in\mathbb Z$ and
+$\varepsilon\in\{+1,-1\}$.
+\end{theorem}
+
+\begin{proof}
+For a prime $\ell\mid pq$, put $k=v_\ell(pq)$.  Coprimality and direct
+coefficient valuations give the lower Newton polygon with vertices
+$(0,10k),(2,2k),(3,0),(5,0)$, also for $\ell=2,3$.  Thus the five root
+valuations are $4k,4k,2k,0,0$.  The valuation of the product of any two roots
+is even.  Since $B$ divides $-p^{10}q^{10}$, every prime valuation of $B$ is
+even, proving the assertion.
+\end{proof}
+
+\begin{theorem}[Prime-power axis family]
+For every prime $\ell$ and every $k\geq1$, the quintic
+$P_{(p/q)^2}$ has no rational quadratic factor when
+\[
+ \{p,q\}=\{1,\ell^k\}.
+\]
+More generally, at every prime $r\mid pq$ a hypothetical quadratic factor
+defines an index $m_r\in\{0,1,2,3,4\}$, and these indices cannot all be equal.
+Consequently every counterexample to the quadratic-factor assertion has
+$\omega(pq)\geq2$ and nonuniform local pair type.
+\end{theorem}
+
+\begin{proof}
+Let $X^2+AX+B$ be a monic integral quadratic factor and normalize its
+constant by $b=B/q^8$.  The Newton root valuations at a prime $r\mid pq$ are
+$0,0,2k,4k,4k$, where $k=v_r(pq)$.  Hence
+\[
+ v_r(b)=m_rv_r(s),\qquad m_r\in\{0,1,2,3,4\}.
+\]
+If all $m_r$ equal $m$, then $b=\pm s^m$, because the quotient has zero
+valuation at every finite prime.  In particular this always happens when
+$pq$ has only one prime divisor.
+
+For each of the ten substitutions $b=\pm s^m$, exact Euclidean division by
+$x^2+ax+b$ gives remainders $R_1x+R_0$.  The complete factorization of
+$\operatorname{Res}_a(R_1,R_0)$ has no positive rational zero except $s=1$.
+This is certified without an irreducibility oracle: every nonlinear displayed
+factor is monic with constant term $\pm1$, and direct evaluation excludes the
+only rational-root candidates $\pm1$.  Since $s=1$ is inadmissible, the
+assertions follow.  Each resultant is independently checked as a $7\times7$
+Sylvester determinant.
+\end{proof}
+
+\begin{theorem}[A two-prime family]
+Let $r\ne3$ be prime with $r\equiv3$ or $5\pmod8$, and let $n\geq1$.
+Then $P_{(p/q)^2}$ has no rational quadratic factor when
+\[
+ \{p,q\}=\{3,r^n\}.
+\]
+\end{theorem}
+
+\begin{proof}
+At both primes, $2$ is a quadratic nonresidue.  The slope-zero residual
+quadratic is therefore irreducible and restricts both local indices to
+$\{0,3,4\}$.  Equal indices are excluded by the preceding theorem.  For the
+twelve signed unequal pairs $(u,v)$, substitute
+\[
+ s=P^2/Q^2,\qquad b=\pm P^{2u}/Q^{2v}
+\]
+in $\operatorname{Res}_a(R_1,R_0)$ and clear denominators.  The coefficient
+at the lowest $P$-power and the coefficient at the lowest $Q$-power give
+exact endpoint valuations.  A unique minimum excludes every inert prime
+except the finite set $\{5,13\}$.  Exact evaluation closes every branch at
+those two primes.  Finally, after $P=3$, the coefficient polygons in $Q$
+have a unique minimum for every $Q=r^n$; the sole threshold-two case at
+$n=1$ is one of the exact evaluations just noted.  Thus the argument covers
+all $n$, not a bounded range.  Reciprocity gives the reversed orientation.
+\end{proof}
+
+\begin{theorem}[Endpoint restrictions for two inert prime powers]
+Let $p=L^m$ and $q=R^n$, where $L,R$ are distinct odd primes and
+$(2/L)=(2/R)=-1$.  Every nonuniform local pair type $u\ne v$ in
+$\{0,3,4\}$ satisfies
+\[
+ R^{en}\equiv\varepsilon\pmod L,\qquad
+ L^{em}\equiv\varepsilon\pmod R,
+ \qquad e=2|u-v|\in\{2,6,8\},
+\]
+where $\varepsilon$ is the sign of the quadratic factor's constant.
+For $\varepsilon=-1$, the case $e=8$ is impossible.  The cases $e=2,6$
+require $L\equiv R\equiv5\pmod8$, odd $m,n$, and
+\(\left(\frac{L}{R}\right)=\left(\frac{R}{L}\right)=-1\).  If $m=n=1$,
+the positive case $e=2$ is also impossible.
+\end{theorem}
+
+\begin{proof}
+For all twelve signed ordered pairs, exact substitution in
+$\operatorname{Res}_a(R_1,R_0)$ shows that the two lowest endpoint
+coefficients have squarefree parts $X^e-\varepsilon$; their integer contents
+are one.  Reduction at $L$ and $R$ gives the displayed congruences without an
+exceptional-prime division.  An equation $x^8=-1$ requires an element of
+order $16$, impossible because an inert odd prime is $3$ or $5$ modulo $8$.
+For $e=2,6$, the $2$-primary subgroup at a surviving prime has order $4$;
+the exponent of the prime power must be odd and the powered base is a
+quadratic nonresidue.  Quadratic reciprocity gives the stated mutual symbols.
+Finally, for $m=n=1$ and $L<R$, the positive $e=2$ conditions force the odd
+prime $R$ to divide $L^2-1$, hence $R=L+1$, a contradiction.
+\end{proof}
+
+The remaining endpoint systems are necessary only.  They have genuine
+infinite endpoint survivors, so endpoint congruences and reciprocity alone do
+not give a general two-prime exclusion.  The next theorem uses the following
+coefficient layer and the full projection equation to close those survivors.
+
+\begin{theorem}[Two inert prime powers]
+Let $p=L^m$ and $q=R^n$, where $L,R$ are distinct odd primes,
+$m,n\geq1$, and $(2/L)=(2/R)=-1$.  Then $P_{(p/q)^2}(x)$ has no rational
+quadratic factor.
+\end{theorem}
+
+\begin{proof}
+After clearing the boundary monomial in each nonuniform branch, the powers of
+$P,Q$ occur in steps of two.  Keeping the next coefficient after each
+endpoint strengthens the preceding congruences to the following
+prime-power divisibilities; reversing $(u,v)$ swaps $p,q$:
+\[
+\begin{array}{c|c}
+(u,v)&\text{necessary divisibilities}\\ \hline
+(3,4)&p\mid q^2-\varepsilon,\quad q^2\mid p^2-\varepsilon,\\
+(0,3)&p^2\mid q^6-\varepsilon,\quad q\mid p^6-\varepsilon,\\
+(0,4)&p^2\mid q^8-\varepsilon,\quad q^2\mid p^8-\varepsilon.
+\end{array}
+\]
+The endpoint multiplicities are respectively $(2,1),(1,2),(1,1)$;
+their remaining cofactors are signed pure powers of the opposite variable,
+so coprimality loses no valuation.
+
+For $e=2$ and $\varepsilon=1$, the second divisibility gives $p>q$.
+Since $p$ is an odd prime power and
+$\gcd(q-1,q+1)=2$, the first divisibility forces all of $p$ into one of
+$q-1,q+1$, contradicting $p>q$.  For $\varepsilon=-1$, put
+$c=(q^2+1)/p$.  Again $p>q$, so $1\leq c\leq q-1$.  Modulo $q^2$ one has
+$pc\equiv1$ and $p^2\equiv-1$, whence $q^2\mid p+c$.  If $c=1$, then
+$p+c=q^2+2$; if $c\geq2$, then
+\[
+0<p+c=\frac{q^2+1}{c}+c
+\leq\frac{q^2+1}{2}+q-1<q^2.
+\]
+Here $q\geq3$.  Both alternatives are impossible.
+
+For negative $e=6$, and for both signs at $e=8$, write
+$X=P^2$, $Y=Q^2$ in the normalized full projection branch and substitute
+\[
+X=U+9,\qquad Y=V+9.
+\]
+Exact expansion gives respectively $269$ and $441$ nonzero integer
+coefficients, every one strictly positive.  Thus none of these branches
+vanishes for odd prime powers $P,Q\geq3$.
+
+It remains to treat positive $e=6$ in the orientation
+$q\mid p^6-1$.  Write $q=R^n$.  If $R\ne3$, all $R$-adic valuation lies in
+one of the four cyclotomic factors of $p^6-1$, hence
+$q\leq p^2+p+1$.  If $R=3$, LTE gives
+$v_3(p^6-1)=v_3(p^2-1)+1$, hence $q\leq3(p^2-1)$.
+For either bound $B(p)$ put
+\[
+p=U+3,\qquad q=\frac{3+B(p)W}{1+W}.
+\]
+After multiplication by $(1+W)^{24}$, the normalized full projection is a
+polynomial in $U,W$ with $1619$ nonzero coefficients, all strictly positive,
+for both $B=p^2+p+1$ and $B=3(p^2-1)$.  This covers
+$3\leq q\leq B(p)$; the endpoint $q=B(p)$ is the positive leading
+$W$-coefficient.  Reciprocity in $P,Q$ closes the other orientation.
+
+The exact endpoint factorizations, coefficient tables, and their checksums
+are reproduced by
+\texttt{research/global\_descent/second\_endpoint\_layer.py}.
+Equal local indices were already excluded by the uniform resultant theorem,
+so every branch is closed.
+\end{proof}
+
+This theorem still does not cover general $p,q$ having several prime
+divisors: one global factor can select different Newton pairs at different
+primes.
+
+\begin{theorem}
+Let $p,q$ range over positive coprime integers.  There is an explicit union of
+projective congruence classes modulo all odd primes at most $137$, having natural
+density
+\[
+\frac{3917894203934863}{3917894203948032},
+\]
+such that, on every class in the union,
+$H_{p,q}$ has no quadratic factor over $\mathbb Q$.
+\end{theorem}
+
+\begin{proof}
+If $H_{p,q}$ has a quadratic factor over $\mathbb Q$, monicity and Gauss's
+lemma give a monic factor in $\mathbb Z[X]$.  Its reduction is a monic
+quadratic divisor modulo every prime.  Weighted homogeneity shows that the
+existence of such a divisor depends only on $(p:q)\in\mathbb P^1(\mathbb F_\ell)$.
+Exhaustive exact division by all monic quadratics gives the complete class
+lists in the accompanying certificate.  For illustration, some of the
+sign-separated residual counts are below; ``both'' means that divisors of
+both allowed signs occur in the same projective parameter class.
+
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$\ell$ & $\ell+1$ & square & negative square & both\\
+\midrule
+43&44&20&12&4\\
+67&68&40&20&12\\
+71&72&8&24&4\\
+83&84&24&24&8\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Projective classes are uniform for primitive pairs, and the finite local
+conditions are independent by the Chinese remainder theorem.  Applying CRT
+separately to each of the two global signs and then inclusion--exclusion gives
+residual density
+$13169/3917894203948032$, hence the stated complement.  Complete class lists and
+independent exact verification algorithms accompany this draft.
+\end{proof}
+
+No finite set of reduction primes can remove every parameter class: if $M$ is
+their product, the primitive pairs $p\equiv0\pmod M$, $q=1$ reduce to
+$H_{p,q}(X)=X^3(X^2+6X+1)$ at every selected prime.  Thus the theorem is a
+descent certificate, not a proof of the full conjecture.
+
+\begin{theorem}[Reciprocal three-character descent]
+Let $E$ be the normalization of the reciprocal quotient of the quadratic
+factor curve, and put
+\[
+ U=s+s^{-1},\qquad W=b+b^{-1}.
+\]
+Every admissible quadratic factor maps to one of the two elementary
+$2$-covers of $E$ obtained by adjoining square roots of
+\[
+ U+2,\quad U-2,\quad W+2
+ \qquad\hbox{or}\qquad
+ U+2,\quad U-2,\quad 2-W.
+\]
+Both full covers have genus $33$.  Their seven character quotients have
+genera, respectively,
+\[
+ (4,8,4,7,5,5,6),\qquad (4,8,6,7,5,5,4),
+\]
+up to permutation.  Moreover, if $Y_\varepsilon$ is either full cover and
+$C_\chi$ are its seven character quotients, then
+\[
+ J(Y_\varepsilon)\times J(E)^6
+ \ \sim\ \prod_{\chi\ne0}J(C_\chi)
+\]
+over $\mathbb Q$.
+\end{theorem}
+
+\begin{proof}
+The square identities are
+\[
+ U+2=\frac{(s+1)^2}{s},\quad
+ U-2=\frac{(s-1)^2}{s},\quad
+ W+2=\frac{(b+1)^2}{b},\quad
+ 2-W=-\frac{(b-1)^2}{b}.
+\]
+Thus $s=z^2$ requires both $U+2$ and $U-2$ to be squares, while the signed
+square theorem for the integral constant coefficient gives the third
+character.  Exact local expansions at $s=0,1,-1,\infty$ give branch degrees
+\[
+ \deg B(U+2)=6,\quad \deg B(U-2)=14,\quad
+ \deg B(W+2)=6,\quad \deg B(2-W)=10.
+\]
+Taking symmetric differences gives the seven displayed character genera by
+Riemann--Hurwitz.  The union of the branch supports has degree $16$; every
+inertia group has order two, so
+\[
+ 2g(Y_\varepsilon)-2=2^{3-1}\cdot16,
+\]
+and hence $g(Y_\varepsilon)=33$.  The isogeny is the standard character
+decomposition for an elementary abelian $2$-cover; its dimension identity is
+$33+6=39$, the sum of the seven character genera.  All local expansions,
+branch supports, and square-class changes are included in the exact
+accompanying certificate.
+\end{proof}
+
+\begin{theorem}[Linear-factor exclusion]
+For every positive rational $s\ne1$, the normalized quintic $P_s(x)$ has no
+rational root.  Equivalently, the $1+4$ factorization pattern does not occur
+for an admissible second-cuboid parameter.
+\end{theorem}
+
+\begin{proof}
+The exact quotient construction sends any rational root to a rational point
+on
+\[
+ C:\quad w^2=t^5+21t^4+26t^3+10t^2+5t+1.
+\]
+An explicit Schaefer--Stoll descent gives
+\[
+ \dim_{\mathbf F_2}\operatorname{Sel}^{(2)}(J/\mathbf Q)=2,
+ \qquad \operatorname{rank}J(\mathbf Q)=1,
+ \qquad \operatorname{Sha}(J/\mathbf Q)[2]=0.
+\]
+The divisor $[(0,1)-\infty]$ has infinite order and therefore spans
+$J(\mathbf Q)\otimes\mathbf Q_5$.  The six known rational points reduce
+bijectively to $C(\mathbf F_5)$.  Coleman integration gives the annihilating
+differential
+\[
+ \bar\eta=(1+t)\frac{dt}{2w}.
+\]
+It is nonzero in five residue disks, so each contains at most its known
+rational point.  In the remaining disk at $(-1,0)$, using $u=w=5z$, the
+Coleman primitive has the exact form
+\[
+ \frac{G(5z)}{25}=z\bigl(\text{unit}+5z^2\mathbf Z_5[[z^2]]\bigr).
+\]
+Strassmann's theorem gives the unique zero $z=0$.  Hence
+\[
+ C(\mathbf Q)=\{\infty,(-1,0),(0,\pm1),(1,\pm8)\}.
+\]
+The exact inverse table sends these points only to $s=1$, $s=-1$, or poles;
+the remaining denominator $t^2+6t+1$ has no rational zero.  None is an
+admissible positive $s\ne1$.
+\end{proof}
+
+\begin{theorem}[Subresultant exception]
+On the rational-square pullback of the quadratic-factor curve, the linear
+subresultant denominator $Q_1(T,A)$ cannot vanish at an admissible rational
+point.
+\end{theorem}
+
+\begin{proof}
+Exact elimination gives a completely factored certificate for
+\[
+ \operatorname{Res}_A\bigl(G(T^2,A),Q_1(T,A)\bigr).
+\]
+Multiplication-back verifies the resultant, and the only linear factors over
+$\mathbf Q$ are powers of $T+1$, $T$, and $T-1$.  Thus a rational common zero
+has $T\in\{-1,0,1\}$.  Direct specialization identifies these fibers with
+$p=0$, $s=1$, or $q=0$, respectively.  All are inadmissible.
+\end{proof}
+
+\begin{theorem}[Arithmetic of the fingerprint candidate]
+The curve
+\[
+ E_1:y^2=x^3-5x+4
+\]
+has Mordell--Weil rank $1$ over $\mathbb Q$ and torsion subgroup
+$\mathbb Z/2\mathbb Z$.
+\end{theorem}
+
+\begin{proof}
+After $X=x-1$, use the 2-isogenous pair
+\[
+ Y^2=X(X^2+3X-2),\qquad
+ V^2=U(U^2-6U+17).
+\]
+The two descent images have orders $4$ and $2$: the first contains all
+classes $\{1,-1,2,-2\}$, while positivity of
+$U((U-3)^2+8)$ and the valuation lemma restrict the second to
+$\{1,17\}$.  The exact 2-isogeny index formula gives
+\[
+ 2^{\operatorname{rank}E_1(\mathbb Q)}=\frac{4\cdot2}{4}=2.
+\]
+The point $(0,2)$ is non-torsion because its double is
+$(25/16,-3/64)$, contradicting Nagell--Lutz if it were torsion.
+Nagell--Lutz leaves only $(1,0)$ as nonzero torsion.
+\end{proof}
+
+The following transport does not assert a direct normalization of the older
+plane model $H(q,A)=0$.  Instead it starts from the lossless compact
+signed-square model, which is already equivalent to every admissible
+quadratic factor.
+
+\begin{theorem}[Compact elliptic transport]
+For each physical sign of the quadratic factor, every admissible point maps
+to the same irreducible reciprocal quotient
+\[
+ C_8(\mathcal U,\mathcal V)=0,
+\]
+where $C_8$ has bidegree $(6,6)$, total degree $8$, and $29$ nonzero terms.
+The normalization of this quotient is birational over $\mathbf Q$ to
+\[
+ E_1:y^2=x^3-5x+4.
+\]
+On $E_1$ the forward map has the form
+\[
+ \mathcal U=\frac{f_1(x,y)}{2f_3(x,y)},\qquad
+ \mathcal V=\frac{f_2(x,y)}{f_3(x,y)},
+\]
+where the three explicit quartics $f_i$ are recorded in the accompanying
+certificate.  The inverse is the rational root of an explicit linear
+subresultant.  Both compositions hold in the respective function fields,
+and every rational source, inverse-denominator, and projective exceptional
+fibre is either a boundary point or fails one of the two common square
+characters.
+\end{theorem}
+
+\begin{proof}
+Write $S=z^2$ and $K=k^2$ in the positive compact model.  The simultaneous
+reciprocal involution becomes $(r_1,r_2)\mapsto(-r_1,-r_2)$ under the two
+Cayley transformations.  Its fixed field is generated by
+\[
+ \mathcal U=r_1/r_2,\qquad \mathcal V=r_1r_2.
+\]
+Exact substitution gives the primitive polynomial $C_8$.  For the negative
+physical sign, the two radial equations are related by
+\[
+ r_+=\frac1{Xr_-};
+\]
+substitution gives the same $C_8$.  The omitted fibre $r_-=0$ is
+$X^2+34X-31=0$, whose discriminant is $2^8\cdot5$, so it has no rational
+point.  The remaining Cayley boundary fibres are factored directly.
+
+Substitution of the displayed $f_i$ makes $C_8$ vanish modulo the equation of
+$E_1$.  Conversely, eliminating $y$ from
+$f_1-2\mathcal U f_3$ and $f_2-\mathcal V f_3$, then taking the linear
+subresultant with the elliptic equation, gives $A(\mathcal U,\mathcal V)x+
+B(\mathcal U,\mathcal V)$.  Thus $x=-B/A$ on the generic point, and a linear
+equation recovers $y$.  Exact pseudo-remainders verify both equations and both
+round trips.  The resultant of $A$ with $C_8$ has rational
+$\mathcal U$-values only $0,1,-1,1/2$; direct fibres are respectively
+nonrational, boundary, sign-incompatible, or nonsquare.  The remaining
+removed elliptic factors are $x=2$, $x^2=5$, and the point $-4P$; the first
+two have no rational lift and $-4P$ has odd 2-adic valuation of
+$\mathcal U\mathcal V$.  The projective base maps to
+$(\mathcal U,\mathcal V)=(1/2,1)$, which is also nonsquare.  This proves the
+claimed admissible two-way transport.  All divisions and factorizations are
+replayed over $\mathbf Q$ by the compact-quotient and low-degree-transport
+certificates.
+\end{proof}
+
+The two physical signs have different third characters, but they share
+\[
+ \mathcal U\mathcal V,\qquad 1-\mathcal U\mathcal V.       \tag{1}
+\]
+Both functions in (1) must be nonzero rational squares for a genuine factor.
+
+\begin{theorem}[Common-character descent]
+If a rational point on the admissible compact locus satisfies the two common
+square conditions (1), then it maps to a rational point with square abscissa
+on
+\[
+ D_+:R^2=4a^5-8a^2+5a.                                   \tag{2}
+\]
+\end{theorem}
+
+\begin{proof}
+Translate $E_1$ by its rational two-torsion point and call the resulting
+coordinates $(X,Y)$.  Put
+\[
+ L=2X+Y-2,\quad M=X^2+2Y-1,\quad
+ k=\frac{Y+2}{X},\quad h=X+1.
+\]
+Exact reduction modulo $Y^2-X^3+5X-4$ gives
+\[
+ XM=(Y+2)L,qquad
+ 1-\mathcal U\mathcal V=2(X+1)LMg^2                 \tag{3}
+\]
+for an explicit rational function $g$.  The factor $2$ in (3) is essential.
+Away from the separately evaluated zeros and poles, (3) and squarehood give
+\[
+ z^2=2kh.                                                \tag{4}
+\]
+Substitution in the elliptic equation gives
+\[
+ h^2-(k^2+2)h+k^2+4k-4=0.                              \tag{5}
+\]
+
+For every odd prime, the Newton polygon of (5) and (4) show that $v(k)$ is
+even.  At $2$, the discriminant $k^4-16k+20$ excludes $v_2(k)=0$ and
+$v_2(k)\ge2$; negative valuation has the two root valuations $0$ and
+$2v_2(k)$.  Hence
+\[
+ k=2\epsilon u^2,\qquad h=\epsilon v^2,qquad
+ \epsilon\in\{+1,-1\}.                                \tag{6}
+\]
+For $\epsilon=-1$, clearing denominators gives
+\[
+ W^2=-(v^2+2)(v^4+v^2-4).
+\]
+The four coprime parity cases give either $3,6,$ or $7$ modulo $8$, or an odd
+2-adic valuation, so this curve has no rational point.  For $\epsilon=1$,
+the discriminant of (5) gives
+\[
+ r^2=4u^8-8u^2+5.
+\]
+Putting $a=u^2$ and $R=ur$ gives (2).
+\end{proof}
+
+\begin{theorem}[Square-abscissa theorem]
+The rational points of (2) whose affine abscissa is a rational square are
+exactly
+\[
+ \infty,\qquad (0,0),\qquad (1,1),\qquad(1,-1).          \tag{7}
+\]
+\end{theorem}
+
+\begin{proof}
+Let $J$ be the Jacobian of $D_+$ and put
+$D=[(1,1)-\infty]$, $T=[(0,0)-\infty]$.  A complete
+Schaefer--Stoll descent in
+\[
+ \mathbf Q\times\mathbf Q[z]/(z^4-16z+20),\qquad
+ S=\{2,5,17\},
+\]
+starts with $512$ square-norm classes.  The exact local images leave
+\[
+ 512\longrightarrow64\longrightarrow8\longrightarrow4,
+\]
+and the four classes are $0,D,T,D+T$.  Thus $J(\mathbf Q)$ has rank one,
+torsion $\langle T\rangle\simeq\mathbf Z/2\mathbf Z$, and $D,T$ are
+independent modulo $2$.  The condition at $17$ is explicit and essential.
+
+Exact Cantor arithmetic gives
+\[
+\begin{array}{c|cc}
+p&\#J(\mathbf F_p)&\operatorname{ord}(\bar D)\\ \hline
+7&42&21\\
+23&462&231.
+\end{array}
+\]
+This sieve does not assume that $D$ is a primitive generator.  Write
+$J(\mathbf Q)=\mathbf ZG\oplus\langle T\rangle$ and, after a torsion shift,
+$D=mG$ with $m$ odd.  If $r$ is the order of $\bar G$, then
+$r/\gcd(r,m)$ is $21$ or $231$, while $r$ divides twice that number.
+Oddness of $m$ forces $r$ to equal the latter odd order and makes $m$
+invertible.  Therefore the local $D$-coordinates of a global class agree
+modulo $21$.
+
+At $7$, the square-abscissa classes are $0,\pm1,\pm5$ in the torsion-zero
+component, together with $T$.  The list at $23$, reduced modulo $21$, is
+$0,\pm1,\pm2,\pm3,\pm4,\pm9$, together with $T$.  Hence the two extra
+$\pm5$ disks are impossible.
+
+Finally, exact rational Cantor arithmetic for $42D$ gives the normalized
+$7$-adic logarithm direction $(1,4)$.  An annihilating differential therefore
+has reduction
+\[
+ \bar\eta=(4-a)\frac{da}{R}.
+\]
+It is nonzero in every remaining disk: the only affine coefficient zero is
+$a=4$, but the right side of (2) is the nonsquare $5$ modulo $7$ there; at
+infinity the second basis differential is a unit.  Since $7>2g=4$, the
+Coleman disk bound gives at most one rational point in each surviving disk.
+The four points in (7) occupy them.  An independent finite-field
+implementation recomputes the Jacobian orders from exhaustive counts over
+$\mathbf F_p$ and $\mathbf F_{p^2}$.
+\end{proof}
+
+\begin{theorem}[Sharipov's second cuboid conjecture]
+For coprime positive integers $p\ne q$, the polynomial $Q_{p,q}(t)$ is
+irreducible over $\mathbf Q$.
+\end{theorem}
+
+\begin{proof}
+The point at infinity in (7) is a transport boundary.  The point $(0,0)$
+does not lift to the octic because it would require $r^2=5$.  At $a=1$,
+equation (5) gives the translated elliptic points $(1,0)$ and $(3,4)$.  The
+first lies on $L=M=0$, so it is evaluated before division: the original
+common character is $1/2$, not a rational square.  The second maps to the old
+point $P=(0,2)$, where $1-\mathcal U\mathcal V=0$.  Thus (1) has no
+admissible rational solution for either physical sign, excluding the $2+3$
+split.
+
+The factorization classification leaves only $1+4$, $2+3$, and symmetric
+$5+5$.  The linear-factor theorem above excludes $1+4$, and the exact Sturm
+certificate excludes $5+5$.  Therefore no proper factorization exists.
+\end{proof}
+
+The direct normalization of the original plane model $H(q,A)=0$ remains an
+interesting independent problem, but it is not a premise of this proof.
+
+\end{document}

@@ -1,0 +1,419 @@
+{
+  "base": {
+    "U": "2*(q+6)/(q-2)",
+    "V": "a^2/b=A^2/(1-B^2)",
+    "curve": "normalization E of H(q,A)=0",
+    "genus": 1,
+    "q": "T^2+T^(-2)"
+  },
+  "character_bases": {
+    "literal_signed_V_character_branch_degrees": {
+      "001": 6,
+      "010": 14,
+      "011": 8,
+      "100": 12,
+      "101": 10,
+      "110": 6,
+      "111": 8
+    },
+    "negative": {
+      "literal_minus_V_stored_bits": "101",
+      "physical_basis": [
+        "q+2",
+        "q-2",
+        "-V"
+      ],
+      "physical_to_stored_bits": "(a,b,c)->(a+c,b,c)",
+      "reason_cover_is_unchanged": "q+2 is already a square on the full cover",
+      "square_class_relation_on_E": "[-V]=[q+2]+[2-W]",
+      "stored_basis": [
+        "q+2",
+        "q-2",
+        "2-W"
+      ]
+    },
+    "positive": {
+      "physical_signed_square": "V",
+      "stored_basis": [
+        "q+2",
+        "q-2",
+        "V"
+      ]
+    },
+    "ramification_consequence": "all seven nontrivial characters in the literal (q+2,q-2,epsilon*V) basis are ramified for either sign"
+  },
+  "characters_negative": {
+    "001": {
+      "branch_degree": 10,
+      "branch_support": [
+        "L_minus_1_1",
+        "L_minus_1_2",
+        "N_plus_1_negative_1",
+        "N_plus_1_negative_2",
+        "N_plus_1_negative_3",
+        "N_plus_1_negative_4",
+        "N_plus_1_negative_5",
+        "N_plus_1_negative_6",
+        "Z_AC",
+        "Z_BC"
+      ],
+      "equation": "Y^2=(2-W)",
+      "genus": 6,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "2-W",
+      "prym_dimension": 5
+    },
+    "010": {
+      "branch_degree": 14,
+      "branch_support": [
+        "M_plus_1_mixed_1",
+        "M_plus_1_mixed_2",
+        "M_plus_1_mixed_3",
+        "M_plus_1_mixed_4",
+        "N_plus_1_negative_1",
+        "N_plus_1_negative_2",
+        "N_plus_1_negative_3",
+        "N_plus_1_negative_4",
+        "N_plus_1_negative_5",
+        "N_plus_1_negative_6",
+        "Z_AB",
+        "Z_AC",
+        "Z_BC",
+        "Z_DE"
+      ],
+      "equation": "Y^2=(q-2)",
+      "genus": 8,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "q-2",
+      "prym_dimension": 7
+    },
+    "011": {
+      "branch_degree": 8,
+      "branch_support": [
+        "L_minus_1_1",
+        "L_minus_1_2",
+        "M_plus_1_mixed_1",
+        "M_plus_1_mixed_2",
+        "M_plus_1_mixed_3",
+        "M_plus_1_mixed_4",
+        "Z_AB",
+        "Z_DE"
+      ],
+      "equation": "Y^2=(q-2 * 2-W)",
+      "genus": 5,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "q-2 * 2-W",
+      "prym_dimension": 4
+    },
+    "100": {
+      "branch_degree": 12,
+      "branch_support": [
+        "L_minus_1_1",
+        "L_minus_1_2",
+        "M_plus_1_mixed_1",
+        "M_plus_1_mixed_2",
+        "M_plus_1_mixed_3",
+        "M_plus_1_mixed_4",
+        "N_plus_1_negative_1",
+        "N_plus_1_negative_2",
+        "N_plus_1_negative_3",
+        "N_plus_1_negative_4",
+        "N_plus_1_negative_5",
+        "N_plus_1_negative_6"
+      ],
+      "equation": "Y^2=(q+2)",
+      "genus": 7,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "q+2",
+      "prym_dimension": 6
+    },
+    "101": {
+      "branch_degree": 6,
+      "branch_support": [
+        "M_plus_1_mixed_1",
+        "M_plus_1_mixed_2",
+        "M_plus_1_mixed_3",
+        "M_plus_1_mixed_4",
+        "Z_AC",
+        "Z_BC"
+      ],
+      "equation": "Y^2=(q+2 * 2-W)",
+      "genus": 4,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "q+2 * 2-W",
+      "prym_dimension": 3
+    },
+    "110": {
+      "branch_degree": 6,
+      "branch_support": [
+        "L_minus_1_1",
+        "L_minus_1_2",
+        "Z_AB",
+        "Z_AC",
+        "Z_BC",
+        "Z_DE"
+      ],
+      "equation": "Y^2=(q+2 * q-2)",
+      "genus": 4,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "q+2 * q-2",
+      "prym_dimension": 3
+    },
+    "111": {
+      "branch_degree": 8,
+      "branch_support": [
+        "N_plus_1_negative_1",
+        "N_plus_1_negative_2",
+        "N_plus_1_negative_3",
+        "N_plus_1_negative_4",
+        "N_plus_1_negative_5",
+        "N_plus_1_negative_6",
+        "Z_AB",
+        "Z_DE"
+      ],
+      "equation": "Y^2=(q+2 * q-2 * 2-W)",
+      "genus": 5,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "q+2 * q-2 * 2-W",
+      "prym_dimension": 4
+    }
+  },
+  "characters_positive": {
+    "001": {
+      "branch_degree": 6,
+      "branch_support": [
+        "M_plus_1_mixed_1",
+        "M_plus_1_mixed_2",
+        "M_plus_1_mixed_3",
+        "M_plus_1_mixed_4",
+        "Z_AC",
+        "Z_BC"
+      ],
+      "equation": "Y^2=(V)",
+      "genus": 4,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "V",
+      "prym_dimension": 3
+    },
+    "010": {
+      "branch_degree": 14,
+      "branch_support": [
+        "M_plus_1_mixed_1",
+        "M_plus_1_mixed_2",
+        "M_plus_1_mixed_3",
+        "M_plus_1_mixed_4",
+        "N_plus_1_negative_1",
+        "N_plus_1_negative_2",
+        "N_plus_1_negative_3",
+        "N_plus_1_negative_4",
+        "N_plus_1_negative_5",
+        "N_plus_1_negative_6",
+        "Z_AB",
+        "Z_AC",
+        "Z_BC",
+        "Z_DE"
+      ],
+      "equation": "Y^2=(q-2)",
+      "genus": 8,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "q-2",
+      "prym_dimension": 7
+    },
+    "011": {
+      "branch_degree": 8,
+      "branch_support": [
+        "N_plus_1_negative_1",
+        "N_plus_1_negative_2",
+        "N_plus_1_negative_3",
+        "N_plus_1_negative_4",
+        "N_plus_1_negative_5",
+        "N_plus_1_negative_6",
+        "Z_AB",
+        "Z_DE"
+      ],
+      "equation": "Y^2=(q-2 * V)",
+      "genus": 5,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "q-2 * V",
+      "prym_dimension": 4
+    },
+    "100": {
+      "branch_degree": 12,
+      "branch_support": [
+        "L_minus_1_1",
+        "L_minus_1_2",
+        "M_plus_1_mixed_1",
+        "M_plus_1_mixed_2",
+        "M_plus_1_mixed_3",
+        "M_plus_1_mixed_4",
+        "N_plus_1_negative_1",
+        "N_plus_1_negative_2",
+        "N_plus_1_negative_3",
+        "N_plus_1_negative_4",
+        "N_plus_1_negative_5",
+        "N_plus_1_negative_6"
+      ],
+      "equation": "Y^2=(q+2)",
+      "genus": 7,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "q+2",
+      "prym_dimension": 6
+    },
+    "101": {
+      "branch_degree": 10,
+      "branch_support": [
+        "L_minus_1_1",
+        "L_minus_1_2",
+        "N_plus_1_negative_1",
+        "N_plus_1_negative_2",
+        "N_plus_1_negative_3",
+        "N_plus_1_negative_4",
+        "N_plus_1_negative_5",
+        "N_plus_1_negative_6",
+        "Z_AC",
+        "Z_BC"
+      ],
+      "equation": "Y^2=(q+2 * V)",
+      "genus": 6,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "q+2 * V",
+      "prym_dimension": 5
+    },
+    "110": {
+      "branch_degree": 6,
+      "branch_support": [
+        "L_minus_1_1",
+        "L_minus_1_2",
+        "Z_AB",
+        "Z_AC",
+        "Z_BC",
+        "Z_DE"
+      ],
+      "equation": "Y^2=(q+2 * q-2)",
+      "genus": 4,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "q+2 * q-2",
+      "prym_dimension": 3
+    },
+    "111": {
+      "branch_degree": 8,
+      "branch_support": [
+        "L_minus_1_1",
+        "L_minus_1_2",
+        "M_plus_1_mixed_1",
+        "M_plus_1_mixed_2",
+        "M_plus_1_mixed_3",
+        "M_plus_1_mixed_4",
+        "Z_AB",
+        "Z_DE"
+      ],
+      "equation": "Y^2=(q+2 * q-2 * V)",
+      "genus": 5,
+      "geometry": "bielliptic; non-hyperelliptic by Castelnuovo-Severi",
+      "label": "q+2 * q-2 * V",
+      "prym_dimension": 4
+    }
+  },
+  "exceptional_divisors": [
+    "q=2 / T=+1 or -1 (z=0 or infinity; inadmissible boundary)",
+    "q=-2 has no rational r_minus because r_minus^2=-4",
+    "T=0 or infinity corresponds to z=+1 or -1 and s=1",
+    "Q1(T,A)=0: the linear subresultant inverse is undefined and H1=H0 must be solved directly",
+    "B=+1 is the b=infinity chart boundary; B=-1 gives b=0",
+    "b=-1 is the omitted B=infinity chart; its positive-s branch was separately excluded except s=1",
+    "A=0 or y=0: the c=a/y reconstruction degenerates; a=0 was separately excluded for admissible s",
+    "all projective points and all resultant-only points still require normalization/lift checks"
+  ],
+  "explicit_low_genus_model": {
+    "character": "(q+2)*(q-2)=q^2-4",
+    "extra_automorphism_search": "only X->1/X is certified; no further Prym splitting is claimed",
+    "generic_inverse": "X=(q+r)/2; the other sheet is 1/X=(q-r)/2",
+    "genus": 4,
+    "jacobian_isogeny": "J(G) ~ J(E) x Prym(G/E), with Prym dimension 3",
+    "map_to_E": [
+      "q=X+1/X",
+      "r=X-1/X",
+      "r^2=q^2-4"
+    ],
+    "plane_equation": "G(X,A)=0 from artifacts/genus4_quotient.json"
+  },
+  "full_cover": {
+    "branch_union_degree": 16,
+    "compact_open_model": [
+      "G(T^2,A)=0",
+      "Q1(T,A)*B+Q0(T,A)=0",
+      "C^2=epsilon*(1-B^2)"
+    ],
+    "equations_over_E": [
+      "r_plus^2=q+2",
+      "r_minus^2=q-2",
+      "y^2=epsilon*V, epsilon in {+1,-1}"
+    ],
+    "generic_inverse": [
+      "q=T^2+T^(-2)",
+      "z=(1+T)/(1-T)",
+      "s=z^2",
+      "b=(1+B)/(1-B)",
+      "a=A/(1-B)",
+      "c=a/y; then b=c^2 for epsilon=+1 and b=-c^2 for epsilon=-1"
+    ],
+    "genus_negative": 33,
+    "genus_positive": 33,
+    "group_generic": "(Z/2Z)^3",
+    "inverse_from_character_roots": [
+      "T=(r_plus+r_minus)/2",
+      "T^(-1)=(r_plus-r_minus)/2",
+      "the product is 1 because r_plus^2-r_minus^2=4"
+    ]
+  },
+  "prym_decomposition": {
+    "dimension_check": "33+6=39=sum of the seven character genera",
+    "isogeny": "J(Y_epsilon) x J(E)^6 ~ product_{chi != 0} J(C_chi)",
+    "rank_consequence": "rank J(Y)=rank J(E)+sum rank Prym(C_chi/E)"
+  },
+  "rank_blocker": {
+    "available_sympy_scope": "exact polynomial identities and branch/Prym dimensions only; no certified higher-dimensional Prym Mordell-Weil rank algorithm",
+    "needed_certificate": [
+      "an explicit normalized model for at least one character curve",
+      "a rigorous Mordell-Weil rank bound for its dimension-3-to-7 Prym",
+      "generator saturation and a Chabauty/Mordell-Weil-sieve completeness certificate",
+      "transport of every surviving point through the exceptional-divisor lift audit"
+    ],
+    "statement": "Every character curve has genus at least 4 and is bielliptic. It cannot also be hyperelliptic: independent degree-two maps to E and P1 would contradict Castelnuovo-Severi for genus >=4."
+  },
+  "schema": 2,
+  "sha256_without_checksum": "0dad6bf27c17abbc2165b7daa1adafadf585c4b34db0f104d7875a5eacdf427d",
+  "source_hashes": {
+    "genus4_quotient": "621f3aa944d0ba3a8bfd39a36de19a21313304f8cfdfcbfb31f222736f04a7a5",
+    "reciprocal_b_branch_audit": "2e5ca88cfb175ced173119b638b0e514518e39071520071cfaa0f77f68513be2"
+  },
+  "square_class_identities": {
+    "V_in_AB_chart": "a**2/b",
+    "V_over_W_plus_2_on_E": "A**2/4",
+    "minus_V_over_2_minus_W_upstairs": "a**2/(b - 1)**2",
+    "minus_V_over_product_q_plus_2_two_minus_W_on_E": "A**2*T**2/(4*B**2*(T**2 + 1)**2)",
+    "q_minus_2_over_U_minus_2": "(q - 2)**2/16",
+    "q_plus_2_over_product_U_pm_2": "(q - 2)**2/64",
+    "q_squared_minus_4_over_U_plus_2": "(q - 2)**2/4"
+  },
+  "square_parameter_pullback_before_signed_V": {
+    "character_genera": {
+      "q+2": 7,
+      "q-2": 8,
+      "q^2-4": 4
+    },
+    "equations_over_E": [
+      "r_plus^2=q+2",
+      "r_minus^2=q-2"
+    ],
+    "genus": 17,
+    "group_generic": "(Z/2Z)^2",
+    "kani_rosen": "J(C_square) x J(E)^2 ~ J(C_{q+2}) x J(C_{q-2}) x J(C_{q^2-4}); 17+2=7+8+4"
+  },
+  "status": {
+    "branch_input": "MACHINE-VERIFIED by reciprocal_b_branch_audit.py",
+    "cover_and_character_decomposition": "MACHINE-VERIFIED",
+    "mordell_weil_ranks": "OPEN",
+    "rational_points": "OPEN"
+  }
+}

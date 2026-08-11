@@ -1,0 +1,92 @@
+name: Exact low-resource proof completion
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/second-cuboid-conjecture
+    paths:
+      - .github/workflows/proof-completion-small.yml
+      - notes/quadratic_cubic_completion.md
+      - paper/main.tex
+      - research/arithmetic_geometry/low_degree_transport.py
+      - research/arithmetic_geometry/product_character_simplification.py
+      - research/arithmetic_geometry/product_squareclass_valuation.py
+      - research/arithmetic_geometry/product_genus2_**
+      - research/compact_signed_square/reciprocal_quotient/**
+      - research/compact_signed_square/independent_genus2_square_sieve.py
+      - scripts/reproduce.sh
+      - tests/test_low_degree_transport.py
+      - tests/test_product_**
+      - tests/test_reciprocal_quotient.py
+      - tests/test_independent_genus2_square_sieve.py
+  pull_request:
+    paths:
+      - .github/workflows/proof-completion-small.yml
+      - notes/quadratic_cubic_completion.md
+      - paper/main.tex
+      - research/arithmetic_geometry/low_degree_transport.py
+      - research/arithmetic_geometry/product_character_simplification.py
+      - research/arithmetic_geometry/product_squareclass_valuation.py
+      - research/arithmetic_geometry/product_genus2_**
+      - research/compact_signed_square/reciprocal_quotient/**
+      - research/compact_signed_square/independent_genus2_square_sieve.py
+      - scripts/reproduce.sh
+      - tests/test_low_degree_transport.py
+      - tests/test_product_**
+      - tests/test_reciprocal_quotient.py
+      - tests/test_independent_genus2_square_sieve.py
+
+permissions:
+  contents: read
+
+concurrency:
+  group: exact-proof-completion-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  exact-low-resource-proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+      SYMPY_GROUND_TYPES: python
+    steps:
+      - name: Check out the research branch
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+
+      - name: Install exact arithmetic dependencies
+        shell: bash
+        run: |
+          set -euxo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libpari-dev pari-gp
+          python3 -m venv .venv
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/python -m pip install -e '.[test]'
+
+      - name: Replay the completion certificates
+        shell: bash
+        run: |
+          set -euxo pipefail
+          .venv/bin/python -m pytest -q \
+            tests/test_reciprocal_quotient.py \
+            tests/test_low_degree_transport.py \
+            tests/test_product_character_simplification.py \
+            tests/test_product_squareclass_valuation.py \
+            tests/test_product_genus2_two_descent.py \
+            tests/test_product_genus2_square_sieve.py \
+            tests/test_product_genus2_p7_formal_log.py \
+            tests/test_product_genus2_square_abscissa.py \
+            tests/test_independent_genus2_square_sieve.py
+
+      - name: Replay all exact regressions
+        shell: bash
+        run: |
+          set -euxo pipefail
+          .venv/bin/python -m pytest -q
+          PYTHON_BIN=.venv/bin/python bash scripts/replay_5plus5.sh

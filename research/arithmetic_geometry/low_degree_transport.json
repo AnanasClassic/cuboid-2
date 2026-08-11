@@ -1,0 +1,1216 @@
+{
+  "E1": "y^2=x^3-5*x+4",
+  "f1_terms": [
+    {
+      "coefficient": "511",
+      "powers": [
+        4,
+        0
+      ]
+    },
+    {
+      "coefficient": "24",
+      "powers": [
+        3,
+        1
+      ]
+    },
+    {
+      "coefficient": "-3430",
+      "powers": [
+        3,
+        0
+      ]
+    },
+    {
+      "coefficient": "-2186",
+      "powers": [
+        2,
+        1
+      ]
+    },
+    {
+      "coefficient": "-3677",
+      "powers": [
+        2,
+        0
+      ]
+    },
+    {
+      "coefficient": "4524",
+      "powers": [
+        1,
+        1
+      ]
+    },
+    {
+      "coefficient": "26438",
+      "powers": [
+        1,
+        0
+      ]
+    },
+    {
+      "coefficient": "-2982",
+      "powers": [
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "-22214",
+      "powers": [
+        0,
+        0
+      ]
+    }
+  ],
+  "f2_terms": [
+    {
+      "coefficient": "535",
+      "powers": [
+        4,
+        0
+      ]
+    },
+    {
+      "coefficient": "24",
+      "powers": [
+        3,
+        1
+      ]
+    },
+    {
+      "coefficient": "-3140",
+      "powers": [
+        3,
+        0
+      ]
+    },
+    {
+      "coefficient": "-1579",
+      "powers": [
+        2,
+        1
+      ]
+    },
+    {
+      "coefficient": "1380",
+      "powers": [
+        2,
+        0
+      ]
+    },
+    {
+      "coefficient": "3636",
+      "powers": [
+        1,
+        1
+      ]
+    },
+    {
+      "coefficient": "9346",
+      "powers": [
+        1,
+        0
+      ]
+    },
+    {
+      "coefficient": "-2391",
+      "powers": [
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "-9307",
+      "powers": [
+        0,
+        0
+      ]
+    }
+  ],
+  "f3_terms": [
+    {
+      "coefficient": "583",
+      "powers": [
+        4,
+        0
+      ]
+    },
+    {
+      "coefficient": "24",
+      "powers": [
+        3,
+        1
+      ]
+    },
+    {
+      "coefficient": "-715",
+      "powers": [
+        3,
+        0
+      ]
+    },
+    {
+      "coefficient": "-293",
+      "powers": [
+        2,
+        1
+      ]
+    },
+    {
+      "coefficient": "-3476",
+      "powers": [
+        2,
+        0
+      ]
+    },
+    {
+      "coefficient": "2857",
+      "powers": [
+        1,
+        1
+      ]
+    },
+    {
+      "coefficient": "9529",
+      "powers": [
+        1,
+        0
+      ]
+    },
+    {
+      "coefficient": "-3491",
+      "powers": [
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "-7107",
+      "powers": [
+        0,
+        0
+      ]
+    }
+  ],
+  "forward": {
+    "U": "f1/(2*f3)",
+    "V": "f2/f3"
+  },
+  "forward_denominator": {
+    "extension_UV_v2": -1,
+    "extension_at_minus_4P": {
+      "U": "731754020216156986855/1316366220366073678142",
+      "V": "678770002969523258551/632597885616799462855"
+    },
+    "point_at_O": [
+      "1/2",
+      "1"
+    ],
+    "resultant_E_f3": "-(576*x - 352225)*(x**2 - 5)*(x**2 - x - 1)**3",
+    "unique_rational_affine_zero": "-4P=(352225/576,-209039023/13824)"
+  },
+  "forward_identity": "numerator(C8(f1/(2f3),f2/f3)) is zero modulo E1",
+  "inverse_denominator": {
+    "admissible_square_character_points": [],
+    "classification": "U=0 has no rational V.  At U=1, V=1 is UV=1 boundary and V=-3 has UV<0.  At U=-1, V=-1 is UV=1 boundary and the other cubic is irreducible.  At U=1/2, V=1 gives UV=1/2, not a rational square; the quintic is irreducible.",
+    "fibres": {
+      "U=-1": "-(V + 1)**3*(V**3 - 69*V**2 - 117*V - 79)",
+      "U=0": "31*V**4 + 48*V**3 - 46*V**2 + 12*V - 1",
+      "U=1": "-(V - 1)**4*(V + 3)**2",
+      "U=1/2": "-(V - 1)*(V**5 + 37*V**4 - 23*V**3 - 206*V**2 + 241*V - 71)/4"
+    },
+    "rational_U_candidates": [
+      "0",
+      "1",
+      "-1",
+      "1/2"
+    ],
+    "resultant_C8_A": "-256*U**2*(U - 1)**8*(U + 1)**4*(2*U - 1)**18*(1331*U**2 - 12*U - 1444)**5*(256*U**3 + 48*U**2 - 729*U + 361)**8*(1000*U**8 - 4312*U**7 + 1720*U**6 + 7260*U**5 - 677*U**4 - 3257*U**3 - 983*U**2 - 107*U - 4)**2"
+  },
+  "inverse_subresultant": {
+    "A_terms": [
+      {
+        "coefficient": "3259170816",
+        "powers": [
+          12,
+          0
+        ]
+      },
+      {
+        "coefficient": "-30306107392",
+        "powers": [
+          11,
+          1
+        ]
+      },
+      {
+        "coefficient": "-14136918016",
+        "powers": [
+          11,
+          0
+        ]
+      },
+      {
+        "coefficient": "-73351168",
+        "powers": [
+          10,
+          3
+        ]
+      },
+      {
+        "coefficient": "83977682944",
+        "powers": [
+          10,
+          2
+        ]
+      },
+      {
+        "coefficient": "138013978624",
+        "powers": [
+          10,
+          1
+        ]
+      },
+      {
+        "coefficient": "35723650304",
+        "powers": [
+          10,
+          0
+        ]
+      },
+      {
+        "coefficient": "553648128",
+        "powers": [
+          9,
+          4
+        ]
+      },
+      {
+        "coefficient": "-85815977984",
+        "powers": [
+          9,
+          3
+        ]
+      },
+      {
+        "coefficient": "-383282628096",
+        "powers": [
+          9,
+          2
+        ]
+      },
+      {
+        "coefficient": "-277819791872",
+        "powers": [
+          9,
+          1
+        ]
+      },
+      {
+        "coefficient": "-76820500928",
+        "powers": [
+          9,
+          0
+        ]
+      },
+      {
+        "coefficient": "-860324864",
+        "powers": [
+          8,
+          5
+        ]
+      },
+      {
+        "coefficient": "27025041408",
+        "powers": [
+          8,
+          4
+        ]
+      },
+      {
+        "coefficient": "396252588672",
+        "powers": [
+          8,
+          3
+        ]
+      },
+      {
+        "coefficient": "664611915568",
+        "powers": [
+          8,
+          2
+        ]
+      },
+      {
+        "coefficient": "351244110576",
+        "powers": [
+          8,
+          1
+        ]
+      },
+      {
+        "coefficient": "106668494976",
+        "powers": [
+          8,
+          0
+        ]
+      },
+      {
+        "coefficient": "3144083968",
+        "powers": [
+          7,
+          5
+        ]
+      },
+      {
+        "coefficient": "-133155030752",
+        "powers": [
+          7,
+          4
+        ]
+      },
+      {
+        "coefficient": "-641298713024",
+        "powers": [
+          7,
+          3
+        ]
+      },
+      {
+        "coefficient": "-501950143728",
+        "powers": [
+          7,
+          2
+        ]
+      },
+      {
+        "coefficient": "-257667939008",
+        "powers": [
+          7,
+          1
+        ]
+      },
+      {
+        "coefficient": "-41642087952",
+        "powers": [
+          7,
+          0
+        ]
+      },
+      {
+        "coefficient": "-3171230068",
+        "powers": [
+          6,
+          5
+        ]
+      },
+      {
+        "coefficient": "214271841932",
+        "powers": [
+          6,
+          4
+        ]
+      },
+      {
+        "coefficient": "296605395292",
+        "powers": [
+          6,
+          3
+        ]
+      },
+      {
+        "coefficient": "-2382528916",
+        "powers": [
+          6,
+          2
+        ]
+      },
+      {
+        "coefficient": "-88128590260",
+        "powers": [
+          6,
+          1
+        ]
+      },
+      {
+        "coefficient": "-100366266980",
+        "powers": [
+          6,
+          0
+        ]
+      },
+      {
+        "coefficient": "-1182667464",
+        "powers": [
+          5,
+          5
+        ]
+      },
+      {
+        "coefficient": "-70518903248",
+        "powers": [
+          5,
+          4
+        ]
+      },
+      {
+        "coefficient": "339098778680",
+        "powers": [
+          5,
+          3
+        ]
+      },
+      {
+        "coefficient": "470824441032",
+        "powers": [
+          5,
+          2
+        ]
+      },
+      {
+        "coefficient": "460585720984",
+        "powers": [
+          5,
+          1
+        ]
+      },
+      {
+        "coefficient": "156652661204",
+        "powers": [
+          5,
+          0
+        ]
+      },
+      {
+        "coefficient": "4016146616",
+        "powers": [
+          4,
+          5
+        ]
+      },
+      {
+        "coefficient": "-173721003843",
+        "powers": [
+          4,
+          4
+        ]
+      },
+      {
+        "coefficient": "-565096892171",
+        "powers": [
+          4,
+          3
+        ]
+      },
+      {
+        "coefficient": "-682881176961",
+        "powers": [
+          4,
+          2
+        ]
+      },
+      {
+        "coefficient": "-476092301725",
+        "powers": [
+          4,
+          1
+        ]
+      },
+      {
+        "coefficient": "-73518093316",
+        "powers": [
+          4,
+          0
+        ]
+      },
+      {
+        "coefficient": "-2362229824",
+        "powers": [
+          3,
+          5
+        ]
+      },
+      {
+        "coefficient": "215844293577",
+        "powers": [
+          3,
+          4
+        ]
+      },
+      {
+        "coefficient": "409714687458",
+        "powers": [
+          3,
+          3
+        ]
+      },
+      {
+        "coefficient": "528961912688",
+        "powers": [
+          3,
+          2
+        ]
+      },
+      {
+        "coefficient": "202413578498",
+        "powers": [
+          3,
+          1
+        ]
+      },
+      {
+        "coefficient": "-6633553301",
+        "powers": [
+          3,
+          0
+        ]
+      },
+      {
+        "coefficient": "415848287",
+        "powers": [
+          2,
+          5
+        ]
+      },
+      {
+        "coefficient": "-94437913368",
+        "powers": [
+          2,
+          4
+        ]
+      },
+      {
+        "coefficient": "-215261881757",
+        "powers": [
+          2,
+          3
+        ]
+      },
+      {
+        "coefficient": "-205764093187",
+        "powers": [
+          2,
+          2
+        ]
+      },
+      {
+        "coefficient": "-6837349910",
+        "powers": [
+          2,
+          1
+        ]
+      },
+      {
+        "coefficient": "10432836551",
+        "powers": [
+          2,
+          0
+        ]
+      },
+      {
+        "coefficient": "618754",
+        "powers": [
+          1,
+          5
+        ]
+      },
+      {
+        "coefficient": "14115484731",
+        "powers": [
+          1,
+          4
+        ]
+      },
+      {
+        "coefficient": "78886266624",
+        "powers": [
+          1,
+          3
+        ]
+      },
+      {
+        "coefficient": "22452437326",
+        "powers": [
+          1,
+          2
+        ]
+      },
+      {
+        "coefficient": "-15567826070",
+        "powers": [
+          1,
+          1
+        ]
+      },
+      {
+        "coefficient": "568543983",
+        "powers": [
+          1,
+          0
+        ]
+      },
+      {
+        "coefficient": "21389250",
+        "powers": [
+          0,
+          4
+        ]
+      },
+      {
+        "coefficient": "-13012374652",
+        "powers": [
+          0,
+          3
+        ]
+      },
+      {
+        "coefficient": "5441056080",
+        "powers": [
+          0,
+          2
+        ]
+      },
+      {
+        "coefficient": "152571860",
+        "powers": [
+          0,
+          1
+        ]
+      },
+      {
+        "coefficient": "-184485586",
+        "powers": [
+          0,
+          0
+        ]
+      }
+    ],
+    "B_terms": [
+      {
+        "coefficient": "-5273354240",
+        "powers": [
+          12,
+          0
+        ]
+      },
+      {
+        "coefficient": "48134946816",
+        "powers": [
+          11,
+          1
+        ]
+      },
+      {
+        "coefficient": "22220824576",
+        "powers": [
+          11,
+          0
+        ]
+      },
+      {
+        "coefficient": "118947840",
+        "powers": [
+          10,
+          3
+        ]
+      },
+      {
+        "coefficient": "-130966622208",
+        "powers": [
+          10,
+          2
+        ]
+      },
+      {
+        "coefficient": "-215630368768",
+        "powers": [
+          10,
+          1
+        ]
+      },
+      {
+        "coefficient": "-54421452288",
+        "powers": [
+          10,
+          0
+        ]
+      },
+      {
+        "coefficient": "-875438080",
+        "powers": [
+          9,
+          4
+        ]
+      },
+      {
+        "coefficient": "132330698752",
+        "powers": [
+          9,
+          3
+        ]
+      },
+      {
+        "coefficient": "592629913600",
+        "powers": [
+          9,
+          2
+        ]
+      },
+      {
+        "coefficient": "420770631040",
+        "powers": [
+          9,
+          1
+        ]
+      },
+      {
+        "coefficient": "116871336064",
+        "powers": [
+          9,
+          0
+        ]
+      },
+      {
+        "coefficient": "1317348352",
+        "powers": [
+          8,
+          5
+        ]
+      },
+      {
+        "coefficient": "-41327554560",
+        "powers": [
+          8,
+          4
+        ]
+      },
+      {
+        "coefficient": "-608068846656",
+        "powers": [
+          8,
+          3
+        ]
+      },
+      {
+        "coefficient": "-1008902448464",
+        "powers": [
+          8,
+          2
+        ]
+      },
+      {
+        "coefficient": "-516992149184",
+        "powers": [
+          8,
+          1
+        ]
+      },
+      {
+        "coefficient": "-159952425216",
+        "powers": [
+          8,
+          0
+        ]
+      },
+      {
+        "coefficient": "-4795527040",
+        "powers": [
+          7,
+          5
+        ]
+      },
+      {
+        "coefficient": "203382056672",
+        "powers": [
+          7,
+          4
+        ]
+      },
+      {
+        "coefficient": "975625485824",
+        "powers": [
+          7,
+          3
+        ]
+      },
+      {
+        "coefficient": "732304710048",
+        "powers": [
+          7,
+          2
+        ]
+      },
+      {
+        "coefficient": "376919960352",
+        "powers": [
+          7,
+          1
+        ]
+      },
+      {
+        "coefficient": "52275456416",
+        "powers": [
+          7,
+          0
+        ]
+      },
+      {
+        "coefficient": "4822576080",
+        "powers": [
+          6,
+          5
+        ]
+      },
+      {
+        "coefficient": "-326657546400",
+        "powers": [
+          6,
+          4
+        ]
+      },
+      {
+        "coefficient": "-437987234728",
+        "powers": [
+          6,
+          3
+        ]
+      },
+      {
+        "coefficient": "28812973520",
+        "powers": [
+          6,
+          2
+        ]
+      },
+      {
+        "coefficient": "140206282428",
+        "powers": [
+          6,
+          1
+        ]
+      },
+      {
+        "coefficient": "160567085184",
+        "powers": [
+          6,
+          0
+        ]
+      },
+      {
+        "coefficient": "1788744096",
+        "powers": [
+          5,
+          5
+        ]
+      },
+      {
+        "coefficient": "107624061512",
+        "powers": [
+          5,
+          4
+        ]
+      },
+      {
+        "coefficient": "-526439460840",
+        "powers": [
+          5,
+          3
+        ]
+      },
+      {
+        "coefficient": "-703662262524",
+        "powers": [
+          5,
+          2
+        ]
+      },
+      {
+        "coefficient": "-701941483480",
+        "powers": [
+          5,
+          1
+        ]
+      },
+      {
+        "coefficient": "-227646853052",
+        "powers": [
+          5,
+          0
+        ]
+      },
+      {
+        "coefficient": "-6095119632",
+        "powers": [
+          4,
+          5
+        ]
+      },
+      {
+        "coefficient": "263714531706",
+        "powers": [
+          4,
+          4
+        ]
+      },
+      {
+        "coefficient": "852729410980",
+        "powers": [
+          4,
+          3
+        ]
+      },
+      {
+        "coefficient": "1017590491968",
+        "powers": [
+          4,
+          2
+        ]
+      },
+      {
+        "coefficient": "707759685004",
+        "powers": [
+          4,
+          1
+        ]
+      },
+      {
+        "coefficient": "99399087038",
+        "powers": [
+          4,
+          0
+        ]
+      },
+      {
+        "coefficient": "3617231244",
+        "powers": [
+          3,
+          5
+        ]
+      },
+      {
+        "coefficient": "-328803283116",
+        "powers": [
+          3,
+          4
+        ]
+      },
+      {
+        "coefficient": "-611974286280",
+        "powers": [
+          3,
+          3
+        ]
+      },
+      {
+        "coefficient": "-795336284620",
+        "powers": [
+          3,
+          2
+        ]
+      },
+      {
+        "coefficient": "-286733786548",
+        "powers": [
+          3,
+          1
+        ]
+      },
+      {
+        "coefficient": "10425698408",
+        "powers": [
+          3,
+          0
+        ]
+      },
+      {
+        "coefficient": "-654389896",
+        "powers": [
+          2,
+          5
+        ]
+      },
+      {
+        "coefficient": "145187001658",
+        "powers": [
+          2,
+          4
+        ]
+      },
+      {
+        "coefficient": "324834351212",
+        "powers": [
+          2,
+          3
+        ]
+      },
+      {
+        "coefficient": "307184761208",
+        "powers": [
+          2,
+          2
+        ]
+      },
+      {
+        "coefficient": "6498223304",
+        "powers": [
+          2,
+          1
+        ]
+      },
+      {
+        "coefficient": "-14160474618",
+        "powers": [
+          2,
+          0
+        ]
+      },
+      {
+        "coefficient": "-1358804",
+        "powers": [
+          1,
+          5
+        ]
+      },
+      {
+        "coefficient": "-22194522364",
+        "powers": [
+          1,
+          4
+        ]
+      },
+      {
+        "coefficient": "-121711424328",
+        "powers": [
+          1,
+          3
+        ]
+      },
+      {
+        "coefficient": "-31623991272",
+        "powers": [
+          1,
+          2
+        ]
+      },
+      {
+        "coefficient": "21416660828",
+        "powers": [
+          1,
+          1
+        ]
+      },
+      {
+        "coefficient": "-600013036",
+        "powers": [
+          1,
+          0
+        ]
+      },
+      {
+        "coefficient": "-47849828",
+        "powers": [
+          0,
+          4
+        ]
+      },
+      {
+        "coefficient": "20545331824",
+        "powers": [
+          0,
+          3
+        ]
+      },
+      {
+        "coefficient": "-8043949256",
+        "powers": [
+          0,
+          2
+        ]
+      },
+      {
+        "coefficient": "-395457392",
+        "powers": [
+          0,
+          1
+        ]
+      },
+      {
+        "coefficient": "290713164",
+        "powers": [
+          0,
+          0
+        ]
+      }
+    ],
+    "E6_degree_x": 6,
+    "R5_degree_x": 5,
+    "elliptic_substitution_numerator": "-(576*x-352225)*(x^2-5)*E6 up to primitive sign",
+    "inverse": "x=-B/A; y=-b1(x,U)/a1(x,U)",
+    "last_subresultant": "nonzero_constant*(1331*U^2-12*U-1444)*(256*U^3+48*U^2-729*U+361)^2*C8",
+    "multiplication_back": {
+      "cleared_E1": "a1^2*E1(x,-b1/a1)=b1^2-a1^2*(x^3-5*x+4)",
+      "cleared_U_roundtrip": "a1*(f1-2*U*f3)(x,-b1/a1)=0",
+      "cleared_V_roundtrip": "a1*(f2-V*f3)(x,-b1/a1)=Res_y(gU,gV), up to sign",
+      "prem_E6_by_Ax_plus_B_is_zero_mod_C8": true,
+      "prem_R5_by_Ax_plus_B_is_zero_mod_C8": true
+    },
+    "projection_resultant": "(x-2)*(576*x-352225)*R5",
+    "subresultant_degrees": [
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+    ]
+  },
+  "inverse_y_denominator": {
+    "Res_y(f1,f3)": "(x - 2)*(576*x - 352225)*(x**2 - 5)*(3*x**3 + x**2 - 19*x + 16)",
+    "admissible_rational_zeros": [],
+    "function": "a1=coefficient_y(f1-2*U*f3)",
+    "rational_cases": {
+      "x=2": "(U,V)=(-1,-1), hence UV=1 boundary",
+      "x=352225/576": "the only rational V is the +4P value; UV has v2=-1"
+    },
+    "simultaneous_a1_a2_C8_x_factors": [
+      "(x-2)^3",
+      "576*x-352225",
+      "irreducible degree 19"
+    ]
+  },
+  "logical_scope": "This proves the characteristic-zero transport for the compact reciprocal quotient C8 and bypasses the original H-normalization problem.  It does not prove C025 as stated, nor classify the rational points satisfying all three square characters.",
+  "point_at_infinity": {
+    "C8_identity_verified": true,
+    "C8_image": [
+      "1/2",
+      "1"
+    ],
+    "E1_point": "O",
+    "common_unique_leading_monomial": "24*x^3*y in f1,f2,f3",
+    "pole_orders": "ord_O(x)=-2, ord_O(y)=-3"
+  },
+  "quotient_checksum": "b43041bbbb4546a9bbb59e014b08f9ebd7793700da442955f66ff82e1662f598",
+  "removed_projection_factors": {
+    "minus_4P": {
+      "U": "731754020216156986855/1316366220366073678142",
+      "UV_v2": -1,
+      "V": "678770002969523258551/632597885616799462855"
+    },
+    "plus_4P": {
+      "U": "2507654733463/5773889467838",
+      "UV_v2": -1,
+      "V": "2739947416519/3008594206519"
+    },
+    "x4_inverse_resultant": "-256*U**2*(U - 1)**8*(U + 1)**4*(2*U - 1)**16*(5773889467838*U - 2507654733463)*(1316366220366073678142*U - 731754020216156986855)*(1331*U**2 - 12*U - 1444)**5*(256*U**3 + 48*U**2 - 729*U + 361)**8*(1000*U**8 - 4312*U**7 + 1720*U**6 + 7260*U**5 - 677*U**4 - 3257*U**3 - 983*U**2 - 107*U - 4)**2",
+    "x=2": "requires y^2=2",
+    "x^2=5": "no rational x"
+  },
+  "schema": 1,
+  "sha256_without_checksum": "bd5e92094c9255c03130751ce7811a74581cf1b20aac3d43809c05c4b3ce6ffd",
+  "status": "MACHINE-VERIFIED",
+  "theorem": "The irreducible reciprocal quotient C8 is birational over QQ to E1: y^2=x^3-5*x+4.  Explicit maps, inverse subresultants, and every rational denominator exception are certified."
+}

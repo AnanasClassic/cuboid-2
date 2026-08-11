@@ -1,0 +1,708 @@
+{
+  "G": [
+    {
+      "coefficient": 1,
+      "exponents": [
+        12,
+        2
+      ]
+    },
+    {
+      "coefficient": -40,
+      "exponents": [
+        12,
+        1
+      ]
+    },
+    {
+      "coefficient": 144,
+      "exponents": [
+        12,
+        0
+      ]
+    },
+    {
+      "coefficient": 4,
+      "exponents": [
+        11,
+        3
+      ]
+    },
+    {
+      "coefficient": -168,
+      "exponents": [
+        11,
+        2
+      ]
+    },
+    {
+      "coefficient": 1408,
+      "exponents": [
+        11,
+        1
+      ]
+    },
+    {
+      "coefficient": -1152,
+      "exponents": [
+        11,
+        0
+      ]
+    },
+    {
+      "coefficient": -10,
+      "exponents": [
+        10,
+        4
+      ]
+    },
+    {
+      "coefficient": 68,
+      "exponents": [
+        10,
+        3
+      ]
+    },
+    {
+      "coefficient": 13176,
+      "exponents": [
+        10,
+        2
+      ]
+    },
+    {
+      "coefficient": -39680,
+      "exponents": [
+        10,
+        1
+      ]
+    },
+    {
+      "coefficient": -39552,
+      "exponents": [
+        10,
+        0
+      ]
+    },
+    {
+      "coefficient": 4,
+      "exponents": [
+        9,
+        5
+      ]
+    },
+    {
+      "coefficient": -136,
+      "exponents": [
+        9,
+        4
+      ]
+    },
+    {
+      "coefficient": -4400,
+      "exponents": [
+        9,
+        3
+      ]
+    },
+    {
+      "coefficient": -265760,
+      "exponents": [
+        9,
+        2
+      ]
+    },
+    {
+      "coefficient": 236032,
+      "exponents": [
+        9,
+        1
+      ]
+    },
+    {
+      "coefficient": 155136,
+      "exponents": [
+        9,
+        0
+      ]
+    },
+    {
+      "coefficient": 1,
+      "exponents": [
+        8,
+        6
+      ]
+    },
+    {
+      "coefficient": 88,
+      "exponents": [
+        8,
+        5
+      ]
+    },
+    {
+      "coefficient": 7598,
+      "exponents": [
+        8,
+        4
+      ]
+    },
+    {
+      "coefficient": -78608,
+      "exponents": [
+        8,
+        3
+      ]
+    },
+    {
+      "coefficient": 2602736,
+      "exponents": [
+        8,
+        2
+      ]
+    },
+    {
+      "coefficient": -2335360,
+      "exponents": [
+        8,
+        1
+      ]
+    },
+    {
+      "coefficient": 3453184,
+      "exponents": [
+        8,
+        0
+      ]
+    },
+    {
+      "coefficient": 48,
+      "exponents": [
+        7,
+        6
+      ]
+    },
+    {
+      "coefficient": -4488,
+      "exponents": [
+        7,
+        5
+      ]
+    },
+    {
+      "coefficient": 37072,
+      "exponents": [
+        7,
+        4
+      ]
+    },
+    {
+      "coefficient": 106112,
+      "exponents": [
+        7,
+        3
+      ]
+    },
+    {
+      "coefficient": -6942464,
+      "exponents": [
+        7,
+        2
+      ]
+    },
+    {
+      "coefficient": -526336,
+      "exponents": [
+        7,
+        1
+      ]
+    },
+    {
+      "coefficient": 409600,
+      "exponents": [
+        7,
+        0
+      ]
+    },
+    {
+      "coefficient": 12,
+      "exponents": [
+        6,
+        7
+      ]
+    },
+    {
+      "coefficient": 1124,
+      "exponents": [
+        6,
+        6
+      ]
+    },
+    {
+      "coefficient": -39812,
+      "exponents": [
+        6,
+        5
+      ]
+    },
+    {
+      "coefficient": -152240,
+      "exponents": [
+        6,
+        4
+      ]
+    },
+    {
+      "coefficient": 3127424,
+      "exponents": [
+        6,
+        3
+      ]
+    },
+    {
+      "coefficient": -15434496,
+      "exponents": [
+        6,
+        2
+      ]
+    },
+    {
+      "coefficient": 41391104,
+      "exponents": [
+        6,
+        1
+      ]
+    },
+    {
+      "coefficient": -53526528,
+      "exponents": [
+        6,
+        0
+      ]
+    },
+    {
+      "coefficient": 152,
+      "exponents": [
+        5,
+        7
+      ]
+    },
+    {
+      "coefficient": 1888,
+      "exponents": [
+        5,
+        6
+      ]
+    },
+    {
+      "coefficient": 134592,
+      "exponents": [
+        5,
+        5
+      ]
+    },
+    {
+      "coefficient": -336832,
+      "exponents": [
+        5,
+        4
+      ]
+    },
+    {
+      "coefficient": -6760960,
+      "exponents": [
+        5,
+        3
+      ]
+    },
+    {
+      "coefficient": 75334656,
+      "exponents": [
+        5,
+        2
+      ]
+    },
+    {
+      "coefficient": -22167552,
+      "exponents": [
+        5,
+        1
+      ]
+    },
+    {
+      "coefficient": -22937600,
+      "exponents": [
+        5,
+        0
+      ]
+    },
+    {
+      "coefficient": 38,
+      "exponents": [
+        4,
+        8
+      ]
+    },
+    {
+      "coefficient": -504,
+      "exponents": [
+        4,
+        7
+      ]
+    },
+    {
+      "coefficient": -22319,
+      "exponents": [
+        4,
+        6
+      ]
+    },
+    {
+      "coefficient": 317464,
+      "exponents": [
+        4,
+        5
+      ]
+    },
+    {
+      "coefficient": 1085936,
+      "exponents": [
+        4,
+        4
+      ]
+    },
+    {
+      "coefficient": -19433216,
+      "exponents": [
+        4,
+        3
+      ]
+    },
+    {
+      "coefficient": -2941440,
+      "exponents": [
+        4,
+        2
+      ]
+    },
+    {
+      "coefficient": -239419392,
+      "exponents": [
+        4,
+        1
+      ]
+    },
+    {
+      "coefficient": 342851584,
+      "exponents": [
+        4,
+        0
+      ]
+    },
+    {
+      "coefficient": -464,
+      "exponents": [
+        3,
+        8
+      ]
+    },
+    {
+      "coefficient": 2788,
+      "exponents": [
+        3,
+        7
+      ]
+    },
+    {
+      "coefficient": 2584,
+      "exponents": [
+        3,
+        6
+      ]
+    },
+    {
+      "coefficient": -1185536,
+      "exponents": [
+        3,
+        5
+      ]
+    },
+    {
+      "coefficient": 1961856,
+      "exponents": [
+        3,
+        4
+      ]
+    },
+    {
+      "coefficient": 50780160,
+      "exponents": [
+        3,
+        3
+      ]
+    },
+    {
+      "coefficient": -209108992,
+      "exponents": [
+        3,
+        2
+      ]
+    },
+    {
+      "coefficient": 149684224,
+      "exponents": [
+        3,
+        1
+      ]
+    },
+    {
+      "coefficient": 127401984,
+      "exponents": [
+        3,
+        0
+      ]
+    },
+    {
+      "coefficient": 12,
+      "exponents": [
+        2,
+        9
+      ]
+    },
+    {
+      "coefficient": 278,
+      "exponents": [
+        2,
+        8
+      ]
+    },
+    {
+      "coefficient": -552,
+      "exponents": [
+        2,
+        7
+      ]
+    },
+    {
+      "coefficient": 60600,
+      "exponents": [
+        2,
+        6
+      ]
+    },
+    {
+      "coefficient": 70272,
+      "exponents": [
+        2,
+        5
+      ]
+    },
+    {
+      "coefficient": -5444224,
+      "exponents": [
+        2,
+        4
+      ]
+    },
+    {
+      "coefficient": 24052736,
+      "exponents": [
+        2,
+        3
+      ]
+    },
+    {
+      "coefficient": 97239040,
+      "exponents": [
+        2,
+        2
+      ]
+    },
+    {
+      "coefficient": 558694400,
+      "exponents": [
+        2,
+        1
+      ]
+    },
+    {
+      "coefficient": -1011351552,
+      "exponents": [
+        2,
+        0
+      ]
+    },
+    {
+      "coefficient": 4,
+      "exponents": [
+        1,
+        9
+      ]
+    },
+    {
+      "coefficient": 1736,
+      "exponents": [
+        1,
+        8
+      ]
+    },
+    {
+      "coefficient": -11984,
+      "exponents": [
+        1,
+        7
+      ]
+    },
+    {
+      "coefficient": -56096,
+      "exponents": [
+        1,
+        6
+      ]
+    },
+    {
+      "coefficient": 2937856,
+      "exponents": [
+        1,
+        5
+      ]
+    },
+    {
+      "coefficient": -5009920,
+      "exponents": [
+        1,
+        4
+      ]
+    },
+    {
+      "coefficient": -100122624,
+      "exponents": [
+        1,
+        3
+      ]
+    },
+    {
+      "coefficient": 142868480,
+      "exponents": [
+        1,
+        2
+      ]
+    },
+    {
+      "coefficient": -271581184,
+      "exponents": [
+        1,
+        1
+      ]
+    },
+    {
+      "coefficient": -207618048,
+      "exponents": [
+        1,
+        0
+      ]
+    },
+    {
+      "coefficient": 1,
+      "exponents": [
+        0,
+        10
+      ]
+    },
+    {
+      "coefficient": -80,
+      "exponents": [
+        0,
+        9
+      ]
+    },
+    {
+      "coefficient": -1240,
+      "exponents": [
+        0,
+        8
+      ]
+    },
+    {
+      "coefficient": 5024,
+      "exponents": [
+        0,
+        7
+      ]
+    },
+    {
+      "coefficient": 71312,
+      "exponents": [
+        0,
+        6
+      ]
+    },
+    {
+      "coefficient": -2967168,
+      "exponents": [
+        0,
+        5
+      ]
+    },
+    {
+      "coefficient": 12642560,
+      "exponents": [
+        0,
+        4
+      ]
+    },
+    {
+      "coefficient": 33636352,
+      "exponents": [
+        0,
+        3
+      ]
+    },
+    {
+      "coefficient": -32407552,
+      "exponents": [
+        0,
+        2
+      ]
+    },
+    {
+      "coefficient": -415760384,
+      "exponents": [
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": 1141899264,
+      "exponents": [
+        0,
+        0
+      ]
+    }
+  ],
+  "G_degrees": {
+    "U": 12,
+    "V": 10,
+    "terms": 97,
+    "total": 14
+  },
+  "exception_a_zero": "no admissible rational s; only s=1 can occur",
+  "invariants": {
+    "U": "s+1/s",
+    "V": "a^2/b"
+  },
+  "involution": [
+    "s->1/s",
+    "a->a/b",
+    "b->1/b"
+  ],
+  "lifting_caveat": "A rational point of G need not lift to rational s,a,b. The quotient equation is used only as a necessary obstruction.",
+  "necessary_square_conditions": [
+    "U-2 is a rational square",
+    "U+2 is a rational square",
+    "V is a rational square or the negative of a rational square"
+  ],
+  "resultant_identity": "Res_a(g1,g0)=s^20*V^8*G(s+1/s,V)",
+  "schema": 1,
+  "sha256_without_checksum": "ddcce680a930e97e402f0b4bb932205a700736c4022f010053d8f7ea7bd1e45e"
+}

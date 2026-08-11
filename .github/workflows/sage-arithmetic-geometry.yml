@@ -1,0 +1,313 @@
+name: Sage arithmetic geometry
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/second-cuboid-conjecture
+    paths:
+      - "artifacts/genus4_quotient.json"
+      - "research/arithmetic_geometry/e_model_sage_transport.py"
+      - "research/arithmetic_geometry/e_model_singular_normalize.py"
+      - "research/arithmetic_geometry/e_model_singular_rr_cubic.py"
+      - "research/arithmetic_geometry/e_model_sage_from_singular_cubic.py"
+      - "research/frobenius_audit/sage_candidate_mw_basis.py"
+      - "research/linear_factor_completion/sage_chabauty_p5.py"
+      - "research/linear_factor_completion/two_descent_rank.py"
+      - "scripts/sage_elliptic_probe.py"
+      - ".github/workflows/sage-arithmetic-geometry.yml"
+  pull_request:
+    paths:
+      - "artifacts/genus4_quotient.json"
+      - "research/arithmetic_geometry/e_model_sage_transport.py"
+      - "research/arithmetic_geometry/e_model_singular_normalize.py"
+      - "research/frobenius_audit/sage_candidate_mw_basis.py"
+      - "research/linear_factor_completion/sage_chabauty_p5.py"
+      - "research/linear_factor_completion/two_descent_rank.py"
+      - "scripts/sage_elliptic_probe.py"
+      - ".github/workflows/sage-arithmetic-geometry.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sage-arithmetic-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  descend-reciprocal-invariant:
+    # The direct SymPy V(q,A) certificate is reproduced in the Python suite.
+    # Keep hosted Sage focused on the normalization/Riemann--Roch bottleneck.
+    if: ${{ false }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    container:
+      image: sagemath/sagemath@sha256:e068670ae5863b54b2550e72437ec637b0283acb0dc712c8584c124dbf44e667
+      options: --user root
+    env:
+      SAGE_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+      - name: Record Sage version
+        run: sage --version
+      - name: Descend V before normalization
+        shell: bash
+        run: |
+          mkdir -p certificates
+          set -o pipefail
+          sage -python research/arithmetic_geometry/e_model_sage_transport.py \
+            --stop-after descent --stage-timeout 1200 \
+            2>&1 | tee certificates/e_model_descent.txt
+      - name: Upload exact descent transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sage-e-model-descent
+          path: certificates/e_model_descent.txt
+          if-no-files-found: warn
+
+  transport-to-weierstrass:
+    # The degree-eight maximal-order route is retained for its transcript,
+    # but normal runs use the Singular normalization fallback below.
+    if: ${{ false }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    container:
+      image: sagemath/sagemath@sha256:e068670ae5863b54b2550e72437ec637b0283acb0dc712c8584c124dbf44e667
+      options: --user root
+    env:
+      SAGE_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+      - name: Record Sage version
+        run: sage --version
+      - name: Build Weierstrass model and transport q, A
+        shell: bash
+        run: |
+          mkdir -p certificates
+          set -o pipefail
+          sage -python research/arithmetic_geometry/e_model_sage_transport.py \
+            --skip-v-descent --stage-timeout 1800 \
+            --output certificates/e_model_certificate.json \
+            2>&1 | tee certificates/e_model_transport.txt
+      - name: Upload exact transport certificate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sage-e-model-transport
+          path: |
+            certificates/e_model_transport.txt
+            certificates/e_model_certificate.json
+          if-no-files-found: warn
+
+  candidate-mw-basis:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    container:
+      image: sagemath/sagemath@sha256:e068670ae5863b54b2550e72437ec637b0283acb0dc712c8584c124dbf44e667
+      options: --user root
+    env:
+      SAGE_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+      - name: Certify candidate rank and saturation
+        shell: bash
+        run: |
+          mkdir -p certificates
+          set -o pipefail
+          sage -python research/frobenius_audit/sage_candidate_mw_basis.py \
+            2>&1 | tee certificates/sage_candidate_mw_basis.txt
+          cp research/frobenius_audit/sage_candidate_mw_basis.json certificates/
+      - name: Upload candidate Mordell-Weil certificate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sage-candidate-mw-basis
+          path: |
+            certificates/sage_candidate_mw_basis.txt
+            certificates/sage_candidate_mw_basis.json
+          if-no-files-found: warn
+
+  linear-chabauty-p5:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    container:
+      image: sagemath/sagemath@sha256:e068670ae5863b54b2550e72437ec637b0283acb0dc712c8584c124dbf44e667
+      options: --user root
+    env:
+      SAGE_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+      - name: Certify the genus-2 rank bound by 2-descent
+        shell: bash
+        run: |
+          mkdir -p certificates
+          set -o pipefail
+          sage -python research/linear_factor_completion/two_descent_rank.py \
+            2>&1 | tee certificates/two_descent_rank.txt
+      - name: Reproduce the p=5 Chabauty certificate
+        shell: bash
+        run: |
+          mkdir -p certificates
+          set -o pipefail
+          sage -python research/linear_factor_completion/sage_chabauty_p5.py \
+            2>&1 | tee certificates/sage_chabauty_p5.txt
+      - name: Upload p=5 Chabauty transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sage-linear-chabauty-p5
+          path: |
+            certificates/two_descent_rank.txt
+            certificates/sage_chabauty_p5.txt
+          if-no-files-found: warn
+
+  rr-cubic-transport:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      SAGE_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+      - name: Construct, invert, and verify the cubic model
+        shell: bash
+        run: |
+          set -o pipefail
+          docker run --rm --user root \
+            --env SAGE_NUM_THREADS=1 \
+            --env OMP_NUM_THREADS=1 \
+            --env OPENBLAS_NUM_THREADS=1 \
+            --env PYTHONHASHSEED=0 \
+            --volume "$PWD:/work" --workdir /work \
+            --entrypoint bash \
+            sagemath/sagemath@sha256:e068670ae5863b54b2550e72437ec637b0283acb0dc712c8584c124dbf44e667 \
+            -lc '
+              set -euo pipefail
+              mkdir -p certificates
+              python3 research/arithmetic_geometry/e_model_singular_rr_cubic.py \
+                --output certificates/e_model_singular_rr_cubic.sing \
+                --metadata certificates/e_model_singular_rr_cubic_input.json
+              sage -sh -c \
+                "Singular --random=1 -q certificates/e_model_singular_rr_cubic.sing" \
+                2>&1 | tee certificates/e_model_singular_rr_cubic.txt
+              grep -q "CERT singular_rr_cubic_finished=OK" \
+                certificates/e_model_singular_rr_cubic.txt
+              sage -python \
+                research/arithmetic_geometry/e_model_sage_from_singular_cubic.py \
+                --transcript certificates/e_model_singular_rr_cubic.txt \
+                --output certificates/e_model_singular_cubic_certificate.json \
+                2>&1 | tee certificates/e_model_sage_from_singular_cubic.txt
+            '
+      - name: Upload exact cubic transport certificate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: singular-rr-cubic-transport
+          path: |
+            certificates/e_model_singular_rr_cubic.sing
+            certificates/e_model_singular_rr_cubic_input.json
+            certificates/e_model_singular_rr_cubic.txt
+            certificates/e_model_sage_from_singular_cubic.txt
+            certificates/e_model_singular_cubic_certificate.json
+          if-no-files-found: warn
+
+  singular-affine-normalization:
+    # The direct normal.lib calculation exceeded forty minutes without
+    # producing a component.  Retain the exact input generator for manual
+    # archaeology; CI now uses the targeted Brill--Noether route staged in
+    # research/singular_transport instead.
+    if: ${{ false }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    container:
+      image: sagemath/sagemath@sha256:e068670ae5863b54b2550e72437ec637b0283acb0dc712c8584c124dbf44e667
+      options: --user root
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+      - name: Generate exact Singular normalization input
+        run: |
+          mkdir -p certificates
+          python3 research/arithmetic_geometry/e_model_singular_normalize.py \
+            --chart affine \
+            --output certificates/e_model_singular_affine.sing \
+            --metadata certificates/e_model_singular_input.json
+      - name: Normalize the affine elliptic plane model
+        shell: bash
+        run: |
+          set -o pipefail
+          sage -sh -c 'Singular -q certificates/e_model_singular_affine.sing' \
+            2>&1 | tee certificates/e_model_singular_affine.txt
+          grep -q 'CERT singular_normalization_finished' \
+            certificates/e_model_singular_affine.txt
+      - name: Upload exact Singular transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: singular-affine-normalization
+          path: |
+            certificates/e_model_singular_affine.sing
+            certificates/e_model_singular_input.json
+            certificates/e_model_singular_affine.txt
+          if-no-files-found: warn
+
+  normalize-elliptic-quotient:
+    # The generic FunctionField.genus() route was cancelled after 90 minutes
+    # while the staged field/isomorphism checks had already succeeded.  Keep
+    # the transcript-producing job in the file for manual archaeology, but do
+    # not spend hosted-runner time on it in normal research runs.
+    if: ${{ false }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    container:
+      image: sagemath/sagemath:10.8
+      # The upstream image defaults to an unprivileged user, while GitHub's
+      # container runner mounts its command files as runner-owned paths.
+      options: --user root
+    steps:
+      - uses: actions/checkout@v4
+      - name: Record Sage version
+        run: sage --version
+      - name: Normalize quotient and compute exact elliptic data
+        shell: bash
+        run: |
+          mkdir -p certificates
+          set -o pipefail
+          sage -python scripts/sage_elliptic_probe.py 2>&1 | tee certificates/sage_elliptic_probe.txt
+      - name: Upload exact transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sage-elliptic-probe
+          path: certificates/sage_elliptic_probe.txt
+          if-no-files-found: warn

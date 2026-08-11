@@ -1,0 +1,87 @@
+{
+  "D0": "593*X**5 - 201*X**4 + 903*X**3*Y - 880*X**3 + 1977*X**2*Y + 4384*X**2 - 5779*X*Y - 12953*X + 3091*Y + 9057",
+  "F_zero_audit": {
+    "Res(E,L)": "-X*(X - 3)*(X - 1)",
+    "Res(E,M)": "(X - 3)*(X - 1)*(X**2 - 5)",
+    "X=-1": "Y^2=8 has no rational solution",
+    "rational_points": {
+      "(0,2)": "UV=1 boundary",
+      "(1,0)": "UV=1/2 nonsquare",
+      "(3,-4)": "UV=2353 nonsquare"
+    }
+  },
+  "P": "2062*X**3 - 1055*X**2 - 8634*X + 7723",
+  "Q": "593*X**2 + 1807*X - 3758",
+  "consequence": "At every admissible point outside the audited exceptional set, 1-U*V is a rational square iff 2*(X+1)*(Y+2)/X is a rational square.",
+  "coordinates": {
+    "curve": "Y^2=X^3-5*X+4",
+    "inverse": "x=(X-3)/(X-1), y=2*Y/(X-1)^2",
+    "translation": "X=(x-3)/(x-1), Y=2*y/(x-1)^2"
+  },
+  "denominator_audit": {
+    "X=0": {
+      "(0,-2)": {
+        "U": "71/125",
+        "UV": "3053/3125",
+        "V": "43/25",
+        "status": "nonsquare"
+      },
+      "(0,2)": {
+        "U": "-1",
+        "UV": "1",
+        "V": "-1",
+        "status": "boundary"
+      }
+    },
+    "X=3": {
+      "(3,-4)": {
+        "U": "65",
+        "UV": "2353",
+        "V": "181/5",
+        "status": "nonsquare"
+      },
+      "(3,4)": {
+        "U": "1",
+        "UV": "1",
+        "V": "1",
+        "status": "boundary"
+      }
+    },
+    "old_T=(1,0)": {
+      "U": "1",
+      "UV": "1",
+      "V": "1",
+      "status": "boundary"
+    },
+    "rational_D0_points": [
+      "translated O=(1,0)",
+      "translated -4P=(350497/351649,-16920528/208527857)"
+    ],
+    "resultant_E_D0": "(X - 1)*(351649*X - 350497)*(X**2 - 5)**3*(X**2 - X - 1)",
+    "translated_O": {
+      "U": "1/2",
+      "UV": "1/2",
+      "V": "1"
+    },
+    "translated_minus_4P": {
+      "UV": "59409766391312609246463879655380631/99603489008786736151209561658227902",
+      "UV_v2": -1
+    }
+  },
+  "exact_identity": "1-U*V=2*F*g^2",
+  "g": "(P-Q*Y)/((X-3)*D0)",
+  "logical_scope": "This is an exact square-class reduction for the common product character.  It does not classify the resulting double cover.",
+  "schema": 1,
+  "sha256_without_checksum": "8fb215c814e0fe9f3071f9abe5b542949175a85dad4ce9ce4fb83ad9a43ffd2b",
+  "small_functions": {
+    "F": "(X+1)*L*M",
+    "L": "2*X+Y-2",
+    "M": "X^2+2*Y-1",
+    "function_field_identity": "M=L*k",
+    "k": "(Y+2)/X",
+    "squareclass_form": "F=L^2*(X+1)*(Y+2)/X"
+  },
+  "status": "MACHINE-VERIFIED",
+  "transport_checksum": "bd5e92094c9255c03130751ce7811a74581cf1b20aac3d43809c05c4b3ce6ffd",
+  "warning": "The scalar 2 is essential and is not a square in QQ."
+}

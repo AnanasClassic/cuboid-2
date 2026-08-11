@@ -1,0 +1,32 @@
+{
+  "P": "(0 : 2 : 1)",
+  "P_full_saturation": {
+    "index": 1,
+    "max_prime": -1,
+    "points": [
+      "(0 : 2 : 1)"
+    ],
+    "regulator": "0.798288061146010"
+  },
+  "curve_ainvs": [
+    "0",
+    "0",
+    "0",
+    "-5",
+    "4"
+  ],
+  "gens_certain": true,
+  "gens_proof_true": [
+    "(0 : 2 : 1)"
+  ],
+  "logical_scope": "Proof-mode arithmetic of candidate E1 only; no identification with the cuboid quotient is asserted.",
+  "python_version": "3.12.3",
+  "rank_bounds": [
+    1,
+    1
+  ],
+  "rank_proof_true": 1,
+  "sage_version": "SageMath version 10.9, Release Date: 2026-05-04",
+  "schema": 1,
+  "torsion": "Torsion Subgroup isomorphic to Z/2 associated to the Elliptic Curve defined by y^2 = x^3 - 5*x + 4 over Rational Field"
+}

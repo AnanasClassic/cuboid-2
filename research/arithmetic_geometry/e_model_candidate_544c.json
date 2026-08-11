@@ -1,0 +1,26 @@
+{
+  "E1": {
+    "discriminant": "1088",
+    "equation": "y^2=x^3-5*x+4",
+    "j": "216000/17",
+    "rational_2_torsion": "(1,0)",
+    "reported_rank_one_point_checked": "(0,2)"
+  },
+  "E2": {
+    "discriminant": "-147968",
+    "equation": "Y^2=X^3+5*X+18",
+    "j": "27000/289",
+    "rational_2_torsion": "(-2,0)",
+    "reported_rank_one_point_checked": "(2,6)"
+  },
+  "degree_two_isogeny_E1_to_E2": {
+    "X": "(x - 2)*(x + 1)/(x - 1)",
+    "Y": "-y*(x**2 - 2*x + 3)/(x - 1)**2",
+    "exceptional_kernel_point": "(1,0)",
+    "verification": "substitute y^2=x^3-5*x+4 into Y^2-(X^3+5*X+18); exact result 0"
+  },
+  "logical_limit": "Matching Frobenius traces with 544.c proves at most an isogeny fingerprint until conductor completeness is certified; even an isogeny-class proof would not choose E1 versus E2 because their j-invariants differ. An exact H-normalization map or exact j-invariant is still required.",
+  "schema": 1,
+  "sha256_without_checksum": "d6c5f68c85dcfbb1e8a1b724048bd82a66c42919223871e078f7427cb1ca6329",
+  "status": "CANDIDATE_ISOGENY_VERIFIED; IDENTIFICATION_WITH_H_OPEN"
+}

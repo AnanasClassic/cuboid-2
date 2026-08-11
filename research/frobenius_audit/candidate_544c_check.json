@@ -1,0 +1,196 @@
+{
+  "all_certified_traces_match_both_models": true,
+  "candidate_class": "544.c",
+  "certified_trace_source_checksum": "e372ea3221d593644fd0f3a2bc1cd050a00610b19e3ed8ac52cdb00e6cfceaae",
+  "displayed_model_discriminants": {
+    "E1": 1088,
+    "E2": -147968
+  },
+  "external_candidate_metadata_only": {
+    "rational_points_checked_offline_not_generator_certificates": {
+      "E1": "(0,2)",
+      "E2": "(2,-6)=phi(0,2)"
+    },
+    "reported_generators_status": "External metadata only; no database generator claim is imported as a theorem or used in this certificate.",
+    "reported_isogeny_class": "544.c",
+    "reported_rank": 1,
+    "source": "LMFDB candidate lookup, not consumed by this offline proof",
+    "warning": "Database rank/generator metadata is candidate guidance only. It cannot be transported to the quotient until an exact birational map or another proof of identification is supplied."
+  },
+  "isogeny_certificate": {
+    "checked_rational_points": {
+      "E1_point": "(0,2)",
+      "phi_image_on_E2": "(2,-6)"
+    },
+    "dual_shifted": {
+      "X": "v**2/(4*u**2)",
+      "Y": "(-u**2*v + 17*v)/(8*u**2)"
+    },
+    "dual_short": {
+      "x": "(4*u**2 + 16*u + v**2 + 16)/(4*u**2 + 16*u + 16)",
+      "y": "(-u**2*v - 4*u*v + 13*v)/(8*u**2 + 32*u + 32)"
+    },
+    "duality": [
+      "dual(phi(P))=[2]P on E1",
+      "phi(dual(Q))=[2]Q on E2"
+    ],
+    "kernels": {
+      "dual": "{O,(U,V)=(0,0)} = {O,(u,v)=(-2,0)}",
+      "phi": "{O,(X,Y)=(0,0)} = {O,(x,y)=(1,0)}"
+    },
+    "phi_shifted": {
+      "U": "y**2/x**2",
+      "V": "(-x**2*y - 2*y)/x**2"
+    },
+    "phi_short": {
+      "u": "(-2*x**2 + 4*x + y**2 - 2)/(x**2 - 2*x + 1)",
+      "v": "(-x**2*y + 2*x*y - 3*y)/(x**2 - 2*x + 1)"
+    },
+    "shifted_models": {
+      "E1": "Y^2=X^3+3*X^2-2*X, with X=x-1 and Y=y",
+      "E2": "V^2=U^3-6*U^2+17*U, with U=u+2 and V=v"
+    }
+  },
+  "logical_status": {
+    "not_proved": [
+      "the abstract reciprocal quotient E is isomorphic or isogenous to 544.c",
+      "the Mordell-Weil rank of the abstract quotient E",
+      "completeness of any proposed generator set for E(Q)"
+    ],
+    "proved_offline": [
+      "both displayed models have every certified quotient trace",
+      "the displayed models are linked by the explicit rational 2-isogeny",
+      "the displayed dual compositions are multiplication by 2"
+    ]
+  },
+  "models": {
+    "E1": {
+      "A": -5,
+      "B": 4,
+      "equation": "y^2=x^3-5*x+4"
+    },
+    "E2": {
+      "A": 5,
+      "B": 18,
+      "equation": "y^2=x^3+5*x+18"
+    }
+  },
+  "schema": 1,
+  "sha256_without_checksum": "21cdec4ffb4ac6efaefc540a836197d3825f2282c5244f6128e85c45f7d3f1c1",
+  "trace_matches": [
+    {
+      "E1_trace": -2,
+      "E2_trace": -2,
+      "certified_quotient_trace": -2,
+      "p": 7
+    },
+    {
+      "E1_trace": -4,
+      "E2_trace": -4,
+      "certified_quotient_trace": -4,
+      "p": 11
+    },
+    {
+      "E1_trace": 2,
+      "E2_trace": 2,
+      "certified_quotient_trace": 2,
+      "p": 13
+    },
+    {
+      "E1_trace": -4,
+      "E2_trace": -4,
+      "certified_quotient_trace": -4,
+      "p": 19
+    },
+    {
+      "E1_trace": -6,
+      "E2_trace": -6,
+      "certified_quotient_trace": -6,
+      "p": 23
+    },
+    {
+      "E1_trace": 8,
+      "E2_trace": 8,
+      "certified_quotient_trace": 8,
+      "p": 29
+    },
+    {
+      "E1_trace": 2,
+      "E2_trace": 2,
+      "certified_quotient_trace": 2,
+      "p": 31
+    },
+    {
+      "E1_trace": 4,
+      "E2_trace": 4,
+      "certified_quotient_trace": 4,
+      "p": 37
+    },
+    {
+      "E1_trace": -2,
+      "E2_trace": -2,
+      "certified_quotient_trace": -2,
+      "p": 41
+    },
+    {
+      "E1_trace": -6,
+      "E2_trace": -6,
+      "certified_quotient_trace": -6,
+      "p": 53
+    },
+    {
+      "E1_trace": -4,
+      "E2_trace": -4,
+      "certified_quotient_trace": -4,
+      "p": 59
+    },
+    {
+      "E1_trace": 4,
+      "E2_trace": 4,
+      "certified_quotient_trace": 4,
+      "p": 61
+    },
+    {
+      "E1_trace": -4,
+      "E2_trace": -4,
+      "certified_quotient_trace": -4,
+      "p": 67
+    },
+    {
+      "E1_trace": 6,
+      "E2_trace": 6,
+      "certified_quotient_trace": 6,
+      "p": 71
+    },
+    {
+      "E1_trace": -6,
+      "E2_trace": -6,
+      "certified_quotient_trace": -6,
+      "p": 73
+    },
+    {
+      "E1_trace": 10,
+      "E2_trace": 10,
+      "certified_quotient_trace": 10,
+      "p": 79
+    },
+    {
+      "E1_trace": 12,
+      "E2_trace": 12,
+      "certified_quotient_trace": 12,
+      "p": 83
+    },
+    {
+      "E1_trace": -10,
+      "E2_trace": -10,
+      "certified_quotient_trace": -10,
+      "p": 89
+    },
+    {
+      "E1_trace": -10,
+      "E2_trace": -10,
+      "certified_quotient_trace": -10,
+      "p": 97
+    }
+  ]
+}

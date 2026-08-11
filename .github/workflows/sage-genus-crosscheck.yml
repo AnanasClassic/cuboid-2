@@ -1,0 +1,39 @@
+name: Sage genus cross-check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  degree-eight-normalization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    container:
+      image: sagemath/sagemath@sha256:e068670ae5863b54b2550e72437ec637b0283acb0dc712c8584c124dbf44e667
+      options: --user root
+    env:
+      SAGE_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          persist-credentials: false
+      - name: Record Sage version
+        run: sage --version
+      - name: Compute genus in the degree-eight presentation
+        shell: bash
+        run: |
+          mkdir -p certificates
+          set -o pipefail
+          sage -python scripts/sage_genus_crosscheck.py 2>&1 | tee certificates/sage_genus_crosscheck.txt
+      - name: Upload exact transcript
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sage-genus-crosscheck
+          path: certificates/sage_genus_crosscheck.txt
+          if-no-files-found: warn

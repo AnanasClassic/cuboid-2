@@ -1,0 +1,243 @@
+{
+  "endpoint_survivor_warning": {
+    "example_5_13_full_projection_nonzero": {
+      "u=0,v=3": "13290621117491381163651146206799672820235712593920/528029013288053029092010246418774432656697756230566661880485125877",
+      "u=3,v=0": "24102444638182415426614505558175820597345197568460762500762939453125000000000000000000/27783742160348572763840067510872319734178277",
+      "u=3,v=4": "243395282632541764571905415634038766052722930908203125000000000000000000/10035172269625500103459385725807792077756541675943228751712485551784766198004089442953477",
+      "u=4,v=3": "28695825592212271278456938266754150390625000000000000000000/6864377172744689378196133203444067624537070830997366604446306636401"
+    },
+    "statement": "satisfying the endpoint congruences is necessary only; it does not produce a zero of the full resultant or a quadratic factor"
+  },
+  "exact_residual_system": {
+    "e": "2*|u-v| in {2,6,8}",
+    "negative_b": "R^(e*n)=-1 mod L and L^(e*m)=-1 mod R",
+    "positive_b": "R^(e*n)=1 mod L and L^(e*m)=1 mod R"
+  },
+  "negative_e2_e6_2_sylow_lemma": {
+    "consequences": [
+      "the prime is 5 mod 8",
+      "x is a quadratic nonresidue",
+      "therefore n is odd and the underlying base has Legendre symbol -1",
+      "applying at both primes gives m,n odd and (L/R)=(R/L)=-1"
+    ],
+    "reciprocity_consistency": "L,R are 1 mod 4, so quadratic reciprocity makes the two symbols equal",
+    "statement": "x^(e*n)=-1 with e=2 or 6 at an inert prime forces the 2-primary component of ord(x) to have order 4"
+  },
+  "no_go_certificates": [
+    "for positive b, m=R-1 and n=L-1 satisfy every endpoint system by Fermat",
+    "for negative b, (L,R,m,n)=(5,13,1,1) satisfies both e=2 and e=6 systems",
+    "already at m=n=1, (L,R)=(3,13) survives positive e=6 and (3,5) survives positive e=8",
+    "therefore endpoint coefficients plus quadratic reciprocity do not prove the general inert-pair family"
+  ],
+  "records": [
+    {
+      "P_endpoint_squarefree": "(Q - 1)*(Q + 1)*(Q**2 - Q + 1)*(Q**2 + Q + 1)",
+      "Q_endpoint_squarefree": "(P - 1)*(P + 1)*(P**2 - P + 1)*(P**2 + P + 1)",
+      "e": 6,
+      "necessary_congruences_for_p=L^m_q=R^n": [
+        "R^(6*n) == 1 (mod L)",
+        "L^(6*m) == 1 (mod R)"
+      ],
+      "sign_of_b": 1,
+      "strengthened_negative_conditions": null,
+      "u": 0,
+      "v": 3
+    },
+    {
+      "P_endpoint_squarefree": "(Q - 1)*(Q + 1)*(Q**2 + 1)*(Q**4 + 1)",
+      "Q_endpoint_squarefree": "(P - 1)*(P + 1)*(P**2 + 1)*(P**4 + 1)",
+      "e": 8,
+      "necessary_congruences_for_p=L^m_q=R^n": [
+        "R^(8*n) == 1 (mod L)",
+        "L^(8*m) == 1 (mod R)"
+      ],
+      "sign_of_b": 1,
+      "strengthened_negative_conditions": null,
+      "u": 0,
+      "v": 4
+    },
+    {
+      "P_endpoint_squarefree": "(Q - 1)*(Q + 1)*(Q**2 - Q + 1)*(Q**2 + Q + 1)",
+      "Q_endpoint_squarefree": "(P - 1)*(P + 1)*(P**2 - P + 1)*(P**2 + P + 1)",
+      "e": 6,
+      "necessary_congruences_for_p=L^m_q=R^n": [
+        "R^(6*n) == 1 (mod L)",
+        "L^(6*m) == 1 (mod R)"
+      ],
+      "sign_of_b": 1,
+      "strengthened_negative_conditions": null,
+      "u": 3,
+      "v": 0
+    },
+    {
+      "P_endpoint_squarefree": "(Q - 1)*(Q + 1)",
+      "Q_endpoint_squarefree": "(P - 1)*(P + 1)",
+      "e": 2,
+      "necessary_congruences_for_p=L^m_q=R^n": [
+        "R^(2*n) == 1 (mod L)",
+        "L^(2*m) == 1 (mod R)"
+      ],
+      "sign_of_b": 1,
+      "strengthened_negative_conditions": null,
+      "u": 3,
+      "v": 4
+    },
+    {
+      "P_endpoint_squarefree": "(Q - 1)*(Q + 1)*(Q**2 + 1)*(Q**4 + 1)",
+      "Q_endpoint_squarefree": "(P - 1)*(P + 1)*(P**2 + 1)*(P**4 + 1)",
+      "e": 8,
+      "necessary_congruences_for_p=L^m_q=R^n": [
+        "R^(8*n) == 1 (mod L)",
+        "L^(8*m) == 1 (mod R)"
+      ],
+      "sign_of_b": 1,
+      "strengthened_negative_conditions": null,
+      "u": 4,
+      "v": 0
+    },
+    {
+      "P_endpoint_squarefree": "(Q - 1)*(Q + 1)",
+      "Q_endpoint_squarefree": "(P - 1)*(P + 1)",
+      "e": 2,
+      "necessary_congruences_for_p=L^m_q=R^n": [
+        "R^(2*n) == 1 (mod L)",
+        "L^(2*m) == 1 (mod R)"
+      ],
+      "sign_of_b": 1,
+      "strengthened_negative_conditions": null,
+      "u": 4,
+      "v": 3
+    },
+    {
+      "P_endpoint_squarefree": "(Q**2 + 1)*(Q**4 - Q**2 + 1)",
+      "Q_endpoint_squarefree": "(P**2 + 1)*(P**4 - P**2 + 1)",
+      "e": 6,
+      "necessary_congruences_for_p=L^m_q=R^n": [
+        "R^(6*n) == -1 (mod L)",
+        "L^(6*m) == -1 (mod R)"
+      ],
+      "sign_of_b": -1,
+      "strengthened_negative_conditions": [
+        "m and n are odd",
+        "Legendre(L/R)=-1",
+        "Legendre(R/L)=-1",
+        "L=R=5 (mod 8)"
+      ],
+      "u": 0,
+      "v": 3
+    },
+    {
+      "P_endpoint_squarefree": "Q**8 + 1",
+      "Q_endpoint_squarefree": "P**8 + 1",
+      "e": 8,
+      "necessary_congruences_for_p=L^m_q=R^n": [
+        "R^(8*n) == -1 (mod L)",
+        "L^(8*m) == -1 (mod R)"
+      ],
+      "sign_of_b": -1,
+      "strengthened_negative_conditions": [
+        "impossible for inert L,R: x^(8n)=-1 requires element order divisible by 16"
+      ],
+      "u": 0,
+      "v": 4
+    },
+    {
+      "P_endpoint_squarefree": "(Q**2 + 1)*(Q**4 - Q**2 + 1)",
+      "Q_endpoint_squarefree": "(P**2 + 1)*(P**4 - P**2 + 1)",
+      "e": 6,
+      "necessary_congruences_for_p=L^m_q=R^n": [
+        "R^(6*n) == -1 (mod L)",
+        "L^(6*m) == -1 (mod R)"
+      ],
+      "sign_of_b": -1,
+      "strengthened_negative_conditions": [
+        "m and n are odd",
+        "Legendre(L/R)=-1",
+        "Legendre(R/L)=-1",
+        "L=R=5 (mod 8)"
+      ],
+      "u": 3,
+      "v": 0
+    },
+    {
+      "P_endpoint_squarefree": "Q**2 + 1",
+      "Q_endpoint_squarefree": "P**2 + 1",
+      "e": 2,
+      "necessary_congruences_for_p=L^m_q=R^n": [
+        "R^(2*n) == -1 (mod L)",
+        "L^(2*m) == -1 (mod R)"
+      ],
+      "sign_of_b": -1,
+      "strengthened_negative_conditions": [
+        "m and n are odd",
+        "Legendre(L/R)=-1",
+        "Legendre(R/L)=-1",
+        "L=R=5 (mod 8)"
+      ],
+      "u": 3,
+      "v": 4
+    },
+    {
+      "P_endpoint_squarefree": "Q**8 + 1",
+      "Q_endpoint_squarefree": "P**8 + 1",
+      "e": 8,
+      "necessary_congruences_for_p=L^m_q=R^n": [
+        "R^(8*n) == -1 (mod L)",
+        "L^(8*m) == -1 (mod R)"
+      ],
+      "sign_of_b": -1,
+      "strengthened_negative_conditions": [
+        "impossible for inert L,R: x^(8n)=-1 requires element order divisible by 16"
+      ],
+      "u": 4,
+      "v": 0
+    },
+    {
+      "P_endpoint_squarefree": "Q**2 + 1",
+      "Q_endpoint_squarefree": "P**2 + 1",
+      "e": 2,
+      "necessary_congruences_for_p=L^m_q=R^n": [
+        "R^(2*n) == -1 (mod L)",
+        "L^(2*m) == -1 (mod R)"
+      ],
+      "sign_of_b": -1,
+      "strengthened_negative_conditions": [
+        "m and n are odd",
+        "Legendre(L/R)=-1",
+        "Legendre(R/L)=-1",
+        "L=R=5 (mod 8)"
+      ],
+      "u": 4,
+      "v": 3
+    }
+  ],
+  "remaining_branches": {
+    "negative": [
+      "e=2 with L,R=5 mod 8, m,n odd, (L/R)=(R/L)=-1",
+      "e=6 with L,R=5 mod 8, m,n odd, (L/R)=(R/L)=-1"
+    ],
+    "positive": [
+      "e=2",
+      "e=6",
+      "e=8"
+    ]
+  },
+  "rigorous_eliminations": [
+    "negative b with e=8 is impossible: it would require 16|(L-1) and 16|(R-1)",
+    "for m=n=1, positive b with e=2 is impossible for distinct odd primes (order by size)",
+    "every negative branch requires L=R=5 mod 8 because -1 must be a quadratic residue",
+    "for negative e=2 or e=6, m,n are odd and (L/R)=(R/L)=-1"
+  ],
+  "schema": 1,
+  "setup": {
+    "local_indices": [
+      0,
+      3,
+      4
+    ],
+    "p": "L^m",
+    "prime_conditions": "L,R distinct odd primes; (2/L)=(2/R)=-1",
+    "q": "R^n"
+  },
+  "status": "MACHINE-VERIFIED_ENDPOINT_IDENTITIES"
+}

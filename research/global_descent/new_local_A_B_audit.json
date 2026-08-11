@@ -1,0 +1,102 @@
+{
+  "equal_slope_cancellation": {
+    "conclusion": "no finite upper bound on v(A) in either equal-slope pair",
+    "high_pair": "alpha=ell^(4k), beta=-ell^(4k)+ell^(4k+N) gives v(A)=4k+N and v(B)=8k",
+    "unit_pair": "alpha=1, beta=-1+ell^N gives v(A)=N and v(B)=0"
+  },
+  "nonuniformity_witness": {
+    "conclusion": "the same rational quadratic factor can select different Newton pair types at different primes; Newton and A,B valuation data alone cannot force uniform m_l",
+    "global_quadratic_factor": "(X-1)(X-25)=X^2-26X+25",
+    "polynomial_roots": [
+      1,
+      25,
+      9,
+      50625,
+      50625
+    ],
+    "quadratic_pair_at_3": [
+      0,
+      0
+    ],
+    "quadratic_pair_at_5": [
+      0,
+      2
+    ],
+    "root_valuation_multisets": {
+      "3": [
+        0,
+        0,
+        2,
+        4,
+        4
+      ],
+      "5": [
+        0,
+        0,
+        2,
+        4,
+        4
+      ]
+    },
+    "scope": "this is a no-go statement for the local-data argument, not a factorization of Sharipov's polynomial"
+  },
+  "schema": 1,
+  "status": "PROVED_AND_MACHINE_CHECKED",
+  "table": [
+    {
+      "normalized_m_if_prime_divides_p": 0,
+      "normalized_m_if_prime_divides_q": 4,
+      "root_valuations_over_k": [
+        0,
+        0
+      ],
+      "v_A_exact": false,
+      "v_A_over_k": ">=0 (cancellation unbounded)",
+      "v_B_over_2k": 0
+    },
+    {
+      "normalized_m_if_prime_divides_p": 1,
+      "normalized_m_if_prime_divides_q": 3,
+      "root_valuations_over_k": [
+        0,
+        2
+      ],
+      "v_A_exact": true,
+      "v_A_over_k": 0,
+      "v_B_over_2k": 1
+    },
+    {
+      "normalized_m_if_prime_divides_p": 2,
+      "normalized_m_if_prime_divides_q": 2,
+      "root_valuations_over_k": [
+        0,
+        4
+      ],
+      "v_A_exact": true,
+      "v_A_over_k": 0,
+      "v_B_over_2k": 2
+    },
+    {
+      "normalized_m_if_prime_divides_p": 3,
+      "normalized_m_if_prime_divides_q": 1,
+      "root_valuations_over_k": [
+        2,
+        4
+      ],
+      "v_A_exact": true,
+      "v_A_over_k": 2,
+      "v_B_over_2k": 3
+    },
+    {
+      "normalized_m_if_prime_divides_p": 4,
+      "normalized_m_if_prime_divides_q": 0,
+      "root_valuations_over_k": [
+        4,
+        4
+      ],
+      "v_A_exact": false,
+      "v_A_over_k": ">=4 (cancellation unbounded)",
+      "v_B_over_2k": 4
+    }
+  ]
+}

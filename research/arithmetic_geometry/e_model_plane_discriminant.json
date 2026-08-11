@@ -1,0 +1,67 @@
+{
+  "artifact_checksum": "621f3aa944d0ba3a8bfd39a36de19a21313304f8cfdfcbfb31f222736f04a7a5",
+  "conclusion": {
+    "not_proved": "Plane discriminant roots and exponents may disappear or change after normalization; no assertion that the normalized q-map is non-Belyi, and no genus or rational-point result, is made here.",
+    "proved": "The singular plane discriminant has 23 distinct geometric roots, so it does not by itself supply a three-branch-point or Belyi certificate."
+  },
+  "degree_A": 10,
+  "degree_q": 8,
+  "discriminant_in_A": {
+    "content": "-521481209941628438084722096232800809229175908778479680162851955034721612739414196782949728256",
+    "degree_q": 114,
+    "factors": [
+      {
+        "degree": 1,
+        "exponent": 4,
+        "irreducible_over_Q": true,
+        "polynomial": "3*q + 10"
+      },
+      {
+        "degree": 1,
+        "exponent": 20,
+        "irreducible_over_Q": true,
+        "polynomial": "q + 2"
+      },
+      {
+        "degree": 1,
+        "exponent": 27,
+        "irreducible_over_Q": true,
+        "polynomial": "q - 2"
+      },
+      {
+        "degree": 2,
+        "exponent": 12,
+        "irreducible_over_Q": true,
+        "polynomial": "5*q**2 + 28*q + 52"
+      },
+      {
+        "degree": 3,
+        "exponent": 3,
+        "irreducible_over_Q": true,
+        "polynomial": "43*q**3 + 11870*q**2 - 50684*q + 51496"
+      },
+      {
+        "degree": 15,
+        "exponent": 2,
+        "irreducible_over_Q": true,
+        "polynomial": "q**15 + 998*q**14 + 328436*q**13 + 33879288*q**12 - 630955568*q**11 - 64836634912*q**10 - 1365887807936*q**9 - 13883961380480*q**8 - 77464295435520*q**7 - 230515638316544*q**6 - 255656791073792*q**5 + 398271926396928*q**4 + 1443280969068544*q**3 + 1224232979505152*q**2 - 174483284901888*q - 495592577400832"
+      }
+    ],
+    "pairwise_coprime": true
+  },
+  "rational_smooth_point": {
+    "A": "6/7",
+    "gradient": [
+      "-412316860416000000/40353607",
+      "137438953472000000/823543"
+    ],
+    "q": "6"
+  },
+  "schema": 1,
+  "sha256_without_checksum": "d66bef5ff943d81ea5b5ed77bbfde4f014b73407068c6e1a0e9082a2356df09a",
+  "special_fibres": {
+    "q=-10/3": "-536870912*(A**2 - 7*A - 26)*(7*A**2 + 44*A + 28)**2*(A**4 - A**3 + 4*A**2 - 4*A + 16)/6561",
+    "q=-2": "65536*(A - 2)**10",
+    "q=2": "134217728*A**3*(A - 6)*(A**2 - 12*A + 4)**3"
+  }
+}

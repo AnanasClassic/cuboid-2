@@ -1,0 +1,225 @@
+// Generated exactly by e_model_singular_rr_cubic.py.
+// Run Singular with --random=1: RiemannRochBN chooses an auxiliary form.
+LIB "brillnoether.lib";
+LIB "paraplanecurves.lib";
+LIB "normal.lib";
+option(redSB);
+short=0;
+system("--random",1);
+print("CERT singular_random_seed=1");
+print("BEGIN_SINGULAR_VERSION");
+system("--version");
+print("END_SINGULAR_VERSION");
+
+print("CERT stage_start=affine_normalization_cross_check");
+ring RAff = 0,(q,A),dp;
+poly hAffine = 361*q^8*A^10-9604*q^8*A^9+101428*q^8*A^8-591296*q^8*A^7+2158112*q^8*A^6-5217664*q^8*A^5+8524928*q^8*A^4-9337856*q^8*A^3+6583552*q^8*A^2-2704384*q^8*A+492544*q^8+10384*q^7*A^10-278720*q^7*A^9+2935104*q^7*A^8-16644096*q^7*A^7+57113088*q^7*A^6-123885568*q^7*A^5+169338880*q^7*A^4-137494528*q^7*A^3+54382592*q^7*A^2-1294336*q^7*A-4177920*q^7+106800*q^6*A^10-3140800*q^6*A^9+35620288*q^6*A^8-206199808*q^6*A^7+679978496*q^6*A^6-1315219456*q^6*A^5+1421973504*q^6*A^4-678739968*q^6*A^3-55021568*q^6*A^2+115425280*q^6*A+9486336*q^6+529088*q^5*A^10-18645248*q^5*A^9+242677504*q^5*A^8-1495613440*q^5*A^7+4800542720*q^5*A^6-8012406784*q^5*A^5+5877063680*q^5*A^4-167116800*q^5*A^3-1188184064*q^5*A^2-236781568*q^5*A+10158080*q^5+1377376*q^4*A^10-65160576*q^4*A^9+1032961920*q^4*A^8-7055706112*q^4*A^7+21777296384*q^4*A^6-29030551552*q^4*A^5+9758584832*q^4*A^4+6182895616*q^4*A^3+422633472*q^4*A^2-675643392*q^4*A-65175552*q^4+2725632*q^3*A^10-153187328*q^3*A^9+2881104896*q^3*A^8-22000271360*q^3*A^7+63782674432*q^3*A^6-59991031808*q^3*A^5-4481515520*q^3*A^4+4327473152*q^3*A^3+6201475072*q^3*A^2+1979449344*q^3*A+54263808*q^3+6601472*q^2*A^10-304737280*q^2*A^9+5441633280*q^2*A^8-42222272512*q^2*A^7+118678446080*q^2*A^6-57429098496*q^2*A^5-17849024512*q^2*A^4-24517541888*q^2*A^3-4212195328*q^2*A^2+489947136*q^2*A+74186752*q^2+13505536*q*A^10-480047104*q*A^9+6547869696*q*A^8-44022890496*q*A^7+129817411584*q*A^6-659947520*q*A^5+30946754560*q*A^4-18469617664*q*A^3-9464184832*q*A^2-3962568704*q*A-128974848*q+11770112*A^10-354239488*A^9+3698160640*A^8-18972393472*A^7+63822635008*A^6+25683984384*A^5+58733658112*A^4+18700566528*A^3+12300124160*A^2+1987837952*A+46399488;
+ideal affineInput = hAffine;
+// H is independently certified irreducible over QQ.  Match the standalone
+// normalization input and avoid repeating a minimal-prime decomposition.
+list nor = normal(affineInput,"withDelta","isPrim");
+if (size(nor[1]) != 1)
+{
+  print("BLOCKER affine_normalization_not_one_component");
+  exit;
+}
+def Rnorm = nor[1][1];
+setring Rnorm;
+if (size(normap) < 2)
+{
+  print("BLOCKER affine_normap_has_fewer_than_two_images");
+  exit;
+}
+print("CERT affine_normalization_component_count=1");
+print("CERT affine_norid="+string(norid));
+print("CERT affine_normap="+string(normap));
+
+
+ring RP2 = 0,(Q,B,Z),dp;
+poly H = 361*Q^8*B^10-9604*Q^8*B^9*Z+101428*Q^8*B^8*Z^2-591296*Q^8*B^7*Z^3+2158112*Q^8*B^6*Z^4-5217664*Q^8*B^5*Z^5+8524928*Q^8*B^4*Z^6-9337856*Q^8*B^3*Z^7+6583552*Q^8*B^2*Z^8-2704384*Q^8*B*Z^9+492544*Q^8*Z^10+10384*Q^7*B^10*Z-278720*Q^7*B^9*Z^2+2935104*Q^7*B^8*Z^3-16644096*Q^7*B^7*Z^4+57113088*Q^7*B^6*Z^5-123885568*Q^7*B^5*Z^6+169338880*Q^7*B^4*Z^7-137494528*Q^7*B^3*Z^8+54382592*Q^7*B^2*Z^9-1294336*Q^7*B*Z^10-4177920*Q^7*Z^11+106800*Q^6*B^10*Z^2-3140800*Q^6*B^9*Z^3+35620288*Q^6*B^8*Z^4-206199808*Q^6*B^7*Z^5+679978496*Q^6*B^6*Z^6-1315219456*Q^6*B^5*Z^7+1421973504*Q^6*B^4*Z^8-678739968*Q^6*B^3*Z^9-55021568*Q^6*B^2*Z^10+115425280*Q^6*B*Z^11+9486336*Q^6*Z^12+529088*Q^5*B^10*Z^3-18645248*Q^5*B^9*Z^4+242677504*Q^5*B^8*Z^5-1495613440*Q^5*B^7*Z^6+4800542720*Q^5*B^6*Z^7-8012406784*Q^5*B^5*Z^8+5877063680*Q^5*B^4*Z^9-167116800*Q^5*B^3*Z^10-1188184064*Q^5*B^2*Z^11-236781568*Q^5*B*Z^12+10158080*Q^5*Z^13+1377376*Q^4*B^10*Z^4-65160576*Q^4*B^9*Z^5+1032961920*Q^4*B^8*Z^6-7055706112*Q^4*B^7*Z^7+21777296384*Q^4*B^6*Z^8-29030551552*Q^4*B^5*Z^9+9758584832*Q^4*B^4*Z^10+6182895616*Q^4*B^3*Z^11+422633472*Q^4*B^2*Z^12-675643392*Q^4*B*Z^13-65175552*Q^4*Z^14+2725632*Q^3*B^10*Z^5-153187328*Q^3*B^9*Z^6+2881104896*Q^3*B^8*Z^7-22000271360*Q^3*B^7*Z^8+63782674432*Q^3*B^6*Z^9-59991031808*Q^3*B^5*Z^10-4481515520*Q^3*B^4*Z^11+4327473152*Q^3*B^3*Z^12+6201475072*Q^3*B^2*Z^13+1979449344*Q^3*B*Z^14+54263808*Q^3*Z^15+6601472*Q^2*B^10*Z^6-304737280*Q^2*B^9*Z^7+5441633280*Q^2*B^8*Z^8-42222272512*Q^2*B^7*Z^9+118678446080*Q^2*B^6*Z^10-57429098496*Q^2*B^5*Z^11-17849024512*Q^2*B^4*Z^12-24517541888*Q^2*B^3*Z^13-4212195328*Q^2*B^2*Z^14+489947136*Q^2*B*Z^15+74186752*Q^2*Z^16+13505536*Q*B^10*Z^7-480047104*Q*B^9*Z^8+6547869696*Q*B^8*Z^9-44022890496*Q*B^7*Z^10+129817411584*Q*B^6*Z^11-659947520*Q*B^5*Z^12+30946754560*Q*B^4*Z^13-18469617664*Q*B^3*Z^14-9464184832*Q*B^2*Z^15-3962568704*Q*B*Z^16-128974848*Q*Z^17+11770112*B^10*Z^8-354239488*B^9*Z^9+3698160640*B^8*Z^10-18972393472*B^7*Z^11+63822635008*B^6*Z^12+25683984384*B^5*Z^13+58733658112*B^4*Z^14+18700566528*B^3*Z^15+12300124160*B^2*Z^16+1987837952*B*Z^17+46399488*Z^18;
+ideal C = H;
+ideal P = Q-6*Z,7*B-6*Z;
+ideal Pstd = std(P);
+print("CERT artifact_sha256=621f3aa944d0ba3a8bfd39a36de19a21313304f8cfdfcbfb31f222736f04a7a5");
+print("CERT homogeneous_polynomial_sha256=2cacbc333c2ddfdfc01a044d2b327294e0cbbd6776a6576c6e3d6731c4ade398");
+print("CERT homogeneous_degree=18");
+if (reduce(H,Pstd) != 0)
+{
+  print("BLOCKER rational_point_not_on_curve");
+  exit;
+}
+poly dQ = diff(H,Q);
+poly dB = diff(H,B);
+poly dZ = diff(H,Z);
+if ((reduce(dQ,Pstd)==0) && (reduce(dB,Pstd)==0) && (reduce(dZ,Pstd)==0))
+{
+  print("BLOCKER rational_point_not_smooth");
+  exit;
+}
+print("CERT rational_smooth_point=[6:6/7:1]");
+
+print("CERT stage_start=RiemannRoch_L2P");
+list RR2 = RiemannRochBN(C,P^2,ideal(1));
+print("CERT dim_L2P="+string(size(RR2[1])));
+if (size(RR2[1]) != 2)
+{
+  print("BLOCKER dim_L2P_not_2");
+  exit;
+}
+print("BEGIN_RR2_NUMERATORS");
+RR2[1];
+print("END_RR2_NUMERATORS");
+print("CERT RR2_common_denominator="+string(RR2[2]));
+
+print("CERT stage_start=RiemannRoch_L3P");
+list RR3 = RiemannRochBN(C,P^3,ideal(1));
+print("CERT dim_L3P="+string(size(RR3[1])));
+if (size(RR3[1]) != 3)
+{
+  print("BLOCKER dim_L3P_not_3");
+  exit;
+}
+ideal phi = RR3[1];
+export(C,phi);
+print("BEGIN_RR3_NUMERATORS");
+phi;
+print("END_RR3_NUMERATORS");
+print("CERT RR3_common_denominator="+string(RR3[2]));
+print("CERT RR3_numerator_degree="+string(deg(phi[1])));
+if ((deg(phi[1]) != deg(phi[2])) || (deg(phi[1]) != deg(phi[3])))
+{
+  print("BLOCKER RR3_generators_not_same_degree");
+  exit;
+}
+ideal sourceBaseLocus = sat(C+phi,maxideal(1));
+print("CERT source_base_locus="+string(minbase(std(sourceBaseLocus))));
+print("CERT source_base_locus_ring_dimension="+string(dim(std(sourceBaseLocus))));
+if (dim(std(sourceBaseLocus)) > 1)
+{
+  print("BLOCKER source_base_locus_not_projectively_finite");
+  exit;
+}
+
+print("CERT stage_start=invert_L3P_map");
+def Rraw = invertBirMap(phi,C);
+setring Rraw;
+ideal Jraw = J;
+ideal psiraw = psi;
+export(Jraw,psiraw);
+
+// Give the cubic coordinates stable names before emitting a transcript.
+ring RC = 0,(X,Y,W),dp;
+ideal cubicIdeal = fetch(Rraw,Jraw);
+ideal inverseMap = fetch(Rraw,psiraw);
+export(cubicIdeal,inverseMap);
+ideal cubicGB = std(cubicIdeal);
+ideal cubicMin = minbase(cubicGB);
+if ((size(cubicMin) != 1) || (deg(cubicMin[1]) != 3))
+{
+  print("BLOCKER image_not_principal_plane_cubic");
+  print("CERT image_minbase="+string(cubicMin));
+  exit;
+}
+if (size(inverseMap) != 3)
+{
+  print("BLOCKER inverse_map_not_three_coordinates");
+  exit;
+}
+print("CERT cubic="+string(cubicMin[1]));
+print("CERT inverse_map_1="+string(inverseMap[1]));
+print("CERT inverse_map_2="+string(inverseMap[2]));
+print("CERT inverse_map_3="+string(inverseMap[3]));
+ideal targetBaseLocus = sat(cubicIdeal+inverseMap,maxideal(1));
+ideal affineDenominatorDivisor =
+  sat(cubicIdeal+ideal(inverseMap[3]),maxideal(1));
+print("CERT inverse_base_locus="+string(minbase(std(targetBaseLocus))));
+print("CERT inverse_base_locus_ring_dimension="+string(dim(std(targetBaseLocus))));
+print("CERT affine_denominator_divisor="
+  +string(minbase(std(affineDenominatorDivisor))));
+print("CERT affine_denominator_divisor_ring_dimension="
+  +string(dim(std(affineDenominatorDivisor))));
+if (dim(std(targetBaseLocus)) > 1)
+{
+  print("BLOCKER inverse_base_locus_not_projectively_finite");
+  exit;
+}
+if (dim(std(affineDenominatorDivisor)) > 1)
+{
+  print("BLOCKER affine_denominator_divisor_not_projectively_finite");
+  exit;
+}
+if (size(NF(ideal(inverseMap[3]),cubicGB)) == 0)
+{
+  print("BLOCKER affine_denominator_identically_zero");
+  exit;
+}
+
+// Verify H(psi)=0 and phi(psi)=[X:Y:W] on the cubic.
+map fromPlane = RP2,inverseMap;
+ideal planeEquationAfterInverse = fromPlane(C);
+if (size(NF(planeEquationAfterInverse,cubicGB)) != 0)
+{
+  print("BLOCKER inverse_does_not_land_on_H");
+  exit;
+}
+ideal phiPsi = fromPlane(phi);
+ideal targetMinors =
+  phiPsi[1]*Y-phiPsi[2]*X,
+  phiPsi[1]*W-phiPsi[3]*X,
+  phiPsi[2]*W-phiPsi[3]*Y;
+if (size(NF(targetMinors,cubicGB)) != 0)
+{
+  print("BLOCKER target_projective_composition_failed");
+  exit;
+}
+print("CERT target_projective_composition=OK");
+
+// Verify psi(phi)=[Q:B:Z] on H.  These are dense-open identities; the
+// projective base loci are not discarded by this check.
+setring RP2;
+map fromCubic = RC,phi;
+ideal psiPhi = fromCubic(inverseMap);
+ideal sourceMinors =
+  psiPhi[1]*B-psiPhi[2]*Q,
+  psiPhi[1]*Z-psiPhi[3]*Q,
+  psiPhi[2]*Z-psiPhi[3]*B;
+if (size(NF(sourceMinors,std(C))) != 0)
+{
+  print("BLOCKER source_projective_composition_failed");
+  exit;
+}
+print("CERT source_projective_composition=OK");
+if (size(NF(ideal(psiPhi[3]),std(C))) == 0)
+{
+  print("BLOCKER q_A_roundtrip_denominator_identically_zero");
+  exit;
+}
+print("CERT q_A_projective_roundtrip=OK");
+
+
+// Independent affine-function cross-check through normal.lib's explicit map.
+// This does not pretend that the affine normalization contains the points at
+// infinity; the projective map and exceptional divisor remain recorded above.
+setring Rnorm;
+ideal normGB = std(norid);
+map projectiveToNormalization = RP2,normap[1],normap[2],1;
+ideal phiNorm = projectiveToNormalization(phi);
+map cubicToNormalization = RC,phiNorm;
+ideal psiNorm = cubicToNormalization(inverseMap);
+ideal normalRoundtrip =
+  psiNorm[1]-normap[1]*psiNorm[3],
+  psiNorm[2]-normap[2]*psiNorm[3];
+if (size(NF(normalRoundtrip,normGB)) != 0)
+{
+  print("BLOCKER affine_normap_q_A_roundtrip_failed");
+  exit;
+}
+ideal cubicOnNormalization = cubicToNormalization(cubicIdeal);
+if (size(NF(cubicOnNormalization,normGB)) != 0)
+{
+  print("BLOCKER cubic_does_not_vanish_through_normap");
+  exit;
+}
+print("CERT affine_normap_q_A_roundtrip=OK");
+
+print("CERT singular_rr_cubic_finished=OK");

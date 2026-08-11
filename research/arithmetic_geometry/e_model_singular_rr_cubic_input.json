@@ -1,0 +1,13 @@
+{
+  "homogeneous_degree": 18,
+  "homogeneous_polynomial_sha256": "2cacbc333c2ddfdfc01a044d2b327294e0cbbd6776a6576c6e3d6731c4ade398",
+  "includes_affine_normalization_cross_check": false,
+  "normalization_claim": false,
+  "schema": 1,
+  "singular_input_sha256": "17c78a581af43410673ccaa3734451fe402c16af076d79320af34cbae88604b2",
+  "singular_random_seed_required": 1,
+  "source_artifact": "artifacts/genus4_quotient.json",
+  "source_artifact_checksum": "621f3aa944d0ba3a8bfd39a36de19a21313304f8cfdfcbfb31f222736f04a7a5",
+  "status": "INPUT_GENERATED_NOT_EXECUTED",
+  "weierstrass_claim": false
+}
