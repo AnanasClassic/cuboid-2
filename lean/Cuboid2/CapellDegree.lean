@@ -132,7 +132,8 @@ theorem natDegree_eq_of_symmetric_product_dvd_expand_irreducible
     intro hSzero
     have hexpand := symmetric_product_eq_expand_contract R
     change expand ℚ 2 S = R * reflectPolynomial R at hexpand
-    rw [hSzero, map_zero] at hexpand
+    rw [hSzero] at hexpand
+    simp only [map_zero] at hexpand
     exact hRreflectNonzero hexpand.symm
   have hdegrees : P.natDegree = S.natDegree :=
     natDegree_eq_of_associated hPassocS hP.ne_zero hSnonzero
