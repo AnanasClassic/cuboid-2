@@ -1,5 +1,12 @@
 # Handoff
 
+## Lean formalization roadmap
+
+The mathematical proof described below is complete, but the kernel-checked
+Lean formalization still has three source `sorry`s.  The current four-session
+completion plan, exact gates, and handoff boundaries are recorded in
+[`notes/lean_ultra_completion_roadmap.md`](notes/lean_ultra_completion_roadmap.md).
+
 ## Completed theorem
 
 Sharipov's second cuboid conjecture is proved.  There is no remaining
