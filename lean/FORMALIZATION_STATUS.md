@@ -71,6 +71,7 @@ Cuboid2/FiveFive/ResultantPolynomial.lean
 Cuboid2/FiveFive/DiscriminantRoots.lean
 Cuboid2/FiveFive/DiscriminantIntervals.lean
 Cuboid2/FiveFive/SamplePositivity.lean
+Cuboid2/FiveFive/SamplePositivityMore.lean
 Cuboid2/FiveFive/RootExclusion.lean
 ```
 
@@ -103,8 +104,11 @@ The source contains:
 - exact signs at all ten rational bracket endpoints used by the replay;
 - exact ordering of those brackets and exact placement of all seven rational
   sample parameters;
-- exact sparse sum-of-squares identities proving strict positivity of the
-  sample fibres `s=1/100` and `s=1/5` for every rational `y`.
+- sparse diagonally-dominant sum-of-squares identities at `s=1/100` and
+  `s=1/5`;
+- exact positive-definite Gram/LDL sum-of-squares identities at `s=4/5` and
+  `s=2`;
+- strict positivity of these four sample fibres for every rational `y`.
 
 The remaining `5+5` placeholder is exactly:
 
@@ -114,7 +118,7 @@ theorem fiveFiveResultantFactor_ne_zero
     fiveFiveResultantFactor s y ≠ 0
 ```
 
-The remaining work is the real interval argument: close the other five sample
+The remaining work is the real interval argument: close the three high sample
 fibres, check the Sturm/root counts for the five discriminant cuts, and prove
 constancy of the fibre root count on the complementary intervals. The Python
 replay and its checksum are generation and audit aids, not proof premises.
@@ -154,7 +158,7 @@ factor has no rational zero in `y`.
 
 **Now checked before this gap.** The two discriminant factors have no rational
 roots; their rational isolating bracket signs and all sample placements are
-exactly checked. Two of the seven sample fibres now have direct strict
+exactly checked. Four of the seven sample fibres have direct strict
 sum-of-squares certificates.
 
 **External proof.** The second script in arXiv:2601.04240, replayed by
