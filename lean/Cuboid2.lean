@@ -23,6 +23,7 @@ import Cuboid2.QuadraticReduction.Characters
 import Cuboid2.QuadraticReduction.QuotientTransport
 import Cuboid2.QuadraticReduction.CharacterDescent
 import Cuboid2.QuadraticReduction.SquareclassDescent
+import Cuboid2.QuadraticReduction.ValuationDescent
 import Cuboid2.QuadraticReduction.ExceptionalFibers
 import Cuboid2.QuadraticReduction.ProjectionCertificate
 import Cuboid2.QuadraticReduction.ProjectionCertificateNegative
