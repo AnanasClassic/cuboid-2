@@ -1,5 +1,6 @@
 import Cuboid2.FactorizationClassification
 import Cuboid2.CapellQuintic
+import Cuboid2.FiveFive.RootExclusion
 import Cuboid2.DPlus.Basic
 
 /-!
@@ -68,11 +69,11 @@ theorem quadratic_cubic_impossible
     ¬ QuadraticCubicCase s := by
   sorry
 
-/-- The pinned exact seven-obligation root-exclusion certificate for `5+5`. -/
+/-- The symmetric `5+5` branch is reduced to its exact normalized root certificate. -/
 theorem symmetric_five_five_impossible
     {s : ℚ} (hs : 0 < s) (hs1 : s ≠ 1) :
-    ¬ SymmetricFiveFiveCase s := by
-  sorry
+    ¬ SymmetricFiveFiveCase s :=
+  symmetric_five_five_impossible_from_reduced hs hs1
 
 /-- Rational irreducibility, assembled by exhausting the three cases. -/
 theorem sharipovPolynomialQ_irreducible
