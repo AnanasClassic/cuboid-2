@@ -5,11 +5,13 @@ import Cuboid2.Genus2.FiniteMumford
 import Cuboid2.DPlus.Mumford
 import Cuboid2.DPlus.FiniteGroup
 import Cuboid2.DPlus.LocalSeries
+import Cuboid2.DPlus.LocalP3
 import Cuboid2.LinearQuartic.Basic
 import Cuboid2.LinearQuartic.RootMap
 import Cuboid2.LinearQuartic.KnownPoints
 import Cuboid2.LinearQuartic.ClassificationBridge
 import Cuboid2.LinearQuartic.FiniteCounts
+import Cuboid2.LinearQuartic.LocalP5
 import Cuboid2.QuadraticReduction.SignedSquare
 import Cuboid2.QuadraticReduction.Extraction
 import Cuboid2.QuadraticReduction.CompactModel
