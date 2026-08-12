@@ -59,7 +59,8 @@ Cuboid2/CapellQuintic.lean
 
 ## `5+5` progress
 
-The algebra before the final real-root certificate is isolated in:
+The algebra and finite certificates before the final real-root argument are
+isolated in:
 
 ```text
 Cuboid2/FiveFive/Basic.lean
@@ -69,6 +70,7 @@ Cuboid2/FiveFive/ResultantCertificate.lean
 Cuboid2/FiveFive/ResultantPolynomial.lean
 Cuboid2/FiveFive/DiscriminantRoots.lean
 Cuboid2/FiveFive/DiscriminantIntervals.lean
+Cuboid2/FiveFive/SamplePositivity.lean
 Cuboid2/FiveFive/RootExclusion.lean
 ```
 
@@ -89,7 +91,7 @@ The source contains:
   `U*G₂ + V*G₃ = resultantFactor`;
 - a proof that every normalized `5+5` point lies on that scalar curve;
 - the same scalar expression grouped as an explicit `Polynomial ℚ` in `y`,
-  with a kernel-checkable evaluation identity and leading coefficient `s^8`;
+  with an exact evaluation identity and leading coefficient `s^8`;
 - exact degree-six and degree-twenty-eight discriminant factors from the
   pinned replay;
 - homogenization at a reduced rational numerator/denominator pair;
@@ -100,7 +102,9 @@ The source contains:
 - the reciprocal identity for the palindromic degree-six factor;
 - exact signs at all ten rational bracket endpoints used by the replay;
 - exact ordering of those brackets and exact placement of all seven rational
-  sample parameters.
+  sample parameters;
+- exact sparse sum-of-squares identities proving strict positivity of the
+  sample fibres `s=1/100` and `s=1/5` for every rational `y`.
 
 The remaining `5+5` placeholder is exactly:
 
@@ -110,10 +114,10 @@ theorem fiveFiveResultantFactor_ne_zero
     fiveFiveResultantFactor s y ≠ 0
 ```
 
-The remaining work is the real interval argument: check the Sturm/root counts
-for the five discriminant cuts, prove constancy of the fibre root count on the
-complementary intervals, and check the seven sample fibres. The Python replay
-and its checksum are generation and audit aids, not proof premises.
+The remaining work is the real interval argument: close the other five sample
+fibres, check the Sturm/root counts for the five discriminant cuts, and prove
+constancy of the fibre root count on the complementary intervals. The Python
+replay and its checksum are generation and audit aids, not proof premises.
 
 ## Gap 1 — `linear_quartic_impossible`
 
@@ -150,8 +154,8 @@ factor has no rational zero in `y`.
 
 **Now checked before this gap.** The two discriminant factors have no rational
 roots; their rational isolating bracket signs and all sample placements are
-exactly checked. The resultant is available as an actual univariate
-`Polynomial ℚ` for the forthcoming Sturm checker.
+exactly checked. Two of the seven sample fibres now have direct strict
+sum-of-squares certificates.
 
 **External proof.** The second script in arXiv:2601.04240, replayed by
 `scripts/replay_5plus5.sh`.

@@ -1,4 +1,4 @@
-import Cuboid2.FiveFive.ResultantPolynomial
+import Cuboid2.FiveFive.SamplePositivity
 import Cuboid2.FiveFive.DiscriminantIntervals
 
 /-!
@@ -8,10 +8,11 @@ All multivariate algebra is completed before the one remaining theorem below.
 The exact Bézout identity reduces a hypothetical normalized `5+5` point to a
 root of an explicit degree-sixteen polynomial in `y`.
 
-The current Lean source also checks that both discriminant factors have no
-rational roots, verifies all ten rational bracket-endpoint signs, and verifies
-the exact placement of the seven sample parameters.  The remaining gap is the
-Sturm/root-count constancy argument between those cuts.
+The current Lean source checks both discriminant factors for rational roots,
+all ten rational bracket-endpoint signs, the placement of all seven sample
+parameters, and strict sum-of-squares positivity for the first two sample
+fibres.  The remaining gap is the rest of the sample/root-count constancy
+argument between the discriminant cuts.
 -/
 
 namespace Cuboid2
