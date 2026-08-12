@@ -19,6 +19,7 @@ import Cuboid2.QuadraticReduction.Extraction
 import Cuboid2.QuadraticReduction.C012
 import Cuboid2.QuadraticReduction.CompactModel
 import Cuboid2.QuadraticReduction.Reciprocal
+import Cuboid2.QuadraticReduction.Characters
 import Cuboid2.QuadraticReduction.QuotientTransport
 import Cuboid2.QuadraticReduction.CharacterDescent
 import Cuboid2.QuadraticReduction.SquareclassDescent
