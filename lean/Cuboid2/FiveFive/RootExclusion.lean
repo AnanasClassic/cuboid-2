@@ -1,16 +1,17 @@
-import Cuboid2.FiveFive.DiscriminantRoots
+import Cuboid2.FiveFive.ResultantPolynomial
+import Cuboid2.FiveFive.DiscriminantIntervals
 
 /-!
 # Final real-root exclusion for the symmetric `5+5` case
 
 All multivariate algebra is completed before the one remaining theorem below.
 The exact Bézout identity reduces a hypothetical normalized `5+5` point to a
-zero of the explicit 104-term scalar polynomial.
+root of an explicit degree-sixteen polynomial in `y`.
 
-`DiscriminantRoots.lean` now checks, inside Lean, that both discriminant
-factors used by the pinned interval decomposition have no rational roots.
-The remaining gap is the real root-count/constancy certificate on the
-resulting intervals, not the external CAS `ground_roots()` call.
+The current Lean source also checks that both discriminant factors have no
+rational roots, verifies all ten rational bracket-endpoint signs, and verifies
+the exact placement of the seven sample parameters.  The remaining gap is the
+Sturm/root-count constancy argument between those cuts.
 -/
 
 namespace Cuboid2

@@ -27,11 +27,11 @@ The derived theorems `fiveFive_reduced_locus_empty` and
 `symmetric_five_five_impossible` contain no local placeholder. No gap is
 hidden behind a custom axiom.
 
-Because the current execution environment cannot download or run the pinned
-Lean toolchain, the newest source changes are **pending an actual
-`lake build`**. GitHub Actions also currently fails before allocating a runner
-(`runner_id = 0`, no executed steps), so source presence alone is not being
-described as kernel verification.
+The current execution environment cannot download or run the pinned Lean
+toolchain. GitHub Actions also currently fails before allocating a runner
+(`runner_id = 0`, no executed steps). Therefore the newest source changes are
+pending an actual `lake build`; source presence alone is not described as
+kernel verification.
 
 ## Closed factorization shell in Lean source
 
@@ -66,7 +66,9 @@ Cuboid2/FiveFive/Basic.lean
 Cuboid2/FiveFive/Reduction.lean
 Cuboid2/FiveFive/Resultant.lean
 Cuboid2/FiveFive/ResultantCertificate.lean
+Cuboid2/FiveFive/ResultantPolynomial.lean
 Cuboid2/FiveFive/DiscriminantRoots.lean
+Cuboid2/FiveFive/DiscriminantIntervals.lean
 Cuboid2/FiveFive/RootExclusion.lean
 ```
 
@@ -86,6 +88,8 @@ The source contains:
 - a multiplication-back Bézout identity
   `U*G₂ + V*G₃ = resultantFactor`;
 - a proof that every normalized `5+5` point lies on that scalar curve;
+- the same scalar expression grouped as an explicit `Polynomial ℚ` in `y`,
+  with a kernel-checkable evaluation identity and leading coefficient `s^8`;
 - exact degree-six and degree-twenty-eight discriminant factors from the
   pinned replay;
 - homogenization at a reduced rational numerator/denominator pair;
@@ -93,9 +97,12 @@ The source contains:
   kernel `decide`;
 - deductions that both discriminant factors have no rational roots, replacing
   the external `ground_roots()` calls;
-- the reciprocal identity for the palindromic degree-six factor.
+- the reciprocal identity for the palindromic degree-six factor;
+- exact signs at all ten rational bracket endpoints used by the replay;
+- exact ordering of those brackets and exact placement of all seven rational
+  sample parameters.
 
-The remaining `5+5` placeholder is now exactly:
+The remaining `5+5` placeholder is exactly:
 
 ```lean
 theorem fiveFiveResultantFactor_ne_zero
@@ -103,10 +110,10 @@ theorem fiveFiveResultantFactor_ne_zero
     fiveFiveResultantFactor s y ≠ 0
 ```
 
-The remaining work is the pinned real interval argument: check the Sturm/root
-counts for the discriminant cuts, constancy of the fibre root count between
-cuts, and the sample-point exclusions. The Python replay and its checksum are
-generation and audit aids, not proof premises.
+The remaining work is the real interval argument: check the Sturm/root counts
+for the five discriminant cuts, prove constancy of the fibre root count on the
+complementary intervals, and check the seven sample fibres. The Python replay
+and its checksum are generation and audit aids, not proof premises.
 
 ## Gap 1 — `linear_quartic_impossible`
 
@@ -141,9 +148,10 @@ Schaefer--Stoll rank certificate and specialized `3`-adic local analysis.
 **Statement.** For positive rational `s≠1`, the explicit scalar resultant
 factor has no rational zero in `y`.
 
-**Now checked before this gap.** The two discriminant factors used to cut the
-positive `s`-axis have no rational roots, by explicit homogeneous reduction
-modulo seven.
+**Now checked before this gap.** The two discriminant factors have no rational
+roots; their rational isolating bracket signs and all sample placements are
+exactly checked. The resultant is available as an actual univariate
+`Polynomial ℚ` for the forthcoming Sturm checker.
 
 **External proof.** The second script in arXiv:2601.04240, replayed by
 `scripts/replay_5plus5.sh`.
