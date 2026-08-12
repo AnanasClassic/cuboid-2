@@ -14,6 +14,7 @@ import Cuboid2.LinearQuartic.FiniteCounts
 import Cuboid2.LinearQuartic.LocalP5
 import Cuboid2.QuadraticReduction.SignedSquare
 import Cuboid2.QuadraticReduction.Extraction
+import Cuboid2.QuadraticReduction.C012
 import Cuboid2.QuadraticReduction.CompactModel
 import Cuboid2.QuadraticReduction.Reciprocal
 import Cuboid2.QuadraticReduction.CharacterDescent
