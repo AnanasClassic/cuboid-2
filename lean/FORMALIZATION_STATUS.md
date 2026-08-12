@@ -21,15 +21,17 @@ There are **three** source `sorry`s:
 
 1. `linear_quartic_impossible`;
 2. `quadratic_cubic_impossible`;
-3. `fiveFive_reduced_locus_empty`.
+3. `fiveFiveResultantFactor_ne_zero`.
 
-The public theorem `symmetric_five_five_impossible` itself no longer contains
-a placeholder: it is deduced from the normalized two-equation root-exclusion
-theorem.  No gap is hidden behind a custom axiom.
+The derived theorems `fiveFive_reduced_locus_empty` and
+`symmetric_five_five_impossible` contain no local placeholder. No gap is
+hidden behind a custom axiom.
 
-Because the current execution environment cannot run Lean, all recent algebraic
-files are **pending an actual `lake build`** and must not yet be described as
-kernel-checked merely because their source is present.
+Because the current execution environment cannot download or run the pinned
+Lean toolchain, the newest source changes are **pending an actual
+`lake build`**. GitHub Actions also currently fails before allocating a runner
+(`runner_id = 0`, no executed steps), so source presence alone is not being
+described as kernel verification.
 
 ## Closed factorization shell in Lean source
 
@@ -57,15 +59,18 @@ Cuboid2/CapellQuintic.lean
 
 ## `5+5` progress
 
-The algebra before the published real-root certificate is now isolated in:
+The algebra before the final real-root certificate is isolated in:
 
 ```text
 Cuboid2/FiveFive/Basic.lean
 Cuboid2/FiveFive/Reduction.lean
+Cuboid2/FiveFive/Resultant.lean
+Cuboid2/FiveFive/ResultantCertificate.lean
+Cuboid2/FiveFive/DiscriminantRoots.lean
 Cuboid2/FiveFive/RootExclusion.lean
 ```
 
-The new source contains:
+The source contains:
 
 - exact multiplication of
   `R(X)=X^5+aX^4+bX^3+cX^2+dX+e` by `-R(-X)`;
@@ -77,20 +82,31 @@ The new source contains:
 - normalization `a=r y`, `d=r^4 z` and the two published equations
   `G₂(s,y,z)=G₃(s,y,z)=0`;
 - exact reciprocal identities exchanging `s` with `1/s` and `y` with `z`;
-- a proof that every symmetric factorization yields a rational point on this
-  normalized locus.
+- an explicit 104-term scalar resultant factor;
+- a multiplication-back Bézout identity
+  `U*G₂ + V*G₃ = resultantFactor`;
+- a proof that every normalized `5+5` point lies on that scalar curve;
+- exact degree-six and degree-twenty-eight discriminant factors from the
+  pinned replay;
+- homogenization at a reduced rational numerator/denominator pair;
+- a finite `ZMod 7` projective certificate checking all 49 residue pairs with
+  kernel `decide`;
+- deductions that both discriminant factors have no rational roots, replacing
+  the external `ground_roots()` calls;
+- the reciprocal identity for the palindromic degree-six factor.
 
-Thus the only remaining `5+5` gap is now:
+The remaining `5+5` placeholder is now exactly:
 
 ```lean
-theorem fiveFive_reduced_locus_empty
-    {s : ℚ} (hs : 0 < s) (hs1 : s ≠ 1) :
-    ¬ Nonempty (FiveFiveReducedPoint s)
+theorem fiveFiveResultantFactor_ne_zero
+    {s : ℚ} (hs : 0 < s) (hs1 : s ≠ 1) (y : ℚ) :
+    fiveFiveResultantFactor s y ≠ 0
 ```
 
-Its final implementation must check the seven pinned Sturm/positivity
-obligations in Lean.  The Python replay and its checksum are generation and
-audit aids, not proof premises.
+The remaining work is the pinned real interval argument: check the Sturm/root
+counts for the discriminant cuts, constancy of the fibre root count between
+cuts, and the sample-point exclusions. The Python replay and its checksum are
+generation and audit aids, not proof premises.
 
 ## Gap 1 — `linear_quartic_impossible`
 
@@ -100,7 +116,7 @@ audit aids, not proof premises.
 Schaefer--Stoll rank certificate, `p=5` Coleman/Strassmann argument, and
 complete quotient lift table.
 
-**Estimated burden.** High.  The explicit Mumford/Cantor and descent checker
+**Estimated burden.** High. The explicit Mumford/Cantor and descent checker
 should be shared with the `D+` block.
 
 ## Gap 2 — `quadratic_cubic_impossible`
@@ -117,20 +133,24 @@ certificates, boundary identities, and the abstract `p=7` integral
 **External proof.** The C012/C035/C039/C040/direct-C041 chain ending at
 `research/proof_simplification_3/dplus_p3_square_abscissa.py`.
 
-**Estimated burden.** Very high.  The main subgaps are the exact
+**Estimated burden.** Very high. The main subgaps are the exact
 Schaefer--Stoll rank certificate and specialized `3`-adic local analysis.
 
-## Gap 3 — `fiveFive_reduced_locus_empty`
+## Gap 3 — `fiveFiveResultantFactor_ne_zero`
 
-**Statement.** The normalized two-equation `5+5` locus has no rational point
-for positive `s≠1`.
+**Statement.** For positive rational `s≠1`, the explicit scalar resultant
+factor has no rational zero in `y`.
+
+**Now checked before this gap.** The two discriminant factors used to cut the
+positive `s`-axis have no rational roots, by explicit homogeneous reduction
+modulo seven.
 
 **External proof.** The second script in arXiv:2601.04240, replayed by
 `scripts/replay_5plus5.sh`.
 
-**Estimated burden.** Medium.  The preferred endpoint is explicit checked
-Sturm chains or smaller positivity certificates, not a general-purpose real
-algebraic geometry stack.
+**Estimated burden.** Medium. The preferred endpoint is explicit checked
+Sturm chains or smaller Bernstein/positivity certificates, not a
+general-purpose real algebraic geometry stack.
 
 ## Downstream theorem bodies without local `sorry`
 
@@ -139,25 +159,11 @@ remaining gaps are discharged and the complete project builds:
 
 - `sharipov_composition_reduction`;
 - `sharipov_factorization_classification`;
+- `fiveFive_reduced_locus_empty`;
 - `symmetric_five_five_impossible`;
 - `sharipovPolynomialQ_irreducible`;
 - `sharipov_second_cuboid_conjecture`;
 - `no_nontrivial_factorization`.
-
-## Validation limitation
-
-GitHub Actions did not start because the repository owner's Actions billing
-or spending-limit state prevented job allocation.  The current execution
-environment has no installed Lean binary and cannot install the pinned
-external toolchain.  The commits were source-audited against the exact pinned
-mathlib revision, but must still pass:
-
-```bash
-cd lean
-lake build
-```
-
-before any compiling milestone is claimed.
 
 ## Audit commands
 
@@ -169,4 +175,4 @@ bash scripts/reproduce_lean.sh complete
 ```
 
 Development mode is expected to report `sorryAx` until the three entries
-above are discharged.  The project is not yet a complete formal verification.
+above are discharged. The project is not yet a complete formal verification.

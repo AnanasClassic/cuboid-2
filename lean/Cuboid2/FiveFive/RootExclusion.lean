@@ -1,12 +1,16 @@
-import Cuboid2.FiveFive.ResultantCertificate
+import Cuboid2.FiveFive.DiscriminantRoots
 
 /-!
 # Final real-root exclusion for the symmetric `5+5` case
 
 All multivariate algebra is completed before the one remaining theorem below.
-The gap now asks only for the exact univariate real-algebra statement checked
-by the published seven-obligation Sturm certificate: for positive rational
-`s ≠ 1`, the explicit 104-term polynomial has no rational zero in `y`.
+The exact Bézout identity reduces a hypothetical normalized `5+5` point to a
+zero of the explicit 104-term scalar polynomial.
+
+`DiscriminantRoots.lean` now checks, inside Lean, that both discriminant
+factors used by the pinned interval decomposition have no rational roots.
+The remaining gap is the real root-count/constancy certificate on the
+resulting intervals, not the external CAS `ground_roots()` call.
 -/
 
 namespace Cuboid2
@@ -14,9 +18,9 @@ namespace Cuboid2
 noncomputable section
 
 /--
-The remaining `5+5` certificate theorem.  Its final implementation will check
-explicit Sturm/positivity data in Lean rather than trust the generating
-Python script.
+The remaining `5+5` certificate theorem.  Its final implementation must check
+the pinned Sturm/positivity interval data in Lean rather than trust the
+generating Python script.
 -/
 theorem fiveFiveResultantFactor_ne_zero
     {s : ℚ} (hs : 0 < s) (hs1 : s ≠ 1) (y : ℚ) :
