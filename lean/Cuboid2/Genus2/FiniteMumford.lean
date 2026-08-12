@@ -140,16 +140,89 @@ def dplusValidF7 : FiniteMumford (ZMod 7) → Prop
 instance (D : FiniteMumford (ZMod 7)) : Decidable (dplusValidF7 D) := by
   cases D <;> simp [dplusValidF7] <;> infer_instance
 
-/-- All reduced Mumford representatives satisfying the explicit `D+` test over `F₇`. -/
+/--
+The explicit coefficient test is exactly the polynomial Mumford
+divisibility condition.
+-/
+theorem dplusValidF7_iff_validOn (D : FiniteMumford (ZMod 7)) :
+    dplusValidF7 D ↔ D.ValidOn dplusPolynomialF7 := by
+  cases D with
+  | infinity =>
+      simp [dplusValidF7, FiniteMumford.ValidOn, FiniteMumford.u,
+        FiniteMumford.v]
+  | degreeOne u0 v0 =>
+      change
+        v0 ^ 2 = 4 * (-u0) ^ 5 - 8 * (-u0) ^ 2 + 5 * (-u0) ↔
+          X + C u0 ∣ dplusPolynomialF7 - (C v0) ^ 2
+      rw [show (X + C u0 : (ZMod 7)[X]) = X - C (-u0) by simp,
+        dvd_iff_isRoot]
+      simp [IsRoot, dplusPolynomialF7]
+      constructor
+      · intro h
+        rw [h]
+        ring_nf
+      · intro h
+        linear_combination -h
+  | degreeTwo u1 u0 v1 v0 =>
+      let U : (ZMod 7)[X] := X ^ 2 + C u1 * X + C u0
+      let V : (ZMod 7)[X] := C v1 * X + C v0
+      let r1 : ZMod 7 :=
+        4 * u0 ^ 2 - 12 * u0 * u1 ^ 2 + 4 * u1 ^ 4 +
+          u1 * v1 ^ 2 + 8 * u1 - 2 * v0 * v1 + 5
+      let r0 : ZMod 7 :=
+        -8 * u0 ^ 2 * u1 + 4 * u0 * u1 ^ 3 +
+          u0 * v1 ^ 2 + 8 * u0 - v0 ^ 2
+      let Q : (ZMod 7)[X] :=
+        C 4 * X ^ 3 - C (4 * u1) * X ^ 2 +
+          C (4 * u1 ^ 2 - 4 * u0) * X +
+          C (8 * u0 * u1 - 4 * u1 ^ 3 - v1 ^ 2 - 8)
+      let R : (ZMod 7)[X] := C r1 * X + C r0
+      have hid : dplusPolynomialF7 - V ^ 2 = U * Q + R := by
+        simp [dplusPolynomialF7, U, V, Q, R, r1, r0]
+        simp only [Polynomial.C_ofNat]
+        ring_nf
+      change (r1 = 0 ∧ r0 = 0) ↔ U ∣ dplusPolynomialF7 - V ^ 2
+      constructor
+      · rintro ⟨hr1, hr0⟩
+        refine ⟨Q, ?_⟩
+        rw [hid]
+        simp [R, hr1, hr0]
+      · rintro ⟨G, hG⟩
+        have hRdiv : U ∣ R := by
+          refine ⟨G - Q, ?_⟩
+          calc
+            R = (dplusPolynomialF7 - V ^ 2) - U * Q := by
+              rw [hid]
+              ring
+            _ = U * G - U * Q := by rw [hG]
+            _ = U * (G - Q) := by ring
+        have hRzero : R = 0 := by
+          apply eq_zero_of_dvd_of_natDegree_lt hRdiv
+          exact (natDegree_linear_le (a := r1) (b := r0)).trans_lt
+            (by
+              rw [(isMonicOfDegree_add_add_two u1 u0).natDegree_eq]
+              norm_num)
+        constructor
+        · have hcoeff := congrArg (fun P : (ZMod 7)[X] => P.coeff 1) hRzero
+          simpa [R] using hcoeff
+        · have hcoeff := congrArg (fun P : (ZMod 7)[X] => P.coeff 0) hRzero
+          simpa [R] using hcoeff
+
+instance (D : FiniteMumford (ZMod 7)) :
+    Decidable (D.ValidOn dplusPolynomialF7) :=
+  decidable_of_iff (dplusValidF7 D) (dplusValidF7_iff_validOn D)
+
+/-- All reduced Mumford representatives satisfying the exact `D+` condition over `F₇`. -/
 abbrev DPlusMumfordF7 :=
-  {D : FiniteMumford (ZMod 7) // dplusValidF7 D}
+  {D : FiniteMumford (ZMod 7) // D.ValidOn dplusPolynomialF7}
 
 /--
 The exact finite enumeration used by the integral 3-saturation argument:
 there are 42 reduced Mumford representatives on `D+` over `F₇`.
 -/
 theorem card_dplusMumfordF7 : Fintype.card DPlusMumfordF7 = 42 := by
-  decide
+  set_option maxRecDepth 100000 in
+    decide
 
 end
 
