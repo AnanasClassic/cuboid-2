@@ -1,5 +1,6 @@
 import Cuboid2.FiveFive.SamplePositivity40
 import Cuboid2.FiveFive.DiscriminantP6Roots
+import Cuboid2.FiveFive.DiscriminantP28Local
 
 /-!
 # Final real-root exclusion for the symmetric `5+5` case
@@ -11,10 +12,11 @@ root of an explicit degree-sixteen polynomial in `y`.
 The current Lean source checks both discriminant factors for rational roots,
 all ten rational bracket-endpoint signs, the placement of all seven sample
 parameters, and strict sum-of-squares positivity for every sample fibre.  The
-degree-six discriminant factor is now also completely isolated over `ℝ` by
-exact Bernstein sign and derivative certificates.  The remaining gap is the
-corresponding degree-twenty-eight isolation plus root-count constancy between
-the five discriminant cuts.
+degree-six discriminant factor is completely isolated over `ℝ` by exact
+Bernstein sign and derivative certificates.  For the degree-twenty-eight
+factor, the rightmost isolating bracket now has an exact Lean proof of strict
+monotonicity as well.  The remaining gap is the other two P28 brackets plus
+root-count constancy between the five discriminant cuts.
 -/
 
 namespace Cuboid2
