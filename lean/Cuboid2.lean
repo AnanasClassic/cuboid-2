@@ -6,12 +6,16 @@ import Cuboid2.DPlus.Mumford
 import Cuboid2.DPlus.FiniteGroup
 import Cuboid2.DPlus.LocalSeries
 import Cuboid2.DPlus.LocalP3
+import Cuboid2.DPlus.GlobalBridge
+import Cuboid2.DPlus.GlobalMumfordCertificate
+import Cuboid2.DPlus.GlobalCertificateInterface
 import Cuboid2.LinearQuartic.Basic
 import Cuboid2.LinearQuartic.RootMap
 import Cuboid2.LinearQuartic.KnownPoints
 import Cuboid2.LinearQuartic.ClassificationBridge
 import Cuboid2.LinearQuartic.DirectSquareReduction
 import Cuboid2.LinearQuartic.DescentCertificates
+import Cuboid2.LinearQuartic.DescentCompletion
 import Cuboid2.LinearQuartic.FiniteCounts
 import Cuboid2.LinearQuartic.LocalP5
 import Cuboid2.QuadraticReduction.SignedSquare
