@@ -35,14 +35,12 @@ kernel verification.
 
 ## Closed factorization shell in Lean source
 
-The following now have ordinary Lean proof bodies rather than placeholders:
+The following have ordinary Lean proof bodies rather than placeholders:
 
 - reducible monic quintic `→` rational linear factor or monic `2+3` split;
-- exact polynomial scaling
-  `Q_{p,q}=scaleRoots(P_s(X^2),q^2)` and irreducibility transfer;
+- exact scaling `Q_{p,q}=scaleRoots(P_s(X^2),q^2)` and irreducibility transfer;
 - reflection `X ↦ -X`, exponent doubling, contraction, and divisibility;
-- symmetric-factor degree descent;
-- exclusion of self-reflecting irreducible factors;
+- symmetric-factor degree descent and exclusion of self-reflecting factors;
 - the specialized quintic Capell reduction;
 - the exact `1+4 / 2+3 / symmetric 5+5` classification.
 
@@ -59,8 +57,7 @@ Cuboid2/CapellQuintic.lean
 
 ## `5+5` progress
 
-The algebra and finite certificates before the final real-root argument are
-isolated in:
+Relevant files:
 
 ```text
 Cuboid2/FiveFive/Basic.lean
@@ -72,43 +69,33 @@ Cuboid2/FiveFive/DiscriminantRoots.lean
 Cuboid2/FiveFive/DiscriminantIntervals.lean
 Cuboid2/FiveFive/SamplePositivity.lean
 Cuboid2/FiveFive/SamplePositivityMore.lean
+Cuboid2/FiveFive/SamplePositivity63.lean
+Cuboid2/FiveFive/SamplePositivity317.lean
+Cuboid2/FiveFive/SamplePositivity40.lean
 Cuboid2/FiveFive/RootExclusion.lean
 ```
 
-The source contains:
+The source now contains:
 
-- exact multiplication of
-  `R(X)=X^5+aX^4+bX^3+cX^2+dX+e` by `-R(-X)`;
-- extraction of all five scalar coefficient equations from a
-  `SymmetricFiveFiveCase`;
-- the sign-sensitive normalization
-  `r=e/s^2`, proving `r^2=s` and `e=r^5` for `s>0`;
-- elimination of `b,c` and exact cleared equations `E₂=E₃=0`;
-- normalization `a=r y`, `d=r^4 z` and the two published equations
-  `G₂(s,y,z)=G₃(s,y,z)=0`;
-- exact reciprocal identities exchanging `s` with `1/s` and `y` with `z`;
-- an explicit 104-term scalar resultant factor;
-- a multiplication-back Bézout identity
-  `U*G₂ + V*G₃ = resultantFactor`;
-- a proof that every normalized `5+5` point lies on that scalar curve;
-- the same scalar expression grouped as an explicit `Polynomial ℚ` in `y`,
-  with an exact evaluation identity and leading coefficient `s^8`;
-- exact degree-six and degree-twenty-eight discriminant factors from the
-  pinned replay;
-- homogenization at a reduced rational numerator/denominator pair;
-- a finite `ZMod 7` projective certificate checking all 49 residue pairs with
-  kernel `decide`;
-- deductions that both discriminant factors have no rational roots, replacing
-  the external `ground_roots()` calls;
-- the reciprocal identity for the palindromic degree-six factor;
-- exact signs at all ten rational bracket endpoints used by the replay;
-- exact ordering of those brackets and exact placement of all seven rational
-  sample parameters;
-- sparse diagonally-dominant sum-of-squares identities at `s=1/100` and
+- the exact five coefficient equations forced by a symmetric quintic factor;
+- the sign-sensitive normalization `r=e/s^2`, with `r^2=s` and `e=r^5`;
+- elimination to the exact normalized equations `G₂=G₃=0`;
+- reciprocal transport `s ↔ 1/s`, `y ↔ z`;
+- the explicit 104-term resultant factor and exact Bézout multiplication-back
+  identity `U*G₂+V*G₃=resultantFactor`;
+- the resultant factor grouped as an explicit degree-sixteen polynomial in
+  `y`, with exact evaluation and leading-coefficient identities;
+- the exact degree-six and degree-twenty-eight discriminant factors;
+- a homogeneous `ZMod 7` projective certificate proving that neither
+  discriminant factor has a rational root;
+- exact signs at all ten rational isolating-bracket endpoints;
+- exact ordering of all brackets and all seven sample parameters;
+- sparse diagonally-dominant sum-of-squares certificates for `s=1/100` and
   `s=1/5`;
-- exact positive-definite Gram/LDL sum-of-squares identities at `s=4/5` and
-  `s=2`;
-- strict positivity of these four sample fibres for every rational `y`.
+- exact rational positive-definite Gram/LDL sum-of-squares certificates for
+  `s=4/5`, `s=2`, `s=63/2`, `s=317/10`, and `s=40`;
+- strict positivity, hence absence of rational roots, for **all seven sample
+  fibres** used by the pinned replay.
 
 The remaining `5+5` placeholder is exactly:
 
@@ -118,10 +105,13 @@ theorem fiveFiveResultantFactor_ne_zero
     fiveFiveResultantFactor s y ≠ 0
 ```
 
-The remaining work is the real interval argument: close the three high sample
-fibres, check the Sturm/root counts for the five discriminant cuts, and prove
-constancy of the fibre root count on the complementary intervals. The Python
-replay and its checksum are generation and audit aids, not proof premises.
+All sample checks and all rational endpoint checks are now represented by
+explicit Lean proof terms. The remaining work is the interval-continuation
+part: kernel-check the Sturm counts showing that the two discriminant factors
+have exactly five positive real roots in the pinned brackets, and prove that
+the number of real roots of the fibre polynomial is constant on each
+complementary interval. The Python replay and its checksum remain generation
+and audit aids, not proof premises.
 
 ## Gap 1 — `linear_quartic_impossible`
 
@@ -156,17 +146,16 @@ Schaefer--Stoll rank certificate and specialized `3`-adic local analysis.
 **Statement.** For positive rational `s≠1`, the explicit scalar resultant
 factor has no rational zero in `y`.
 
-**Now checked before this gap.** The two discriminant factors have no rational
-roots; their rational isolating bracket signs and all sample placements are
-exactly checked. Four of the seven sample fibres have direct strict
-sum-of-squares certificates.
+**Now checked before this gap.** Both discriminant factors have no rational
+roots; all isolating endpoint signs and sample placements are exact; all seven
+sample fibres have direct strict sum-of-squares certificates.
 
 **External proof.** The second script in arXiv:2601.04240, replayed by
 `scripts/replay_5plus5.sh`.
 
-**Estimated burden.** Medium. The preferred endpoint is explicit checked
-Sturm chains or smaller Bernstein/positivity certificates, not a
-general-purpose real algebraic geometry stack.
+**Estimated burden.** Medium. The remaining endpoint should be explicit
+checked Sturm chains plus a specialized constancy lemma, not a general-purpose
+real algebraic geometry stack.
 
 ## Downstream theorem bodies without local `sorry`
 

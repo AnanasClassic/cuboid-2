@@ -1,4 +1,4 @@
-import Cuboid2.FiveFive.SamplePositivityMore
+import Cuboid2.FiveFive.SamplePositivity40
 import Cuboid2.FiveFive.DiscriminantIntervals
 
 /-!
@@ -10,9 +10,9 @@ root of an explicit degree-sixteen polynomial in `y`.
 
 The current Lean source checks both discriminant factors for rational roots,
 all ten rational bracket-endpoint signs, the placement of all seven sample
-parameters, and strict sum-of-squares positivity for four sample fibres. The
-remaining gap is the other three samples plus the root-count constancy
-argument between the discriminant cuts.
+parameters, and strict sum-of-squares positivity for every sample fibre. The
+remaining gap is now only the Sturm/root-count constancy argument between the
+five discriminant cuts.
 -/
 
 namespace Cuboid2
@@ -21,8 +21,8 @@ noncomputable section
 
 /--
 The remaining `5+5` certificate theorem. Its final implementation must check
-the pinned Sturm/positivity interval data in Lean rather than trust the
-generating Python script.
+the pinned Sturm interval data in Lean rather than trust the generating
+Python script.
 -/
 theorem fiveFiveResultantFactor_ne_zero
     {s : ℚ} (hs : 0 < s) (hs1 : s ≠ 1) (y : ℚ) :
