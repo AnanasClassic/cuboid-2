@@ -17,8 +17,10 @@ open Polynomial
 
 noncomputable section
 
-local instance : Fact (Nat.Prime 3) := ⟨by norm_num⟩
-local instance : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+local instance linearQuarticFiniteFactPrime3 : Fact (Nat.Prime 3) :=
+  ⟨by norm_num⟩
+local instance linearQuarticFiniteFactPrime5 : Fact (Nat.Prime 5) :=
+  ⟨by norm_num⟩
 
 /-- The odd-degree linear--quartic model as a polynomial over any ring. -/
 def linearQuarticPolynomial {R : Type*} [CommRing R] : R[X] :=

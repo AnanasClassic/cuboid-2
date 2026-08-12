@@ -3,6 +3,8 @@ import Cuboid2.Certificates.PositiveSumSquares
 import Cuboid2.Genus2.Mumford
 import Cuboid2.Genus2.FiniteMumford
 import Cuboid2.DPlus.Mumford
+import Cuboid2.DPlus.FiniteGroup
+import Cuboid2.DPlus.LocalSeries
 import Cuboid2.LinearQuartic.Basic
 import Cuboid2.LinearQuartic.RootMap
 import Cuboid2.LinearQuartic.KnownPoints

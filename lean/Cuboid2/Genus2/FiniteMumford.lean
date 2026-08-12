@@ -117,7 +117,8 @@ theorem toMumfordPair_validOn
 
 end FiniteMumford
 
-local instance : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+local instance finiteMumfordFactPrime7 : Fact (Nat.Prime 7) :=
+  ⟨by norm_num⟩
 
 /-- The reduction of `D+` over `F₇`. -/
 def dplusPolynomialF7 : (ZMod 7)[X] :=
