@@ -26,7 +26,6 @@ def dplusPolynomial : ℚ[X] :=
 @[simp] theorem eval_dplusPolynomial (a : ℚ) :
     eval a dplusPolynomial = dplusRhs a := by
   simp [dplusPolynomial, dplusRhs]
-  ring
 
 /-- The rank-one class `D=[(1,1)-∞]`. -/
 def dplusGeneratorD : MumfordPair ℚ :=

@@ -40,11 +40,9 @@ theorem r_sq {s : ℚ} (S : FiveFiveCoefficientSolution s) (hs : 0 < s) :
   calc
     (S.e / s ^ 2) ^ 2 = S.e ^ 2 / s ^ 4 := by
       field_simp [hs0]
-      ring
     _ = s ^ 5 / s ^ 4 := by rw [S.constant]
     _ = s := by
       field_simp [hs0]
-      ring
 
 /-- In particular the signed root is nonzero. -/
 theorem r_ne_zero {s : ℚ} (S : FiveFiveCoefficientSolution s) (hs : 0 < s) :
@@ -69,7 +67,6 @@ theorem e_eq_r_pow_five
   calc
     (S.e / s ^ 2) ^ 5 = S.e ^ 5 / s ^ 10 := by
       field_simp [hs0]
-      ring
     _ = (S.e * s ^ 10) / s ^ 10 := by rw [hpow]
     _ = S.e := by field_simp [hs0]
 
@@ -143,6 +140,8 @@ theorem FiveFiveCoefficientSolution.e2_zero
   have hsrel : s = S.r ^ 2 := (S.r_sq hs).symm
   have hb := S.b_formula
   have hc := S.c_formula hs
+  unfold fiveFiveCoeff8 at hb
+  unfold fiveFiveCoeff2 at hc
   have hres :
       S.b ^ 2 + 2 * S.d - 2 * S.a * S.c - fiveFiveCoeff6 s = 0 := by
     nlinarith [S.coeff6]
@@ -150,8 +149,9 @@ theorem FiveFiveCoefficientSolution.e2_zero
     fiveFiveE2 S.r S.a S.d =
         4 * S.r ^ 5 *
           (S.b ^ 2 + 2 * S.d - 2 * S.a * S.c - fiveFiveCoeff6 s) := by
-      unfold fiveFiveE2 fiveFiveCoeff8 fiveFiveCoeff6 fiveFiveCoeff2
-      rw [hb, hc, hsrel]
+      unfold fiveFiveE2 fiveFiveCoeff6
+      rw [hb, hc]
+      simp only [hsrel]
       field_simp [hr0]
       ring
     _ = 0 := by rw [hres]; ring
@@ -165,6 +165,8 @@ theorem FiveFiveCoefficientSolution.e3_zero
   have hb := S.b_formula
   have hc := S.c_formula hs
   have he := S.e_eq_r_pow_five hs
+  unfold fiveFiveCoeff8 at hb
+  unfold fiveFiveCoeff2 at hc
   have hres :
       2 * S.b * S.d - S.c ^ 2 - 2 * S.a * S.e - fiveFiveCoeff4 s = 0 := by
     nlinarith [S.coeff4]
@@ -172,8 +174,9 @@ theorem FiveFiveCoefficientSolution.e3_zero
     fiveFiveE3 S.r S.a S.d =
         4 * S.r ^ 10 *
           (2 * S.b * S.d - S.c ^ 2 - 2 * S.a * S.e - fiveFiveCoeff4 s) := by
-      unfold fiveFiveE3 fiveFiveCoeff8 fiveFiveCoeff4 fiveFiveCoeff2
-      rw [hb, hc, he, hsrel]
+      unfold fiveFiveE3 fiveFiveCoeff4
+      rw [hb, hc, he]
+      simp only [hsrel]
       field_simp [hr0]
       ring
     _ = 0 := by rw [hres]; ring
@@ -195,7 +198,8 @@ theorem FiveFiveCoefficientSolution.g2_zero
   have hd := S.d_eq_r_pow_four_mul_z hs
   have hid :
       fiveFiveE2 S.r S.a S.d = S.r ^ 5 * fiveFiveG2 s S.y S.z := by
-    rw [hsrel, ha, hd]
+    rw [ha, hd]
+    simp only [hsrel]
     unfold fiveFiveE2 fiveFiveG2
     ring
   have hmul : S.r ^ 5 * fiveFiveG2 s S.y S.z = 0 := by
@@ -212,7 +216,8 @@ theorem FiveFiveCoefficientSolution.g3_zero
   have hd := S.d_eq_r_pow_four_mul_z hs
   have hid :
       fiveFiveE3 S.r S.a S.d = S.r ^ 14 * fiveFiveG3 s S.y S.z := by
-    rw [hsrel, ha, hd]
+    rw [ha, hd]
+    simp only [hsrel]
     unfold fiveFiveE3 fiveFiveG3
     ring
   have hmul : S.r ^ 14 * fiveFiveG3 s S.y S.z = 0 := by

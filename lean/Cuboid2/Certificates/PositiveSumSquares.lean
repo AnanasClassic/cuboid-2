@@ -44,8 +44,23 @@ theorem PositiveSumSquaresCertificate.eval_pos
           cert.weight i * (eval x (cert.square i)) ^ 2 :=
       add_pos_of_pos_of_nonneg cert.constant_pos hsquares
     _ = eval x p := by
-      rw [cert.identity]
-      simp
+      have hsum :
+          eval x
+              (∑ i : Fin cert.terms,
+                C (cert.weight i) * (cert.square i) ^ 2) =
+            ∑ i : Fin cert.terms,
+              cert.weight i * (eval x (cert.square i)) ^ 2 := by
+        change
+          eval x
+              (∑ i ∈ Finset.univ,
+                C (cert.weight i) * (cert.square i) ^ 2) =
+            ∑ i ∈ Finset.univ,
+              cert.weight i * (eval x (cert.square i)) ^ 2
+        rw [eval_finsetSum]
+        simp
+      have hidentity := congrArg (eval x) cert.identity
+      rw [eval_add, eval_C, hsum] at hidentity
+      exact hidentity.symm
 
 /-- In particular a certified positive polynomial has no rational zero. -/
 theorem PositiveSumSquaresCertificate.eval_ne_zero

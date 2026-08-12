@@ -47,10 +47,30 @@ def fiveFiveResultant (s y : ℚ) : ℚ :=
 /-- The quartic polynomial is nonzero whenever `s≠0`. -/
 theorem fiveFiveG3Poly_ne_zero {s y : ℚ} (hs0 : s ≠ 0) :
     fiveFiveG3Poly s y ≠ 0 := by
+  let T : ℚ[X] :=
+    C (-12 * s ^ 2 + 2 * s + 4) * X ^ 2 +
+      C (-8 * s ^ 2 + 4 * s * y ^ 2 - 4 * s + 24) * X +
+        C (-32 * s ^ 3 + 52 * s ^ 2 - 8 * s * y + 39 * s - 60)
+  have hTdegree : T.degree ≤ (2 : WithBot ℕ) := by
+    dsimp [T]
+    apply degree_add_le_of_degree_le
+    · apply degree_add_le_of_degree_le
+      · exact degree_C_mul_X_pow_le 2 _
+      · simpa only [pow_one] using
+          (degree_C_mul_X_pow_le 1
+            (-8 * s ^ 2 + 4 * s * y ^ 2 - 4 * s + 24)).trans (by norm_num)
+    · exact degree_C_le.trans (by norm_num)
+  have hTcoeff : T.coeff 4 = 0 :=
+    coeff_eq_zero_of_degree_lt (hTdegree.trans_lt (by norm_num))
+  have hform : fiveFiveG3Poly s y = C (-s) * X ^ 4 + T := by
+    dsimp [T]
+    unfold fiveFiveG3Poly
+    ring
   intro hzero
   have hcoeff := congrArg (fun F : ℚ[X] => F.coeff 4) hzero
-  simp [fiveFiveG3Poly] at hcoeff
-  exact hs0 (neg_eq_zero.mp hcoeff)
+  rw [hform, coeff_add, coeff_C_mul_X_pow, hTcoeff] at hcoeff
+  norm_num at hcoeff
+  exact hs0 hcoeff
 
 /-- A common rational root of `G₂,G₃` forces the Sylvester resultant to vanish. -/
 theorem fiveFiveResultant_eq_zero_of_common_root

@@ -15,6 +15,9 @@ namespace Cuboid2
 
 noncomputable section
 
+set_option maxHeartbeats 1000000
+set_option maxRecDepth 100000
+
 /-- The primitive 104-term resultant factor after removing `s^2`. -/
 def fiveFiveResultantFactor (s y : ℚ) : ℚ :=
   256*s^12*y^8 - 17408*s^12*y^6 + 411136*s^12*y^4 - 3916800*s^12*y^2 + 12960000*s^12 - 256*s^11*y^10

@@ -24,12 +24,12 @@ theorem saturation_arithmetic
   have hquotle : n / Nat.gcd n m ≤ n := Nat.div_le_self n (Nat.gcd n m)
   have hnlow : 21 ≤ n := by omega
   have hncases : n = 21 ∨ n = 42 := by
-    interval_cases n <;> norm_num at hn ⊢
+    interval_cases n <;> norm_num at hn <;> omega
   rcases hncases with rfl | rfl
   · have hgcd : Nat.gcd 21 m = 1 := by
       have hle : Nat.gcd 21 m ≤ 21 :=
         Nat.le_of_dvd (by norm_num) (Nat.gcd_dvd_left 21 m)
-      interval_cases h : Nat.gcd 21 m <;> norm_num [h] at horder ⊢
+      interval_cases h : Nat.gcd 21 m <;> norm_num [h] at horder <;> omega
     intro h3
     have h3gcd : 3 ∣ Nat.gcd 21 m :=
       Nat.dvd_gcd (by norm_num) h3
@@ -38,7 +38,7 @@ theorem saturation_arithmetic
   · have hgcd : Nat.gcd 42 m = 2 := by
       have hle : Nat.gcd 42 m ≤ 42 :=
         Nat.le_of_dvd (by norm_num) (Nat.gcd_dvd_left 42 m)
-      interval_cases h : Nat.gcd 42 m <;> norm_num [h] at horder ⊢
+      interval_cases h : Nat.gcd 42 m <;> norm_num [h] at horder <;> omega
     have h2 : 2 ∣ m := by
       rw [← hgcd]
       exact Nat.gcd_dvd_right 42 m

@@ -1,4 +1,5 @@
 import Cuboid2.CapellFactor
+import Cuboid2.Factorization
 
 /-!
 # Specialized Capell reduction for an irreducible quintic
@@ -94,7 +95,6 @@ theorem normalizedEven_capell_reduction
     have hpairDegree : (R * (-reflectPolynomial R)).natDegree = 10 := by
       rw [hRmonic.natDegree_mul hnegativeReflectionMonic,
         natDegree_neg, reflectPolynomial_natDegree, hRdegree]
-      norm_num
     have hfactorization :
         normalizedEvenPolynomial s = R * (-reflectPolynomial R) := by
       apply eq_of_monic_of_dvd_of_natDegree_le

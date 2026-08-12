@@ -23,14 +23,15 @@ def monicReflection (R : ℚ[X]) : ℚ[X] :=
 theorem reflectPolynomial_leadingCoeff (R : ℚ[X]) :
     (reflectPolynomial R).leadingCoeff =
       R.leadingCoeff * (-1 : ℚ) ^ R.natDegree := by
-  rw [leadingCoeff, reflectPolynomial_natDegree, reflectPolynomial_coeff]
+  simp only [leadingCoeff, reflectPolynomial_natDegree, reflectPolynomial_coeff]
 
 /-- The monic reflection differs from the raw reflection only by a unit. -/
 theorem monicReflection_associated_reflectPolynomial (R : ℚ[X]) :
     Associated (monicReflection R) (reflectPolynomial R) := by
   unfold monicReflection
   exact associated_unit_mul_left _ _
-    (isUnit_C.mpr (pow_ne_zero _ (by norm_num : (-1 : ℚ) ≠ 0)))
+    (isUnit_C.mpr
+      (isUnit_iff_ne_zero.mpr (pow_ne_zero _ (by norm_num : (-1 : ℚ) ≠ 0))))
 
 /-- Monicity is preserved by monic reflection. -/
 theorem monicReflection_monic {R : ℚ[X]} (hR : R.Monic) :

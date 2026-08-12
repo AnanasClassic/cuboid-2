@@ -58,6 +58,7 @@ theorem quinticFactor_symmetric_product (a b c d e : ℚ) :
           C (2 * b * d - c ^ 2 - 2 * a * e) * X ^ 4 +
             C (d ^ 2 - 2 * c * e) * X ^ 2 + C (-e ^ 2) := by
   simp [quinticFactor]
+  simp only [Polynomial.C_ofNat]
   ring
 
 /-- Every monic degree-five polynomial has the displayed coefficient form. -/
@@ -124,6 +125,8 @@ theorem coefficientSolution_of_symmetricFiveFiveCase
   have h4 := congrArg (fun F : ℚ[X] => F.coeff 4) hpoly
   have h2 := congrArg (fun F : ℚ[X] => F.coeff 2) hpoly
   have h0 := congrArg (fun F : ℚ[X] => F.coeff 0) hpoly
+  simp only [coeff_add, coeff_mul_X_pow', coeff_C, coeff_X_pow] at h8 h6 h4 h2 h0
+  norm_num at h8 h6 h4 h2 h0
   refine ⟨{
     a := a
     b := b
@@ -135,11 +138,11 @@ theorem coefficientSolution_of_symmetricFiveFiveCase
     coeff4 := ?_
     coeff2 := ?_
     constant := ?_ }⟩
-  · simpa using h8.symm
-  · simpa using h6.symm
-  · simpa using h4.symm
-  · simpa using h2.symm
-  · simpa using (congrArg Neg.neg h0).symm
+  · exact h8.symm
+  · exact h6.symm
+  · exact h4.symm
+  · exact h2.symm
+  · linarith
 
 end
 

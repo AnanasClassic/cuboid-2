@@ -30,8 +30,8 @@ def reciprocalV (S K : ℚ) : ℚ :=
 theorem reciprocal_UV
     {S K : ℚ} (hS : S + 1 ≠ 0) (hKm : K - 1 ≠ 0) (hKp : K + 1 ≠ 0) :
     reciprocalU S K * reciprocalV S K = (S - 1) ^ 2 / (S + 1) ^ 2 := by
-  field_simp [reciprocalU, reciprocalV, hS, hKm, hKp]
-  ring
+  unfold reciprocalU reciprocalV
+  field_simp [hS, hKm, hKp] <;> ring
 
 /-- Exact common character, including its factor `4`. -/
 theorem reciprocal_one_sub_UV
@@ -47,8 +47,8 @@ theorem reciprocal_V_div_U
     (hSp : S + 1 ≠ 0) (hSm : S - 1 ≠ 0)
     (hKp : K + 1 ≠ 0) (hKm : K - 1 ≠ 0) :
     reciprocalV S K / reciprocalU S K = (K - 1) ^ 2 / (K + 1) ^ 2 := by
-  field_simp [reciprocalU, reciprocalV, hSp, hSm, hKp, hKm]
-  ring
+  unfold reciprocalU reciprocalV
+  field_simp [hSp, hSm, hKp, hKm] <;> ring
 
 /-- Positive-branch third character. -/
 theorem reciprocal_one_sub_V_div_U
@@ -66,22 +66,24 @@ theorem reciprocal_one_sub_U_div_V
     (hSp : S + 1 ≠ 0) (hSm : S - 1 ≠ 0)
     (hKp : K + 1 ≠ 0) (hKm : K - 1 ≠ 0) :
     1 - reciprocalU S K / reciprocalV S K = -4 * K / (K - 1) ^ 2 := by
-  field_simp [reciprocalU, reciprocalV, hSp, hSm, hKp, hKm]
-  ring
+  unfold reciprocalU reciprocalV
+  field_simp [hSp, hSm, hKp, hKm] <;> ring
 
 /-- Reciprocal inversion becomes sign change in the first Cayley coordinate. -/
 theorem reciprocalCayleyX_inv
     {S : ℚ} (hS0 : S ≠ 0) (hSp : S + 1 ≠ 0) :
     reciprocalCayleyX (1 / S) = -reciprocalCayleyX S := by
-  field_simp [reciprocalCayleyX, hS0, hSp]
-  ring
+  have hOneSp : 1 + S ≠ 0 := by simpa [add_comm] using hSp
+  unfold reciprocalCayleyX
+  field_simp [hS0, hSp, hOneSp] <;> ring
 
 /-- Reciprocal inversion becomes sign change in the second Cayley coordinate. -/
 theorem reciprocalCayleyY_inv
     {K : ℚ} (hK0 : K ≠ 0) (hKp : K + 1 ≠ 0) :
     reciprocalCayleyY (1 / K) = -reciprocalCayleyY K := by
-  field_simp [reciprocalCayleyY, hK0, hKp]
-  ring
+  have hOneKp : 1 + K ≠ 0 := by simpa [add_comm] using hKp
+  unfold reciprocalCayleyY
+  field_simp [hK0, hKp, hOneKp] <;> ring
 
 /-- The simultaneous involution fixes `U`. -/
 theorem reciprocalU_inv
@@ -90,8 +92,14 @@ theorem reciprocalU_inv
     (hSp : S + 1 ≠ 0) (hSm : S - 1 ≠ 0)
     (hKp : K + 1 ≠ 0) (hKm : K - 1 ≠ 0) :
     reciprocalU (1 / S) (1 / K) = reciprocalU S K := by
-  field_simp [reciprocalU, hS0, hK0, hSp, hSm, hKp, hKm]
-  ring
+  have hOneSp : 1 + S ≠ 0 := by simpa [add_comm] using hSp
+  have hOneKm : 1 - K ≠ 0 := by
+    exact sub_ne_zero.mpr (Ne.symm (sub_ne_zero.mp hKm))
+  have hden : 1 + S - S * K - K ≠ 0 := by
+    rw [show 1 + S - S * K - K = (1 + S) * (1 - K) by ring]
+    exact mul_ne_zero hOneSp hOneKm
+  unfold reciprocalU
+  field_simp [hS0, hK0, hSp, hSm, hKp, hKm, hOneSp, hOneKm, hden] <;> ring
 
 /-- The simultaneous involution fixes `V`. -/
 theorem reciprocalV_inv
@@ -100,8 +108,13 @@ theorem reciprocalV_inv
     (hSp : S + 1 ≠ 0) (hSm : S - 1 ≠ 0)
     (hKp : K + 1 ≠ 0) (hKm : K - 1 ≠ 0) :
     reciprocalV (1 / S) (1 / K) = reciprocalV S K := by
-  field_simp [reciprocalV, hS0, hK0, hSp, hSm, hKp, hKm]
-  ring
+  have hOneSp : 1 + S ≠ 0 := by simpa [add_comm] using hSp
+  have hOneKp : 1 + K ≠ 0 := by simpa [add_comm] using hKp
+  have hden : 1 + S + S * K + K ≠ 0 := by
+    rw [show 1 + S + S * K + K = (1 + S) * (1 + K) by ring]
+    exact mul_ne_zero hOneSp hOneKp
+  unfold reciprocalV
+  field_simp [hS0, hK0, hSp, hSm, hKp, hKm, hOneSp, hOneKp, hden] <;> ring
 
 end
 

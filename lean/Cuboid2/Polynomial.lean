@@ -119,13 +119,18 @@ theorem sharipovPolynomialOver_degree
 
 @[simp] theorem sharipovPolynomial_coeff_ten (p q : ℕ) :
     (sharipovPolynomial p q).coeff 10 = 1 := by
+  change (sharipovPolynomialOver (p : ℤ) (q : ℤ)).coeff 10 = 1
   rw [← (sharipovPolynomialOver_monic (p : ℤ) (q : ℤ)).leadingCoeff]
   rw [leadingCoeff,
     natDegree_eq_of_degree_eq_some (sharipovPolynomialOver_degree (p : ℤ) (q : ℤ))]
 
 @[simp] theorem sharipovPolynomial_coeff_zero (p q : ℕ) :
     (sharipovPolynomial p q).coeff 0 = -((p : ℤ) ^ 10 * (q : ℤ) ^ 10) := by
-  simp [sharipovPolynomial, sharipovPolynomialOver, sharipovLower]
+  change
+    (sharipovPolynomialOver (p : ℤ) (q : ℤ)).coeff 0 =
+      -((p : ℤ) ^ 10 * (q : ℤ) ^ 10)
+  rw [coeff_zero_eq_eval_zero]
+  simp [sharipovPolynomialOver, sharipovLower]
 
 @[simp] theorem sharipovPolynomial_natDegree (p q : ℕ) :
     (sharipovPolynomial p q).natDegree = 10 :=
@@ -137,18 +142,35 @@ theorem sharipovPolynomial_isPrimitive (p q : ℕ) :
     (sharipovPolynomial p q).IsPrimitive :=
   (sharipovPolynomialOver_monic (p : ℤ) (q : ℤ)).isPrimitive
 
+private theorem map_sharipovPolynomialOver
+    {R S : Type*} [CommRing R] [CommRing S]
+    (f : R →+* S) (p q : R) :
+    (sharipovPolynomialOver p q).map f =
+      sharipovPolynomialOver (f p) (f q) := by
+  simp [sharipovPolynomialOver, sharipovLower]
+  simp only [map_ofNat]
+
 /-- Mapping the integer definition to `ℚ` gives the independently stated rational definition. -/
 theorem map_sharipovPolynomial (p q : ℕ) :
     (sharipovPolynomial p q).map (algebraMap ℤ ℚ) = sharipovPolynomialQ p q := by
-  simp [sharipovPolynomial, sharipovPolynomialQ, sharipovPolynomialOver, sharipovLower]
+  change
+    (sharipovPolynomialOver (p : ℤ) (q : ℤ)).map (algebraMap ℤ ℚ) =
+      sharipovPolynomialOver (p : ℚ) (q : ℚ)
+  rw [map_sharipovPolynomialOver]
+  norm_num
 
 /-- Exact Gauss-lemma transfer for the public polynomial. -/
 theorem sharipovPolynomial_irreducible_iff_rational (p q : ℕ) :
     Irreducible (sharipovPolynomial p q) ↔ Irreducible (sharipovPolynomialQ p q) := by
+  change
+    Irreducible (sharipovPolynomialOver (p : ℤ) (q : ℤ)) ↔
+      Irreducible (sharipovPolynomialOver (p : ℚ) (q : ℚ))
   have h :=
-    (sharipovPolynomialOver_monic (p : ℤ) (q : ℤ)).
-      irreducible_iff_irreducible_map_fraction_map (K := ℚ)
-  simpa only [map_sharipovPolynomial] using h
+    (sharipovPolynomialOver_monic (p : ℤ) (q : ℤ)).irreducible_iff_irreducible_map_fraction_map
+      (K := ℚ)
+  rw [map_sharipovPolynomialOver] at h
+  norm_num at h
+  exact h
 
 /--
 The exact weighted scaling identity from the paper, stated pointwise over any
@@ -162,7 +184,6 @@ theorem eval_sharipov_scaling
   simp [sharipovPolynomialOver, sharipovLower, normalizedQuintic,
     normalizedQuinticLower]
   field_simp [hq]
-  ring
 
 /-- Specialization of the scaling identity to the public natural parameters. -/
 theorem eval_sharipovPolynomialQ_scaling

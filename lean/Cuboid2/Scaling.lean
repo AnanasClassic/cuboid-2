@@ -107,8 +107,7 @@ theorem eval_normalizedEven_scaleRoots
       simp only [normalizedEvenPolynomial, eval_comp, eval_pow, eval_X]
       rw [show (((q : ℚ) ^ 2) ^ 10) = (q : ℚ) ^ 20 by ring]
       rw [show (t / (q : ℚ) ^ 2) ^ 2 = t ^ 2 / (q : ℚ) ^ 4 by
-        field_simp [hq0]
-        ring]
+        field_simp [hq0]]
 
 /-- Exact polynomial, not merely pointwise, form of the paper's scaling identity. -/
 theorem sharipovPolynomialQ_eq_scaleRoots

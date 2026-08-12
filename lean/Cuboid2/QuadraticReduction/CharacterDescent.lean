@@ -93,9 +93,8 @@ theorem e1_X_mul_M (P : E1AffinePoint) :
 /-- Cleared form of `M=L*(Y+2)/X`. -/
 theorem e1_M_eq_L_mul_k (P : E1AffinePoint) (hX : P.X ≠ 0) :
     e1M P.X P.Y = e1L P.X P.Y * ((P.Y + 2) / P.X) := by
-  apply (eq_div_iff hX).2
-  rw [mul_comm]
-  exact e1_X_mul_M P
+  field_simp [hX]
+  simpa [mul_comm] using e1_X_mul_M P
 
 /-- Exact polynomial certificate behind `1-UV=2F g^2`. -/
 theorem e1_common_character_cleared (P : E1AffinePoint) :
@@ -121,9 +120,9 @@ theorem e1_common_character
     1 - e1U P.X P.Y * e1V P.X P.Y =
       2 * e1F P.X P.Y * e1G P.X P.Y ^ 2 := by
   have hclear := e1_common_character_cleared P
-  field_simp [e1U, e1V, e1G, hD0, sub_ne_zero.mpr hX3] at ⊢ hclear
-  ring_nf at ⊢ hclear
-  exact hclear
+  unfold e1U e1V e1G
+  field_simp [hD0, sub_ne_zero.mpr hX3]
+  nlinarith [hclear]
 
 /-- The line through `(0,-2)` used to introduce `k`. -/
 theorem e1_line_substitution (X k : ℚ) :
@@ -138,9 +137,20 @@ def e1HKRelation (k h : ℚ) : ℚ :=
 /-- Every nonvertical affine point satisfies the displayed `h,k` relation. -/
 theorem e1_hk_relation (P : E1AffinePoint) (hX : P.X ≠ 0) :
     e1HKRelation ((P.Y + 2) / P.X) (P.X + 1) = 0 := by
-  field_simp [e1HKRelation, hX]
-  have h := P.onCurve
-  simp [e1Residual] at h
+  let k := (P.Y + 2) / P.X
+  have hkY : k * P.X - 2 = P.Y := by
+    dsimp [k]
+    field_simp [hX] <;> ring
+  have hline := e1_line_substitution P.X k
+  rw [hkY, P.onCurve] at hline
+  have hprod :
+      P.X * (P.X ^ 2 - k ^ 2 * P.X + 4 * k - 5) = 0 := by
+    linarith
+  have hinner :
+      P.X ^ 2 - k ^ 2 * P.X + 4 * k - 5 = 0 :=
+    (mul_eq_zero.mp hprod).resolve_left hX
+  change e1HKRelation k (P.X + 1) = 0
+  unfold e1HKRelation
   nlinarith
 
 /-- Discriminant of the `h`-quadratic. -/

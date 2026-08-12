@@ -28,7 +28,6 @@ def fiveFiveDiscriminantP6PolyReal : ℝ[X] :=
       x ^ 6 + 15 * x ^ 5 - 1585 * x ^ 4 + 3052 * x ^ 3 -
         1585 * x ^ 2 + 15 * x + 1 := by
   simp [fiveFiveDiscriminantP6PolyReal]
-  ring
 
 @[simp] theorem eval_derivative_fiveFiveDiscriminantP6PolyReal (x : ℝ) :
     fiveFiveDiscriminantP6PolyReal.derivative.eval x =
@@ -216,7 +215,10 @@ theorem fiveFiveDiscriminantP6_pos_left
     0 < fiveFiveDiscriminantP6PolyReal.eval t := by
   rcases unit_interval_coordinate (a := 0) (b := 31 / 1000)
       (by norm_num) ht0 ht1 with ⟨x, hx0, hx1, ht⟩
-  rw [ht, p6Left_identity]
+  have ht' : t = (31 / 1000 : ℝ) * x := by
+    rw [ht]
+    ring
+  rw [ht', p6Left_identity]
   exact p6LeftBernstein_pos hx0 hx1
 
 theorem fiveFiveDiscriminantP6_derivative_neg_low
@@ -224,8 +226,11 @@ theorem fiveFiveDiscriminantP6_derivative_neg_low
     fiveFiveDiscriminantP6PolyReal.derivative.eval t < 0 := by
   rcases unit_interval_coordinate (a := 31 / 1000) (b := 32 / 1000)
       (by norm_num) ht0 ht1 with ⟨x, hx0, hx1, ht⟩
+  have ht' : t = (31 / 1000 : ℝ) + (1 / 1000 : ℝ) * x := by
+    rw [ht]
+    ring
   have hpos : 0 < -(fiveFiveDiscriminantP6PolyReal.derivative.eval t) := by
-    rw [ht, p6LowDerivative_identity]
+    rw [ht', p6LowDerivative_identity]
     exact p6LowDerivativeBernstein_pos hx0 hx1
   linarith
 
@@ -234,8 +239,11 @@ theorem fiveFiveDiscriminantP6_neg_mid_low
     fiveFiveDiscriminantP6PolyReal.eval t < 0 := by
   rcases unit_interval_coordinate (a := 32 / 1000) (b := 1)
       (by norm_num) ht0 ht1 with ⟨x, hx0, hx1, ht⟩
+  have ht' : t = (4 / 125 : ℝ) + (121 / 125 : ℝ) * x := by
+    rw [ht]
+    ring
   have hpos : 0 < -(fiveFiveDiscriminantP6PolyReal.eval t) := by
-    rw [ht, p6MidLow_identity]
+    rw [ht', p6MidLow_identity]
     exact p6MidLowBernstein_pos hx0 hx1
   linarith
 
@@ -244,8 +252,11 @@ theorem fiveFiveDiscriminantP6_neg_mid_one
     fiveFiveDiscriminantP6PolyReal.eval t < 0 := by
   rcases unit_interval_coordinate (a := 1) (b := 10)
       (by norm_num) ht0 ht1 with ⟨x, hx0, hx1, ht⟩
+  have ht' : t = (1 : ℝ) + 9 * x := by
+    rw [ht]
+    ring
   have hpos : 0 < -(fiveFiveDiscriminantP6PolyReal.eval t) := by
-    rw [ht, p6MidOne_identity]
+    rw [ht', p6MidOne_identity]
     exact p6MidOneBernstein_pos hx0 hx1
   linarith
 
@@ -254,8 +265,11 @@ theorem fiveFiveDiscriminantP6_neg_mid_high
     fiveFiveDiscriminantP6PolyReal.eval t < 0 := by
   rcases unit_interval_coordinate (a := 10) (b := 159 / 5)
       (by norm_num) ht0 ht1 with ⟨x, hx0, hx1, ht⟩
+  have ht' : t = (10 : ℝ) + (109 / 5 : ℝ) * x := by
+    rw [ht]
+    ring
   have hpos : 0 < -(fiveFiveDiscriminantP6PolyReal.eval t) := by
-    rw [ht, p6MidHigh_identity]
+    rw [ht', p6MidHigh_identity]
     exact p6MidHighBernstein_pos hx0 hx1
   linarith
 
@@ -264,7 +278,10 @@ theorem fiveFiveDiscriminantP6_derivative_pos_high
     0 < fiveFiveDiscriminantP6PolyReal.derivative.eval t := by
   rcases unit_interval_coordinate (a := 159 / 5) (b := 319 / 10)
       (by norm_num) ht0 ht1 with ⟨x, hx0, hx1, ht⟩
-  rw [ht, p6HighDerivative_identity]
+  have ht' : t = (159 / 5 : ℝ) + (1 / 10 : ℝ) * x := by
+    rw [ht]
+    ring
+  rw [ht', p6HighDerivative_identity]
   exact p6HighDerivativeBernstein_pos hx0 hx1
 
 theorem fiveFiveDiscriminantP6_pos_right
@@ -284,7 +301,9 @@ theorem fiveFiveDiscriminantP6_strictAnti_low :
   · intro t ht
     have ht' : t ∈ Icc (31 / 1000 : ℝ) (32 / 1000) :=
       interior_subset ht
-    simpa using fiveFiveDiscriminantP6_derivative_neg_low ht'.1 ht'.2
+    change deriv (fun y : ℝ => fiveFiveDiscriminantP6PolyReal.eval y) t < 0
+    rw [Polynomial.deriv]
+    exact fiveFiveDiscriminantP6_derivative_neg_low ht'.1 ht'.2
 
 theorem fiveFiveDiscriminantP6_strictMono_high :
     StrictMonoOn (fun t : ℝ => fiveFiveDiscriminantP6PolyReal.eval t)
@@ -294,7 +313,9 @@ theorem fiveFiveDiscriminantP6_strictMono_high :
   · intro t ht
     have ht' : t ∈ Icc (159 / 5 : ℝ) (319 / 10) :=
       interior_subset ht
-    simpa using fiveFiveDiscriminantP6_derivative_pos_high ht'.1 ht'.2
+    change 0 < deriv (fun y : ℝ => fiveFiveDiscriminantP6PolyReal.eval y) t
+    rw [Polynomial.deriv]
+    exact fiveFiveDiscriminantP6_derivative_pos_high ht'.1 ht'.2
 
 theorem fiveFiveDiscriminantP6_existsUnique_low_root :
     ∃! r : ℝ,
@@ -313,6 +334,8 @@ theorem fiveFiveDiscriminantP6_existsUnique_low_root :
   refine ⟨r, ⟨hr, hr0⟩, ?_⟩
   intro z hz
   apply fiveFiveDiscriminantP6_strictAnti_low.injOn hz.1 hr
+  change fiveFiveDiscriminantP6PolyReal.eval z =
+    fiveFiveDiscriminantP6PolyReal.eval r
   rw [hz.2, hr0]
 
 theorem fiveFiveDiscriminantP6_existsUnique_high_root :
@@ -332,6 +355,8 @@ theorem fiveFiveDiscriminantP6_existsUnique_high_root :
   refine ⟨r, ⟨hr, hr0⟩, ?_⟩
   intro z hz
   apply fiveFiveDiscriminantP6_strictMono_high.injOn hz.1 hr
+  change fiveFiveDiscriminantP6PolyReal.eval z =
+    fiveFiveDiscriminantP6PolyReal.eval r
   rw [hz.2, hr0]
 
 /-- Every positive real root lies in one of the two certified brackets. -/

@@ -88,13 +88,15 @@ theorem compactProjectionNegative_K_one (S : ℚ) :
 /-- Negative branch, `K=-1`. -/
 theorem compactProjectionNegative_K_neg_one (S : ℚ) :
     compactProjectionNegative S (-1) = -64 * (S - 1) ^ 6 * (S + 1) ^ 2 := by
-  rw [compactProjectionNegative, compactProjectionPositive_K_one]
+  simp only [compactProjectionNegative, neg_neg]
+  rw [compactProjectionPositive_K_one]
   ring
 
 /-- Negative branch, `K=0`. -/
 theorem compactProjectionNegative_K_zero (S : ℚ) :
     compactProjectionNegative S 0 = S ^ 4 := by
-  rw [compactProjectionNegative, compactProjectionPositive_K_zero]
+  simp only [compactProjectionNegative, neg_zero]
+  rw [compactProjectionPositive_K_zero]
   ring
 
 /-- Negative branch, `S=1`. -/

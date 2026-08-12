@@ -84,7 +84,6 @@ private theorem fiveFiveDiscriminantP6_homogenize
   unfold fiveFiveDiscriminantP6Hom fiveFiveDiscriminantP6
   push_cast
   field_simp [show (d : ℚ) ≠ 0 by exact_mod_cast hd]
-  ring
 
 private theorem fiveFiveDiscriminantP28_homogenize
     (n d : ℤ) (hd : d ≠ 0) :
@@ -93,38 +92,56 @@ private theorem fiveFiveDiscriminantP28_homogenize
   unfold fiveFiveDiscriminantP28Hom fiveFiveDiscriminantP28
   push_cast
   field_simp [show (d : ℚ) ≠ 0 by exact_mod_cast hd]
-  ring
 
 /-- Reduction of the degree-six homogeneous form modulo seven. -/
 private def fiveFiveDiscriminantP6HomMod7 (n d : ZMod 7) : ZMod 7 :=
-  n ^ 6 + n ^ 5 * d + 4 * n ^ 4 * d ^ 2 +
-    4 * n ^ 2 * d ^ 4 + n * d ^ 5 + d ^ 6
+  n ^ 6 + 15 * n ^ 5 * d - 1585 * n ^ 4 * d ^ 2 +
+    3052 * n ^ 3 * d ^ 3 - 1585 * n ^ 2 * d ^ 4 +
+    15 * n * d ^ 5 + d ^ 6
 
 /-- Reduction of the degree-twenty-eight homogeneous form modulo seven. -/
 private def fiveFiveDiscriminantP28HomMod7 (n d : ZMod 7) : ZMod 7 :=
-  4 * n ^ 28 + 5 * n ^ 26 * d ^ 2 + 2 * n ^ 25 * d ^ 3 +
-    6 * n ^ 24 * d ^ 4 + 6 * n ^ 23 * d ^ 5 +
-    6 * n ^ 22 * d ^ 6 + 6 * n ^ 21 * d ^ 7 +
-    6 * n ^ 20 * d ^ 8 + 4 * n ^ 19 * d ^ 9 +
-    3 * n ^ 18 * d ^ 10 + 4 * n ^ 17 * d ^ 11 +
-    5 * n ^ 14 * d ^ 14 + 2 * n ^ 13 * d ^ 15 +
-    n ^ 10 * d ^ 18 + 5 * n ^ 9 * d ^ 19 +
-    3 * n ^ 8 * d ^ 20 + 3 * n ^ 7 * d ^ 21 +
-    4 * n ^ 6 * d ^ 22 + n ^ 5 * d ^ 23 +
-    4 * n ^ 4 * d ^ 24 + n ^ 2 * d ^ 26 +
-    3 * n * d ^ 27 + 6 * d ^ 28
+  103680000 * n ^ 28 - 7521292800 * n ^ 27 * d +
+    169819194368 * n ^ 26 * d ^ 2 -
+    1294911396672 * n ^ 25 * d ^ 3 +
+    5782812799560 * n ^ 24 * d ^ 4 -
+    16312796194682 * n ^ 23 * d ^ 5 +
+    26530306841415 * n ^ 22 * d ^ 6 -
+    10896270624660 * n ^ 21 * d ^ 7 -
+    54726287337296 * n ^ 20 * d ^ 8 +
+    133633789213194 * n ^ 19 * d ^ 9 -
+    113160119424615 * n ^ 18 * d ^ 10 -
+    66661996599936 * n ^ 17 * d ^ 11 +
+    257666706220630 * n ^ 16 * d ^ 12 -
+    219804850864326 * n ^ 15 * d ^ 13 -
+    42039280815751 * n ^ 14 * d ^ 14 +
+    237530759945852 * n ^ 13 * d ^ 15 -
+    176268442531244 * n ^ 12 * d ^ 16 -
+    7327917745386 * n ^ 11 * d ^ 17 +
+    97772884071815 * n ^ 10 * d ^ 18 -
+    65474588747304 * n ^ 9 * d ^ 19 +
+    8804890164542 * n ^ 8 * d ^ 20 +
+    13121572011040 * n ^ 7 * d ^ 21 -
+    9871152051904 * n ^ 6 * d ^ 22 +
+    3433840428544 * n ^ 5 * d ^ 23 -
+    664203117056 * n ^ 4 * d ^ 24 +
+    64335036416 * n ^ 3 * d ^ 25 -
+    1308557312 * n ^ 2 * d ^ 26 -
+    162529280 * n * d ^ 27 - 2097152 * d ^ 28
 
 private theorem fiveFiveDiscriminantP6HomMod7_eq_cast (n d : ℤ) :
     fiveFiveDiscriminantP6HomMod7 (n : ZMod 7) (d : ZMod 7) =
       (fiveFiveDiscriminantP6Hom n d : ZMod 7) := by
-  norm_num [fiveFiveDiscriminantP6HomMod7, fiveFiveDiscriminantP6Hom] <;>
-    ring
+  unfold fiveFiveDiscriminantP6HomMod7 fiveFiveDiscriminantP6Hom
+  push_cast
+  ring
 
 private theorem fiveFiveDiscriminantP28HomMod7_eq_cast (n d : ℤ) :
     fiveFiveDiscriminantP28HomMod7 (n : ZMod 7) (d : ZMod 7) =
       (fiveFiveDiscriminantP28Hom n d : ZMod 7) := by
-  norm_num [fiveFiveDiscriminantP28HomMod7, fiveFiveDiscriminantP28Hom] <;>
-    ring
+  unfold fiveFiveDiscriminantP28HomMod7 fiveFiveDiscriminantP28Hom
+  push_cast
+  ring
 
 /-- Exhaustive projective mod-seven check for the degree-six factor. -/
 private theorem fiveFiveDiscriminantP6HomMod7_nonzero :
@@ -165,6 +182,8 @@ theorem fiveFiveDiscriminantP6_ne_zero (x : ℚ) :
   have hhomQ :=
     fiveFiveDiscriminantP6_homogenize x.num (x.den : ℤ) hdenZ
   have hrepr : (x.num : ℚ) / (x.den : ℚ) = x := Rat.num_div_den x
+  have hdenCast : (((x.den : ℤ) : ℚ)) = (x.den : ℚ) := by norm_num
+  rw [hdenCast] at hhomQ
   rw [hrepr, hx, mul_zero] at hhomQ
   have hhomZ : fiveFiveDiscriminantP6Hom x.num (x.den : ℤ) = 0 := by
     exact_mod_cast hhomQ
@@ -187,6 +206,8 @@ theorem fiveFiveDiscriminantP28_ne_zero (x : ℚ) :
   have hhomQ :=
     fiveFiveDiscriminantP28_homogenize x.num (x.den : ℤ) hdenZ
   have hrepr : (x.num : ℚ) / (x.den : ℚ) = x := Rat.num_div_den x
+  have hdenCast : (((x.den : ℤ) : ℚ)) = (x.den : ℚ) := by norm_num
+  rw [hdenCast] at hhomQ
   rw [hrepr, hx, mul_zero] at hhomQ
   have hhomZ : fiveFiveDiscriminantP28Hom x.num (x.den : ℤ) = 0 := by
     exact_mod_cast hhomQ

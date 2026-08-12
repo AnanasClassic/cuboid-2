@@ -67,7 +67,7 @@ def compactF1 (ε : PhysicalSign) (z k y : ℚ) : ℚ :=
 
 /-- The exact scaled cubic equation `F0(z,k,y)`. -/
 def compactF0 (ε : PhysicalSign) (z k y : ℚ) : ℚ :=
-  let e := ε.value
+  let e := ε.value;
   -2 * e ^ 2 * k ^ 5 * y * z ^ 4 -
     2 * e ^ 2 * k ^ 4 * z ^ 6 -
     e ^ 2 * k ^ 4 * z ^ 4 +

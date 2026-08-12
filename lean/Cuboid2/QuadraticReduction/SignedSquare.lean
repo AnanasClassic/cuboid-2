@@ -76,6 +76,7 @@ theorem normalizedQuintic_quadratic_division (s a b : ℚ) :
         C (quadraticR1 s a b) * X + C (quadraticR0 s a b) := by
   rw [normalizedQuintic_coefficient_form]
   simp [monicQuadratic, forcedCubic, quadraticR1, quadraticR0]
+  simp only [Polynomial.C_ofNat]
   ring
 
 /-- The exact pair of remainder equations used by every later certificate. -/

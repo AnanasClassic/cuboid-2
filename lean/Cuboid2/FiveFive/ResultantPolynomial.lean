@@ -71,7 +71,9 @@ def fiveFiveResultantFactorPoly (s : ℚ) : ℚ[X] :=
 /-- The coefficient controlling the two ends of the real line is `s^8`. -/
 @[simp] theorem fiveFiveResultantFactorPoly_coeff_sixteen (s : ℚ) :
     (fiveFiveResultantFactorPoly s).coeff 16 = s ^ 8 := by
-  simp [fiveFiveResultantFactorPoly]
+  unfold fiveFiveResultantFactorPoly
+  simp only [coeff_add, coeff_C_mul_X_pow, coeff_C_mul_X, coeff_C]
+  norm_num
 
 /-- For nonzero `s` the explicit polynomial in `y` is nonzero. -/
 theorem fiveFiveResultantFactorPoly_ne_zero

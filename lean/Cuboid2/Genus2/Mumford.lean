@@ -21,7 +21,7 @@ structure MumfordPair (K : Type*) [CommRing K] where
 
 namespace MumfordPair
 
-variable {K : Type*} [CommRing K]
+variable {K : Type*} [CommRing K] [Nontrivial K]
 
 /-- Reducedness conditions specialized to genus two. -/
 def IsReduced (D : MumfordPair K) : Prop :=
@@ -43,8 +43,12 @@ def infinity : MumfordPair K where
 theorem infinity_validOn (f : K[X]) : (infinity : MumfordPair K).ValidOn f := by
   constructor
   · refine ⟨monic_one, ?_, ?_⟩
-    · simp
-    · simp
+    · change degree (1 : K[X]) ≤ 2
+      rw [degree_one]
+      norm_num
+    · change degree (0 : K[X]) < degree (1 : K[X])
+      rw [degree_zero, degree_one]
+      norm_num
   · simp
 
 /-- Mumford representation of the divisor class `(a,r)-∞`. -/
@@ -61,10 +65,16 @@ theorem ofPoint_validOn
     (ofPoint a r).ValidOn f := by
   constructor
   · refine ⟨monic_X_sub_C a, ?_, ?_⟩
-    · simp
+    · change degree (X - C a) ≤ 2
+      rw [degree_X_sub_C]
+      norm_num
     · by_cases hr : r = 0
-      · simp [ofPoint, hr]
-      · simp [ofPoint, hr]
+      · change degree (C r) < degree (X - C a)
+        rw [hr, C_0, degree_zero, degree_X_sub_C]
+        norm_num
+      · change degree (C r) < degree (X - C a)
+        rw [degree_C hr, degree_X_sub_C]
+        norm_num
   · rw [show (ofPoint a r).u = X - C a by rfl, dvd_iff_isRoot]
     simp [ofPoint, IsRoot, hpoint]
 
