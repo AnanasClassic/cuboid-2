@@ -2,12 +2,13 @@ import Cuboid2.FactorizationClassification
 import Cuboid2.CapellQuintic
 import Cuboid2.FiveFive.RootExclusion
 import Cuboid2.DPlus.Basic
+import Cuboid2.QuadraticReduction.GaussianSession1Completion
 
 /-!
 # Final theorem assembly
 
 The theorem below already has the intended public signature and the intended
-contradiction structure.  Three proof-critical arithmetic gaps remain.  They
+contradiction structure.  Two proof-critical arithmetic gaps remain.  They
 are tracked in `lean/FORMALIZATION_STATUS.md`; none is represented by a
 custom axiom declaration.
 -/
@@ -63,11 +64,13 @@ theorem linear_quartic_impossible
     ¬ LinearQuarticCase s := by
   sorry
 
-/-- The signed-square/common-character/direct-D+ completion of the `2+3` case. -/
+/-- The unconditional Gaussian/octic completion of the Sharipov `2+3` case. -/
 theorem quadratic_cubic_impossible
-    {s : ℚ} (hs : 0 < s) (hs1 : s ≠ 1) :
-    ¬ QuadraticCubicCase s := by
-  sorry
+    {p q : ℕ} (hp : 0 < p) (hq : 0 < q)
+    (hcop : Nat.Coprime p q) (hne : p ≠ q) :
+    ¬ QuadraticCubicCase (sharipovParameter p q) :=
+  GaussianSession1Completion.quadratic_cubic_impossible_sharipov
+    hp hq hcop hne
 
 /-- The symmetric `5+5` branch is reduced to its exact normalized root certificate. -/
 theorem symmetric_five_five_impossible
@@ -88,9 +91,7 @@ theorem sharipovPolynomialQ_irreducible
   · exact linear_quartic_impossible
       (sharipovParameter_pos hp hq)
       (sharipovParameter_ne_one hp hq hne)
-  · exact quadratic_cubic_impossible
-      (sharipovParameter_pos hp hq)
-      (sharipovParameter_ne_one hp hq hne)
+  · exact quadratic_cubic_impossible hp hq hcop hne
   · exact symmetric_five_five_impossible
       (sharipovParameter_pos hp hq)
       (sharipovParameter_ne_one hp hq hne)

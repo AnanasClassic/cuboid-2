@@ -1,6 +1,6 @@
 # Formalization status
 
-Last updated: 2026-08-12.
+Last updated: 2026-08-20.
 
 ## Completion criterion
 
@@ -17,21 +17,19 @@ quotient soundness are acceptable.
 
 ## Remaining proof gaps
 
-There are **three** source `sorry`s:
+There are **two** source `sorry`s:
 
 1. `linear_quartic_impossible`;
-2. `quadratic_cubic_impossible`;
-3. `fiveFiveResultantFactor_ne_zero`.
+2. `fiveFiveResultantFactor_ne_zero`.
 
 The derived theorems `fiveFive_reduced_locus_empty` and
 `symmetric_five_five_impossible` contain no local placeholder. No gap is
 hidden behind a custom axiom.
 
-The current execution environment cannot download or run the pinned Lean
-toolchain. GitHub Actions also currently fails before allocating a runner
-(`runner_id = 0`, no executed steps). Therefore the newest source changes are
-pending an actual `lake build`; source presence alone is not described as
-kernel verification.
+The pinned Lean 4.33.0 toolchain now completes a full `lake build`.
+`Cuboid2/AxiomAudit.lean` also runs successfully. Its `native_decide`
+footprint consists of closed finite certificates; the remaining `sorryAx`
+dependency comes from the two source gaps listed above.
 
 ## Closed factorization shell in Lean source
 
@@ -124,24 +122,27 @@ complete quotient lift table.
 **Estimated burden.** High. The explicit Mumford/Cantor and descent checker
 should be shared with the `D+` block.
 
-## Gap 2 — `quadratic_cubic_impossible`
+## Closed — `quadratic_cubic_impossible`
 
-**Statement.** For `s>0`, `s≠1`, the normalized quintic has no monic
-quadratic-times-cubic factorization.
+The final assembly now proves the specialized statement actually needed for
+the cuboid theorem:
 
-**Already represented in Lean source.** Exact remainder identities, both
-physical compact equations, reciprocal character identities, the essential
-factor `2`, the positive map to `D+`, two 71-term projection Bézout
-certificates, boundary identities, and the abstract `p=7` integral
-3-saturation argument.
+```lean
+theorem quadratic_cubic_impossible
+    {p q : ℕ} (hp : 0 < p) (hq : 0 < q)
+    (hcop : Nat.Coprime p q) (hne : p ≠ q) :
+    ¬ QuadraticCubicCase (sharipovParameter p q)
+```
 
-**External proof.** The C012/C035/C039/C040/direct-C041 chain ending at
-`research/proof_simplification_3/dplus_p3_square_abscissa.py`.
+The proof is unconditional. It combines the exact compact-to-elliptic
+transport, Gaussian 2-isogeny descent, finite generation and exact rank and
+torsion normal forms, actual good reduction and saturation at `3`, `7`, and
+`37`, and the split-37 paired formal argument. The resulting classifications
+of both Gaussian covers imply the exact rational-point classification on the
+octic curve, which is consumed by the specialized Sharipov transport theorem.
+No primitivity assumption on the visible rank-one point is used.
 
-**Estimated burden.** Very high. The main subgaps are the exact
-Schaefer--Stoll rank certificate and specialized `3`-adic local analysis.
-
-## Gap 3 — `fiveFiveResultantFactor_ne_zero`
+## Gap 2 — `fiveFiveResultantFactor_ne_zero`
 
 **Statement.** For positive rational `s≠1`, the explicit scalar resultant
 factor has no rational zero in `y`.
@@ -159,7 +160,7 @@ real algebraic geometry stack.
 
 ## Downstream theorem bodies without local `sorry`
 
-The following theorem bodies become axiom-clean immediately when the three
+The following theorem bodies become axiom-clean immediately when the two
 remaining gaps are discharged and the complete project builds:
 
 - `sharipov_composition_reduction`;
@@ -179,5 +180,5 @@ bash scripts/reproduce_lean.sh
 bash scripts/reproduce_lean.sh complete
 ```
 
-Development mode is expected to report `sorryAx` until the three entries
+Development mode is expected to report `sorryAx` until the two entries
 above are discharged. The project is not yet a complete formal verification.
