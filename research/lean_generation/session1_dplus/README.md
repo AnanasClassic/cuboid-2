@@ -1,5 +1,11 @@
 # Session 1 direct `D+` Lean certificate
 
+> **Historical alternative.** The direct `D+` bridge described here remains
+> incomplete as a standalone route, but it is not a dependency of the public
+> theorem. The completed `2+3` formalization uses the Gaussian/octic route in
+> [`lean/Cuboid2/QuadraticReduction/`](../../../lean/Cuboid2/QuadraticReduction/).
+> See the [current formalization status](../../../lean/FORMALIZATION_STATUS.md).
+
 The checked Lean modules are:
 
 - `Cuboid2/DPlus/GlobalDescent.lean`

@@ -5,22 +5,22 @@ without using the original Magma transcript.
 
 For
 
-\[
+$$
 C:\quad w^2=t^5+21t^4+26t^3+10t^2+5t+1,
-\]
+$$
 
 the public LMFDB record is `11008.a.176128.1`.  The exact change of variables
 
-\[
+$$
 X=\frac{t-1}{2(t+1)},\qquad
 Y=-\frac{w}{(t+1)^3}
-\]
+$$
 
 gives its simplified model
 
-\[
+$$
 Y^2=16X^5+8X^4-8X^3-4X^2+1.
-\]
+$$
 
 LMFDB marks the Mordell--Weil group as provably
 `Z + Z/2Z`, the 2-Selmer rank as `2`, and the displayed six rational points
@@ -38,20 +38,20 @@ Run
 
 This is an explicit Schaefer--Stoll descent in
 
-\[
+$$
 \mathbb Q\times\mathbb Q[z]/(z^4-2z-1).
-\]
+$$
 
 It uses PARI's unconditional `bnfcertify` and exact local-square tests, exports
 the complete global and local matrices, and proves
 
-\[
+$$
 \dim_{\mathbf F_2}\operatorname{Sel}^{(2)}(J/\mathbb Q)=2,
 \qquad \operatorname{rank}J(\mathbb Q)\leq1.
-\]
+$$
 
 The global norm-kernel bound has dimension four.  Its exact intersection
-with the complete \(2\)-adic Kummer image consists of four elements (dimension
+with the complete $2$-adic Kummer image consists of four elements (dimension
 two); the real condition preserves these four, and the condition at 43 is
 automatic because the discriminant has 43-adic valuation one.  Two independent
 survivors are the Kummer images of `(1,8)-infinity` and the rational
@@ -69,9 +69,9 @@ sage -python research/linear_factor_completion/sage_chabauty_p5.py
 Together with `two_descent_rank.py`, the script proves exactly, without
 Magma, that
 
-\[
+$$
 C(\mathbb Q)=\{\infty,(-1,0),(0,\pm1),(1,\pm8)\}.
-\]
+$$
 
 It verifies all of the following:
 
@@ -103,10 +103,10 @@ is written out in `chabauty_p5_proof.md`.
 
 The root-to-curve map in arXiv:2601.04241v2 uses
 
-\[
+$$
 U(t)=\frac{2(t^5+6t^4+30t^3+16t^2+9t+2)}
 {t(t-1)^2(t^2+6t+1)},\qquad U=s+s^{-1}.
-\]
+$$
 
 The complete rational-point list gives:
 

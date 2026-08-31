@@ -10,7 +10,9 @@ The formalization is complete only when all of the following hold:
 2. no source file under `Cuboid2/` contains `sorry`;
 3. no project-specific `axiom` or `opaque` declaration exists;
 4. `#print axioms sharipov_second_cuboid_conjecture` contains no `sorryAx` and
-   no project-specific mathematical axiom.
+   no project-specific mathematical axiom; the strict gate accepts only
+   `propext`, `Classical.choice`, `Quot.sound`, and generated
+   `native_decide` certificate axioms.
 
 Standard mathlib foundational axioms such as classical choice, `propext`, and
 quotient soundness are acceptable.
@@ -18,9 +20,9 @@ quotient soundness are acceptable.
 Closed finite propositions discharged by `native_decide` are also accepted
 as a documented computation trust extension. They are not mathematical
 assumptions, but they are not reduced by the kernel alone. The specialized
-Session 2 theorem does not use this extension.
+`1+4` theorem does not use this extension.
 
-## Remaining proof gaps
+## Completion statement
 
 There are **no** source `sorry`s. All three factorization branches and the
 public theorem are closed under the trust model above. No gap is hidden behind
@@ -52,7 +54,7 @@ Cuboid2/CapellFactor.lean
 Cuboid2/CapellQuintic.lean
 ```
 
-## `5+5` progress
+## Closed — symmetric `5+5`
 
 Relevant files:
 
@@ -197,7 +199,8 @@ foundational and closed finite-decision footprint:
 
 ```bash
 grep -R -n -w sorry lean/Cuboid2
-grep -R -n -E '^[[:space:]]*(axiom|opaque)[[:space:]]' lean/Cuboid2
+grep -R -n -E '^[[:space:]]*admit([[:space:]]|$)' lean/Cuboid2
+grep -R -n -E '(^|[[:space:]])(axiom|opaque)[[:space:]]' lean/Cuboid2
 bash scripts/reproduce_lean.sh
 bash scripts/reproduce_lean.sh complete
 ```

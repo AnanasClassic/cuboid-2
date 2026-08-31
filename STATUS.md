@@ -9,6 +9,13 @@ integers `p != q`.  The proof is computer-assisted and exact.  It does not
 depend on the abandoned 64--128 GiB normalization workflow, a bounded-height
 search, or a probabilistic calculation.
 
+The final irreducibility theorem is also formalized in Lean 4 as
+`Cuboid2.sharipov_second_cuboid_conjecture`. The source contains no `sorry`
+and no project-specific mathematical `axiom`/`opaque` declaration; the strict
+audit is `bash scripts/reproduce_lean.sh complete`. The Lean proof establishes
+the same theorem as the recommended paper but uses a specialized
+Gaussian/octic completion of the `2+3` branch.
+
 The factorization classification C003 leaves only `1+4`, `2+3`, and symmetric
 `5+5`.  C004 proves the first case impossible, C005 exactly replays the Sturm
 certificate for the third, and C010 proves that the residual `2+3` locus has

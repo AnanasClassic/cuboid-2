@@ -1,5 +1,10 @@
 # Exact elliptic transport: compute-machine handoff
 
+> **Archived handoff — not a current task.** This high-memory route was not
+> needed for the completed proof or Lean formalization. The direct
+> normalization claim C025 remains an independent research question; see the
+> [current repository status](../../README.md).
+
 Date: 2026-08-06
 
 ## Objective

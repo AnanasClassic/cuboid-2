@@ -1,80 +1,43 @@
-name: Exact low-resource proof completion
+name: Exact arithmetic regression
 
 on:
   workflow_dispatch:
   push:
     branches:
-      - research/second-cuboid-conjecture
-      - research/c041-second-simplification
+      - main
     paths:
-      - .github/workflows/proof-completion-small.yml
-      - CLAIMS.md
-      - notes/quadratic_cubic_completion.md
-      - paper/main.tex
-      - paper/clean2.tex
-      - paper/clean3.tex
-      - notes/c041_simplification_audit.md
-      - notes/c041_second_simplification.md
-      - notes/c041_direct_dplus_simplification.md
-      - research/proof_simplification/c041_structure.py
-      - research/proof_simplification/c041_structure.json
-      - research/proof_simplification_2/**
-      - research/proof_simplification_3/**
-      - research/arithmetic_geometry/low_degree_transport.py
-      - research/arithmetic_geometry/product_character_simplification.py
-      - research/arithmetic_geometry/product_squareclass_valuation.py
-      - research/arithmetic_geometry/product_genus2_**
-      - research/compact_signed_square/reciprocal_quotient/**
-      - research/compact_signed_square/independent_genus2_square_sieve.py
-      - scripts/reproduce.sh
-      - tests/test_low_degree_transport.py
-      - tests/test_product_**
-      - tests/test_reciprocal_quotient.py
-      - tests/test_independent_genus2_square_sieve.py
-      - tests/test_c3_p3_chabauty.py
-      - tests/test_c041_structure.py
-      - tests/test_richelot_isogeny_descent.py
-      - tests/test_dplus_p3_square_abscissa.py
+      - ".github/workflows/proof-completion-small.yml"
+      - "pyproject.toml"
+      - "src/**"
+      - "tests/**"
+      - "scripts/reproduce.sh"
+      - "scripts/replay_5plus5.sh"
+      - "research/**"
+      - "artifacts/**"
+      - "certificates/**"
   pull_request:
+    branches:
+      - main
     paths:
-      - .github/workflows/proof-completion-small.yml
-      - CLAIMS.md
-      - notes/quadratic_cubic_completion.md
-      - paper/main.tex
-      - paper/clean2.tex
-      - paper/clean3.tex
-      - notes/c041_simplification_audit.md
-      - notes/c041_second_simplification.md
-      - notes/c041_direct_dplus_simplification.md
-      - research/proof_simplification/c041_structure.py
-      - research/proof_simplification/c041_structure.json
-      - research/proof_simplification_2/**
-      - research/proof_simplification_3/**
-      - research/arithmetic_geometry/low_degree_transport.py
-      - research/arithmetic_geometry/product_character_simplification.py
-      - research/arithmetic_geometry/product_squareclass_valuation.py
-      - research/arithmetic_geometry/product_genus2_**
-      - research/compact_signed_square/reciprocal_quotient/**
-      - research/compact_signed_square/independent_genus2_square_sieve.py
-      - scripts/reproduce.sh
-      - tests/test_low_degree_transport.py
-      - tests/test_product_**
-      - tests/test_reciprocal_quotient.py
-      - tests/test_independent_genus2_square_sieve.py
-      - tests/test_c3_p3_chabauty.py
-      - tests/test_c041_structure.py
-      - tests/test_richelot_isogeny_descent.py
-      - tests/test_dplus_p3_square_abscissa.py
+      - ".github/workflows/proof-completion-small.yml"
+      - "pyproject.toml"
+      - "src/**"
+      - "tests/**"
+      - "scripts/reproduce.sh"
+      - "scripts/replay_5plus5.sh"
+      - "research/**"
+      - "artifacts/**"
+      - "certificates/**"
 
 permissions:
   contents: read
 
 concurrency:
-  group: exact-proof-completion-${{ github.ref }}
+  group: exact-arithmetic-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  exact-low-resource-proof:
+  exact-arithmetic:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     env:
@@ -83,7 +46,7 @@ jobs:
       PYTHONHASHSEED: "0"
       SYMPY_GROUND_TYPES: python
     steps:
-      - name: Check out the research branch
+      - name: Check out the repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           persist-credentials: false
@@ -98,7 +61,7 @@ jobs:
           .venv/bin/python -m pip install --upgrade pip
           .venv/bin/python -m pip install -e '.[test]'
 
-      - name: Replay the completion certificates
+      - name: Replay the proof-critical certificates
         shell: bash
         run: |
           set -euxo pipefail

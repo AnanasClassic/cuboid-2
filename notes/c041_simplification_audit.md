@@ -6,7 +6,7 @@ This first structural audit found no proof-quality replacement for C041.
 At that stage the existing Schaefer--Stoll descent, index-independent
 `7/23` Mordell--Weil sieve, and exact `p=7` Coleman step remained
 proof-critical.  The subsequent
-`notes/c041_second_simplification.md` proves a direct \(p=3\) replacement
+`notes/c041_second_simplification.md` proves a direct $p=3$ replacement
 for the `7/23` local block; the historical negative conclusions below are
 qualified accordingly.
 
@@ -31,70 +31,70 @@ logical proof of C041.
 
 Let
 
-\[
+$$
  C_3:\quad r^2=4u^8-8u^2+5.
-\]
+$$
 
 Besides the hyperelliptic involution `j:(u,r)->(u,-r)`, there is
 `s:(u,r)->(-u,r)`.  The two positive-genus quotients are
 
-\[
+$$
 \begin{array}{rcll}
  C_3/\langle s\rangle:
  &r^2&=4a^4-8a+5,&a=u^2,\\[1mm]
  C_3/\langle sj\rangle:
  &R^2&=4a^5-8a^2+5a,&a=u^2,\ R=ur.
 \end{array}
-\]
+$$
 
 The differential decomposition is exact:
 
-\[
+$$
 H^0(C_3,\Omega^1)
 =\langle u\,du/r\rangle
 \langle du/r,u^2du/r\rangle.
-\]
+$$
 
 The first summand comes from the elliptic quotient and the second from
 `D+`.  Consequently
 
-\[
+$$
  \operatorname{Jac}(C_3)\sim_{\mathbf Q}
  E_0\times\operatorname{Jac}(D_+).
-\]
+$$
 
 ### Exact identification of the elliptic quotient
 
 Put `t=a-1` and
 
-\[
+$$
  m=\frac{r-1-4t}{t^2}.
-\]
+$$
 
 Substitution gives
 
-\[
+$$
 (m^2-4)t^2+(8m-16)t+2m-8=0,
-\]
+$$
 
 whose discriminant is
 
-\[
+$$
 -8(m-2)(m^2-10m+8).
-\]
+$$
 
 The exact birational coordinates
 
-\[
+$$
 x=2-\frac m2,\qquad
 y=\frac{(m^2-4)t+4m-8}{4}
-\]
+$$
 
 satisfy
 
-\[
+$$
 y^2=x^3-5x+4.
-\]
+$$
 
 Thus `E0` is `E1`, not a new lower-rank quotient.  Its rank is one.  The
 Prym of `C3 -> E0` is the rank-one genus-two factor `Jac(D+)`; the quotient
@@ -107,18 +107,18 @@ For a hyperelliptic curve of genus at least two, every non-hyperelliptic
 automorphism induces a projective transformation preserving the branch
 divisor.  Write such a transformation as
 
-\[
+$$
 u\longmapsto\frac{\alpha u+\beta}{\gamma u+d}.
-\]
+$$
 
 On the chart `d=1`, coefficient comparison in
 
-\[
+$$
 (\gamma u+1)^8
 f\!\left(\frac{\alpha u+\beta}{\gamma u+1}\right)
 =\lambda f(u),
 \qquad f(u)=4u^8-8u^2+5,
-\]
+$$
 
 saturated by
 `inverse_det*(alpha-beta*gamma)-1`, has reduced Gröbner basis
@@ -136,10 +136,10 @@ On the chart `d=0`, normalized by `gamma=1` and saturated by
 `PGL2(Qbar)` branch stabilizer is `{u,-u}`.  Including the hyperelliptic
 involution gives
 
-\[
+$$
 \operatorname{Aut}_{\overline{\mathbf Q}}(C_3)
 \simeq C_2\times C_2.
-\]
+$$
 
 There are therefore no further degree-two elliptic or genus-two quotients
 over `Q` or a small extension (indeed, over any extension).
@@ -148,27 +148,27 @@ over `Q` or a small extension (indeed, over any extension).
 
 At the good prime `3`, exact counts give
 
-\[
+$$
 \#D_+(\mathbf F_3)=6,\qquad
 \#D_+(\mathbf F_9)=14,
-\]
+$$
 
 and the Weil polynomial
 
-\[
+$$
 P_3(T)=T^4+2T^3+4T^2+6T+9.
-\]
+$$
 
 It is irreducible over `Q` and ordinary.  The exact root-ratio resultant is
 
-\[
+$$
 \begin{aligned}
 \operatorname{Res}_T(P_3(T),P_3(zT))
 ={}&81(z-1)^4\\
 &\cdot(3z^4+2z^3+2z^2+2z+3)^2\\
 &\cdot(9z^4+12z^3+10z^2+12z+9).
 \end{aligned}
-\]
+$$
 
 After removing the diagonal factor `(z-1)^4`, the remaining polynomial has
 gcd one with every cyclotomic polynomial whose degree is at most 16.
@@ -177,10 +177,10 @@ degree at most 16, and `phi(n)>=sqrt(n/2)` reduces the finite check to
 `n<=512`.  Thus no quotient of two distinct Frobenius roots is a root of
 unity.  The reduction is absolutely simple, so
 
-\[
+$$
 \operatorname{Jac}(D_+)
 \quad\text{is geometrically simple over }\mathbf Q.
-\]
+$$
 
 This rules out:
 
@@ -196,18 +196,18 @@ The ordinary absolutely simple reductions at `3` and `13` have irreducible
 Frobenius polynomials with `D4` Galois group.  PARI's exact subfield
 calculation gives their unique quadratic subfields:
 
-\[
+$$
 \mathbf Q(\sqrt3),\qquad \mathbf Q(\sqrt{29}),
-\]
+$$
 
 respectively.  A `Q`-rational endomorphism commutes with Frobenius and hence
 embeds into both Frobenius fields.  Since the fields have no common
 nontrivial subfield,
 
-\[
+$$
 \operatorname{End}_{\mathbf Q}(\operatorname{Jac}(D_+))
 \otimes\mathbf Q=\mathbf Q.
-\]
+$$
 
 This excludes rational real multiplication and rational nontrivial
 correspondences.  The calculation does not claim to determine every
@@ -217,10 +217,10 @@ geometric endomorphism of the already absolutely simple surface.
 
 The quartic factor of `D+` has Galois group `D4` and factors over `Q(i)` as
 
-\[
+$$
 4a^4-8a+5=
 (2a^2+2ia-1-2i)(2a^2-2ia-1+2i).
-\]
+$$
 
 Pairing the branch points `0` and infinity supplies the third Richelot
 factor.  The determinant is `-8i` in descending-coefficient convention,
@@ -229,10 +229,10 @@ or `+8i` in the constant--linear--quadratic convention.  The coefficient
 stable-splitting construction therefore descends to the positive rational
 twist
 
-\[
+$$
 \widehat D:\quad
 Y^2=2(2a^2-4a+1)(4a^4+4a^2+5).
-\]
+$$
 
 The negative model recorded in the first version of this audit is only the
 untwisted bracket curve.  Its individual correspondence graph is not
@@ -261,50 +261,50 @@ and Bruin--Doerksen,
 
 This route is attractive because
 
-\[
+$$
 \operatorname{rank}\operatorname{Jac}(C_3)
 =1+1=2<3.
-\]
+$$
 
 In this first audit it did not, however, remove the existing local work.
 
 At `p=3`,
 
-\[
+$$
 \#C_3(\mathbf F_3)=6,
-\]
+$$
 
 and the six disks are exactly the reductions of the two rational points at
 infinity and `(u,r)=(+/-1,+/-1)`.  This looks ideal.  The annihilating
 differential inherited from the `D+` factor reduces to a multiple of
 
-\[
+$$
 (1-u^2)\frac{du}{r}.
-\]
+$$
 
 It vanishes in all four affine disks, and `3<=2g`.  The ordinary one-disk
 Coleman bound therefore does not apply.  A new exact four-disk
 Strassmann calculation would be required.  No such proof-quality calculation
 was obtained in this first audit.  The subsequent audit supplies the missing
 exceptional-disk argument by combining exact Coleman expansions with a small
-integral \(p=7\) saturation lemma.
+integral $p=7$ saturation lemma.
 
 At `p=7`, exact enumeration gives
 
-\[
+$$
 \#C_3(\mathbf F_7)=10.
-\]
+$$
 
 Besides the six occupied disks there are four disks
 
-\[
+$$
 u=3,4,\qquad r=2,5.
-\]
+$$
 
 Under the map to `D+`, these are exactly the two extra square-abscissa
 classes `+/-5` in the torsion-zero component.  At this stage the existing
 `p=23` Mordell--Weil sieve was what proved that no rational point occupied
-them.  The later \(p=3\) argument bypasses these \(p=7\) residue disks
+them.  The later $p=3$ argument bypasses these $p=7$ residue disks
 entirely.
 
 ## 5. Can the existing C041 proof itself be shortened?
@@ -332,7 +332,7 @@ The `23` table, compared modulo `21` with the index-independent argument,
 removes precisely those classes.  A proof that uses the old `p=7` Coleman
 calculation but simply deletes the `p=23` step is invalid.  No single-prime
 replacement with a complete exact local argument was found in this first
-audit; the later direct \(p=3\) proof uses a different integral-lattice
+audit; the later direct $p=3$ proof uses a different integral-lattice
 refinement.
 
 ### Better Chabauty prime
