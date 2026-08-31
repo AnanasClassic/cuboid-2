@@ -1,136 +1,129 @@
 # Sharipov's second cuboid conjecture
 
-This repository studies the irreducibility over `Q` (equivalently `Z`) of
+[![Lean formalization](https://github.com/AnanasClassic/cuboid-2/actions/workflows/lean.yml/badge.svg?branch=main)](https://github.com/AnanasClassic/cuboid-2/actions/workflows/lean.yml)
 
-\[
-Q_{p,q}(t)=q^{20}P_s\!\left(t^2/q^4\right),\qquad
-s=(p/q)^2,
-\]
+This repository contains a computer-assisted proof and a complete Lean 4
+formalization of Sharipov's second cuboid conjecture. For coprime positive
+integers $p\ne q$, the polynomial $Q_{p,q}(t)$ below is irreducible over
+$\mathbb{Z}$, or equivalently over $\mathbb{Q}$.
 
-for coprime positive integers `p != q`, where
+$$
+Q_{p,q}(t)=q^{20}P_s\!\left(\frac{t^2}{q^4}\right),
+\qquad s=\left(\frac pq\right)^2,
+$$
 
-\[
+where
+
+$$
 \begin{aligned}
-P_s(x)={}&x^5+(2+s)(3-2s)x^4
- +(1+10s+4s^2-14s^3+s^4)x^3\\
-&-s(1-14s+4s^2+10s^3+s^4)x^2
--s^3(1+2s)(-2+3s)x-s^5.
+P_s(x)={}&x^5+(2+s)(3-2s)x^4 \\
+&+(1+10s+4s^2-14s^3+s^4)x^3 \\
+&-s(1-14s+4s^2+10s^3+s^4)x^2 \\
+&-s^3(1+2s)(-2+3s)x-s^5.
 \end{aligned}
-\]
+$$
 
-## Current status
+## Status
 
-**The conjecture is proved.**  The proof is computer-assisted but exact: it
-uses symbolic identities, certified number-field arithmetic, exhaustive
-finite-group calculations, and Coleman--Chabauty/Strassmann bounds, not a
-height-bounded search or a probabilistic computation.
+The conjecture is proved. The public Lean theorem is
+[`Cuboid2.sharipov_second_cuboid_conjecture`](lean/Cuboid2/Main.lean):
 
-For reading, start with [`paper/clean3.tex`](paper/clean3.tex), the recommended
-four-page proof.  Its arithmetic core proves the square-abscissa theorem
-directly on
+```lean
+theorem sharipov_second_cuboid_conjecture
+    {p q : ℕ}
+    (hp : 0 < p)
+    (hq : 0 < q)
+    (hcop : Nat.Coprime p q)
+    (hne : p ≠ q) :
+    Irreducible (sharipovPolynomial p q)
+```
 
-\[
-D_+:R^2=4a^5-8a^2+5a.
-\]
+The Lean source contains no `sorry` and no project-specific mathematical
+`axiom` or `opaque` declaration. The axiom audit for the public theorem has
+no `sorryAx`. Its documented trust base includes Lean, mathlib, and the
+native evaluator used by `native_decide` for closed finite computations.
+See [the formalization status](lean/FORMALIZATION_STATUS.md) for the exact
+completion criteria and audit.
 
-[`paper/clean.tex`](paper/clean.tex) is the earlier five-page presentation
-using the original `7/23` square-abscissa route, while
-[`paper/main.tex`](paper/main.tex) is the frozen full research exposition.
-All three prove the same irreducibility theorem, but the recommended
-`clean3` route has fewer arithmetic dependencies.
+The proof is exact: it uses symbolic identities, certified finite
+calculations, number-field arithmetic, descent, and local arguments. It does
+not infer completeness from a bounded-height search or a probabilistic
+calculation.
 
-The previously open quadratic--cubic (`2+3`) case is closed as follows.
+## Start here
 
-1. The signed-square theorem forces the constant of a hypothetical integral
-   quadratic factor to be `B=+d^2` or `B=-d^2`.  The lossless compact model in
-   `research/compact_signed_square/` carries both physical signs to the same
-   irreducible 29-term reciprocal quotient `C8(U,V)=0`.  Exact maps and their
-   inverses identify its admissible normalization with
+- [Lean formalization](lean/README.md) — build instructions, trust model, and
+  source map.
+- [`paper/clean3.tex`](paper/clean3.tex) — the recommended concise
+  mathematical proof.
+- [Formalization status](lean/FORMALIZATION_STATUS.md) — the precise Lean
+  completion and axiom audit.
+- [Claim ledger](CLAIMS.md) and [research status](STATUS.md) — detailed
+  dependencies and independently replayable arithmetic evidence.
+- [Research archive](research/README.md) — certificate generators,
+  alternative routes, and historical investigations.
 
-   \[
-   E_1:y^2=x^3-5x+4.
-   \]
+The Lean development proves the same final irreducibility theorem as the
+paper, but it is not a line-by-line transcription: its three factorization
+branches use specialized proof structures chosen for formal verification.
 
-   Every source, denominator-zero, and projective exceptional fibre is
-   classified directly.  This compact-locus transport bypasses the older
-   still-open direct normalization claim C025.
+## Verify the Lean proof
 
-2. Both physical signs require the same two nonzero square characters `UV`
-   and `1-UV`.  After translating by the rational 2-torsion point on `E1`, an
-   exact identity reduces the second character to
+The project pins Lean 4.33.0 and mathlib at
+`db584cd6d46c92f209a44c0f1c829460d327499d`. With
+[`elan`](https://github.com/leanprover/elan) installed and `lake` available
+on `PATH`, run from the repository root:
 
-   \[
-   z^2=2kh,\qquad
-   h^2-(k^2+2)h+k^2+4k-4=0.
-   \]
+```bash
+bash scripts/reproduce_lean.sh complete
+```
 
-   Valuations give `k=2*epsilon*u^2` and `h=epsilon*v^2`.  An elementary
-   2-adic parity argument excludes `epsilon=-1`; the positive sign maps to
+This builds the project, rejects source placeholders and project-specific
+axioms, prints the axiom set of the public theorem, and rejects anything
+outside the documented foundational and `native_decide` allowlist. The
+equivalent manual commands are:
 
-   \[
-   D_+:R^2=4a^5-8a^2+5a,\qquad a=u^2.
-   \]
+```bash
+cd lean
+lake build
+lake env lean Cuboid2/AxiomAudit.lean
+```
 
-3. A complete Schaefer--Stoll 2-descent at `2,5,17` proves that
-   `Jac(D_+)(Q)` has rank 1, torsion `Z/2Z`, and the required mod-2
-   independence.  The recommended C041 proof then works directly on `D_+` at
-   `p=3`.  Rational-square abscissas can lie only in the disks of
-   `infinity`, `(0,0)`, and `(1,+/-1)`.  The direct annihilator is
+## Build the concise paper
 
-   \[
-   (\lambda-a)\,da/R,\qquad
-   \lambda\equiv7\pmod{27},\quad v_3(\lambda-1)=1.
-   \]
+The recommended paper builds with Tectonic 0.17.0:
 
-   The `(0,0)` disk is excluded for nonzero square abscissas by a nonsquare
-   unit modulo 3.  At `(1,+/-1)`, the small finite-group facts
-   `#J(F_7)=42` and `ord(D mod 7)=21` prove the needed integral 3-saturation
-   without assuming `D` primitive; this forces `a-1 in 9 Z_3`, where an exact
-   Strassmann bound gives uniqueness.  A projective `p=3` expansion treats
-   infinity.  Hence
+```bash
+mkdir -p build/paper
+tectonic --outdir build/paper paper/clean3.tex
+```
 
-   \[
-   \{P\in D_+(\mathbf Q):a(P)\in\mathbf Q^2\}
-   =\{\infty,(0,0),(1,1),(1,-1)\}.
-   \]
+## Replay the external arithmetic
 
-   This route does not use `p=23`, a `p=7` square-abscissa table, a `p=7`
-   formal logarithm, or `p=7` Coleman integration.  The older `7/23` proof
-   remains in the repository as an independent verification.
-
-4. The point at infinity is a transport boundary; `(0,0)` has no rational
-   lift; and the two `a=1` lifts have direct character values `1/2` and `0`.
-   Thus neither physical sign contains an admissible point.  This proves C010
-   and excludes the `2+3` split.
-
-C004 already proves the `1+4` exclusion, while C005 is the exact replay of
-the symmetric `5+5` Sturm certificate.  The complete factorization theorem
-C003 therefore proves irreducibility of `Q_{p,q}(t)` for every pair of
-coprime positive integers `p!=q`.
-
-The older finite congruence sieves, Newton endpoint theorems, genus-33 cover,
-the direct genus-three C041 proof, and failed Kummer/ambient-automorphism
-routes remain in the repository as independent results and audit material.
-
-See [STATUS.md](STATUS.md), [CLAIMS.md](CLAIMS.md), and
-[HANDOFF.md](HANDOFF.md) for the conservative claim ledger and proof state.
-
-## Reproduction
+The Python/SymPy/PARI suite is independent audit material; its output is not
+accepted as an unchecked premise by Lean. A full replay requires Python 3.11
+or newer and the system libraries needed by `cypari2`.
 
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install -e '.[test]'
 PYTHON_BIN=.venv/bin/python bash scripts/reproduce.sh
-```
-
-The run regenerates the exact obstruction polynomials, quotient models, rank
-certificates, and direct `D_+` square-abscissa certificate.
-
-To replay the embedded exact `5+5` script from arXiv:2601.04240:
-
-```bash
 PYTHON_BIN=.venv/bin/python bash scripts/replay_5plus5.sh
 ```
 
-The research concerns an intermediate irreducibility conjecture.  It is not
-equivalent to the nonexistence of perfect cuboids.
+## Repository layout
+
+| Path | Contents |
+|---|---|
+| [`lean/`](lean/) | Lean project and the public theorem |
+| [`paper/`](paper/) | concise and full mathematical expositions |
+| [`src/`](src/) | reusable exact-computation code |
+| [`tests/`](tests/) | regression tests for external certificates |
+| [`artifacts/`](artifacts/) and [`certificates/`](certificates/) | checked exact data |
+| [`research/`](research/) | supporting generators, audits, and superseded routes |
+
+## Scope
+
+This result concerns an intermediate irreducibility conjecture arising in
+the perfect-cuboid program. It does **not** prove or disprove the existence of
+a perfect cuboid.

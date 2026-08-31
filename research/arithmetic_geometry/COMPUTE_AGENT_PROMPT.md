@@ -1,5 +1,10 @@
 # Prompt for the compute-machine agent
 
+> **Archived prompt — do not execute as current instructions.** This runbook
+> predates the completed proof and Lean formalization. The final argument
+> bypasses the direct normalization target C025; see the
+> [current repository status](../../README.md).
+
 Use the connected GitHub repository:
 
 ```text

@@ -1,11 +1,16 @@
 [project]
 name = "second-cuboid-research"
 version = "0.1.0"
+description = "Exact arithmetic and Lean formalization of Sharipov's second cuboid conjecture"
+readme = "README.md"
 requires-python = ">=3.11"
 dependencies = ["sympy==1.14.0"]
 
 [project.optional-dependencies]
 test = ["pytest==9.1.1", "cypari2==2.2.4"]
+
+[project.urls]
+Repository = "https://github.com/AnanasClassic/cuboid-2"
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

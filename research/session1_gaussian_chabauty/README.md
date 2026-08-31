@@ -1,14 +1,16 @@
 # Gaussian 2-isogeny descent and split-prime certificate
 
-This directory records an exact alternative attack on
+This directory records the exact certificate work behind the Gaussian route
+used by the completed Lean formalization of the `2+3` branch:
 
 ```text
 r^2 = 4 u^8 - 8 u^2 + 5,     u,r in Q.
 ```
 
-It is discovery/certificate material, not a replacement for a missing Lean
-global arithmetic theorem.  `verify_certificates.py` checks all finite
-calculations without Sage, Magma, PARI, or floating point arithmetic.
+`verify_certificates.py` independently checks the finite calculations without
+Sage, Magma, PARI, or floating-point arithmetic. The corresponding
+specialized global bridges are now implemented in
+[`lean/Cuboid2/QuadraticReduction/`](../../lean/Cuboid2/QuadraticReduction/).
 
 ## 1. Gaussian split
 
@@ -320,56 +322,25 @@ This is integral because `37` does not divide `12m`; the elliptic
 logarithm kills the 2-torsion.  Therefore rational `X` forces
 `Q=sP`.  Since `X=2u^2`, the affine lifts have exactly `u=+1,-1`.
 
-## 6. Lean theorem inventory and exact blocker
+## 6. Lean formalization status
 
-The finite algebra is friendly to the current repository:
+The blockers described in earlier versions of this note are closed by
+specialized Lean proofs. The implementation includes:
 
-1. Define `Q(i)` as rational pairs and `Z[i]` with
-   `Mathlib.NumberTheory.Zsqrtd.GaussianInt`.
-2. Use `WeierstrassCurve.Affine.Point` for computable group arithmetic
-   over finite fields; alternatively keep the existing explicit
-   affine/projective certificate style.
-3. Check the four local obstruction predicates with `native_decide`.
-4. Check all finite group rows, orders, exponents, and lift exclusions
-   with `native_decide`.
-5. Check the quartic-to-cubic maps and the first-order translation
-   identities with `ring`.
+- Gaussian UFD and square-class support;
+- explicit 2-isogeny descent and weak Mordell--Weil arguments;
+- exact rank, torsion, and index-saturation results;
+- good-reduction and split-prime finite computations;
+- paired formal-parameter and uniqueness arguments;
+- the final theorem
+  `GaussianSession1Completion.quadratic_cubic_impossible_sharipov`.
 
-The global route is **not presently a small drop-in replacement** for
-Session 1.  Mathlib at the pinned revision has no elliptic
-2-isogeny/Selmer descent, no Mordell--Weil finite-generation/rank
-interface, no torsion-injectivity-under-good-reduction theorem, and no
-elliptic formal group or p-adic elliptic logarithm.  The existing
-Jacobian `Point` API supplies the group law but none of these global
-theorems.
-
-A kernel-checked implementation must therefore construct, rather than
-assume, at least these specialized bridges:
-
-```text
-gaussian_descent_support:
-  every alpha class has one of the displayed finite representatives;
-
-two_isogeny_exact_rank:
-  the two alpha image sizes imply rank 1 / rank 0 for these curves;
-
-good_reduction_torsion_and_index:
-  the displayed finite rows imply the torsion and m-coprimality facts;
-
-split37_formal_parameter:
-  common elliptic logarithm parameter z exists at both split places;
-
-split37_unit_linear_unique:
-  the unit linear coefficient and tail valuations force z=0.
-```
-
-The first bridge can be proved elementarily from Gaussian valuations.
-The second still needs a specialized weak Mordell--Weil/height descent
-to turn the finite `E/2E` computation into a global finitely generated
-rank statement.  The fourth and fifth need a specialized formal-group
-construction (or an equivalent all-level congruence induction).
-Treating LMFDB ranks or PARI analytic ranks as premises would not be a
-Lean proof.
+The assembly is in
+[`GaussianSession1Completion.lean`](../../lean/Cuboid2/QuadraticReduction/GaussianSession1Completion.lean)
+and is consumed by the public theorem in
+[`Cuboid2/Main.lean`](../../lean/Cuboid2/Main.lean). Closed finite
+propositions use `native_decide`; database ranks and PARI analytic ranks are
+not premises.
 
 For independent discovery confirmation only, LMFDB records
 
@@ -388,7 +359,6 @@ the stored free generator is `(-1-i,-1-2i)`.  The change
 `x_new=x_old+i`, `y_new=y_old` carries it to
 `H=(-1-2i,-1-2i)` on `E0`, and direct addition gives
 `P=-H+T`.  Thus the database generator is equivalent to `P` modulo
-torsion.  This is a useful consistency check, but its generator status
-is deliberately not a premise of the route above.
-
-These database rows are not used by the finite verifier.
+torsion. This is a useful consistency check, but its generator status is
+deliberately not a premise of the formalization. These database rows are not
+used by the finite verifier.

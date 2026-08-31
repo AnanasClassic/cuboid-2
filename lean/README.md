@@ -1,44 +1,27 @@
 # Lean formalization
 
-This directory is a contained Lean 4/mathlib project for formalizing the
-completed proof in `paper/clean3.tex`.
+This directory is a self-contained Lean 4/mathlib project proving the
+irreducibility theorem stated in the [repository README](../README.md).
 
-## Current status
+## Completion status
 
-The project is a complete Lean formal verification of the stated
-irreducibility theorem under its documented trust model. The final proof is
-assembled through the three cases `1+4`, `2+3`, and symmetric `5+5`, all
-closed with no source `sorry`s or project-specific mathematical
-`axiom`/`opaque` declarations. The pre-existing `2+3` finite computations use
-`native_decide`; the new `1+4` completion does not. Exact audit details are
-listed in
+The formalization is complete under the trust model below. The public theorem
+is assembled from the `1+4`, `2+3`, and symmetric `5+5` cases, and the source
+contains:
+
+- no `sorry`;
+- no project-specific mathematical `axiom` declaration;
+- no project-specific `opaque` declaration;
+- no `sorryAx` in the axiom audit of the public theorem.
+
+The full build and strict audit are run by
+[the Lean CI workflow](../.github/workflows/lean.yml). Exact completion
+criteria and the detailed module inventory are recorded in
 [FORMALIZATION_STATUS.md](FORMALIZATION_STATUS.md).
 
-The polynomial/scaling/factorization-classification shell, including the
-specialized Capell reduction for `P_s(X^2)`, is now written as ordinary Lean
-proof source without local placeholders.  The pinned Lean 4.33.0 project
-completes a full `lake build`, and the strict complete-mode reproduction gate
-finds no `sorryAx` in the public theorem.
-
-No project-specific mathematical `axiom` declarations are used.
-
-## Pinned environment
-
-- Lean: `v4.33.0`
-- mathlib: `db584cd6d46c92f209a44c0f1c829460d327499d`
-  (the `v4.33.0` tag)
-
-The revision is pinned in `lakefile.toml`; the toolchain is pinned in
-`lean-toolchain`.
-
-For a manual bootstrap, use the official Lean release source archive
-[`v4.33.0.tar.gz`](https://github.com/leanprover/lean4/archive/refs/tags/v4.33.0.tar.gz)
-or the official prebuilt Linux archive
-[`lean-4.33.0-linux.tar.zst`](https://github.com/leanprover/lean4/releases/download/v4.33.0/lean-4.33.0-linux.tar.zst).
-The published SHA-256 digest of the Linux archive is
-`4b3fb03c29a1e0a253fb1d11f9bae3725f19a0dc6fc09b3ea16d2c9df3349e2c`.
-
 ## Public theorem
+
+[`Cuboid2/Main.lean`](Cuboid2/Main.lean) exports:
 
 ```lean
 theorem sharipov_second_cuboid_conjecture
@@ -50,74 +33,76 @@ theorem sharipov_second_cuboid_conjecture
     Irreducible (sharipovPolynomial p q)
 ```
 
-`sharipovPolynomial p q : Polynomial ℤ` is defined coefficient-by-coefficient
-from `src/symbolic_reduction.py`, rather than reconstructed from memory.
+The polynomial `sharipovPolynomial p q : Polynomial ℤ` is defined
+coefficient-by-coefficient in [`Cuboid2/Polynomial.lean`](Cuboid2/Polynomial.lean).
+The formalization proves its irreducibility over `ℤ` by first proving the
+corresponding rational statement and then applying the formalized Gauss
+transfer.
 
-## Trusted-computing-base policy
+## Trust model
 
-The intended final trusted base is the Lean kernel plus mathlib.  Python,
-SymPy, PARI, and Sage may generate finite certificate data, but their `PASS`
-results and checksums are not proof premises.  Every imported certificate must
-ultimately be checked by Lean as explicit polynomial identities, finite-field
-arithmetic, matrices, group tables, valuation bounds, or local-series data.
+The theorem is checked by Lean against the pinned mathlib revision. Its axiom
+audit contains the standard foundational axioms used by mathlib and the
+closed-computation extension introduced by `native_decide`; it contains
+neither `sorryAx` nor a project-defined mathematical assumption.
 
-The Lean source currently covers:
+`native_decide` is used for explicit finite calculations, primarily in the
+`2+3` branch. The `1+4` and symmetric `5+5` completions do not add that
+dependency. Python, SymPy, PARI, Sage, JSON status fields, and external
+checksums are not proof premises. They were used to generate or independently
+replay data that Lean checks as concrete identities, finite arithmetic,
+matrices, group tables, valuation bounds, or local-series statements.
 
-- the exact normalized quintic and integer degree-ten polynomial;
-- coefficient, degree, monicity, and primitivity facts;
-- pointwise and exact-polynomial weighted scaling identities;
-- Gauss-lemma transfer from `Polynomial ℤ` to `Polynomial ℚ`;
-- the reducible-quintic `1+4 / 2+3` split;
-- the reflection, contraction, and UFD proof of the specialized symmetric
-  `5+5` Capell alternative;
-- the logical three-case contradiction assembly;
-- the specialized `1+4` completion using signed-square root valuations,
-  Fermat descent, and the joint modulo-three negative cover;
-- the unconditional Gaussian/octic completion of the `2+3` branch;
-- the exact real-algebra root-exclusion certificate closing symmetric `5+5`.
+## Pinned environment
 
-## Reproduction
+- Lean: `v4.33.0`
+- mathlib: `db584cd6d46c92f209a44c0f1c829460d327499d`
+  (the `v4.33.0` tag)
 
-From the repository root:
+The toolchain is pinned in [`lean-toolchain`](lean-toolchain), mathlib is
+pinned in [`lakefile.toml`](lakefile.toml), and the complete transitive Lake
+dependency graph is recorded in
+[`lake-manifest.json`](lake-manifest.json).
 
-```bash
-bash scripts/reproduce_lean.sh
-```
+## Reproduce
 
-This builds the project, rejects project-specific `axiom`/`opaque`
-declarations, reports every remaining `sorry`, and prints the axiom audit for
-the public theorem.
-
-The strict completion gate is:
+Install [`elan`](https://github.com/leanprover/elan), ensure `lake` is on
+`PATH`, and run from the repository root:
 
 ```bash
 bash scripts/reproduce_lean.sh complete
 ```
 
-It additionally fails if any source `sorry` remains or if the final axiom
-audit contains `sorryAx`.
+The script builds the project, rejects project-specific `axiom`/`opaque`
+declarations and source placeholders, prints the public theorem's axiom set,
+and fails on `sorryAx` or any axiom outside the documented foundational and
+`native_decide` allowlist.
 
-Directly inside this directory:
+The equivalent commands from this directory are:
 
 ```bash
 lake build
 lake env lean Cuboid2/AxiomAudit.lean
 ```
 
-## Source layout
+## Proof structure
 
-- `Cuboid2/Polynomial.lean`: exact polynomials, degree facts, and Gauss transfer.
-- `Cuboid2/Factorization.lean`: precise definitions of the three cases.
-- `Cuboid2/FactorizationClassification.lean`: reducible monic quintic split.
-- `Cuboid2/Scaling.lean`: exact root scaling from `Q_{p,q}` to `P_s(X^2)`.
-- `Cuboid2/Capell*.lean`: reflection, contraction, degree descent, factor orbit,
-  and the specialized quintic Capell reduction.
-- `Cuboid2/QuadraticReduction/`: exact algebraic `2+3` certificates.
-- `Cuboid2/LinearQuartic/`: exact specialized `1+4` certificates.
-- `Cuboid2/DPlus/`: direct genus-two route and saturation infrastructure.
-- `Cuboid2/Main.lean`: public theorem and contradiction assembly.
-- `Cuboid2/AxiomAudit.lean`: `#check` and `#print axioms` audit.
+- [`Cuboid2/Polynomial.lean`](Cuboid2/Polynomial.lean): exact integer and
+  rational polynomials, coefficient facts, and Gauss transfer.
+- [`Cuboid2/Scaling.lean`](Cuboid2/Scaling.lean): weighted root scaling from
+  $Q_{p,q}$ to the normalized even polynomial.
+- [`Cuboid2/FactorizationClassification.lean`](Cuboid2/FactorizationClassification.lean)
+  and the `Capell*.lean` modules: the exhaustive `1+4`, `2+3`, and symmetric
+  `5+5` classification.
+- [`Cuboid2/LinearQuartic/`](Cuboid2/LinearQuartic/): the specialized `1+4`
+  completion.
+- [`Cuboid2/QuadraticReduction/`](Cuboid2/QuadraticReduction/): the
+  unconditional Gaussian/octic completion of `2+3`.
+- [`Cuboid2/FiveFive/`](Cuboid2/FiveFive/): exact real-algebra root exclusion
+  closing symmetric `5+5`.
+- [`Cuboid2/Main.lean`](Cuboid2/Main.lean): final case split and public theorem.
+- [`Cuboid2/AxiomAudit.lean`](Cuboid2/AxiomAudit.lean): `#check` and
+  `#print axioms` audit.
 
-Future certificate generators will remain outside the Lean checker or under a
-clearly labelled generation directory.  Generated data is never accepted only
-because its external checksum matches.
+Additional `DPlus/`, `Genus2/`, and certificate modules preserve reusable
+infrastructure and independently checked arithmetic developed along the way.

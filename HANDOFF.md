@@ -1,4 +1,7 @@
-# Handoff
+# Maintainer handoff
+
+This file preserves proof-maintenance invariants and historical route notes.
+It is not an open-task list; the theorem and Lean formalization are complete.
 
 ## Lean formalization roadmap
 
@@ -6,8 +9,8 @@ The mathematical proof and the Lean formalization are complete under the
 documented trust model. Sessions 1 (`2+3`), 2 (`1+4`), and 3 (symmetric
 `5+5`) are closed with no source `sorry`s or project-specific mathematical
 axioms. The pre-existing `2+3` finite computations use `native_decide`;
-Session 2 adds no such dependency. The original four-session plan, exact
-gates, and handoff boundaries are recorded in
+the `1+4` completion adds no such dependency. The original four-session plan,
+exact gates, and handoff boundaries are recorded in
 [`notes/lean_ultra_completion_roadmap.md`](notes/lean_ultra_completion_roadmap.md).
 The final strict audit is reproduced with
 `bash scripts/reproduce_lean.sh complete`.

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - research/second-cuboid-conjecture
+      - main
     paths:
       - "artifacts/genus4_quotient.json"
       - "research/arithmetic_geometry/e_model_sage_transport.py"

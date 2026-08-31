@@ -2,4 +2,22 @@
 __pycache__/
 .pytest_cache/
 *.pyc
+*.egg-info/
+.coverage
+htmlcov/
+build/
+dist/
 
+# Editor and operating-system metadata
+.DS_Store
+
+# LaTeX auxiliary output (PDFs remain trackable release artifacts)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc

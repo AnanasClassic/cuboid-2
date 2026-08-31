@@ -34,9 +34,9 @@ The valuation of `B`, the product of two roots, belongs to
 Every prime divisor of `B` divides `p*q`, because `B` divides the
 constant `-p^10*q^10`.  Every valuation of `B` is even, proving
 
-\[
+$$
 B=\varepsilon d^2,\qquad \varepsilon\in\{+1,-1\}.
-\]
+$$
 
 Thus the normalized constant `b=B/q^8` is also a signed rational
 square.  The sign is a single global choice and cannot vary between
@@ -59,17 +59,17 @@ CRT is applied separately to the two fixed signs, followed by
 inclusion--exclusion.  For every odd prime at most 137, the residual
 density is
 
-\[
+$$
 \frac{13169}{3917894203948032}
 =3.3612444120\ldots\,10^{-12}.
-\]
+$$
 
 Consequently a union of explicit congruence families of density
 
-\[
+$$
 \frac{3917894203934863}{3917894203948032}
 =99.9999999996639\ldots\% 
-\]
+$$
 
 has no rational quadratic factor.  This is an unconditional theorem,
 not a completeness result for the residual family.

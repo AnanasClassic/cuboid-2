@@ -1,5 +1,10 @@
 # Exact Weierstrass-model computation: execution blocker
 
+> **Historical route-specific blocker.** This document does not describe the
+> current theorem status. The completed proof and Lean formalization bypass
+> this high-memory normalization route; see the
+> [current repository status](../../README.md).
+
 Status updated at 2026-08-06.
 
 ## Current operational status
