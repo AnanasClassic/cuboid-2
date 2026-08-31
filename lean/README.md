@@ -5,19 +5,22 @@ completed proof in `paper/clean3.tex`.
 
 ## Current status
 
-The project is **not yet a complete formal verification**.  The exact public
-theorem is present and the final proof is assembled through the three cases
-`1+4`, `2+3`, and symmetric `5+5`.  Three proof-critical arithmetic theorems
-still use temporary `sorry` placeholders; their exact statements and
-certificate dependencies are listed in
+The project is a complete Lean formal verification of the stated
+irreducibility theorem under its documented trust model. The final proof is
+assembled through the three cases `1+4`, `2+3`, and symmetric `5+5`, all
+closed with no source `sorry`s or project-specific mathematical
+`axiom`/`opaque` declarations. The pre-existing `2+3` finite computations use
+`native_decide`; the new `1+4` completion does not. Exact audit details are
+listed in
 [FORMALIZATION_STATUS.md](FORMALIZATION_STATUS.md).
 
 The polynomial/scaling/factorization-classification shell, including the
 specialized Capell reduction for `P_s(X^2)`, is now written as ordinary Lean
-proof source without local placeholders.  It still requires a real
-`lake build` before being called kernel-checked.
+proof source without local placeholders.  The pinned Lean 4.33.0 project
+completes a full `lake build`, and the strict complete-mode reproduction gate
+finds no `sorryAx` in the public theorem.
 
-No project-specific `axiom` declarations are used.
+No project-specific mathematical `axiom` declarations are used.
 
 ## Pinned environment
 
@@ -68,10 +71,10 @@ The Lean source currently covers:
 - the reflection, contraction, and UFD proof of the specialized symmetric
   `5+5` Capell alternative;
 - the logical three-case contradiction assembly;
-- substantial exact algebra from the `2+3` reduction;
-- the exact octic-to-`D+` map and initial local/infinity algebra.
-
-The arithmetic-geometric certificate checkers remain under construction.
+- the specialized `1+4` completion using signed-square root valuations,
+  Fermat descent, and the joint modulo-three negative cover;
+- the unconditional Gaussian/octic completion of the `2+3` branch;
+- the exact real-algebra root-exclusion certificate closing symmetric `5+5`.
 
 ## Reproduction
 
@@ -110,6 +113,7 @@ lake env lean Cuboid2/AxiomAudit.lean
 - `Cuboid2/Capell*.lean`: reflection, contraction, degree descent, factor orbit,
   and the specialized quintic Capell reduction.
 - `Cuboid2/QuadraticReduction/`: exact algebraic `2+3` certificates.
+- `Cuboid2/LinearQuartic/`: exact specialized `1+4` certificates.
 - `Cuboid2/DPlus/`: direct genus-two route and saturation infrastructure.
 - `Cuboid2/Main.lean`: public theorem and contradiction assembly.
 - `Cuboid2/AxiomAudit.lean`: `#check` and `#print axioms` audit.

@@ -1,10 +1,18 @@
 # Lean Ultra completion roadmap
 
-This is the operational roadmap for completing the kernel-checked Lean proof.
-It supplements the mathematical handoff in `HANDOFF.md`: the paper proof is
-complete, but the Lean formalization is not.
+This is the historical operational roadmap used to complete the Lean proof
+under the trust model documented in `lean/FORMALIZATION_STATUS.md`.
 
-## Baseline
+**Completion note (2026-08-31).** All four sessions are complete. The source
+`sorry` count is zero, the project-specific `axiom`/`opaque` count is zero,
+`lake build` passes, and `bash scripts/reproduce_lean.sh complete` passes.
+Session 2 was ultimately closed by a theorem specialized to
+`s=(p/q)²`: signed-square root valuations, signed-square inverse-slope
+transport, a Fermat descent for the positive cover, and a joint 3-adic
+argument for the negative cover. The generic arbitrary-`s` Chabauty route
+below remains historical planning material and is not a dependency.
+
+## Historical baseline
 
 - Repository: `AnanasClassic/cuboid-2`
 - Branch: `formalization/lean`
@@ -25,7 +33,7 @@ The three remaining source gaps are:
 Do not interpret the small `sorry` count as three small lemmas.  The remaining
 statements contain the global arithmetic-geometry closures.
 
-## Session 1: close `2+3` completely
+## Session 1 (closed): `2+3`
 
 Work from the already checked signed-square, compact, reciprocal,
 common-character, valuation, finite-group and local-series modules.
@@ -55,7 +63,7 @@ Do not build a generic arithmetic-geometry library.  Store explicit
 certificates and make Lean check their polynomial, finite-field, group-law and
 valuation identities.
 
-## Session 2: close `1+4` completely
+## Session 2 (closed): `1+4`
 
 Reuse the checked modules in `LinearQuartic`, especially finite counts, local
 `p=5` series, descent tables and `DescentCompletion`.
@@ -83,7 +91,7 @@ Finite tables alone are not a global completeness theorem.  Do not leave the
 existing bridge structure as an assumption: construct its instance for the
 actual curve.
 
-## Session 3: close `5+5` completely
+## Session 3 (closed): `5+5`
 
 The existing algebraic reduction and resultant machinery should be reused.
 The missing endpoint is an exact real-algebra certificate.
@@ -113,7 +121,7 @@ Definition of done:
 Numerical SDP output is discovery data, not a proof premise.  Do not commit a
 floating-point tolerance claim or a new abstract bridge assumption.
 
-## Session 4: final integration and audit
+## Session 4 (closed): final integration and audit
 
 1. Ensure final assembly uses the specialized `p,q` theorem for `2+3`; the
    current overly general placeholder must not survive.

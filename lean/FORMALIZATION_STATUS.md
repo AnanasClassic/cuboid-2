@@ -1,6 +1,6 @@
 # Formalization status
 
-Last updated: 2026-08-20.
+Last updated: 2026-08-31.
 
 ## Completion criterion
 
@@ -15,24 +15,24 @@ The formalization is complete only when all of the following hold:
 Standard mathlib foundational axioms such as classical choice, `propext`, and
 quotient soundness are acceptable.
 
+Closed finite propositions discharged by `native_decide` are also accepted
+as a documented computation trust extension. They are not mathematical
+assumptions, but they are not reduced by the kernel alone. The specialized
+Session 2 theorem does not use this extension.
+
 ## Remaining proof gaps
 
-There is **one** source `sorry`:
+There are **no** source `sorry`s. All three factorization branches and the
+public theorem are closed under the trust model above. No gap is hidden behind
+a custom mathematical axiom or `opaque` declaration.
 
-1. `linear_quartic_impossible`.
-
-The derived theorems `fiveFive_reduced_locus_empty` and
-`symmetric_five_five_impossible` are now closed by ordinary proof terms. No
-gap is hidden behind a custom axiom.
-
-The pinned Lean 4.33.0 toolchain now completes a full `lake build`.
-`Cuboid2/AxiomAudit.lean` also runs successfully. Its `native_decide`
-footprint consists of closed finite certificates; the remaining `sorryAx`
-dependency comes only from the Session 2 source gap listed above.
+The pinned Lean 4.33.0 toolchain completes a full `lake build`, and
+`Cuboid2/AxiomAudit.lean` reports no `sorryAx`. Its non-foundational axiom
+footprint consists only of closed `native_decide` certificates.
 
 ## Closed factorization shell in Lean source
 
-The following have ordinary Lean proof bodies rather than placeholders:
+The following have Lean theorem bodies rather than placeholders:
 
 - reducible monic quintic `→` rational linear factor or monic `2+3` split;
 - exact scaling `Q_{p,q}=scaleRoots(P_s(X^2),q^2)` and irreducibility transfer;
@@ -114,16 +114,39 @@ compactness step, derivative argument, and interval dispatch is checked by
 Lean. PARI/SymPy output and the replay checksum were generation and audit aids,
 not proof premises.
 
-## Gap 1 — `linear_quartic_impossible`
+## Closed — `linear_quartic_impossible`
 
-**Statement.** For `s>0`, `s≠1`, the normalized quintic has no rational root.
+The final assembly proves the specialized statement actually needed for
+Sharipov's polynomial:
 
-**External proof.** `research/linear_factor_completion/`, including the exact
-Schaefer--Stoll rank certificate, `p=5` Coleman/Strassmann argument, and
-complete quotient lift table.
+```lean
+theorem linear_quartic_impossible
+    {p q : ℕ} (hp : 0 < p) (hq : 0 < q)
+    (hcop : Nat.Coprime p q) (hne : p ≠ q) :
+    ¬ LinearQuarticCase (sharipovParameter p q)
+```
 
-**Estimated burden.** High. The explicit Mumford/Cantor and descent checker
-should be shared with the `D+` block.
+The proof does not assume the more general rational-point classification for
+an arbitrary positive parameter. Instead, it uses the extra arithmetic of
+`s=(p/q)²`:
+
+- a rational root scales to an integral root of the homogeneous quintic;
+- its prime valuations are `0`, `2k`, or `4k`, so the root is a signed
+  rational square;
+- the inverse-slope map preserves that signed-square class;
+- the positive cover is reduced to Fermat's fourth-power descent;
+- the negative cover is combined with the original genus-two equation, and
+  exact cancellation of the common 3-adic factor gives incompatible nonzero
+  residues modulo three.
+
+The implementation is in:
+
+```text
+Cuboid2/LinearQuartic/FermatAuxiliary.lean
+Cuboid2/LinearQuartic/SharipovCompletion.lean
+Cuboid2/LinearQuartic/SignedSquareCovers.lean
+Cuboid2/LinearQuartic/SharipovImpossibility.lean
+```
 
 ## Closed — `quadratic_cubic_impossible`
 
@@ -157,10 +180,10 @@ first-contact lemma transports the seven exact real SOS/LDL sample
 certificates across the complementary cells. Rational nonvanishing of P6 and
 P28 ensures that every admissible rational parameter lies in one such cell.
 
-## Downstream theorem bodies without local `sorry`
+## Axiom-clean downstream theorem bodies
 
-The following theorem bodies become axiom-clean immediately when the one
-remaining Session 2 gap is discharged and the complete project builds:
+The following theorem bodies are now axiom-clean apart from the accepted
+foundational and closed finite-decision footprint:
 
 - `sharipov_composition_reduction`;
 - `sharipov_factorization_classification`;
@@ -179,6 +202,6 @@ bash scripts/reproduce_lean.sh
 bash scripts/reproduce_lean.sh complete
 ```
 
-Development mode is expected to report `sorryAx` until the one remaining
-Session 2 entry above is discharged. The project is not yet a complete formal
-verification.
+Both development and complete modes pass. In particular, complete mode finds
+zero source placeholders, zero project-specific `axiom`/`opaque`
+declarations, and no `sorryAx` in the public theorem.

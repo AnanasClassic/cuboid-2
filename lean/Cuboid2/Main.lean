@@ -3,14 +3,14 @@ import Cuboid2.CapellQuintic
 import Cuboid2.FiveFive.RootExclusion
 import Cuboid2.DPlus.Basic
 import Cuboid2.QuadraticReduction.GaussianSession1Completion
+import Cuboid2.LinearQuartic.SharipovImpossibility
 
 /-!
 # Final theorem assembly
 
-The theorem below already has the intended public signature and the intended
-contradiction structure.  Two proof-critical arithmetic gaps remain.  They
-are tracked in `lean/FORMALIZATION_STATUS.md`; none is represented by a
-custom axiom declaration.
+The theorem below has the intended public signature and contradiction
+structure.  Each of the `1+4`, `2+3`, and symmetric `5+5` branches is closed
+by an ordinary Lean proof term.
 -/
 
 namespace Cuboid2
@@ -58,11 +58,12 @@ theorem sharipov_factorization_classification
     · exact Or.inr (Or.inl hquadratic)
   · exact Or.inr (Or.inr hsymmetric)
 
-/-- The exact linear-factor completion from `research/linear_factor_completion/`. -/
+/-- The exact linear-factor completion at the Sharipov square parameter. -/
 theorem linear_quartic_impossible
-    {s : ℚ} (hs : 0 < s) (hs1 : s ≠ 1) :
-    ¬ LinearQuarticCase s := by
-  sorry
+    {p q : ℕ} (hp : 0 < p) (hq : 0 < q)
+    (hcop : Nat.Coprime p q) (hne : p ≠ q) :
+    ¬ LinearQuarticCase (sharipovParameter p q) :=
+  linear_quartic_impossible_sharipov hp hq hcop hne
 
 /-- The unconditional Gaussian/octic completion of the Sharipov `2+3` case. -/
 theorem quadratic_cubic_impossible
@@ -88,9 +89,7 @@ theorem sharipovPolynomialQ_irreducible
     Irreducible (sharipovPolynomialQ p q) := by
   apply irreducible_of_factorization_cases
   · exact sharipov_factorization_classification hp hq hcop hne
-  · exact linear_quartic_impossible
-      (sharipovParameter_pos hp hq)
-      (sharipovParameter_ne_one hp hq hne)
+  · exact linear_quartic_impossible hp hq hcop hne
   · exact quadratic_cubic_impossible hp hq hcop hne
   · exact symmetric_five_five_impossible
       (sharipovParameter_pos hp hq)
