@@ -1,0 +1,238 @@
+{
+  "field": {
+    "name": "Q(i)",
+    "relation": "i^2+1=0",
+    "lambda": [1, 1],
+    "pi": [1, 2],
+    "rho": [1, 4]
+  },
+  "quartics": {
+    "q": "2*u^4 + 2*i*u^2 - 1 - 2*i",
+    "C0": "v^2=q(u)",
+    "C1": "w^2=-i*q(u)"
+  },
+  "elliptic_curves": {
+    "E0": {
+      "A": [0, 2],
+      "B": [-2, -4],
+      "equation": "Y^2=X^3+A*X^2+B*X",
+      "map": {"X": "2*u^2", "Y": "2*u*v"},
+      "P": [[2, 0], [2, 0]],
+      "T": [[0, 0], [0, 0]],
+      "descent_candidates": ["1", "i", "pi", "i*pi"],
+      "descent_image_witnesses": {
+        "1": "O",
+        "i": "P",
+        "i*pi": "T",
+        "pi": "P+T"
+      }
+    },
+    "E0_dual": {
+      "A": [0, -4],
+      "B": [4, 16],
+      "descent_candidates": ["1", "i", "rho", "i*rho"],
+      "visible": ["1", "rho"],
+      "local_obstructions": [
+        {"d": [0, 1], "modulus": 16},
+        {"d": [-4, 1], "modulus": 16}
+      ]
+    },
+    "E1": {
+      "A": [2, 0],
+      "B": [2, 4],
+      "equation": "Y^2=X^3+A*X^2+B*X",
+      "map": {"X": "-2*i*u^2", "Y": "-2*i*u*w"},
+      "T": [[0, 0], [0, 0]],
+      "descent_candidates": ["1", "i", "pi", "i*pi"],
+      "visible": ["1", "i*pi"],
+      "local_obstructions": [
+        {"d": [0, 1], "modulus": 8},
+        {"d": [1, 2], "modulus": 4}
+      ]
+    },
+    "E1_dual": {
+      "A": [-4, 0],
+      "B": [-4, -16],
+      "descent_candidates": ["1", "i", "rho", "i*rho"],
+      "visible": ["1", "rho"],
+      "local_obstructions": [
+        {"d": [0, 1], "modulus": 32},
+        {"d": [-4, 1], "modulus": 32}
+      ]
+    }
+  },
+  "good_reduction_counts": {
+    "E0": [
+      {"p": 13, "i": 5, "cardinality": 12},
+      {"p": 13, "i": 8, "cardinality": 18},
+      {"p": 29, "i": 12, "cardinality": 28},
+      {"p": 29, "i": 17, "cardinality": 38}
+    ],
+    "E1": [
+      {"p": 13, "i": 5, "cardinality": 16},
+      {"p": 13, "i": 8, "cardinality": 10},
+      {"p": 29, "i": 12, "cardinality": 32},
+      {"p": 29, "i": 17, "cardinality": 22}
+    ]
+  },
+  "index_certificates": [
+    {
+      "prime_divisor_excluded_from_index": 3,
+      "p": 37,
+      "i": 6,
+      "cardinality": 48,
+      "P_order": 12,
+      "half_order_multiple": [26, 0]
+    },
+    {
+      "prime_divisor_excluded_from_index": 7,
+      "p": 29,
+      "i": 12,
+      "cardinality": 28,
+      "P_order": 14,
+      "half_order_multiple": [0, 0]
+    },
+    {
+      "prime_divisor_excluded_from_index": 37,
+      "p": 157,
+      "i": 28,
+      "cardinality": 148,
+      "P_order": 74,
+      "half_order_multiple": [92, 0]
+    }
+  ],
+  "split37": {
+    "p": 37,
+    "roots_mod_p": [6, 31],
+    "roots_mod_p2": [117, 1252],
+    "plus": {
+      "A": 12,
+      "B": 11,
+      "cardinality": 48,
+      "exponent": 12,
+      "P_order": 12,
+      "P_multiples_0_to_11": [
+        null,
+        [2, 2],
+        [10, 4],
+        [20, 12],
+        [33, 26],
+        [6, 14],
+        [26, 0],
+        [6, 23],
+        [33, 11],
+        [20, 25],
+        [10, 33],
+        [2, 35]
+      ],
+      "P_multiples_plus_T_0_to_11": [
+        [0, 0],
+        [24, 13],
+        [27, 4],
+        [32, 3],
+        [25, 33],
+        [8, 6],
+        [36, 0],
+        [8, 31],
+        [25, 4],
+        [32, 34],
+        [27, 33],
+        [24, 24]
+      ]
+    },
+    "minus": {
+      "A": 25,
+      "B": 22,
+      "cardinality": 42,
+      "exponent": 42,
+      "P_order": 6,
+      "P_multiples_0_to_11": [
+        null,
+        [2, 2],
+        [11, 11],
+        [0, 0],
+        [11, 26],
+        [2, 35],
+        null,
+        [2, 2],
+        [11, 11],
+        [0, 0],
+        [11, 26],
+        [2, 35]
+      ],
+      "P_multiples_plus_T_0_to_11": [
+        [0, 0],
+        [11, 26],
+        [2, 35],
+        null,
+        [2, 2],
+        [11, 11],
+        [0, 0],
+        [11, 26],
+        [2, 35],
+        null,
+        [2, 2],
+        [11, 11]
+      ]
+    },
+    "paired_equal_x_rows": {
+      "without_T": [0, 1, 11],
+      "with_T": [0]
+    },
+    "leading_coefficient_2_is_square": false,
+    "q0_at_plus_embedding": 24,
+    "q0_is_square": false,
+    "formal": {
+      "R": "12*P",
+      "t_definition": "-x/y",
+      "plus_mod_1369_trace": {
+        "i": 117,
+        "A": 234,
+        "B": 899,
+        "multiples_P_1_to_6": [
+          [2, 2],
+          [10, 411],
+          [464, 678],
+          [329, 1173],
+          [931, 347],
+          [655, 370]
+        ],
+        "double_6P_projective_N_D_X_Y_Z": [998, 740, 741, 1111, 740]
+      },
+      "minus_mod_1369_trace": {
+        "i": 1252,
+        "A": 1135,
+        "B": 466,
+        "multiples_P_1_to_3": [
+          [2, 2],
+          [677, 1306],
+          [0, 444]
+        ],
+        "double_3P_projective_N_D_X_Y_Z": [466, 888, 854, 415, 888],
+        "t_6P": 1036,
+        "t_12P_from_formal_doubling": 703
+      },
+      "t_R_plus_mod_1369": 629,
+      "t_R_minus_mod_1369": 703,
+      "t_R_plus_div_37_mod_37": 17,
+      "t_R_minus_div_37_mod_37": 19,
+      "P_disk_difference_linear_mod_37": 29,
+      "minus_P_disk_difference_linear_mod_37": 8
+    }
+  },
+  "external_discovery_only": {
+    "E0_lmfdb": "2.0.4.1-87040.4-l1",
+    "E0_rank_bounds": [1, 1],
+    "E0_lmfdb_model_generator": {
+      "x": [-1, -1],
+      "y": [-1, -2]
+    },
+    "E0_generator_on_original_model": {
+      "x": [-1, -2],
+      "y": [-1, -2],
+      "relation": "P=-H+T"
+    },
+    "E1_lmfdb": "2.0.4.1-87040.4-ba1",
+    "E1_rank_bounds": [0, 0]
+  }
+}

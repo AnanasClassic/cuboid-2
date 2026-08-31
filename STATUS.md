@@ -1,6 +1,6 @@
 # Status
 
-Date: 2026-08-11
+Date: 2026-08-31
 
 ## Bottom line
 
@@ -156,6 +156,18 @@ but are not dependencies of `paper/clean3.tex`.
   genus-three C041 route, and Richelot alternative remain independent results.
 
 ## Reproduction
+
+The Lean 4.33.0 formalization is also complete. All three factorization
+branches are connected to the public theorem
+`sharipov_second_cuboid_conjecture`; the source contains no `sorry` and no
+project-specific `axiom`/`opaque` declaration. Its strict gate is:
+
+```bash
+bash scripts/reproduce_lean.sh complete
+```
+
+The printed axiom set contains standard foundational axioms and closed
+`native_decide` certificates, but no `sorryAx`.
 
 ```bash
 python3 -m venv .venv
