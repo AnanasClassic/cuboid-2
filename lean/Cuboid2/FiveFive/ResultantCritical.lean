@@ -6,8 +6,9 @@ import Mathlib.Analysis.Calculus.Deriv.Polynomial
 # Critical-locus certificate for the `5+5` fibre polynomial
 
 The two large polynomials below are exact fraction-free Bézout data. The
-multiplication-back identity is checked by `ring`; the external generator and
-its resultant computation are not proof premises.
+multiplication-back identity is checked coefficient-wise by `ring`
+normalization; the external generator and its resultant computation are not
+proof premises.
 -/
 
 namespace Cuboid2
@@ -2555,6 +2556,238 @@ def fiveFiveCriticalBezoutV (s y : ℝ) : ℝ :=
       fiveFiveCriticalBezoutVCoeff1 s * y +
       fiveFiveCriticalBezoutVCoeff0 s
 
+/-- Polynomial form of the first critical-locus Bézout multiplier. -/
+private def fiveFiveCriticalBezoutUPolyReal (s : ℝ) : ℝ[X] :=
+  C (fiveFiveCriticalBezoutUCoeff14 s) * X ^ 14 +
+      C (fiveFiveCriticalBezoutUCoeff13 s) * X ^ 13 +
+      C (fiveFiveCriticalBezoutUCoeff12 s) * X ^ 12 +
+      C (fiveFiveCriticalBezoutUCoeff11 s) * X ^ 11 +
+      C (fiveFiveCriticalBezoutUCoeff10 s) * X ^ 10 +
+      C (fiveFiveCriticalBezoutUCoeff9 s) * X ^ 9 +
+      C (fiveFiveCriticalBezoutUCoeff8 s) * X ^ 8 +
+      C (fiveFiveCriticalBezoutUCoeff7 s) * X ^ 7 +
+      C (fiveFiveCriticalBezoutUCoeff6 s) * X ^ 6 +
+      C (fiveFiveCriticalBezoutUCoeff5 s) * X ^ 5 +
+      C (fiveFiveCriticalBezoutUCoeff4 s) * X ^ 4 +
+      C (fiveFiveCriticalBezoutUCoeff3 s) * X ^ 3 +
+      C (fiveFiveCriticalBezoutUCoeff2 s) * X ^ 2 +
+      C (fiveFiveCriticalBezoutUCoeff1 s) * X +
+      C (fiveFiveCriticalBezoutUCoeff0 s)
+
+/-- Polynomial form of the second critical-locus Bézout multiplier. -/
+private def fiveFiveCriticalBezoutVPolyReal (s : ℝ) : ℝ[X] :=
+  C (fiveFiveCriticalBezoutVCoeff15 s) * X ^ 15 +
+      C (fiveFiveCriticalBezoutVCoeff14 s) * X ^ 14 +
+      C (fiveFiveCriticalBezoutVCoeff13 s) * X ^ 13 +
+      C (fiveFiveCriticalBezoutVCoeff12 s) * X ^ 12 +
+      C (fiveFiveCriticalBezoutVCoeff11 s) * X ^ 11 +
+      C (fiveFiveCriticalBezoutVCoeff10 s) * X ^ 10 +
+      C (fiveFiveCriticalBezoutVCoeff9 s) * X ^ 9 +
+      C (fiveFiveCriticalBezoutVCoeff8 s) * X ^ 8 +
+      C (fiveFiveCriticalBezoutVCoeff7 s) * X ^ 7 +
+      C (fiveFiveCriticalBezoutVCoeff6 s) * X ^ 6 +
+      C (fiveFiveCriticalBezoutVCoeff5 s) * X ^ 5 +
+      C (fiveFiveCriticalBezoutVCoeff4 s) * X ^ 4 +
+      C (fiveFiveCriticalBezoutVCoeff3 s) * X ^ 3 +
+      C (fiveFiveCriticalBezoutVCoeff2 s) * X ^ 2 +
+      C (fiveFiveCriticalBezoutVCoeff1 s) * X +
+      C (fiveFiveCriticalBezoutVCoeff0 s)
+
+@[simp] private theorem eval_fiveFiveCriticalBezoutUPolyReal
+    (s y : ℝ) :
+    (fiveFiveCriticalBezoutUPolyReal s).eval y =
+      fiveFiveCriticalBezoutU s y := by
+  simp [fiveFiveCriticalBezoutUPolyReal, fiveFiveCriticalBezoutU]
+
+@[simp] private theorem eval_fiveFiveCriticalBezoutVPolyReal
+    (s y : ℝ) :
+    (fiveFiveCriticalBezoutVPolyReal s).eval y =
+      fiveFiveCriticalBezoutV s y := by
+  simp [fiveFiveCriticalBezoutVPolyReal, fiveFiveCriticalBezoutV]
+
+@[simp] private theorem eval_fiveFiveResultantFactorPolyReal_private
+    (s y : ℝ) :
+    (fiveFiveResultantFactorPolyReal s).eval y =
+      fiveFiveResultantFactorReal s y := by
+  simp [fiveFiveResultantFactorPolyReal, fiveFiveResultantFactorReal]
+
+@[simp] private theorem eval_derivative_fiveFiveResultantFactorPolyReal_private
+    (s y : ℝ) :
+    (fiveFiveResultantFactorPolyReal s).derivative.eval y =
+      fiveFiveResultantFactorDerivativeReal s y := by
+  simp [fiveFiveResultantFactorPolyReal,
+    fiveFiveResultantFactorDerivativeReal]
+  ring
+
+private def fiveFiveCriticalBezoutCombinationPolyReal (s : ℝ) : ℝ[X] :=
+  fiveFiveCriticalBezoutUPolyReal s * fiveFiveResultantFactorPolyReal s +
+    fiveFiveCriticalBezoutVPolyReal s *
+      (fiveFiveResultantFactorPolyReal s).derivative
+
+private def fiveFiveCriticalBezoutCertificatePolyReal (s : ℝ) : ℝ[X] :=
+  C (274877906944 * s ^ 5 * (s - 1) ^ 10 * (s + 1) ^ 3 *
+    fiveFiveDiscriminantP6Real s *
+    (fiveFiveDiscriminantP28Real s) ^ 2)
+
+local macro "verify_fiveFive_critical_coefficient" : tactic =>
+  `(tactic|
+    unfold fiveFiveCriticalBezoutCombinationPolyReal
+      fiveFiveCriticalBezoutCertificatePolyReal <;>
+    rw [Polynomial.coeff_add, Polynomial.coeff_C,
+      Polynomial.coeff_mul, Polynomial.coeff_mul] <;>
+    simp_rw [Polynomial.coeff_derivative] <;>
+    simp [fiveFiveCriticalBezoutUPolyReal,
+      fiveFiveCriticalBezoutVPolyReal, fiveFiveResultantFactorPolyReal,
+      Finset.HasAntidiagonal.antidiagonal,
+      Polynomial.coeff_X_pow, Polynomial.coeff_X] <;>
+    simp only [fiveFiveCriticalBezoutUCoeff14,
+      fiveFiveCriticalBezoutUCoeff13, fiveFiveCriticalBezoutUCoeff12,
+      fiveFiveCriticalBezoutUCoeff11, fiveFiveCriticalBezoutUCoeff10,
+      fiveFiveCriticalBezoutUCoeff9, fiveFiveCriticalBezoutUCoeff8,
+      fiveFiveCriticalBezoutUCoeff7, fiveFiveCriticalBezoutUCoeff6,
+      fiveFiveCriticalBezoutUCoeff5, fiveFiveCriticalBezoutUCoeff4,
+      fiveFiveCriticalBezoutUCoeff3, fiveFiveCriticalBezoutUCoeff2,
+      fiveFiveCriticalBezoutUCoeff1, fiveFiveCriticalBezoutUCoeff0,
+      fiveFiveCriticalBezoutVCoeff15, fiveFiveCriticalBezoutVCoeff14,
+      fiveFiveCriticalBezoutVCoeff13, fiveFiveCriticalBezoutVCoeff12,
+      fiveFiveCriticalBezoutVCoeff11, fiveFiveCriticalBezoutVCoeff10,
+      fiveFiveCriticalBezoutVCoeff9, fiveFiveCriticalBezoutVCoeff8,
+      fiveFiveCriticalBezoutVCoeff7, fiveFiveCriticalBezoutVCoeff6,
+      fiveFiveCriticalBezoutVCoeff5, fiveFiveCriticalBezoutVCoeff4,
+      fiveFiveCriticalBezoutVCoeff3, fiveFiveCriticalBezoutVCoeff2,
+      fiveFiveCriticalBezoutVCoeff1, fiveFiveCriticalBezoutVCoeff0,
+      fiveFiveResultantFactorRealCoeff16,
+      fiveFiveResultantFactorRealCoeff14,
+      fiveFiveResultantFactorRealCoeff12,
+      fiveFiveResultantFactorRealCoeff11,
+      fiveFiveResultantFactorRealCoeff10,
+      fiveFiveResultantFactorRealCoeff9,
+      fiveFiveResultantFactorRealCoeff8,
+      fiveFiveResultantFactorRealCoeff7,
+      fiveFiveResultantFactorRealCoeff6,
+      fiveFiveResultantFactorRealCoeff5,
+      fiveFiveResultantFactorRealCoeff4,
+      fiveFiveResultantFactorRealCoeff3,
+      fiveFiveResultantFactorRealCoeff2,
+      fiveFiveResultantFactorRealCoeff1,
+      fiveFiveResultantFactorRealCoeff0,
+      fiveFiveDiscriminantP6Real, fiveFiveDiscriminantP28Real] <;>
+    ring)
+
+local macro "declare_fiveFive_critical_coefficient"
+    theoremName:ident degree:num : command =>
+  `(command|
+    private theorem $theoremName (s : ℝ) :
+        (fiveFiveCriticalBezoutCombinationPolyReal s).coeff $degree =
+          (fiveFiveCriticalBezoutCertificatePolyReal s).coeff $degree := by
+      verify_fiveFive_critical_coefficient)
+
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_0 0
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_1 1
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_2 2
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_3 3
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_4 4
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_5 5
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_6 6
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_7 7
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_8 8
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_9 9
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_10 10
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_11 11
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_12 12
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_13 13
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_14 14
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_15 15
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_16 16
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_17 17
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_18 18
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_19 19
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_20 20
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_21 21
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_22 22
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_23 23
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_24 24
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_25 25
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_26 26
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_27 27
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_28 28
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_29 29
+declare_fiveFive_critical_coefficient fiveFive_critical_bezout_coeff_30 30
+
+private theorem fiveFiveCriticalBezoutCombinationPolyReal_natDegree_le
+    (s : ℝ) :
+    (fiveFiveCriticalBezoutCombinationPolyReal s).natDegree ≤ 30 := by
+  have hu :
+      (fiveFiveCriticalBezoutUPolyReal s).natDegree ≤ 14 := by
+    unfold fiveFiveCriticalBezoutUPolyReal
+    compute_degree
+  have hv :
+      (fiveFiveCriticalBezoutVPolyReal s).natDegree ≤ 15 := by
+    unfold fiveFiveCriticalBezoutVPolyReal
+    compute_degree
+  have hf :
+      (fiveFiveResultantFactorPolyReal s).natDegree ≤ 16 := by
+    unfold fiveFiveResultantFactorPolyReal
+    compute_degree
+  have hd :
+      (fiveFiveResultantFactorPolyReal s).derivative.natDegree ≤ 15 := by
+    exact (natDegree_derivative_le _).trans (by omega)
+  unfold fiveFiveCriticalBezoutCombinationPolyReal
+  exact natDegree_add_le_of_degree_le
+    (natDegree_mul_le.trans (by omega))
+    (natDegree_mul_le.trans (by omega))
+
+private theorem fiveFive_critical_bezout_identity_poly (s : ℝ) :
+    fiveFiveCriticalBezoutUPolyReal s * fiveFiveResultantFactorPolyReal s +
+        fiveFiveCriticalBezoutVPolyReal s *
+          (fiveFiveResultantFactorPolyReal s).derivative =
+      C (274877906944 * s ^ 5 * (s - 1) ^ 10 * (s + 1) ^ 3 *
+        fiveFiveDiscriminantP6Real s *
+        (fiveFiveDiscriminantP28Real s) ^ 2) := by
+  change fiveFiveCriticalBezoutCombinationPolyReal s =
+    fiveFiveCriticalBezoutCertificatePolyReal s
+  ext n
+  by_cases hn : n ≤ 30
+  · interval_cases n <;>
+      simp only [fiveFive_critical_bezout_coeff_0,
+        fiveFive_critical_bezout_coeff_1,
+        fiveFive_critical_bezout_coeff_2,
+        fiveFive_critical_bezout_coeff_3,
+        fiveFive_critical_bezout_coeff_4,
+        fiveFive_critical_bezout_coeff_5,
+        fiveFive_critical_bezout_coeff_6,
+        fiveFive_critical_bezout_coeff_7,
+        fiveFive_critical_bezout_coeff_8,
+        fiveFive_critical_bezout_coeff_9,
+        fiveFive_critical_bezout_coeff_10,
+        fiveFive_critical_bezout_coeff_11,
+        fiveFive_critical_bezout_coeff_12,
+        fiveFive_critical_bezout_coeff_13,
+        fiveFive_critical_bezout_coeff_14,
+        fiveFive_critical_bezout_coeff_15,
+        fiveFive_critical_bezout_coeff_16,
+        fiveFive_critical_bezout_coeff_17,
+        fiveFive_critical_bezout_coeff_18,
+        fiveFive_critical_bezout_coeff_19,
+        fiveFive_critical_bezout_coeff_20,
+        fiveFive_critical_bezout_coeff_21,
+        fiveFive_critical_bezout_coeff_22,
+        fiveFive_critical_bezout_coeff_23,
+        fiveFive_critical_bezout_coeff_24,
+        fiveFive_critical_bezout_coeff_25,
+        fiveFive_critical_bezout_coeff_26,
+        fiveFive_critical_bezout_coeff_27,
+        fiveFive_critical_bezout_coeff_28,
+        fiveFive_critical_bezout_coeff_29,
+        fiveFive_critical_bezout_coeff_30]
+  · have hn' : 30 < n := by omega
+    rw [coeff_eq_zero_of_natDegree_lt
+      ((fiveFiveCriticalBezoutCombinationPolyReal_natDegree_le s).trans_lt
+        hn')]
+    unfold fiveFiveCriticalBezoutCertificatePolyReal
+    have hn0 : n ≠ 0 := by omega
+    rw [Polynomial.coeff_C]
+    simp [hn0]
 
 /--
 The fibre polynomial and its `y`-derivative can vanish together only on the
@@ -2567,28 +2800,21 @@ theorem fiveFive_critical_bezout_identity (s y : ℝ) :
       274877906944 * s ^ 5 * (s - 1) ^ 10 * (s + 1) ^ 3 *
         fiveFiveDiscriminantP6Real s *
         (fiveFiveDiscriminantP28Real s) ^ 2 := by
-  unfold fiveFiveCriticalBezoutU fiveFiveCriticalBezoutV
-
-  unfold fiveFiveCriticalBezoutUCoeff14 fiveFiveCriticalBezoutUCoeff13 fiveFiveCriticalBezoutUCoeff12 fiveFiveCriticalBezoutUCoeff11 fiveFiveCriticalBezoutUCoeff10 fiveFiveCriticalBezoutUCoeff9 fiveFiveCriticalBezoutUCoeff8 fiveFiveCriticalBezoutUCoeff7 fiveFiveCriticalBezoutUCoeff6 fiveFiveCriticalBezoutUCoeff5 fiveFiveCriticalBezoutUCoeff4 fiveFiveCriticalBezoutUCoeff3 fiveFiveCriticalBezoutUCoeff2 fiveFiveCriticalBezoutUCoeff1 fiveFiveCriticalBezoutUCoeff0 fiveFiveCriticalBezoutVCoeff15 fiveFiveCriticalBezoutVCoeff14 fiveFiveCriticalBezoutVCoeff13 fiveFiveCriticalBezoutVCoeff12 fiveFiveCriticalBezoutVCoeff11 fiveFiveCriticalBezoutVCoeff10 fiveFiveCriticalBezoutVCoeff9 fiveFiveCriticalBezoutVCoeff8 fiveFiveCriticalBezoutVCoeff7 fiveFiveCriticalBezoutVCoeff6 fiveFiveCriticalBezoutVCoeff5 fiveFiveCriticalBezoutVCoeff4 fiveFiveCriticalBezoutVCoeff3 fiveFiveCriticalBezoutVCoeff2 fiveFiveCriticalBezoutVCoeff1 fiveFiveCriticalBezoutVCoeff0
-  unfold fiveFiveResultantFactorReal fiveFiveResultantFactorDerivativeReal
-    fiveFiveDiscriminantP6Real fiveFiveDiscriminantP28Real
-
-  unfold fiveFiveResultantFactorRealCoeff16 fiveFiveResultantFactorRealCoeff14 fiveFiveResultantFactorRealCoeff12 fiveFiveResultantFactorRealCoeff11 fiveFiveResultantFactorRealCoeff10 fiveFiveResultantFactorRealCoeff9 fiveFiveResultantFactorRealCoeff8 fiveFiveResultantFactorRealCoeff7 fiveFiveResultantFactorRealCoeff6 fiveFiveResultantFactorRealCoeff5 fiveFiveResultantFactorRealCoeff4 fiveFiveResultantFactorRealCoeff3 fiveFiveResultantFactorRealCoeff2 fiveFiveResultantFactorRealCoeff1 fiveFiveResultantFactorRealCoeff0
-
-  ring
+  have h := congrArg (fun p : ℝ[X] => p.eval y)
+    (fiveFive_critical_bezout_identity_poly s)
+  simpa using h
 
 /-- Polynomial evaluation agrees with the explicit real scalar expression. -/
 @[simp] theorem eval_fiveFiveResultantFactorPolyReal (s y : ℝ) :
     (fiveFiveResultantFactorPolyReal s).eval y =
       fiveFiveResultantFactorReal s y := by
-  simp [fiveFiveResultantFactorPolyReal, fiveFiveResultantFactorReal]
+  exact eval_fiveFiveResultantFactorPolyReal_private s y
 
 /-- Polynomial derivative evaluation agrees with the formal derivative data. -/
 @[simp] theorem eval_derivative_fiveFiveResultantFactorPolyReal (s y : ℝ) :
     (fiveFiveResultantFactorPolyReal s).derivative.eval y =
       fiveFiveResultantFactorDerivativeReal s y := by
-  simp [fiveFiveResultantFactorPolyReal, fiveFiveResultantFactorDerivativeReal]
-  ring
+  exact eval_derivative_fiveFiveResultantFactorPolyReal_private s y
 
 /-- The real P6 polynomial evaluates to its displayed scalar expression. -/
 @[simp] theorem eval_fiveFiveDiscriminantP6PolyReal_value (s : ℝ) :
