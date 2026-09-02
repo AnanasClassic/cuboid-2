@@ -1,6 +1,9 @@
 name = "cuboid2"
 version = "0.1.0"
 defaultTargets = ["Cuboid2"]
+# Keep each Lean compiler process at its smallest supported task pool.  Mathlib
+# initialization requires a task manager, so `-j0` is not usable here.
+moreLeanArgs = ["-j1"]
 
 [[require]]
 name = "mathlib"

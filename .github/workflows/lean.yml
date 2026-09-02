@@ -5,14 +5,22 @@ on:
     branches:
       - main
     paths:
-      - "lean/**"
+      - "lean/*.lean"
+      - "lean/**/*.lean"
+      - "lean/lakefile.toml"
+      - "lean/lean-toolchain"
+      - "lean/lake-manifest.json"
       - "scripts/reproduce_lean.sh"
       - ".github/workflows/lean.yml"
   pull_request:
     branches:
       - main
     paths:
-      - "lean/**"
+      - "lean/*.lean"
+      - "lean/**/*.lean"
+      - "lean/lakefile.toml"
+      - "lean/lean-toolchain"
+      - "lean/lake-manifest.json"
       - "scripts/reproduce_lean.sh"
       - ".github/workflows/lean.yml"
   workflow_dispatch:
@@ -20,15 +28,158 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: lean-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-and-audit:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v4.2.2
+      - name: Reclaim disk for the memory-limited Lean build
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          readonly android_sdk_root=/usr/local/lib/android/sdk
+          readonly memory_threshold_mib=12288
+          memory_mib="$(awk '/^MemTotal:/ { print int($2 / 1024) }' /proc/meminfo)"
+
+          if (( memory_mib >= memory_threshold_mib )); then
+            echo "Runner has ${memory_mib} MiB RAM; no additional swap disk is needed."
+            exit 0
+          fi
+
+          # The Android SDK is preinstalled on this disposable runner but is
+          # unrelated to the Lean-only job. Reclaim its space before restoring
+          # the project cache so both the swapfile and compiled artifacts fit.
+          if [[ "${ANDROID_HOME:-}" != "$android_sdk_root" ||
+                "${ANDROID_SDK_ROOT:-}" != "$android_sdk_root" ]]; then
+            echo "::error::Unexpected Android SDK location; refusing disk cleanup."
+            exit 1
+          fi
+
+          if [[ -d "$android_sdk_root" ]]; then
+            sudo du -sh "$android_sdk_root"
+            sudo rm -rf --one-file-system -- "$android_sdk_root"
+          else
+            echo "::warning::Preinstalled Android SDK not found at ${android_sdk_root}."
+          fi
+
+          df -h / /mnt
+      - name: Restore Lean project build cache
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: lean/.lake/build
+          key: cuboid2-lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean/lean-toolchain') }}-${{ hashFiles('lean/lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            cuboid2-lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean/lean-toolchain') }}-${{ hashFiles('lean/lake-manifest.json') }}-
       - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1.5.0
         with:
           lake-package-directory: lean
-          build: true
+          auto-config: false
+          build: false
+          use-github-cache: false
           use-mathlib-cache: true
+      - name: Add temporary swap on memory-limited runners
+        shell: bash
+        env:
+          LEAN_SWAP_MIB: "4096"
+          LEAN_SWAP_RESERVE_MIB: "3072"
+        run: |
+          set -Eeuo pipefail
+
+          readonly swapfile=/mnt/cuboid2-lean.swap
+          readonly memory_threshold_mib=12288
+          memory_mib="$(awk '/^MemTotal:/ { print int($2 / 1024) }' /proc/meminfo)"
+
+          if (( memory_mib >= memory_threshold_mib )); then
+            echo "Runner has ${memory_mib} MiB RAM; additional swap is unnecessary."
+            exit 0
+          fi
+
+          free_disk_mib="$(
+            df --output=avail -BM /mnt |
+              awk 'NR == 2 { gsub(/M/, "", $1); print $1 }'
+          )"
+          required_disk_mib=$((LEAN_SWAP_MIB + LEAN_SWAP_RESERVE_MIB))
+          if [[ ! "$free_disk_mib" =~ ^[0-9]+$ ]] ||
+              (( free_disk_mib < required_disk_mib )); then
+            echo "::error::Need ${required_disk_mib} MiB free on /mnt for temporary swap and build output."
+            df -h / /mnt
+            free -h
+            exit 1
+          fi
+
+          sudo dd if=/dev/zero of="$swapfile" \
+            bs=1M count="$LEAN_SWAP_MIB" status=progress
+          sudo chmod 600 "$swapfile"
+          sudo mkswap "$swapfile"
+          sudo swapon "$swapfile"
+
+          free -h
+          swapon --show
+      - name: Build Lean project
+        working-directory: lean
+        shell: bash
+        env:
+          # Run Lake tasks synchronously; lakefile.toml also passes -j1 to Lean.
+          LEAN_NUM_THREADS: "0"
+        run: |
+          set -euo pipefail
+
+          report_resources() {
+            echo "Lean build heartbeat: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            free -h
+            swapon --show
+            df -h / /mnt
+            ps -eo pid,ppid,%cpu,%mem,rss,etime,stat,comm --sort=-rss | sed -n '1,12p'
+            ps -C lean -o pid,ppid,%cpu,%mem,rss,vsz,etime,stat,args || true
+
+            for status_file in /proc/[0-9]*/status; do
+              if grep -q '^Name:[[:space:]]*lean$' "$status_file" 2>/dev/null; then
+                grep -E '^(Name|Pid|VmPeak|VmSize|VmRSS|VmSwap):' \
+                  "$status_file" 2>/dev/null || true
+              fi
+            done
+          }
+
+          heartbeat() {
+            while sleep 300; do
+              report_resources
+            done
+          }
+
+          report_resources
+          heartbeat &
+          heartbeat_pid=$!
+          trap 'kill "$heartbeat_pid" 2>/dev/null || true' EXIT
+
+          echo "Lean task workers: $LEAN_NUM_THREADS"
+          lake build
+      - name: Save Lean project build cache
+        if: success()
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: lean/.lake/build
+          key: cuboid2-lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean/lean-toolchain') }}-${{ hashFiles('lean/lake-manifest.json') }}-${{ github.sha }}
       - name: Public theorem axiom audit
         run: CUBOID_SKIP_BUILD=1 bash scripts/reproduce_lean.sh complete
+      - name: Remove temporary swap
+        if: always()
+        shell: bash
+        run: |
+          set -u
+
+          readonly swapfile=/mnt/cuboid2-lean.swap
+          if swapon --show=NAME --noheadings --raw | grep -Fxq "$swapfile"; then
+            if ! sudo swapoff "$swapfile"; then
+              echo "::warning::Could not disable temporary swap; runner teardown will discard it."
+              exit 0
+            fi
+          fi
+
+          if ! sudo rm -f "$swapfile"; then
+            echo "::warning::Could not remove temporary swap; runner teardown will discard it."
+          fi

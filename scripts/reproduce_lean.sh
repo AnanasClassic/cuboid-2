@@ -21,7 +21,7 @@ fi
 
 AUDIT_OUTPUT="$(mktemp)"
 trap 'rm -f "$AUDIT_OUTPUT"' EXIT
-"$LAKE_BIN" env lean Cuboid2/AxiomAudit.lean | tee "$AUDIT_OUTPUT"
+"$LAKE_BIN" env lean -j1 Cuboid2/AxiomAudit.lean | tee "$AUDIT_OUTPUT"
 
 CUSTOM_DECLS="$(
   grep -R -n -E '(^|[[:space:]])(axiom|opaque)[[:space:]]' Cuboid2 || true
