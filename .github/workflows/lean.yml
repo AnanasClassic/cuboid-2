@@ -5,14 +5,22 @@ on:
     branches:
       - main
     paths:
-      - "lean/**"
+      - "lean/*.lean"
+      - "lean/**/*.lean"
+      - "lean/lakefile.toml"
+      - "lean/lean-toolchain"
+      - "lean/lake-manifest.json"
       - "scripts/reproduce_lean.sh"
       - ".github/workflows/lean.yml"
   pull_request:
     branches:
       - main
     paths:
-      - "lean/**"
+      - "lean/*.lean"
+      - "lean/**/*.lean"
+      - "lean/lakefile.toml"
+      - "lean/lean-toolchain"
+      - "lean/lake-manifest.json"
       - "scripts/reproduce_lean.sh"
       - ".github/workflows/lean.yml"
   workflow_dispatch:
