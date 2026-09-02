@@ -51,11 +51,49 @@ jobs:
           build: false
           use-github-cache: false
           use-mathlib-cache: true
+      - name: Add temporary swap on memory-limited runners
+        shell: bash
+        env:
+          LEAN_SWAP_MIB: "4096"
+          LEAN_SWAP_RESERVE_MIB: "3072"
+        run: |
+          set -Eeuo pipefail
+
+          readonly swapfile=/mnt/cuboid2-lean.swap
+          readonly memory_threshold_mib=12288
+          memory_mib="$(awk '/^MemTotal:/ { print int($2 / 1024) }' /proc/meminfo)"
+
+          if (( memory_mib >= memory_threshold_mib )); then
+            echo "Runner has ${memory_mib} MiB RAM; additional swap is unnecessary."
+            exit 0
+          fi
+
+          free_disk_mib="$(
+            df --output=avail -BM /mnt |
+              awk 'NR == 2 { gsub(/M/, "", $1); print $1 }'
+          )"
+          required_disk_mib=$((LEAN_SWAP_MIB + LEAN_SWAP_RESERVE_MIB))
+          if [[ ! "$free_disk_mib" =~ ^[0-9]+$ ]] ||
+              (( free_disk_mib < required_disk_mib )); then
+            echo "::error::Need ${required_disk_mib} MiB free on /mnt for temporary swap and build output."
+            df -h / /mnt
+            free -h
+            exit 1
+          fi
+
+          sudo dd if=/dev/zero of="$swapfile" \
+            bs=1M count="$LEAN_SWAP_MIB" status=progress
+          sudo chmod 600 "$swapfile"
+          sudo mkswap "$swapfile"
+          sudo swapon "$swapfile"
+
+          free -h
+          swapon --show
       - name: Build Lean project
         working-directory: lean
         shell: bash
         env:
-          # Run Lake tasks synchronously so only one memory-heavy compiler is active.
+          # Run Lake tasks synchronously; lakefile.toml also passes -j1 to Lean.
           LEAN_NUM_THREADS: "0"
         run: |
           set -euo pipefail
@@ -63,7 +101,17 @@ jobs:
           report_resources() {
             echo "Lean build heartbeat: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
             free -h
+            swapon --show
+            df -h / /mnt
             ps -eo pid,ppid,%cpu,%mem,rss,etime,stat,comm --sort=-rss | sed -n '1,12p'
+            ps -C lean -o pid,ppid,%cpu,%mem,rss,vsz,etime,stat,args || true
+
+            for status_file in /proc/[0-9]*/status; do
+              if grep -q '^Name:[[:space:]]*lean$' "$status_file" 2>/dev/null; then
+                grep -E '^(Name|Pid|VmPeak|VmSize|VmRSS|VmSwap):' \
+                  "$status_file" 2>/dev/null || true
+              fi
+            done
           }
 
           heartbeat() {
@@ -87,3 +135,20 @@ jobs:
           key: cuboid2-lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean/lean-toolchain') }}-${{ hashFiles('lean/lake-manifest.json') }}-${{ github.sha }}
       - name: Public theorem axiom audit
         run: CUBOID_SKIP_BUILD=1 bash scripts/reproduce_lean.sh complete
+      - name: Remove temporary swap
+        if: always()
+        shell: bash
+        run: |
+          set -u
+
+          readonly swapfile=/mnt/cuboid2-lean.swap
+          if swapon --show=NAME --noheadings --raw | grep -Fxq "$swapfile"; then
+            if ! sudo swapoff "$swapfile"; then
+              echo "::warning::Could not disable temporary swap; runner teardown will discard it."
+              exit 0
+            fi
+          fi
+
+          if ! sudo rm -f "$swapfile"; then
+            echo "::warning::Could not remove temporary swap; runner teardown will discard it."
+          fi
