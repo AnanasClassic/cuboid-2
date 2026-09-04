@@ -54,8 +54,9 @@ calculation.
 
 - [Lean formalization](lean/README.md) — build instructions, trust model, and
   source map.
-- [`paper/clean3.tex`](paper/clean3.tex) — the recommended concise
-  mathematical proof.
+- [`paper/sharipov.tex`](paper/sharipov.tex) — the mathematical proof,
+  following the Lean formalization step by step (older drafts are in
+  `paper/archive/`).
 - [Formalization status](lean/FORMALIZATION_STATUS.md) — the precise Lean
   completion and axiom audit.
 - [Claim ledger](CLAIMS.md) and [research status](STATUS.md) — detailed
@@ -91,11 +92,10 @@ lake env lean Cuboid2/AxiomAudit.lean
 
 ## Build the concise paper
 
-The recommended paper builds with Tectonic 0.17.0:
+The paper builds with pdflatex:
 
 ```bash
-mkdir -p build/paper
-tectonic --outdir build/paper paper/clean3.tex
+cd paper && pdflatex sharipov.tex && pdflatex sharipov.tex
 ```
 
 ## Replay the external arithmetic

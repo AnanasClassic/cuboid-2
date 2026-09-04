@@ -1,0 +1,1843 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=0.75in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Nm}{\mathrm{N}}
+\newcommand{\lam}{\lambda}
+\newcommand{\pisym}{\pi}
+\newcommand{\rhosym}{\rho}
+\newcommand{\Ecurve}{\mathcal{E}}
+\newcommand{\Oinf}{O}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Sq}{\square}
+% Lean theorem reference: small monospace, underscores allowed.
+\newcommand{\leanref}[1]{{\scriptsize\textup{[\texttt{#1}]}}\allowbreak}
+\newcommand{\leanfile}[1]{\texttt{\small #1}}
+
+\title{A proof of Sharipov's second cuboid conjecture,\\
+with a complete Lean formalization}
+\author{}
+\date{September 4, 2026}
+
+\AtBeginDocument{\setlength{\abovedisplayskip}{6pt plus 2pt minus 3pt}\setlength{\belowdisplayskip}{6pt plus 2pt minus 3pt}\setlength{\abovedisplayshortskip}{2pt plus 1pt}\setlength{\belowdisplayshortskip}{3pt plus 1pt minus 1pt}}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Sharipov's second cuboid conjecture asserts that for coprime positive integers
+$p\neq q$ the degree-ten polynomial $Q_{p,q}(t)\in\Z[t]$ attached to a
+perfect cuboid is irreducible.  We prove the conjecture.  The proof separates
+into three factorization types of the normalized quintic $P_s$,
+$s=(p/q)^2$: a rational root, a monic quadratic factor, and a symmetric
+splitting $P_s(X^2)=R(X)\cdot(-R(-X))$.  The first is excluded by a Newton
+polygon argument and Fermat's descent for $a^4\pm b^4$; the second is
+reduced, through an explicit octic plane curve and an elliptic curve
+$y^2=x^3-5x+4$, to the determination of the rational points on
+$r^2=4u^8-8u^2+5$, which is carried out by a $2$-isogeny descent over
+$\Q(i)$ combined with a formal-group argument at the split prime $37$; the
+third is excluded by exact real root isolation.  Every statement corresponds
+to a theorem of a Lean~4 development (\texttt{lean/\allowbreak Cuboid2/\allowbreak }, checked against
+mathlib) with no \texttt{sorry} and no project-specific axiom; the Lean name
+of each result is printed next to it.
+\end{abstract}
+
+
+\section{Introduction}\label{sec:intro}
+
+A \emph{perfect cuboid} is a rectangular box whose three edges, three face
+diagonals and space diagonal are all integers; none is known.  Sharipov
+\cite{Sharipov2011,Sharipov2012} reduced the search to the arithmetic of a
+family of univariate polynomials and formulated several irreducibility
+conjectures, of which the second concerns the degree-ten polynomial
+$Q_{p,q}(t)$ displayed in~\eqref{eq:Qpq}.  Its coefficients are integers
+depending on two parameters $p,q$, and the conjecture is:
+
+\begin{theorem}[Sharipov's second cuboid conjecture]\label{thm:main}
+\leanref{sharipov\_\allowbreak second\_\allowbreak cuboid\_\allowbreak conjecture}
+For all coprime positive integers $p\ne q$, the polynomial $Q_{p,q}(t)$ is
+irreducible in $\Z[t]$.
+\end{theorem}
+
+Since $Q_{p,q}$ is even, the natural first step is the substitution
+$X=t^2/q^4$, which produces the monic quintic $P_s$ of~\eqref{eq:Ps} with
+$s=(p/q)^2$, and $Q_{p,q}(t)=q^{20}P_s(t^2/q^4)$.  Reducibility of
+$Q_{p,q}$ then splits into three types (Section~\ref{sec:reduction}): $P_s$
+has a rational root (\emph{the $1+4$ case}), $P_s$ has a monic quadratic
+factor (\emph{the $2+3$ case}), or $P_s$ is irreducible but $P_s(X^2)$
+splits symmetrically as $R(X)\cdot(-R(-X))$ (\emph{the symmetric $5+5$ case}).
+The last dichotomy is a special case of Capell's classical criterion for the
+reducibility of $P(X^2)$, which we prove directly in the form needed.
+
+The three cases are excluded by independent arguments.
+\begin{itemize}
+\item \emph{$1+4$} (Section~\ref{sec:linear}).  A Newton polygon argument at
+the primes dividing $pq$ shows that any rational root of $P_s$ is a signed
+square.  A rational parametrization of an auxiliary plane quintic transports
+the root to a point of a genus-two curve; instead of classifying its rational
+points we use two square conditions, which lift the point to explicit covers
+handled by Fermat's descent for $a^4\pm b^4=c^2$ and a $3$-adic obstruction.
+\item \emph{$2+3$} (Sections~\ref{sec:quad1}--\ref{sec:quad2}).  The constant
+term of a quadratic factor is again a signed square.  A chain of explicit
+birational maps (a $71$-term plane curve, its quotient $C_8$ by an involution,
+and the elliptic curve $E_1:y^2=x^3-5x+4$) reduces the problem to the
+rational points of the octic curve $r^2=4u^8-8u^2+5$.  The right-hand side is
+a norm from $\Q(i)$, and a $2$-isogeny descent over $\Z[i]$ shows that the two
+relevant elliptic curves over $\Q(i)$ have ranks $1$ and $0$ with torsion
+$\Z/2$.  The rank-one curve is then handled by a pair of embeddings
+$\Q(i)\hookrightarrow\Q_{37}$ and a norm estimate on the formal group
+parameter; no $p$-adic elliptic logarithm and no Chabauty computation is used.
+\item \emph{$5+5$} (Section~\ref{sec:fivefive}).  Coefficient comparison
+produces two polynomial equations; eliminating one variable gives a bivariate
+polynomial $F(s,y)$ of degree $16$ in $y$ which must vanish.  Exact real root
+isolation, seven sums-of-squares certificates and a compactness argument show
+that $F(s,\cdot)$ has no real zero for real $s>0$, $s\ne1$.
+\end{itemize}
+
+\paragraph{Relation to the literature.}
+Asiryan \cite{Asiryan2026a} treats the symmetric $5+5$ case and
+\cite{Asiryan2026b} the $1+4$ case, the latter with a Magma computation of
+Chabauty type on the genus-two curve; Asiryan and Rathbun
+\cite{AsiryanRathbun2026} give computational evidence for the $2+3$ case (a
+search up to large height).  Relative to these, the present proof of the
+$1+4$ case is elementary and avoids any Jacobian computation, the $2+3$ case
+is proved unconditionally, and the $5+5$ case is closed by exact certificates
+rather than by computer-algebra Sturm sequences.
+
+\paragraph{The Lean formalization.}
+Every statement of this article corresponds to a theorem of the Lean~4
+development in \texttt{lean/\allowbreak Cuboid2/\allowbreak } of the accompanying repository, built
+against mathlib \cite{mathlib} at a pinned revision; the import closure of the
+public theorem consists of $112$ files with no \texttt{sorry}, no
+project-specific axiom and no \texttt{opaque}.  Each statement carries the
+name of its Lean declaration in brackets (collected in Appendix~\ref{app:table}).
+The text follows the Lean proof step by step; where Lean re-derives a textbook
+result, the article cites the textbook and Section~\ref{sec:lean} records the
+difference.  Polynomials with more than about fifteen terms are described, not
+printed; finite enumerations are summarized in Appendix~\ref{app:certificates}.
+Section~\ref{sec:lean} describes the trust model.
+\section{Reduction to three factorization types}\label{sec:reduction}
+
+Throughout, $p,q$ are positive integers with $\gcd(p,q)=1$ and $p\ne q$, and
+\[
+ s:=\Bigl(\frac{p}{q}\Bigr)^2\in\Q,\qquad s>0,\quad s\ne1 .
+\]
+\leanref{sharipov\allowbreak Parameter\_\allowbreak pos} \leanref{sharipov\allowbreak Parameter\_\allowbreak ne\_\allowbreak one}
+The Lean development defines two polynomials.  The \emph{normalized quintic}
+is\leanref{normalized\allowbreak Quintic}
+\begin{equation}\label{eq:Ps}
+\begin{aligned}
+P_s(x)={}&x^5+(2+s)(3-2s)\,x^4+(1+10s+4s^2-14s^3+s^4)\,x^3\\
+&-s(1-14s+4s^2+10s^3+s^4)\,x^2-s^3(1+2s)(3s-2)\,x-s^5 ,
+\end{aligned}
+\end{equation}
+and \emph{Sharipov's polynomial} is\leanref{sharipov\allowbreak Polynomial\allowbreak Over}
+\begin{equation}\label{eq:Qpq}
+\begin{aligned}
+Q_{p,q}(t)={}&t^{10}+(2q^2+p^2)(3q^2-2p^2)\,t^8
++(q^8+10p^2q^6+4p^4q^4-14p^6q^2+p^8)\,t^6\\
+&-p^2q^2(q^8-14p^2q^6+4p^4q^4+10p^6q^2+p^8)\,t^4
+-p^6q^6(q^2+2p^2)(3p^2-2q^2)\,t^2-p^{10}q^{10}.
+\end{aligned}
+\end{equation}
+Both are monic\leanref{normalized\allowbreak Quintic\_\allowbreak monic} \leanref{sharipov\allowbreak Polynomial\allowbreak Over\_\allowbreak monic};
+$Q_{p,q}$ is primitive in $\Z[t]$\leanref{sharipov\allowbreak Polynomial\_\allowbreak is\allowbreak Primitive}.
+
+\subsection{Scaling and Gauss's lemma}
+
+\begin{proposition}[Scaling]\label{prop:scaling}
+\leanref{eval\_\allowbreak sharipov\_\allowbreak scaling}
+Over any field and for $q\ne0$,
+$Q_{p,q}(t)=q^{20}\,P_{(p/q)^2}\bigl(t^2/q^4\bigr)$.
+Consequently $Q_{p,q}$ is the polynomial obtained from $P_s(X^2)$ by scaling
+its roots by $q^2$\leanref{sharipov\allowbreak Polynomial\allowbreak Q\_\allowbreak eq\_\allowbreak scale\allowbreak Roots}, and
+$Q_{p,q}$ is irreducible in $\Q[t]$ if and only if $P_s(X^2)$
+is\leanref{sharipov\allowbreak Polynomial\allowbreak Q\_\allowbreak irreducible\_\allowbreak iff\_\allowbreak normalized\allowbreak Even}.
+Finally $Q_{p,q}$ is irreducible in $\Z[t]$ if and only if it is irreducible
+in $\Q[t]$\leanref{sharipov\allowbreak Polynomial\_\allowbreak irreducible\_\allowbreak iff\_\allowbreak rational}.
+\end{proposition}
+
+\begin{proof}
+The first identity is a direct expansion.  Root scaling by a nonzero constant
+preserves irreducibility\leanref{irreducible\_\allowbreak scale\allowbreak Roots\_\allowbreak iff}.  The last
+statement is Gauss's lemma for monic polynomials
+(mathlib, \texttt{Monic.irreducible\_\allowbreak iff\_\allowbreak irreducible\_\allowbreak map\_\allowbreak fraction\_\allowbreak map}).
+\end{proof}
+
+Hence the conjecture is the statement that $P_s(X^2)$ is irreducible in
+$\Q[X]$ whenever $s=(p/q)^2$ with $p,q$ as above.
+
+\subsection{Reducible quintics}
+
+\begin{proposition}\label{prop:quintic-cases}
+\leanref{monic\_\allowbreak quintic\_\allowbreak reducible\_\allowbreak cases}
+A monic polynomial $P\in\Q[X]$ of degree $5$ that is not irreducible has a
+rational root, or factors as $P=A\cdot B$ with $A,B\in\Q[X]$ monic of degrees
+$2$ and $3$.
+\end{proposition}
+
+\begin{proof}
+A monic polynomial of degree $n$ is irreducible if and only if it has no monic
+divisor of degree $1\le d\le n/2$
+(mathlib, \texttt{Monic.irreducible\_\allowbreak iff\_\allowbreak lt\_\allowbreak nat\allowbreak Degree\_\allowbreak lt}).  For $n=5$ the
+possible degrees are $d=1$ (a rational root) and $d=2$.
+\end{proof}
+
+Following the Lean development we name the three cases
+\leanref{Linear\allowbreak Quartic\allowbreak Case} \leanref{Quadratic\allowbreak Cubic\allowbreak Case} \leanref{Symmetric\allowbreak Five\allowbreak Five\allowbreak Case}:
+\begin{align*}
+\mathrm{Lin}(s)&:\ \exists\,r\in\Q,\ P_s(r)=0;\\
+\mathrm{Quad}(s)&:\ \exists\,A,B\in\Q[X]\text{ monic},\ \deg A=2,\ \deg B=3,\ P_s=AB;\\
+\mathrm{Sym}(s)&:\ \exists\,R\in\Q[X]\text{ monic irreducible},\ \deg R=5,\
+ P_s(X^2)=R(X)\cdot\bigl(-R(-X)\bigr).
+\end{align*}
+
+\subsection{A specialized Capell argument}
+
+The classical criterion of Capell describes when $P(X^2)$ is reducible for an
+irreducible $P$.  We need only the following special case, which we prove in
+full since the Lean development does.  Write $\bar R(X):=R(-X)$ for the
+reflection\leanref{reflect\allowbreak Polynomial}; it is a ring automorphism of $\Q[X]$
+with $\overline{\bar R}=R$, it preserves irreducibility
+\leanref{irreducible\_\allowbreak reflect\allowbreak Polynomial\_\allowbreak iff}, and it fixes exactly the
+polynomials in $X^2$: if $\bar F=F$ then $F=G(X^2)$ where $G$ collects the
+even coefficients of $F$\leanref{expand\_\allowbreak contract\_\allowbreak two\_\allowbreak of\_\allowbreak reflect\allowbreak Polynomial\_\allowbreak eq}.
+
+\begin{lemma}\label{lem:not-associated}
+\leanref{not\_\allowbreak associated\_\allowbreak reflect\_\allowbreak of\_\allowbreak irreducible\_\allowbreak quintic\_\allowbreak factor}
+Let $P\in\Q[X]$ be irreducible of degree $5$ and let $R$ be a monic
+irreducible divisor of $P(X^2)$ with $\deg R\le5$.  Then $R$ and $\bar R$ are
+not associated.
+\end{lemma}
+
+\begin{proof}
+Suppose $R\sim\bar R$.  Since both are monic up to the sign $(-1)^{\deg R}$,
+we get $\bar R=(-1)^{\deg R}R$\leanref{eq\_\allowbreak monic\allowbreak Reflection\_\allowbreak of\_\allowbreak monic\_\allowbreak of\_\allowbreak associated\_\allowbreak reflect}.
+
+If $\deg R=2k$ is even, then $\bar R=R$
+\leanref{reflect\allowbreak Polynomial\_\allowbreak eq\_\allowbreak self\_\allowbreak of\_\allowbreak monic\_\allowbreak associated\_\allowbreak even}, so $R=S(X^2)$
+with $\deg S=k\ge1$.  From $S(X^2)\mid P(X^2)$ we get $S\mid P$
+\leanref{dvd\_\allowbreak of\_\allowbreak expand\_\allowbreak two\_\allowbreak dvd\_\allowbreak expand\_\allowbreak two} (apply the even-coefficient
+contraction, which is multiplicative on such products by mathlib's
+\texttt{contract\_\allowbreak mul\_\allowbreak expand}).  As $P$ is irreducible and $S$ is not a unit,
+$S\sim P$ and $k=5$, contradicting $2k\le5$.
+
+If $\deg R$ is odd, then $\bar R=-R$
+\leanref{reflect\allowbreak Polynomial\_\allowbreak eq\_\allowbreak neg\_\allowbreak of\_\allowbreak monic\_\allowbreak associated\_\allowbreak odd}, so $R(0)=-R(0)$,
+$R(0)=0$, $X\mid R\mid P(X^2)$, hence $P(0)=0$ and $X\mid P$.  Irreducibility
+of $P$ forces $\deg P=1\ne5$.
+\end{proof}
+
+\begin{proposition}[Capell reduction]\label{prop:capell}
+\leanref{normalized\allowbreak Even\_\allowbreak capell\_\allowbreak reduction}
+If $P_s(X^2)$ is not irreducible, then $P_s$ is not irreducible or
+$\mathrm{Sym}(s)$ holds.
+\end{proposition}
+
+\begin{proof}
+Assume $P_s$ irreducible.  Since $\Q[X]$ is a unique factorization domain and
+$P_s(X^2)$ is monic of degree $10$ and reducible, it has a monic irreducible
+divisor $R$ with $\deg R\le5$\leanref{exists\_\allowbreak monic\_\allowbreak irreducible\_\allowbreak factor\_\allowbreak le\_\allowbreak half}.
+Because $P_s(X^2)$ is fixed by reflection, $\bar R$ also divides it
+\leanref{reflect\allowbreak Polynomial\_\allowbreak dvd\_\allowbreak of\_\allowbreak dvd\_\allowbreak fixed}.  By Lemma~\ref{lem:not-associated}
+$R\not\sim\bar R$; both are prime in $\Q[X]$, so
+$R\bar R\mid P_s(X^2)$\leanref{mul\_\allowbreak reflect\allowbreak Polynomial\_\allowbreak dvd\_\allowbreak of\_\allowbreak not\_\allowbreak associated}.
+The product $R\bar R$ is again a polynomial in $X^2$, say $R\bar R=G(X^2)$
+\leanref{symmetric\_\allowbreak product\_\allowbreak eq\_\allowbreak expand\_\allowbreak contract}, and $G\mid P_s$; as $G$ is not
+a unit and $P_s$ is irreducible, $\deg G=5$, hence
+$\deg R=5$\leanref{nat\allowbreak Degree\_\allowbreak eq\_\allowbreak of\_\allowbreak symmetric\_\allowbreak product\_\allowbreak dvd\_\allowbreak expand\_\allowbreak irreducible}.
+Now $R\cdot(-\bar R)$ is monic of degree $10$
+\leanref{neg\_\allowbreak reflect\allowbreak Polynomial\_\allowbreak monic\_\allowbreak of\_\allowbreak degree\_\allowbreak five} and divides the monic
+degree-$10$ polynomial $P_s(X^2)$, so the two are equal: this is $\mathrm{Sym}(s)$.
+\end{proof}
+
+\subsection{The case split}
+
+\begin{theorem}[Classification]\label{thm:classification}
+\leanref{sharipov\_\allowbreak factorization\_\allowbreak classification}
+If $Q_{p,q}$ is not irreducible in $\Q[t]$, then
+$\mathrm{Lin}(s)\vee\mathrm{Quad}(s)\vee\mathrm{Sym}(s)$ holds for $s=(p/q)^2$.
+Consequently\leanref{irreducible\_\allowbreak of\_\allowbreak factorization\_\allowbreak cases},
+$Q_{p,q}$ is irreducible as soon as all three of
+$\mathrm{Lin}(s)$, $\mathrm{Quad}(s)$, $\mathrm{Sym}(s)$ are refuted.
+\end{theorem}
+
+\begin{proof}
+Combine Propositions~\ref{prop:scaling}, \ref{prop:capell}
+\leanref{sharipov\_\allowbreak composition\_\allowbreak reduction} and~\ref{prop:quintic-cases}
+\leanref{normalized\allowbreak Quintic\_\allowbreak reducible\_\allowbreak cases}.
+\end{proof}
+
+The three refutations occupy Sections~\ref{sec:linear}, \ref{sec:quad1}--\ref{sec:quad2}
+and~\ref{sec:fivefive}.  Only the first two use the arithmetic of $p,q$
+(through $s$ being a square and the coprimality of $p,q$); the symmetric case
+uses only $s>0$, $s\ne1$.
+\section{No rational root (the \texorpdfstring{$1+4$}{1+4} case)}\label{sec:linear}
+
+In this section we prove
+\begin{theorem}\label{thm:linear}
+\leanref{linear\_\allowbreak quartic\_\allowbreak impossible\_\allowbreak sharipov}
+For coprime positive integers $p\ne q$ and $s=(p/q)^2$, the quintic $P_s$ has
+no rational root.
+\end{theorem}
+The proof is entirely elementary.  Its only external inputs are the
+classification of primitive Pythagorean triples and Fermat's theorem
+$a^4+b^4\ne c^2$ (both from mathlib), together with three finite checks over
+$\F_3$.
+
+\subsection{Every rational root is a signed square}\label{sec:newton}
+
+Let $H_{p,q}(X):=q^{20}P_s(X/q^4)\in\Z[X]$\leanref{homogeneous\allowbreak Quintic}, so
+that $Q_{p,q}(t)=H_{p,q}(t^2)$ coefficientwise and $H_{p,q}$ is the monic
+integral polynomial obtained from $P_s$ by scaling roots by
+$q^4$\leanref{normalized\allowbreak Quintic\_\allowbreak scale\allowbreak Roots\_\allowbreak eq\_\allowbreak homogeneous}.  Write
+$H_{p,q}=X^5+h_4X^4+h_3X^3+h_2X^2+h_1X+h_0$, where the $h_j$ are the
+coefficients of~\eqref{eq:Qpq}; in particular $h_0=-p^{10}q^{10}$.
+
+\begin{lemma}\label{lem:integral-root}
+\leanref{exists\_\allowbreak integral\_\allowbreak scaled\_\allowbreak linear\_\allowbreak root} \leanref{integral\_\allowbreak linear\_\allowbreak root\_\allowbreak dvd\_\allowbreak parameter\_\allowbreak power}
+If $P_s(r)=0$ with $r\in\Q$, then $B:=q^4r$ is a nonzero integer root of
+$H_{p,q}$ and $B\mid p^{10}q^{10}$.
+\end{lemma}
+\begin{proof}
+$B$ is a root of a monic integral polynomial, hence integral over $\Z$, hence
+in $\Z$; $B\ne0$ since $P_s(0)=-s^5\ne0$; and $B$ divides $h_0$.
+\end{proof}
+
+\begin{lemma}[Newton polygon]\label{lem:newton}
+\leanref{integral\_\allowbreak linear\_\allowbreak root\_\allowbreak factorization\_\allowbreak even}
+Let $\ell$ be a prime dividing $pq$ and put $\kappa:=v_\ell(pq)\ge1$.  Then
+$v_\ell(h_3)=0$, $v_\ell(h_2)=2\kappa$, $v_\ell(h_1)\ge6\kappa$,
+$v_\ell(h_0)=10\kappa$
+\leanref{homogeneous\allowbreak Quintic\_\allowbreak coeff\_\allowbreak three\_\allowbreak not\_\allowbreak dvd} \leanref{homogeneous\allowbreak Quintic\_\allowbreak coeff\_\allowbreak two\_\allowbreak padic\allowbreak Val\allowbreak Int} \leanref{homogeneous\allowbreak Quintic\_\allowbreak coeff\_\allowbreak one\_\allowbreak pow\_\allowbreak dvd} \leanref{padic\allowbreak Val\allowbreak Int\_\allowbreak neg\_\allowbreak parameter\_\allowbreak powers},
+and for every nonzero integer root $B$ of $H_{p,q}$, $v_\ell(B)\in\{0,2\kappa,4\kappa\}$.
+\end{lemma}
+
+\begin{proof}
+The valuations follow from $\gcd(p,q)=1$: exactly one of $p,q$ is divisible
+by $\ell$, and $h_3\equiv q^8$ or $p^8\pmod\ell$, while $h_2=-p^2q^2\cdot c$ with
+$c\equiv q^8$ or $p^8$, and $h_1$ carries the factor $p^6q^6$.  Let
+$\beta=v_\ell(B)$ and suppose $\beta>0$.  Group
+\[
+ 0=H_{p,q}(B)=\underbrace{B^3(B^2+h_4B+h_3)}_{L}+\underbrace{h_2B^2}_{M}
+ +\underbrace{h_1B}_{N}+\underbrace{h_0}_{C}.
+\]
+Since $\ell\mid B$ and $\ell\nmid h_3$, $v_\ell(L)=3\beta$; also
+$v_\ell(M)=2\kappa+2\beta$, $v_\ell(N)\ge6\kappa+\beta$, $v_\ell(C)=10\kappa$.
+A sum of four integers cannot vanish if one term has strictly smaller
+valuation than the other three\leanref{four\_\allowbreak term\_\allowbreak unique\_\allowbreak low\_\allowbreak impossible}.
+If $0<\beta<2\kappa$, $L$ is the unique minimum; if $2\kappa<\beta<4\kappa$,
+$M$ is; if $\beta>4\kappa$, $C$ is.  Hence $\beta\in\{0,2\kappa,4\kappa\}$.
+\end{proof}
+
+\begin{proposition}\label{prop:signed-square-root}
+\leanref{normalized\allowbreak Quintic\_\allowbreak root\_\allowbreak signed\allowbreak Square\_\allowbreak sharipov}
+If $P_s(r)=0$ with $r\in\Q$, then $r=\varepsilon u^2$ for some
+$\varepsilon\in\{\pm1\}$ and $u\in\Q$.
+\end{proposition}
+
+\begin{proof}
+For $\ell\mid pq$, $v_\ell(B)$ is even by Lemma~\ref{lem:newton}; for
+$\ell\nmid pq$, $\ell\nmid B$ because $B\mid p^{10}q^{10}$.  An integer all of
+whose prime multiplicities are even is $\pm d^2$
+\leanref{int\_\allowbreak signed\allowbreak Square\_\allowbreak of\_\allowbreak even\_\allowbreak nat\allowbreak Abs\_\allowbreak factorization}, and
+$r=\varepsilon(d/q^2)^2$.
+\end{proof}
+
+\subsection{Reciprocal coordinates and a rational curve}
+
+Let $r$ be a rational root and put $y:=r/s$.  Then $P_s(sy)=s^3R(s,y)$
+\leanref{eval\_\allowbreak normalized\allowbreak Quintic\_\allowbreak mul\_\allowbreak eq\_\allowbreak root\allowbreak Equation} with
+\leanref{linear\allowbreak Quartic\allowbreak Root\allowbreak Equation}
+\begin{multline*}
+R(s,y)=s^2y^5+(-2s^3-s^2+6s)y^4+(s^4-14s^3+4s^2+10s+1)y^3\\
++(-s^4-10s^3-4s^2+14s-1)y^2+(-6s^3+s^2+2s)y-s^2,
+\end{multline*}
+so $R(s,y)=0$, and $y\ne0$ since $R(s,0)=-s^2$
+\leanref{linear\allowbreak Quartic\allowbreak Root\allowbreak Equation\_\allowbreak right\_\allowbreak ne\_\allowbreak zero}.  There is an explicit
+mate polynomial $M(s,y)$ of the same shape (the image of $R$ under
+$s\mapsto1/s$ up to the factor $s^4$)\leanref{linear\allowbreak Quartic\allowbreak Root\allowbreak Equation\allowbreak Mate}
+such that, in the reciprocal coordinates $U:=s+s^{-1}$, $V:=y+y^{-1}$ one has the
+identity\leanref{linear\allowbreak Quartic\_\allowbreak reciprocal\allowbreak Quotient\_\allowbreak identity}
+\begin{equation}\label{eq:RM}
+ s^4y^5\,\mathcal{Q}(U,V)=R(s,y)\,M(s,y),
+\end{equation}
+where\leanref{linear\allowbreak Quartic\allowbreak Reciprocal\allowbreak Quotient}
+\begin{equation}\label{eq:QUV}
+\begin{aligned}
+\mathcal{Q}(U,V)={}&U^4V-2U^4+4U^3V^2-8U^3V-10U^2V^3-108U^2V^2-192U^2V-128U^2\\
+&+4UV^4-8UV^3+V^5-2V^4+64V^3+384V^2+768V+512 .
+\end{aligned}
+\end{equation}
+Hence $\mathcal{Q}(U,V)=0$\leanref{linear\allowbreak Quartic\_\allowbreak reciprocal\allowbreak Quotient\_\allowbreak eq\_\allowbreak zero}.
+Note $U\ne2$, since $s+s^{-1}=2$ forces $s=1$\leanref{linear\allowbreak Quartic\_\allowbreak reciprocal\_\allowbreak ne\_\allowbreak two}.
+
+The plane quintic $\mathcal{Q}=0$ is rational.  Define the slope
+$t:=(V+2)/(U-2)$\leanref{linear\allowbreak Quartic\allowbreak Slope}; in terms of $s,y$,
+\leanref{linear\allowbreak Quartic\allowbreak Slope\_\allowbreak reciprocal}
+\begin{equation}\label{eq:slope}
+ t=\frac{s\,(y+1)^2}{y\,(s-1)^2}.
+\end{equation}
+Put\leanref{linear\allowbreak Quartic\allowbreak UNumerator} \leanref{linear\allowbreak Quartic\allowbreak UDenominator} \leanref{linear\allowbreak Quartic\allowbreak VNumerator} \leanref{linear\allowbreak Quartic\allowbreak VDenominator}
+\begin{align*}
+N_U(t)&=2(t^5+6t^4+30t^3+16t^2+9t+2), & D_U(t)&=t(t-1)^2(t^2+6t+1),\\
+N_V(t)&=2(t^4+36t^3+22t^2+4t+1), & D_V(t)&=(t-1)^2(t^2+6t+1).
+\end{align*}
+Then for $U\ne2$ and $t=(V+2)/(U-2)$ one has
+$(U-2)^4\bigl(N_U(t)-U\,D_U(t)\bigr)=(U-2)^4\bigl(N_V(t)-V\,D_V(t)\bigr)=-\mathcal{Q}(U,V)$
+\leanref{linear\allowbreak Quartic\_\allowbreak inverse\allowbreak Slope\_\allowbreak U} \leanref{linear\allowbreak Quartic\_\allowbreak inverse\allowbreak Slope\_\allowbreak V},
+so on $\mathcal{Q}=0$ we have the \emph{cross identities}
+\leanref{normalized\allowbreak Root\allowbreak To\allowbreak Linear\allowbreak Quartic\_\allowbreak U\_\allowbreak cross}
+\begin{equation}\label{eq:cross}
+ N_U(t)=U\,D_U(t),\qquad N_V(t)=V\,D_V(t).
+\end{equation}
+Moreover $t\ne0$: if $t=0$ then $V=-2$, so $y=-1$, and
+$R(s,-1)=-2(s-1)^4\ne0$\leanref{linear\allowbreak Quartic\_\allowbreak root\allowbreak Slope\_\allowbreak ne\_\allowbreak zero} \leanref{linear\allowbreak Quartic\allowbreak Root\allowbreak Equation\_\allowbreak neg\_\allowbreak one}.
+Also $t^2+6t+1\ne0$ for rational $t$, since $(t+3)^2=8$ has no rational
+solution\leanref{linear\allowbreak Quartic\_\allowbreak remaining\allowbreak Denominator\_\allowbreak ne\_\allowbreak zero}.
+
+The second cross identity places $t$ on a curve of genus two.  With
+$f(t):=t^5+21t^4+26t^3+10t^2+5t+1$\leanref{linear\allowbreak Quartic\allowbreak Curve\allowbreak Rhs} one has
+\leanref{linear\allowbreak Quartic\_\allowbreak V\_\allowbreak square\_\allowbreak identity}
+\begin{equation}\label{eq:NV}
+ N_V(t)^2-4D_V(t)^2=256\,t^2 f(t),
+\end{equation}
+and since $V^2-4=(y-y^{-1})^2$, the point
+$(t,w)$ with $w=(y-y^{-1})D_V(t)/(16t)$ satisfies
+$w^2=f(t)$\leanref{linear\allowbreak Quartic\_\allowbreak curve\_\allowbreak identity\_\allowbreak of\_\allowbreak V} \leanref{normalized\allowbreak Root\allowbreak To\allowbreak Linear\allowbreak Quartic}.
+We shall \emph{not} determine all rational points of $w^2=f(t)$; the extra
+information that $s$ and $r$ are (signed) squares suffices.
+
+\subsection{Two square characters}
+
+\begin{lemma}\label{lem:char1}
+\leanref{linear\allowbreak Quartic\_\allowbreak U\_\allowbreak plus\_\allowbreak two\_\allowbreak factor} \leanref{linear\allowbreak Quartic\_\allowbreak square\allowbreak Parameter\_\allowbreak character}
+$N_U(t)+2D_U(t)=4(t+1)^5$.  Consequently, if $s=z^2$ with $z\ne0$, $t\ne1$
+and $N_U(t)=(s+s^{-1})D_U(t)$, then $t(t+1)(t^2+6t+1)$ is a rational square.
+\end{lemma}
+
+\begin{proof}
+The identity is a direct expansion.  Since $s+s^{-1}+2=((s+1)/z)^2$,
+multiplying the cross identity by $D_U$ gives
+$((s+1)/z)^2\,t(t-1)^2(t^2+6t+1)=N_U+2D_U=4(t+1)^5$, whence
+$t(t+1)(t^2+6t+1)=\bigl(2z(t+1)^3/((s+1)(t-1))\bigr)^2$.
+\end{proof}
+
+\begin{lemma}\label{lem:char2}
+\leanref{normalized\allowbreak Root\allowbreak To\allowbreak Linear\allowbreak Quartic\_\allowbreak signed\allowbreak Square\_\allowbreak t}
+If $s=z^2$ and $r=\varepsilon u^2$ ($\varepsilon=\pm1$), then
+$t=\varepsilon v^2$ with $v=z^2(y+1)/(u(s-1))$.
+\end{lemma}
+
+\begin{proof}
+In~\eqref{eq:slope} write $y=\varepsilon u^2/z^2$ and $1/y=\varepsilon z^2/u^2$;
+then $t=\varepsilon\bigl(z^2(y+1)/(u(s-1))\bigr)^2$.
+\end{proof}
+
+Substituting $t=\pm v^2$ into Lemma~\ref{lem:char1} gives the two
+\emph{signed-square covers}
+\leanref{linear\allowbreak Quartic\_\allowbreak positive\allowbreak Slope\_\allowbreak genus\allowbreak Two} \leanref{linear\allowbreak Quartic\_\allowbreak negative\allowbreak Slope\_\allowbreak genus\allowbreak Two}:
+\begin{align}
+ t=v^2&:\quad (v^2+1)(v^4+6v^2+1)\ \text{is a square},\label{eq:Dplus}\\
+ t=-v^2&:\quad (v^2-1)(v^4-6v^2+1)\ \text{is a square}.\label{eq:Dminus}
+\end{align}
+
+\subsection{The positive cover: Fermat descent}
+
+\begin{lemma}\label{lem:fermat-two}
+\leanref{fourth\_\allowbreak add\_\allowbreak fourth\_\allowbreak eq\_\allowbreak two\_\allowbreak square}
+If $x,y,z\in\Z$ and $x^4+y^4=2z^2$, then $x^2=y^2$.
+\end{lemma}
+
+\begin{proof}
+If $x=0$ then $2=(y^2/z)^2$ would be a rational square\leanref{rat\_\allowbreak two\_\allowbreak not\_\allowbreak square}.
+Otherwise put $d=z^2-y^4$; the identity
+$z^4-(xy)^4-(z^2-y^4)^2=y^4(2z^2-x^4-y^4)=0$ gives $z^4-(xy)^4=d^2$.
+By the classical theorem $a^4-b^4\ne c^2$ for nonzero integers
+\leanref{not\_\allowbreak fermat\_\allowbreak 4\_\allowbreak sub}, which the Lean development proves by
+Fermat's infinite descent through the parametrization of primitive
+Pythagorean triples\leanref{Fermat4\allowbreak Sub.not\_\allowbreak minimal}, we must have $d=0$, i.e.\
+$x^4=y^4$.
+\end{proof}
+
+\begin{proposition}\label{prop:Dplus}
+\leanref{positive\allowbreak Slope\_\allowbreak cover\_\allowbreak classification}
+If $v\in\Q$ and $(v^2+1)(v^4+6v^2+1)$ is a rational square, then $v=0$ or $v^2=1$.
+\end{proposition}
+
+\begin{proof}
+Write $v=m/n$ in lowest terms and $A=m^2+n^2$, $B=m^4+6m^2n^2+n^4$
+\leanref{positive\allowbreak Cover\allowbreak A} \leanref{positive\allowbreak Cover\allowbreak B}; then $AB$ is an integer
+square and $A,B>0$.  One has $B=A^2+4(mn)^2$ and
+$(m+n)^4+(m-n)^4=2B$\leanref{positive\allowbreak Cover\_\allowbreak fourth\_\allowbreak identity}.
+If $m,n$ have opposite parity, $A$ is odd and $\gcd(A,B)=1$
+\leanref{positive\allowbreak Cover\_\allowbreak coprime\_\allowbreak of\_\allowbreak A\_\allowbreak odd}, so $B=Y^2$; then
+$(m+n)^4+(m-n)^4=2Y^2$ and Lemma~\ref{lem:fermat-two} gives $(m+n)^2=(m-n)^2$,
+so $mn=0$ and $v=0$.  If $m,n$ are both odd, $A=2A_0$, $B=2B_0$ with
+$\gcd(A_0,B_0)=1$\leanref{positive\allowbreak Cover\_\allowbreak halves\_\allowbreak coprime}, so $B_0=Y^2$ and
+$(m+n)^4+(m-n)^4=(2Y)^2$; by Fermat's theorem $a^4+b^4\ne c^2$ for
+$ab\ne0$ (mathlib, \texttt{not\_\allowbreak fermat\_\allowbreak 42}) we get $m=\pm n$, i.e.\ $v^2=1$.
+\end{proof}
+
+\subsection{The negative cover: a 3-adic obstruction}
+
+In the case $t=-v^2$ the point $(t,w)$ on $w^2=f(t)$ gives a second square:
+\begin{equation}\label{eq:fneg}
+ f(-v^2)=(1-v^2)(v^8-20v^6+6v^4-4v^2+1).
+\end{equation}
+
+\begin{proposition}\label{prop:Dminus}
+\leanref{negative\allowbreak Slope\_\allowbreak cover\_\allowbreak pair\_\allowbreak classification}
+If $v\in\Q$ and both $(v^2-1)(v^4-6v^2+1)$ and
+$(1-v^2)(v^8-20v^6+6v^4-4v^2+1)$ are rational squares, then $v^2=1$.
+\end{proposition}
+
+\begin{proof}
+Write $v=m/n$ in lowest terms and
+$\delta=m^2-n^2$, $D=m^4-6m^2n^2+n^4$, $G=m^8-20m^6n^2+6m^4n^4-4m^2n^6+n^8$
+\leanref{negative\allowbreak Cover\allowbreak Delta} \leanref{negative\allowbreak Cover\allowbreak D} \leanref{negative\allowbreak Curve\allowbreak G}.
+Clearing denominators, $\delta D=K^2$ and $-\delta G=L^2$ in $\Z$.  If
+$\delta=0$ we are done.  Otherwise reduce modulo $3$.  A check of all
+$(m,n,K,L)\in\F_3^4$ with $(m,n)\ne(0,0)$ shows that the two congruences force
+$\delta\equiv0\pmod3$\leanref{negative\allowbreak Covers\_\allowbreak mod\_\allowbreak three\_\allowbreak delta}
+(if $\delta\not\equiv0$ then exactly one of $m,n$ vanishes mod $3$, and then
+$\delta D\equiv-1$ or $-\delta G\equiv-1$, a non-square).  Since
+$\gcd(m,n)=1$, neither $m$ nor $n$ is divisible by $3$, so $3\nmid D$ and
+$3\nmid G$\leanref{negative\allowbreak Cover\_\allowbreak factors\_\allowbreak mod\_\allowbreak three\_\allowbreak ne\_\allowbreak zero}, and
+$v_3(\delta)=2v_3(K)=2v_3(L)=:2j$.  Write $\delta=3^{2j}e$ with $3\nmid e$,
+$K=3^jK_0$, $L=3^jL_0$; then $eD=K_0^2$ and $-eG=L_0^2$.  Modulo $3$ we have
+$m^2\equiv n^2\equiv1$, so $D\equiv2$ and $-G\equiv1$; thus $2e$ and $e$ would
+both be nonzero squares in $\F_3$, which is impossible
+\leanref{negative\allowbreak Covers\_\allowbreak mod\_\allowbreak three\_\allowbreak unit\_\allowbreak impossible}.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{thm:linear}}
+
+Let $r$ be a rational root of $P_s$, $s=(p/q)^2=z^2$ with $z=p/q$.  By
+Proposition~\ref{prop:signed-square-root}, $r=\varepsilon u^2$.  Construct
+$y,U,V,t$ as above; the cross identities~\eqref{eq:cross} hold, and
+$t\notin\{0,1\}$ because $D_U(0)=D_U(1)=0$ while $N_U(0)=4$, $N_U(1)=128$
+\leanref{linear\allowbreak Quartic\_\allowbreak no\_\allowbreak U\_\allowbreak lift\_\allowbreak at\_\allowbreak zero} \leanref{linear\allowbreak Quartic\_\allowbreak no\_\allowbreak U\_\allowbreak lift\_\allowbreak at\_\allowbreak one}.
+By Lemma~\ref{lem:char1}, $t(t+1)(t^2+6t+1)$ is a square, and by
+Lemma~\ref{lem:char2}, $t=\varepsilon v^2$.
+
+If $\varepsilon=+1$, Proposition~\ref{prop:Dplus} gives $v=0$ or $v^2=1$,
+i.e.\ $t\in\{0,1\}$, excluded.  If $\varepsilon=-1$, then~\eqref{eq:Dminus}
+holds, and $w^2=f(t)=f(-v^2)$ together with~\eqref{eq:fneg} gives the second
+square, so Proposition~\ref{prop:Dminus} yields $v^2=1$ and $t=-1$.  But
+$N_U(-1)=-32$ and $D_U(-1)=16$, so the cross identity reads $s+s^{-1}=-2$,
+i.e.\ $s=-1$\leanref{linear\allowbreak Quartic\_\allowbreak U\_\allowbreak lift\_\allowbreak at\_\allowbreak neg\_\allowbreak one} \leanref{linear\allowbreak Quartic\_\allowbreak reciprocal\_\allowbreak eq\_\allowbreak neg\_\allowbreak two},
+contradicting $s>0$. \qed
+\section{The quadratic factor, I: reduction to an octic curve}\label{sec:quad1}
+
+Sections~\ref{sec:quad1} and~\ref{sec:quad2} prove
+\begin{theorem}\label{thm:quad}
+\leanref{quadratic\_\allowbreak cubic\_\allowbreak impossible\_\allowbreak sharipov}
+For coprime positive integers $p\ne q$ and $s=(p/q)^2$, the quintic $P_s$ has
+no monic quadratic factor in $\Q[X]$.
+\end{theorem}
+This section reduces Theorem~\ref{thm:quad} to the determination of the
+rational points of the \emph{octic curve}
+\begin{equation}\label{eq:octic}
+ \mathcal{O}:\qquad r^2=4u^8-8u^2+5 ,
+\end{equation}
+\leanref{octic\allowbreak Rhs}
+namely to the statement\leanref{Octic\allowbreak Rational\allowbreak Points\allowbreak Classified}
+\begin{equation}\label{eq:octic-class}
+ \mathcal{O}(\Q)=\{(\pm1,\pm1)\},
+\end{equation}
+which is proved in Section~\ref{sec:quad2}.  All identities below are checked
+by \texttt{ring} or \texttt{field\_\allowbreak simp} in Lean; large polynomials are
+described, not printed.
+
+\subsection{Division remainders and the constant term}
+
+Write $P_s=X^5+c_4X^4+c_3X^3+c_2X^2+c_1X+c_0$ with the coefficients
+of~\eqref{eq:Ps} \leanref{normalized\allowbreak Quintic\_\allowbreak coefficient\_\allowbreak form}.  Dividing by
+$X^2+aX+b$ gives a forced monic cubic quotient\leanref{forced\allowbreak Cubic} and a
+remainder $R_1X+R_0$ with\leanref{quadratic\allowbreak R1} \leanref{quadratic\allowbreak R0}
+\begin{align*}
+R_1(s,a,b)&=b^2+(-3a^2+2ac_4-c_3)\,b+(a^4-c_4a^3+c_3a^2-c_2a+c_1),\\
+R_0(s,a,b)&=(c_4-2a)\,b^2+(a^3-c_4a^2+c_3a-c_2)\,b+c_0 .
+\end{align*}
+\leanref{normalized\allowbreak Quintic\_\allowbreak quadratic\_\allowbreak division}
+By uniqueness of division with remainder, $\mathrm{Quad}(s)$ holds if and only if
+there are $a,b\in\Q$ with $R_1(s,a,b)=R_0(s,a,b)=0$
+\leanref{quadratic\allowbreak Cubic\allowbreak Case\_\allowbreak remainders} \leanref{factorization\_\allowbreak of\_\allowbreak quadratic\_\allowbreak remainders}.
+Note $b\ne0$: otherwise $R_0=c_0=-s^5=0$.
+
+\begin{proposition}[The constant term is a signed square]\label{prop:C012}
+\leanref{quadratic\allowbreak Factor\allowbreak Constants\allowbreak Signed\allowbreak Square\_\allowbreak sharipov}
+If $P_s=(X^2+aX+b)\cdot C$ with $C$ monic, then $b=\sigma d^2$ with
+$\sigma\in\{\pm1\}$ and $d\in\Q$.
+\end{proposition}
+
+\begin{proof}
+Let $H_{p,q}=q^{20}P_s(X/q^4)$ be the integral model of Section~\ref{sec:newton}.
+Scaling roots by $q^4$, the monic quadratic $X^2+AX+B$ with $A=q^4a$,
+$B=q^8b$ divides $H_{p,q}$ over $\Q$\leanref{scaled\allowbreak Monic\allowbreak Quadratic\_\allowbreak dvd\_\allowbreak map\_\allowbreak homogeneous};
+its coefficients are integral over $\Z$, hence
+integers\leanref{exists\_\allowbreak integral\_\allowbreak scaled\_\allowbreak quadratic\_\allowbreak coefficients}, and the
+division takes place in $\Z[X]$\leanref{integral\allowbreak Monic\allowbreak Quadratic\_\allowbreak dvd\_\allowbreak homogeneous}
+with cofactor $X^3+DX^2+EX+F$\leanref{integral\_\allowbreak quadratic\_\allowbreak quotient}.  Comparing
+coefficients\leanref{integral\_\allowbreak quadratic\_\allowbreak factor\_\allowbreak coefficient\_\allowbreak equations},
+\[
+ BF=h_0,\qquad AF+BE=h_1,\qquad F+AE+BD=h_2,\qquad E+AD+B=h_3 ,
+\]
+so $B\mid p^{10}q^{10}$\leanref{integral\_\allowbreak quadratic\_\allowbreak constant\_\allowbreak dvd}.  Fix a
+prime $\ell\mid pq$, $\kappa=v_\ell(pq)$; by Lemma~\ref{lem:newton}
+$v(h_3)=0$, $v(h_2)=2\kappa$, $v(h_1)\ge6\kappa$, $v(h_0)=10\kappa$.  Writing
+$\alpha,\beta,\delta,\eta,\varphi$ for the valuations of $A,B,D,E,F$ (a large
+value for $0$\leanref{bounded\allowbreak Padic\allowbreak Val\allowbreak Int}), the four equations give
+$\beta+\varphi=10\kappa$, $\min(\beta,\alpha+\delta,\eta)=0$,
+$\min(\beta+\delta,\alpha+\eta,\varphi)\le2\kappa$ (attained twice if $<2\kappa$),
+and $\beta+\eta=\alpha+\varphi$ or both $\ge6\kappa$
+\leanref{bounded\allowbreak Padic\allowbreak Val\allowbreak Int\_\allowbreak three\_\allowbreak term\_\allowbreak cancellation} \leanref{bounded\allowbreak Padic\allowbreak Val\allowbreak Int\_\allowbreak two\_\allowbreak term\_\allowbreak cancellation}.
+A case analysis of these linear conditions (\texttt{omega} in Lean) shows
+$\beta\in\{0,2\kappa,4\kappa,6\kappa,8\kappa\}$, in particular $v_\ell(B)$ is even
+\leanref{quadratic\_\allowbreak tropical\_\allowbreak constant\_\allowbreak classification} \leanref{homogeneous\allowbreak Quadratic\allowbreak Constants\allowbreak Locally\allowbreak Even}.
+(The Newton polygon of $H_{p,q}$ at $\ell$ has vertices
+$(0,10\kappa),(2,2\kappa),(3,0)$.)  Primes $\ell\nmid pq$ do not divide
+$B$ at all.  Hence $B=\sigma d_0^2$
+\leanref{int\_\allowbreak signed\allowbreak Square\_\allowbreak of\_\allowbreak even\_\allowbreak nat\allowbreak Abs\_\allowbreak factorization} and
+$b=\sigma(d_0/q^4)^2$\leanref{quadratic\allowbreak Factor\allowbreak Constants\allowbreak Signed\allowbreak Square\_\allowbreak of\_\allowbreak locally\allowbreak Even}.
+\end{proof}
+
+We call $\sigma$ the \emph{physical sign}.  A second, unrelated sign
+$\varepsilon$ will appear in \S\ref{sec:valuation-descent}.
+
+\subsection{The compact model and its projection}\label{sec:compact}
+
+Since $s=z^2$ with $z=p/q\ne0$\leanref{sharipov\allowbreak Parameter\_\allowbreak is\allowbreak Square} and
+$b=\sigma d^2\ne0$, we may write\leanref{compact\_\allowbreak data\_\allowbreak of\_\allowbreak remainders} \leanref{quadratic\allowbreak Cubic\allowbreak Case\_\allowbreak to\_\allowbreak compact\_\allowbreak sharipov}
+\[
+ s=z^2,\qquad a=z^2ky,\qquad b=\sigma z^4k^2,\qquad z\ne0,\ k\ne0,
+\]
+with $k=d/z^2$ and $y=a/(z^2k)$.  Substituting,
+$R_1=z^4F_1(\sigma;z,k,y)$ and $R_0=z^6F_0(\sigma;z,k,y)$
+\leanref{compact\allowbreak F1\_\allowbreak scaling} \leanref{compact\allowbreak F0\_\allowbreak scaling} for explicit
+polynomials $F_1$ ($27$ terms) and $F_0$ ($19$ terms) in $z,k,y$ with
+coefficients depending on $\sigma$ (file \leanfile{Quadratic\allowbreak Reduction/\allowbreak Compact\allowbreak Model.\allowbreak lean});
+so $F_1=F_0=0$\leanref{compact\_\allowbreak equations\_\allowbreak of\_\allowbreak remainders}.
+
+Eliminating $y$: there are explicit polynomials $\mathcal{A}_\sigma$
+(degree $2$ in $y$) and $\mathcal{B}_\sigma$ (degree $3$ in $y$), file
+\leanfile{Quadratic\allowbreak Reduction/\allowbreak Projection\allowbreak Certificate.\allowbreak lean} and
+\leanfile{Projection\allowbreak Certificate\allowbreak Negative.\allowbreak lean}, with
+\leanref{compact\allowbreak Projection\allowbreak Positive\_\allowbreak bezout} \leanref{compact\allowbreak Projection\allowbreak Negative\_\allowbreak bezout}
+\[
+ \mathcal{A}_\sigma F_1+\mathcal{B}_\sigma F_0=Q_\sigma(z^2,k^2),
+\]
+where $Q_+(S,K)$ is an explicit polynomial with $71$ terms, of degree $10$ in
+$K$ and $8$ in $S$\leanref{compact\allowbreak Projection\allowbreak Positive}, and
+$Q_-(S,K):=-Q_+(S,-K)$\leanref{compact\allowbreak Projection\allowbreak Negative}.  Thus the point
+$(S,K):=(z^2,k^2)$ lies on the plane curve $Q_\sigma=0$
+\leanref{compact\allowbreak Projection\_\allowbreak of\_\allowbreak compact\_\allowbreak equations}.
+
+The fibre $K=1$ factors completely\leanref{compact\allowbreak Projection\allowbreak Positive\_\allowbreak K\_\allowbreak one} \leanref{compact\allowbreak Projection\allowbreak Negative\_\allowbreak K\_\allowbreak one}:
+\[
+ Q_+(S,1)=64(S-1)^6(S+1)^2,\qquad Q_-(S,1)=16(S-1)^4q_4(S),
+\]
+with $q_4(S)=S^4-32S^3-62S^2-32S+1$\leanref{reciprocal\allowbreak Exceptional\allowbreak Quartic}.
+For $S>0$, $q_4(S)\ne0$: dividing by $S^2$, a root would satisfy
+$\bigl((S+S^{-1}-16)/8\bigr)^2=5$
+\leanref{reciprocal\allowbreak Exceptional\allowbreak Quartic\_\allowbreak ne\_\allowbreak zero\_\allowbreak of\_\allowbreak pos}.  Since $S=z^2>0$ and
+$S\ne1$ (as $s\ne1$), we conclude $K\ne1$ for both signs
+\leanref{compact\allowbreak Projection\allowbreak Positive\_\allowbreak K\_\allowbreak ne\_\allowbreak one} \leanref{compact\allowbreak Projection\allowbreak Negative\_\allowbreak K\_\allowbreak ne\_\allowbreak one},
+and all of $S,\,S\pm1,\,K,\,K\pm1$ are nonzero
+\leanref{compact\_\allowbreak square\_\allowbreak chart\_\allowbreak denominators}.
+
+\subsection{Cayley coordinates and the curve \texorpdfstring{$C_8$}{C8}}
+
+The polynomials $Q_\pm$ are invariant under $(S,K)\mapsto(1/S,1/K)$ up to
+units.  Pass to the quotient by this involution through the Cayley
+coordinates\leanref{reciprocal\allowbreak Cayley\allowbreak X} \leanref{reciprocal\allowbreak Cayley\allowbreak Y} \leanref{reciprocal\allowbreak U} \leanref{reciprocal\allowbreak V}
+\[
+ U:=\frac{(S-1)(K+1)}{(S+1)(K-1)},\qquad V:=\frac{(S-1)(K-1)}{(S+1)(K+1)}
+\]
+(the product and quotient of $(S-1)/(S+1)$ and $(K-1)/(K+1)$, both of which change
+sign under inversion\leanref{reciprocal\allowbreak U\_\allowbreak inv} \leanref{reciprocal\allowbreak V\_\allowbreak inv}).
+Define\leanref{reciprocal\allowbreak Quotient\allowbreak C8}
+\begin{equation}\label{eq:C8}
+\begin{aligned}
+C_8(U,V)={}&16U^6-128U^5V+44U^4V^3+272U^4V^2+32U^4V+64U^4\\
+&-76U^3V^4-256U^3V^3-180U^3V^2-128U^3V-32U^3\\
+&-U^2V^6+32U^2V^5+134U^2V^4+228U^2V^3+87U^2V^2+148U^2V-44U^2\\
+&-34UV^5-80UV^4-60UV^3-164UV^2+94UV-12U\\
+&+31V^4+48V^3-46V^2+12V-1 .
+\end{aligned}
+\end{equation}
+Then\leanref{compact\allowbreak Projection\allowbreak Positive\_\allowbreak to\_\allowbreak reciprocal\allowbreak Quotient\allowbreak C8} \leanref{compact\allowbreak Projection\allowbreak Negative\_\allowbreak to\_\allowbreak reciprocal\allowbreak Quotient\allowbreak C8}
+\[
+ 256\,Q_+(S,K)=(S+1)^8(K-1)^6(K+1)^4\,C_8(U,V),\qquad
+ 256\,Q_-(S,K)=-(S+1)^8(K+1)^6(K-1)^4\,C_8(V,U).
+\]
+Both signs therefore land on the same curve $C_8=0$, with the roles of $U,V$
+interchanged for $\sigma=-1$\leanref{compact\_\allowbreak equations\_\allowbreak to\_\allowbreak reciprocal\allowbreak Quotient\allowbreak C8}.
+From now on $(U,V)$ denotes the pair ordered so that $C_8(U,V)=0$
+\leanref{compact\allowbreak Reciprocal\allowbreak U} \leanref{compact\allowbreak Reciprocal\allowbreak V}; the two facts we
+carry along are symmetric in $U,V$\leanref{compact\_\allowbreak common\_\allowbreak character\_\allowbreak facts}:
+\begin{equation}\label{eq:characters}
+ UV=\Bigl(\frac{z^2-1}{z^2+1}\Bigr)^2\ne1,\qquad
+ 1-UV=\Bigl(\frac{2z}{z^2+1}\Bigr)^2\ne0 ,
+\end{equation}
+\leanref{reciprocal\_\allowbreak product\_\allowbreak is\allowbreak Square} \leanref{reciprocal\_\allowbreak one\_\allowbreak sub\_\allowbreak product\_\allowbreak is\allowbreak Square} \leanref{reciprocal\_\allowbreak product\_\allowbreak ne\_\allowbreak one\_\allowbreak of\_\allowbreak z\_\allowbreak ne\_\allowbreak zero} \leanref{reciprocal\_\allowbreak one\_\allowbreak sub\_\allowbreak product\_\allowbreak ne\_\allowbreak zero\_\allowbreak of\_\allowbreak z\_\allowbreak ne\_\allowbreak zero}
+i.e.\ $UV$ and $1-UV$ are nonzero rational squares and $UV\ne1$.  A pair
+$(U,V)$ with $C_8(U,V)=0$, $UV$ a square and $UV\ne1$ is called
+\emph{admissible}.
+
+\subsection{The elliptic curve \texorpdfstring{$E_1$}{E1} and the map to \texorpdfstring{$C_8$}{C8}}\label{sec:E1}
+
+Let $E_1:\ y^2=x^3-5x+4$\leanref{e1\allowbreak Residual} \leanref{E1\allowbreak Affine\allowbreak Point}.  Put
+\leanref{quotient\allowbreak Forward\allowbreak F1} \leanref{quotient\allowbreak Forward\allowbreak F2} \leanref{quotient\allowbreak Forward\allowbreak F3}
+\begin{align*}
+f_1&=511x^4+24x^3y-3430x^3-2186x^2y-3677x^2+4524xy+26438x-2982y-22214,\\
+f_2&=535x^4+24x^3y-3140x^3-1579x^2y+1380x^2+3636xy+9346x-2391y-9307,\\
+f_3&=583x^4+24x^3y-715x^3-293x^2y-3476x^2+2857xy+9529x-3491y-7107,
+\end{align*}
+and $U(x,y)=f_1/(2f_3)$, $V(x,y)=f_2/f_3$\leanref{quotient\allowbreak Forward\allowbreak U} \leanref{quotient\allowbreak Forward\allowbreak V}.
+
+\begin{proposition}\label{prop:forward}
+\leanref{quotient\allowbreak Forward\_\allowbreak on\_\allowbreak reciprocal\allowbreak Quotient\allowbreak C8}
+For every affine point $(x,y)$ of $E_1(\Q)$ with $f_3(x,y)\ne0$ one has
+$C_8(U(x,y),V(x,y))=0$.
+\end{proposition}
+\begin{proof}
+Homogenize $C_8$ and substitute $(f_1,f_2,f_3)$; in the algebra
+$\Q[x][y]/(y^2-x^3+5x-4)$ the result is identically zero, an identity in
+$x$ verified by \texttt{ring} \leanref{quotient\allowbreak Forward\_\allowbreak pair\_\allowbreak certificate}.
+\end{proof}
+
+Conversely, an admissible point of $C_8$ comes from $E_1$.  There are
+explicit polynomials $\mathcal{A}(U,V),\mathcal{B}(U,V)$ with $65$ terms each
+(degree $12$ in $U$; file \leanfile{Quadratic\allowbreak Reduction/\allowbreak Transport\allowbreak Certificate\allowbreak Data.\allowbreak lean})
+\leanref{quotient\allowbreak Inverse\allowbreak A} \leanref{quotient\allowbreak Inverse\allowbreak B}, and the recovered
+abscissa is $x=-\mathcal{B}/\mathcal{A}$\leanref{quotient\allowbreak Inverse\allowbreak X}.
+Writing $f_1-2Uf_3=a_1(x,U)\,y+b_1(x,U)$ and $f_2-Vf_3=a_2(x,V)\,y+b_2(x,V)$
+(the $a_i$ cubic, the $b_i$ quartic in $x$), the recovered ordinate is
+$y=-b_1/a_1$\leanref{quotient\allowbreak Inverse\allowbreak Y}.  Two short polynomials govern the
+consistency: $R_5(x,U,V)$ (degree $5$ in $x$, $18$ terms)
+\leanref{quotient\allowbreak Inverse\allowbreak R5} and $E_6(x,U)$ (degree $6$ in $x$, $19$ terms)
+\leanref{quotient\allowbreak Inverse\allowbreak E6}, with the identities
+\leanref{quotient\allowbreak Inverse\_\allowbreak projection\_\allowbreak identity} \leanref{quotient\allowbreak Inverse\_\allowbreak elliptic\_\allowbreak substitution\_\allowbreak identity}
+\[
+ a_1b_2-a_2b_1=(x-2)(576x-352225)\,R_5,\qquad
+ b_1^2-a_1^2(x^3-5x+4)=-(576x-352225)(x^2-5)\,E_6 .
+\]
+Substituting $x=-\mathcal{B}/\mathcal{A}$ and clearing denominators,
+$\mathcal{A}^5R_5$ and $\mathcal{A}^6E_6$ become polynomials in $U,V$ that are
+exact multiples of $C_8$ (sparse products checked by \texttt{native\_\allowbreak decide}
+\leanref{quotient\allowbreak Inverse\allowbreak R5\_\allowbreak back\_\allowbreak divisible} \leanref{quotient\allowbreak Inverse\allowbreak E6\_\allowbreak back\_\allowbreak divisible}).
+Hence on $C_8=0$ with $\mathcal{A}\ne0$ we get $R_5=E_6=0$
+\leanref{quotient\allowbreak Inverse\allowbreak R5\_\allowbreak zero} \leanref{quotient\allowbreak Inverse\allowbreak E6\_\allowbreak zero}, and if
+moreover $a_1\ne0$ and $f_3(x,y)\ne0$ then $(x,y)\in E_1(\Q)$ and
+$U(x,y)=U$, $V(x,y)=V$\leanref{reciprocal\allowbreak Quotient\allowbreak C8\_\allowbreak to\_\allowbreak E1\_\allowbreak regular}.
+
+\begin{proposition}[Exceptional fibres]\label{prop:exceptional}
+\leanref{reciprocal\allowbreak Quotient\allowbreak C8\_\allowbreak admissible\_\allowbreak denominators} \leanref{reciprocal\allowbreak Quotient\allowbreak C8\_\allowbreak to\_\allowbreak E1\_\allowbreak admissible}
+On the admissible locus, $\mathcal{A}\ne0$, $a_1\ne0$ and $f_3(x,y)\ne0$.
+Hence every admissible $(U,V)$ is the image of an affine point of $E_1(\Q)$
+with $f_3\ne0$\leanref{compact\_\allowbreak to\_\allowbreak E1\allowbreak Affine\allowbreak Point}.
+\end{proposition}
+
+\begin{proof}
+\emph{(i) $\mathcal{A}=0$.}  A B\'ezout identity checked by \texttt{native\_\allowbreak decide}
+\leanref{quotient\allowbreak Inverse\allowbreak A\_\allowbreak exception\_\allowbreak bezout} expresses
+$4(U-1)^4(U+1)^4(2U-1)^{18}D_1(U)D_2(U)^2D_8(U)^2$ as a combination of $C_8$
+and $\mathcal{A}$, where $D_1=1331t^2-12t-1444$, $D_2=256t^3+48t^2-729t+361$
+and $D_8$ is an explicit octic\leanref{quotient\allowbreak Inverse\allowbreak Exception\allowbreak D1} \leanref{quotient\allowbreak Inverse\allowbreak Exception\allowbreak D2} \leanref{quotient\allowbreak Inverse\allowbreak Exception\allowbreak D8},
+none of which has a rational root (no projective zero mod $13$
+\leanref{quotient\allowbreak Inverse\allowbreak Exception\allowbreak D1\_\allowbreak ne\_\allowbreak zero} \leanref{quotient\allowbreak Inverse\allowbreak Exception\allowbreak D2\_\allowbreak ne\_\allowbreak zero} \leanref{quotient\allowbreak Inverse\allowbreak Exception\allowbreak D8\_\allowbreak ne\_\allowbreak zero}).
+So $U\in\{1,-1,\tfrac12\}$.  Now $C_8(1,V)=-(V-1)^4(V+3)^2$, and $V=1$ gives
+$UV=1$, $V=-3$ gives $UV=-3$, not a square;
+$C_8(-1,V)=-(V+1)^3(V^3-69V^2-117V-79)$, $V=-1$ gives $UV=1$ and the cubic has
+no rational root (mod $13$);
+$4C_8(\tfrac12,V)=-(V-1)(V^5+37V^4-23V^3-206V^2+241V-71)$, $V=1$ gives
+$UV=\tfrac12$, not a square, and the quintic has no rational root (mod $2$)
+\leanref{quotient\allowbreak Inverse\allowbreak A\_\allowbreak ne\_\allowbreak zero\_\allowbreak of\_\allowbreak admissible}.
+
+\emph{(ii) $a_1=0$.}  From $R_5=0$ and the first identity, $a_2b_1=0$.
+Write $f_i=f_i^y\,y+f_i^c$.  If $a_2=0$ then $U=f_1^{y}/(2f_3^{y})$,
+$V=f_2^{y}/f_3^{y}$ ($f_3^y\ne0$ by a check mod $41$), and the homogenized
+$C_8$ at $(f_1^y,f_2^y,f_3^y)$ equals $-64(x-2)^3(576x-352225)S_{19}(x)$ with
+$S_{19}$ of degree $19$ without rational root (mod $31$); $x=2$ gives
+$U=V=-1$, $UV=1$, and $x_0:=352225/576$ gives an explicit pair $(U_+,V_+)$
+with $U_+V_+$ not a square.  If $b_1=0$, the identity
+$a_1f_3^{c}-f_3^{y}b_1=(x-2)(576x-352225)(x^2-5)(3x^3+x^2-19x+16)$ leaves
+$x=2$, $x=x_0$ (then $U=U_+$, and $C_8(U_+,V)$ is a linear factor with root
+$V_+$ times a quintic without rational root mod $2$), $x^2=5$, or a cubic
+without rational root (mod $13$)\leanref{quotient\allowbreak Inverse\allowbreak A1\_\allowbreak ne\_\allowbreak zero\_\allowbreak of\_\allowbreak admissible}.
+
+\emph{(iii) $f_3(x,y)=0$.}  On $E_1$, $(f_3^c)^2-(f_3^y)^2(x^3-5x+4)
+=-(576x-352225)(x^2-5)(x^2-x-1)^3$, so $f_3=0$ forces $x=x_0$, i.e.\
+$352225\,\mathcal{A}+576\,\mathcal{B}=0$.  A second B\'ezout identity
+\leanref{quotient\allowbreak Inverse\allowbreak Removed\_\allowbreak exception\_\allowbreak bezout} then forces
+$U\in\{1,-1,\tfrac12,U_+,U_{\lim}\}$ or $D_1D_2D_8(U)=0$; the new value
+$U_{\lim}$ is handled exactly like $U_+$
+\leanref{quotient\allowbreak Inverse\allowbreak F3\_\allowbreak ne\_\allowbreak zero\_\allowbreak of\_\allowbreak admissible}.
+\end{proof}
+
+At the removable base point $x=x_0=352225/576$ one has $f_1=f_2=f_3=0$,
+which is why the hypothesis $f_3\ne0$ in the inverse construction is
+genuinely needed.
+
+\subsection{Translation by two-torsion and the common character}\label{sec:translate}
+
+Let $\tau(X,Y):=\bigl((X-3)/(X-1),\,2Y/(X-1)^2\bigr)$ (translation by the
+$2$-torsion point $(1,0)$ of $E_1$)\leanref{e1\allowbreak Transport\allowbreak Translate\allowbreak X} \leanref{e1\allowbreak Transport\allowbreak Translate\allowbreak Y};
+it preserves $E_1$\leanref{e1\allowbreak Transport\allowbreak Translate\_\allowbreak residual} and is an
+involution\leanref{E1\allowbreak Affine\allowbreak Point.transport\allowbreak Translate\_\allowbreak involutive\_\allowbreak X}.
+Define on $E_1$\leanref{e1\allowbreak L} \leanref{e1\allowbreak M} \leanref{e1\allowbreak D0}
+\begin{align*}
+L&=2X+Y-2,\qquad M=X^2+2Y-1,\\
+N_U&=593X^5+2454X^4+310X^3Y-4845X^3-706X^2Y-8891X^2+4710XY+17492X-4218Y-6803,\\
+N_V&=593X^5+1861X^4+310X^3Y-3714X^3+170X^2Y-9954X^2+4758XY+16361X-5046Y-5147,\\
+D_0&=593X^5-201X^4+903X^3Y-880X^3+1977X^2Y+4384X^2-5779XY-12953X+3091Y+9057 .
+\end{align*}
+Then $(X-1)^5f_1(\tau(X,Y))=-4N_U$, $(X-1)^5f_2(\tau)=-2N_V$,
+$(X-1)^5f_3(\tau)=-2D_0$\leanref{quotient\allowbreak Forward\allowbreak F1\_\allowbreak translate} \leanref{quotient\allowbreak Forward\allowbreak F2\_\allowbreak translate} \leanref{quotient\allowbreak Forward\allowbreak F3\_\allowbreak translate},
+so for $X\ne1$, $D_0\ne0$:
+\leanref{quotient\allowbreak Forward\allowbreak U\_\allowbreak translate} \leanref{quotient\allowbreak Forward\allowbreak V\_\allowbreak translate}
+\[
+ U(\tau(X,Y))=N_U/D_0,\qquad V(\tau(X,Y))=N_V/D_0 .
+\]
+Let $g:=(\mathcal{P}(X)-\mathcal{Q}(X)Y)/((X-3)D_0)$ with
+$\mathcal{P}=2062X^3-1055X^2-8634X+7723$ and $\mathcal{Q}=593X^2+1807X-3758$
+\leanref{e1\allowbreak G}.  On $E_1$ with $D_0\ne0$, $X\ne3$, one has the
+\emph{common-character identity} \leanref{e1\_\allowbreak common\_\allowbreak character}
+\begin{equation}\label{eq:common}
+ 1-\frac{N_U}{D_0}\cdot\frac{N_V}{D_0}=2\,(X+1)\,L\,M\,g^2 .
+\end{equation}
+(Cleared of denominators, this is an explicit multiple of
+$Y^2-X^3+5X-4$\leanref{e1\_\allowbreak common\_\allowbreak character\_\allowbreak cleared}.)
+Moreover $XM=(Y+2)L$ on $E_1$\leanref{e1\_\allowbreak X\_\allowbreak mul\_\allowbreak M}, so with
+\[
+ k:=\frac{Y+2}{X},\qquad h:=X+1
+\]
+we have $M=kL$ for $X\ne0$\leanref{e1\_\allowbreak M\_\allowbreak eq\_\allowbreak L\_\allowbreak mul\_\allowbreak k} and~\eqref{eq:common}
+becomes $1-UV=2kh\,(Lg)^2$.
+
+Now let $Q=(x,y)\in E_1(\Q)$ be the point produced by
+Proposition~\ref{prop:exceptional}, with $U=U(Q)$, $V=V(Q)$ admissible and
+$1-UV$ a nonzero square.  Then $x\ne1$, since $(1,0)$ has $UV=1$
+\leanref{quotient\_\allowbreak inverse\_\allowbreak point\_\allowbreak X\_\allowbreak ne\_\allowbreak one}.  Put $P=(X,Y):=\tau(Q)$; then
+$D_0(P)\ne0$ because $f_3(Q)\ne0$\leanref{quotient\allowbreak Forward\allowbreak F3\_\allowbreak translate\_\allowbreak ne\_\allowbreak zero}.
+Also $X\ne0$: otherwise $x=3$ and $Q=(3,\pm4)$, but $(3,4)$ has $UV=1$ and
+$(3,-4)$ has $UV$ not a square; and $X\ne3$: otherwise $x=0$, $Q=(0,\pm2)$,
+with $UV=1$ at $(0,2)$ and $UV$ a non-square at $(0,-2)$
+\leanref{regular\_\allowbreak quotient\_\allowbreak common\_\allowbreak character\_\allowbreak impossible}.  Finally $L\ne0$ and
+$g\ne0$ because $1-UV\ne0$.  Therefore, by~\eqref{eq:common}
+\leanref{e1\_\allowbreak two\_\allowbreak k\_\allowbreak h\_\allowbreak is\allowbreak Square}, $2kh$ is a nonzero rational square:
+\begin{equation}\label{eq:zkh}
+ z'^2=2kh,\qquad k,h\ne0 .
+\end{equation}
+
+\subsection{The \texorpdfstring{$(k,h)$}{(k,h)} relation and the valuation descent}\label{sec:valuation-descent}
+
+Substituting $Y=kX-2$ (the line through $(0,-2)$ of slope $k$) into the
+equation of $E_1$ gives $-X(X^2-k^2X+4k-5)$\leanref{e1\_\allowbreak line\_\allowbreak substitution};
+with $h=X+1$ this is the relation\leanref{e1\allowbreak HKRelation} \leanref{e1\_\allowbreak hk\_\allowbreak relation}
+\begin{equation}\label{eq:hk}
+ h^2-(k^2+2)\,h+(k^2+4k-4)=0 ,
+\end{equation}
+whose discriminant in $h$ is $k^4-16k+20$\leanref{e1\_\allowbreak hk\_\allowbreak discriminant}.
+
+\begin{proposition}\label{prop:valuation}
+\leanref{e1\_\allowbreak hk\_\allowbreak signed\_\allowbreak squareclasses}
+If $k,h\in\Q^\times$ satisfy~\eqref{eq:zkh} and~\eqref{eq:hk}, then there are
+$\varepsilon\in\{\pm1\}$ and $u,v\in\Q^\times$ with
+\[
+ k=2\varepsilon u^2,\qquad h=\varepsilon v^2 .
+\]
+\end{proposition}
+The sign $\varepsilon$ here is the \emph{valuation sign}; it has nothing to do
+with the physical sign $\sigma$ of Proposition~\ref{prop:C012}.
+
+\begin{proof}
+Let $\alpha=v_\ell(k)$, $\beta=v_\ell(h)$, $\gamma=v_\ell(z')$ for a prime $\ell$,
+so $2\gamma=v_\ell(2)+\alpha+\beta$.  In a vanishing sum of three nonzero
+terms no term has strictly smallest valuation
+\leanref{valuation\_\allowbreak three\_\allowbreak terms\_\allowbreak no\_\allowbreak unique\_\allowbreak min}; note $k^2+4k-4\ne0$
+\leanref{quadratic\_\allowbreak constant\_\allowbreak ne\_\allowbreak zero}.
+
+\emph{Odd $\ell$} \leanref{odd\_\allowbreak prime\_\allowbreak k\_\allowbreak valuation\_\allowbreak even}.  If $\alpha>0$, the
+three terms of~\eqref{eq:hk} have valuations $2\beta,\beta,0$, forcing
+$\beta=0$, so $2\gamma=\alpha$.  If $\alpha<0$, they have valuations
+$2\beta,2\alpha+\beta,2\alpha$, forcing $\beta\in\{0,2\alpha\}$, and again
+$2\gamma=\alpha+\beta$ makes $\alpha$ even.
+
+\emph{$\ell=2$} \leanref{two\_\allowbreak k\_\allowbreak valuation\_\allowbreak odd}.  If $\alpha<0$ the same analysis
+gives $\beta\in\{0,2\alpha\}$ and $2\gamma=1+\alpha+\beta$, so $\alpha$ is odd.
+If $\alpha\ge0$, the discriminant $k^4-16k+20=(2h-k^2-2)^2$ is a rational
+square; with $k=m/n$ in lowest terms, $m^4-16mn^3+20n^4$ is an integer square
+\leanref{hk\allowbreak Discriminant\allowbreak Numerator}.  For $\alpha=0$ ($m,n$ odd) it is
+$\equiv5\pmod8$; for $\alpha\ge2$ ($4\mid m$, $n$ odd) it is $\equiv20\pmod{32}$;
+neither is a square (finite checks in $\Z/8$ and $\Z/32$).  Hence $\alpha=1$.
+
+So $v_2(k)$ is odd and $v_\ell(k)$ is even for odd $\ell$, whence
+$k=2\varepsilon u^2$\leanref{rat\_\allowbreak signed\_\allowbreak two\_\allowbreak square\_\allowbreak of\_\allowbreak valuations}, and
+$h=z'^2/(2k)=\varepsilon(z'/(2u))^2$.
+\end{proof}
+
+\begin{proposition}\label{prop:negative}
+\leanref{e1\_\allowbreak negative\_\allowbreak squareclass\_\allowbreak impossible}
+The case $\varepsilon=-1$ does not occur.
+\end{proposition}
+\begin{proof}
+With $k=-2u^2$, $h=-v^2$ and $w:=u^2$, relation~\eqref{eq:hk} reads
+$4(v^2+1)w^2-8w+(v^4+2v^2-4)=0$\leanref{e1\_\allowbreak negative\_\allowbreak squareclass\_\allowbreak relation},
+and completing the square gives\leanref{negative\allowbreak Squareclass\allowbreak Rhs\_\allowbreak is\allowbreak Square\_\allowbreak of\_\allowbreak relation}
+\[
+ -(v^2+2)(v^4+v^2-4)=\bigl(2((v^2+1)w-1)\bigr)^2 .
+\]
+Write $v=m/n$ in lowest terms; then
+$-(m^2+2n^2)(m^4+m^2n^2-4n^4)$ is an integer square\leanref{neg\allowbreak Aux}.  But for
+$m,n$ both odd it is $\equiv6\pmod8$; for $m$ odd, $n$ even it is $\equiv3$ or
+$7\pmod8$; for $4\mid m$, $n$ odd it is $\equiv8\pmod{16}$; and for
+$m\equiv2\pmod4$, $n$ odd it is $\equiv32\pmod{64}$.  None of these residues is
+a square\leanref{neg\allowbreak Aux\_\allowbreak not\_\allowbreak is\allowbreak Square\_\allowbreak of\_\allowbreak coprime}.
+\end{proof}
+
+\begin{proposition}\label{prop:to-octic}
+\leanref{e1\_\allowbreak hk\_\allowbreak to\_\allowbreak octic}
+If $k,h\in\Q^\times$ satisfy~\eqref{eq:zkh} and~\eqref{eq:hk}, then
+$k=2u^2$ for a rational point $(u,r)$ of the octic curve~\eqref{eq:octic}.
+\end{proposition}
+\begin{proof}
+By the two previous propositions $k=2u^2$, $h=v^2$.  Then~\eqref{eq:hk} is
+$v^4-(4u^4+2)v^2+4u^4+8u^2-4=0$, and with $r:=v^2-2u^4-1$,
+\[
+ r^2=(2u^4+1)^2-(4u^4+8u^2-4)=4u^8-8u^2+5 .
+\]
+\leanref{e1\_\allowbreak positive\_\allowbreak discriminant}
+\end{proof}
+
+\subsection{Conclusion of the reduction}
+
+\begin{theorem}\label{thm:quad-conditional}
+\leanref{quadratic\_\allowbreak cubic\_\allowbreak impossible\_\allowbreak sharipov\_\allowbreak of\_\allowbreak octic\_\allowbreak classified}
+Assume~\eqref{eq:octic-class}.  Then $\mathrm{Quad}(s)$ fails for
+$s=(p/q)^2$, $p\ne q$ coprime positive integers.
+\end{theorem}
+\begin{proof}
+Suppose $\mathrm{Quad}(s)$.  By \S\S\ref{sec:compact}--\ref{sec:translate} we
+obtain $P=(X,Y)\in E_1(\Q)$ with $X\notin\{0,3\}$, $D_0(P)\ne0$, and
+$k=(Y+2)/X$, $h=X+1$ satisfying~\eqref{eq:zkh}, \eqref{eq:hk}.  By
+Proposition~\ref{prop:to-octic} and~\eqref{eq:octic-class}, $u=\pm1$, so
+$k=2$, and~\eqref{eq:hk} becomes $h^2-6h+8=0$, $h\in\{2,4\}$, i.e.\ $X\in\{1,3\}$.
+The value $X=3$ was excluded.  If $X=1$ then $Y=kX-2=0$, and
+$D_0(1,0)=593-201-880+4384-12953+9057=0$, contradicting $D_0(P)\ne0$
+\leanref{regular\_\allowbreak e1\_\allowbreak common\_\allowbreak character\_\allowbreak impossible}.
+\end{proof}
+
+Theorem~\ref{thm:quad} follows from Theorem~\ref{thm:quad-conditional} and
+Theorem~\ref{thm:octic} below\leanref{octic\allowbreak Rational\allowbreak Points\allowbreak Classified}.
+\section{The quadratic factor, II: rational points on \texorpdfstring{$r^2=4u^8-8u^2+5$}{r²=4u⁸−8u²+5}}\label{sec:quad2}
+
+\begin{theorem}\label{thm:octic}
+\leanref{octic\allowbreak Rational\allowbreak Points\allowbreak Classified}
+The rational points of $\mathcal{O}:r^2=4u^8-8u^2+5$ are exactly
+$(u,r)\in\{(1,1),(1,-1),(-1,1),(-1,-1)\}$.
+\end{theorem}
+
+The proof works over $K:=\Q(i)$, $\mathcal{O}_K=\Z[i]$.  We write
+$\Nm(a+bi)=a^2+b^2$ and use the Gaussian primes
+$\lam=1+i$, $\pisym=1+2i$, $\rhosym=1+4i$ of norms $2,5,17$
+\leanref{gaussian\allowbreak Lambda\allowbreak Int\_\allowbreak prime} \leanref{gaussian\allowbreak Pi\allowbreak Int\_\allowbreak prime} \leanref{gaussian\allowbreak Rho\allowbreak Int\_\allowbreak prime}.
+Standard facts about elliptic curves over number fields are cited from
+Silverman~\cite{Silverman}; Section~\ref{sec:lean} records which of them
+the Lean development proves from scratch.
+
+\subsection{Norm factorization and two quartic covers}
+
+Let $q(u):=(2u^4-1)+i(2u^2-2)\in K$\leanref{gaussian\allowbreak Quartic}.  Then
+\leanref{gaussian\allowbreak Quartic\_\allowbreak norm}
+\[
+ 4u^8-8u^2+5=(2u^4-1)^2+(2u^2-2)^2=\Nm(q(u))=q(u)\,\overline{q(u)} .
+\]
+Consider the two curves\leanref{Gaussian\allowbreak Cover\allowbreak Zero\allowbreak Point} \leanref{Gaussian\allowbreak Cover\allowbreak One\allowbreak Point}
+\[
+ C_0:\ v^2=q(u),\qquad C_1:\ w^2=-i\,q(u),\qquad u\in\Q,\ v,w\in K .
+\]
+
+\begin{proposition}[Pythagorean split]\label{prop:split}
+\leanref{octic\_\allowbreak to\_\allowbreak gaussian\_\allowbreak cover}
+Every $(u,r)\in\mathcal{O}(\Q)$ lifts, with the same $u$, to a point of
+$C_0$ if the reduced denominator of $u$ is odd, and to a point of $C_1$ if it
+is even.
+\end{proposition}
+\begin{proof}
+Write $u=m/n$ in lowest terms, $n>0$, and $A=2m^4-n^4$, $B=2n^2(m^2-n^2)$
+\leanref{gaussian\allowbreak Split\allowbreak A} \leanref{gaussian\allowbreak Split\allowbreak B}.  Then
+$n^8(4u^8-8u^2+5)=A^2+B^2$, so $R:=rn^4$ is an integer\leanref{rat\_\allowbreak is\allowbreak Int\_\allowbreak of\_\allowbreak sq\_\allowbreak eq\_\allowbreak int}
+and $(A,B,R)$ is a Pythagorean triple\leanref{octic\_\allowbreak denominator\_\allowbreak pythagorean}.
+If $n$ is odd, $\gcd(A,B)=1$ and $A$ is odd\leanref{gaussian\allowbreak Split\_\allowbreak coprime\_\allowbreak of\_\allowbreak odd},
+so by the classification of primitive triples (mathlib,
+\texttt{Pythagorean\allowbreak Triple.coprime\_\allowbreak classification}) $A=c^2-d^2$, $B=2cd$
+\leanref{octic\_\allowbreak odd\_\allowbreak square\_\allowbreak split}, hence $q(u)=(A+iB)/n^4=\bigl((c+di)/n^2\bigr)^2$.
+If $n=2N$ is even, $m$ is odd, $A=2A'$, $B=2B'$ with $A'=m^4-8N^4$,
+$B'=4N^2(m^2-4N^2)$ coprime and $A'$ odd\leanref{gaussian\allowbreak Split\allowbreak Even\_\allowbreak coprime},
+so $A'=c^2-d^2$, $B'=2cd$\leanref{octic\_\allowbreak even\_\allowbreak square\_\allowbreak split}, $A+iB=2(c+di)^2$,
+and since $(1-i)^2=-2i$, $-i\,q(u)=\bigl((1-i)(c+di)/n^2\bigr)^2$.
+\end{proof}
+
+The covers map to elliptic curves over $K$
+\leanref{gaussian\allowbreak E0} \leanref{gaussian\allowbreak E1} \leanref{Gaussian\allowbreak Cover\allowbreak Zero\allowbreak Point.to\allowbreak E0} \leanref{Gaussian\allowbreak Cover\allowbreak One\allowbreak Point.to\allowbreak E1}:
+\begin{align*}
+ C_0\to E_0:\ y^2=x^3+2i\,x^2-(2+4i)\,x,&\qquad (u,v)\mapsto(2u^2,\,2uv),\\
+ C_1\to E_1':\ y^2=x^3+2\,x^2+(2+4i)\,x,&\qquad (u,w)\mapsto(-2iu^2,\,-2iuw).
+\end{align*}
+(We write $E_1'$ for the second Gaussian curve to avoid a clash with the
+curve $E_1$ of Section~\ref{sec:E1}; in Lean it is \texttt{gaussian\allowbreak E1}.)  Both
+images are affine points.  Visible points: $P:=(2,2)\in E_0(K)$
+\leanref{gaussian\allowbreak E0\allowbreak P}, the image of $(u,v)=(1,1)$, and the $2$-torsion points
+$T=(0,0)$ on both curves\leanref{gaussian\allowbreak E0\allowbreak T} \leanref{gaussian\allowbreak E1\allowbreak T}.
+
+Theorem~\ref{thm:octic} follows from two statements
+\leanref{octic\_\allowbreak classified\_\allowbreak of\_\allowbreak gaussian\_\allowbreak covers}:
+\begin{align}
+ &\text{every $C\in C_0(\Q)$ maps to $P$ or $-P$ in $E_0(K)$;}\label{eq:C0-goal}\\
+ &\text{every $C\in C_1(\Q)$ maps to $\Oinf$ or $T$ in $E_1'(K)$.}\label{eq:C1-goal}
+\end{align}
+\leanref{Gaussian\allowbreak Cover\allowbreak Zero\allowbreak Classified} \leanref{Gaussian\allowbreak Cover\allowbreak One\allowbreak Elliptic\allowbreak Classified}
+Indeed, \eqref{eq:C0-goal} gives $2u^2=2$, $u^2=1$\leanref{gaussian\allowbreak Cover\allowbreak Zero\_\allowbreak u\_\allowbreak sq\_\allowbreak eq\_\allowbreak one};
+and \eqref{eq:C1-goal} is impossible for an affine image, so $C_1(\Q)=\emptyset$
+\leanref{gaussian\allowbreak Cover\allowbreak One\_\allowbreak empty}: the image is never $\Oinf$, and image $T$
+would force $u=0$, $w^2=-i\,q(0)=-2+i$, $\Nm(w)^2=5$, absurd
+\leanref{gaussian\allowbreak Cover\allowbreak One\_\allowbreak to\allowbreak E1\_\allowbreak ne\_\allowbreak torsion} \leanref{five\_\allowbreak not\_\allowbreak rational\_\allowbreak square}.
+In both cases $r^2=4u^8-8u^2+5=1$.
+
+\subsection{Two-isogeny descent over \texorpdfstring{$\Z[i]$}{Z[i]}}\label{sec:descent}
+
+For $A,B\in K$ with $B\ne0$, $A^2-4B\ne0$, let $E(A,B):y^2=x(x^2+Ax+B)$ and
+$E'(A,B):Y^2=X(X^2-2AX+(A^2-4B))=E(-2A,A^2-4B)$
+\leanref{curve} \leanref{dual\allowbreak Curve}, with discriminants $16B^2(A^2-4B)$ and
+$256B(A^2-4B)^2$\leanref{curve\_\allowbreak discriminant} \leanref{dual\allowbreak Curve\_\allowbreak discriminant}.
+Our curves are $E_0=E(2i,-2-4i)$ and $E_1'=E(2,2+4i)$
+\leanref{gaussian\allowbreak E0\_\allowbreak eq\_\allowbreak curve} \leanref{gaussian\allowbreak E1\_\allowbreak eq\_\allowbreak curve}, with duals
+$E_0':Y^2=X^3-4iX^2+(4+16i)X$ and $E_1'^{\,\prime}:Y^2=X^3-4X^2-(4+16i)X$
+\leanref{gaussian\allowbreak E0\allowbreak Dual} \leanref{gaussian\allowbreak E1\allowbreak Dual}.
+The $2$-isogeny and its dual are given on affine points by
+\leanref{phi} \leanref{phi\allowbreak Hat}
+\[
+ \phi(x,y)=\Bigl(\frac{y^2}{x^2},\frac{y(B-x^2)}{x^2}\Bigr),\qquad
+ \hat\phi(X,Y)=\Bigl(\frac{Y^2}{4X^2},\frac{Y(A^2-4B-X^2)}{8X^2}\Bigr),
+\]
+extended by $\phi(\Oinf)=\phi(T)=\Oinf$, $\hat\phi(\Oinf)=\hat\phi(T')=\Oinf$.
+On the group of points these satisfy $\hat\phi\circ\phi=[2]$,
+$\phi\circ\hat\phi=[2]$, $\ker\phi=\{\Oinf,T\}$, $\ker\hat\phi=\{\Oinf,T'\}$,
+$\phi(-P)=-\phi(P)$, $\phi(T+P)=\phi(P)$, $\hat\phi(T'+Q)=\hat\phi(Q)$
+\leanref{phi\allowbreak Hat\_\allowbreak phi} \leanref{phi\_\allowbreak phi\allowbreak Hat} \leanref{phi\_\allowbreak eq\_\allowbreak zero\_\allowbreak iff} \leanref{phi\allowbreak Hat\_\allowbreak eq\_\allowbreak zero\_\allowbreak iff} \leanref{phi\_\allowbreak neg} \leanref{phi\_\allowbreak torsion\_\allowbreak add} \leanref{phi\allowbreak Hat\_\allowbreak dual\allowbreak Torsion\_\allowbreak add}
+(all verified on mathlib's group law, including the tangent and vertical cases).
+
+The Kummer maps to the square-class group $K^\times/K^{\times2}$
+\leanref{Square\allowbreak Class} \leanref{alpha} \leanref{alpha\allowbreak Dual} are
+$\alpha(\Oinf)=1$, $\alpha(T)=[B]$, $\alpha(x,y)=[x]$ and
+$\alpha'(\Oinf)=1$, $\alpha'(T')=[A^2-4B]$, $\alpha'(X,Y)=[X]$.
+They are homomorphisms\leanref{alpha\_\allowbreak add} \leanref{alpha\allowbreak Dual\_\allowbreak add} (for three
+collinear points, $x_1x_2x_3$ is the square $(y_1-\ell x_1)^2$ where $\ell$ is
+the slope of the line), and they are exact:
+$\alpha(P)=1\iff P\in\hat\phi(E'(K))$ and $\alpha'(Q)=1\iff Q\in\phi(E(K))$
+\leanref{alpha\_\allowbreak eq\_\allowbreak one\_\allowbreak iff\_\allowbreak phi\allowbreak Hat\_\allowbreak image} \leanref{alpha\allowbreak Dual\_\allowbreak eq\_\allowbreak one\_\allowbreak iff\_\allowbreak phi\_\allowbreak image},
+with explicit preimages (if $x=z^2$, put $X=A+2x-2y/z$, $Y=2zX$).
+
+\medskip\noindent\textbf{Support.}
+The relevant constants factor as\leanref{e0\allowbreak BInt\_\allowbreak factorization} \leanref{e1\allowbreak BInt\_\allowbreak factorization} \leanref{e0\allowbreak Dual\allowbreak BInt\_\allowbreak factorization} \leanref{e1\allowbreak Dual\allowbreak BInt\_\allowbreak factorization}
+\[
+ B_0=-2-4i=i\lam^2\pisym,\quad B_1=2+4i=-i\lam^2\pisym,\quad
+ A_0^2-4B_0=4+16i=-\lam^4\rhosym,\quad A_1^2-4B_1=-4-16i=\lam^4\rhosym,
+\]
+and every unit of $\Z[i]$ is a square or $i$ times a square
+\leanref{unit\_\allowbreak eq\_\allowbreak square\_\allowbreak or\_\allowbreak i\_\allowbreak mul\_\allowbreak square}.  For a point $(x,y)$ with $x\ne0$
+on $E(A,B)$ with $A,B\in\Z[i]$, the valuation of $x$ at any prime not dividing
+$B$ is even\leanref{curve\_\allowbreak abscissa\_\allowbreak order\_\allowbreak even}: if $v(x)<0$ then
+$2v(y)=3v(x)$, and if $v(x)>0$ then $v(x^2+Ax+B)=0$ and $2v(y)=v(x)$.
+Since $\Z[i]$ is a PID, this leaves eight candidate classes per curve
+\leanref{curve\_\allowbreak abscissa\_\allowbreak square\allowbreak Class\_\allowbreak supported\_\allowbreak on\_\allowbreak two\_\allowbreak primes} \leanref{curve\_\allowbreak abscissa\_\allowbreak pi\_\allowbreak raw\_\allowbreak cases} \leanref{curve\_\allowbreak abscissa\_\allowbreak rho\_\allowbreak raw\_\allowbreak cases}:
+\[
+ \alpha(E_0),\alpha(E_1')\subseteq\{1,i\}\cdot\{1,\lam\}\cdot\{1,\pisym\},\qquad
+ \alpha'(E_0'),\alpha'(E_1'^{\,\prime})\subseteq\{1,i\}\cdot\{1,\lam\}\cdot\{1,\rhosym\}.
+\]
+
+\medskip\noindent\textbf{$\lam$-adic obstructions.}
+If $\alpha(x,y)=[d]$ with $d\mid B$, $B=de$, write $x=dz^2$, $z=U/V$ with
+$U,V\in\Z[i]$ coprime; then $W:=(y/(dz))V^2\in\Z[i]$ and
+\leanref{integral\allowbreak Homogeneous\allowbreak Space\_\allowbreak of\_\allowbreak square\allowbreak Class}
+\begin{equation}\label{eq:homog}
+ W^2=d\,U^4+A\,U^2V^2+e\,V^4,\qquad U,V\ \text{coprime}.
+\end{equation}
+Reducing modulo $n\in\{4,8,16,32\}$, i.e.\ modulo $\lam^4,\lam^6,\lam^8,\lam^{10}$,
+and using that coprime $U,V$ are not both divisible by $\lam$
+\leanref{not\_\allowbreak both\_\allowbreak gaussian\allowbreak Lambda\allowbreak Int\_\allowbreak dvd\_\allowbreak of\_\allowbreak is\allowbreak Rel\allowbreak Prime}, an exhaustive search
+over $(\Z/n)[i]^2$ shows that~\eqref{eq:homog} has no solution for $22$ of
+the $32$ candidate classes\leanref{square\allowbreak Class\_\allowbreak ne\_\allowbreak of\_\allowbreak local\allowbreak Obstruction};
+the classes, moduli and residues are listed in Appendix~\ref{app:certificates}.
+The remaining classes are all realized by visible points
+\leanref{alpha\_\allowbreak gaussian\allowbreak E0\allowbreak P} \leanref{alpha\_\allowbreak gaussian\allowbreak E0\allowbreak T} \leanref{alpha\_\allowbreak gaussian\allowbreak E0\allowbreak P\_\allowbreak add\_\allowbreak T} \leanref{alpha\_\allowbreak gaussian\allowbreak E1\allowbreak T} \leanref{alpha\allowbreak Dual\_\allowbreak gaussian\allowbreak E0\allowbreak T} \leanref{alpha\allowbreak Dual\_\allowbreak gaussian\allowbreak E1\allowbreak T}:
+$\alpha(P)=[2]=[i]$ (as $2=i(1-i)^2$), $\alpha(T)=[B_0]=[i\pisym]$,
+$\alpha(P+T)=[\pisym]$ on $E_0$; $\alpha(T)=[i\pisym]$ on $E_1'$;
+$\alpha'(T')=[\rhosym]$ on both duals.  Hence
+\leanref{gaussian\allowbreak E0\_\allowbreak alpha\_\allowbreak range} \leanref{gaussian\allowbreak E0\_\allowbreak alpha\allowbreak Dual\_\allowbreak range} \leanref{gaussian\allowbreak E1\_\allowbreak alpha\_\allowbreak range} \leanref{gaussian\allowbreak E1\_\allowbreak alpha\allowbreak Dual\_\allowbreak range}
+\[
+ \alpha(E_0(K))=\{1,[i],[\pisym],[i\pisym]\},\quad \alpha'(E_0'(K))=\{1,[\rhosym]\},\quad
+ \alpha(E_1'(K))=\{1,[i\pisym]\},\quad \alpha'(E_1'^{\,\prime}(K))=\{1,[\rhosym]\},
+\]
+the classes being distinct because $\Nm\pisym=5$, $\Nm\rhosym=17$ are not
+squares and $i$ is not a square in $K$\leanref{class\allowbreak I\_\allowbreak ne\_\allowbreak one} \leanref{class\allowbreak Pi\_\allowbreak ne\_\allowbreak one}.
+
+\begin{proposition}\label{prop:mw}
+\leanref{gaussian\allowbreak E0\_\allowbreak fg} \leanref{gaussian\allowbreak E1\_\allowbreak fg} \leanref{gaussian\allowbreak E0\_\allowbreak doubling\_\allowbreak index} \leanref{gaussian\allowbreak E1\_\allowbreak doubling\_\allowbreak index}
+$E_0(K)$ and $E_1'(K)$ are finitely generated, with
+$[E_0(K):2E_0(K)]=4$ and $[E_1'(K):2E_1'(K)]=2$.
+\end{proposition}
+\begin{proof}
+Because $\alpha'(E'(K))=\{1,\alpha'(T')\}$ in both cases, $\ker\alpha=2E(K)$
+\leanref{alpha\_\allowbreak eq\_\allowbreak one\_\allowbreak iff\_\allowbreak two\_\allowbreak smul\_\allowbreak of\_\allowbreak dual\_\allowbreak classification}: if $\alpha(R)=1$
+then $R=\hat\phi(Q)$; either $\alpha'(Q)=1$ and $Q=\phi(S)$, $R=2S$, or
+$\alpha'(Q-T')=1$ and $R=\hat\phi(Q-T')=2S$.  Hence
+$[E(K):2E(K)]=|\alpha(E(K))|$, which is $4$ and $2$.  Finite generation is
+the Mordell--Weil theorem~\cite[VIII.6.7]{Silverman}; the Lean proof runs the
+descent with the naive $x$-height (mathlib,
+\texttt{Add\allowbreak Comm\allowbreak Group.fg\_\allowbreak of\_\allowbreak descent'})\leanref{fg\_\allowbreak of\_\allowbreak finite\allowbreak Index\_\allowbreak two}.
+\end{proof}
+
+Since $\Nm(A^2-4B)=272$ is not a square, $x^2+Ax+B$ has no root in $K$ and
+$E(K)[2]=\{\Oinf,T\}$ for both curves
+\leanref{gaussian\allowbreak E0\_\allowbreak two\_\allowbreak torsion\_\allowbreak classified} \leanref{gaussian\allowbreak E1\_\allowbreak two\_\allowbreak torsion\_\allowbreak classified}.
+The structure theorem for finitely generated abelian groups then gives
+$[E:2E]=2^{\mathrm{rank}}\cdot|E[2]|$, so
+\leanref{gaussian\allowbreak E0\_\allowbreak free\allowbreak Rank} \leanref{gaussian\allowbreak E1\_\allowbreak free\allowbreak Rank}
+\[
+ \operatorname{rank}E_0(K)=1,\qquad \operatorname{rank}E_1'(K)=0 .
+\]
+
+\subsection{Torsion}\label{sec:torsion}
+
+\emph{Three-torsion.}  For $E(A,B)$ the $3$-division polynomial is
+$\psi_3=3x^4+4Ax^3+6Bx^2-B^2$\leanref{three\allowbreak Division\allowbreak Value}, and $3R=\Oinf$ with
+$R\ne\Oinf$ forces $\psi_3(x(R))=0$\leanref{three\allowbreak Division\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak three\_\allowbreak nsmul\_\allowbreak eq\_\allowbreak zero}.
+The prime $11$ is inert, $\Z[i]/11=\F_{121}$, and an enumeration of all $121$
+residues shows $\psi_3$ has no root there for either curve
+\leanref{e0\_\allowbreak three\allowbreak Division\_\allowbreak no\_\allowbreak root} \leanref{e1\_\allowbreak three\allowbreak Division\_\allowbreak no\_\allowbreak root}; a root
+$x=U/V\in K$ in lowest terms would reduce to one.  Hence $E(K)[3]=0$
+\leanref{gaussian\allowbreak E0\_\allowbreak three\_\allowbreak nsmul\_\allowbreak eq\_\allowbreak zero\_\allowbreak iff} \leanref{gaussian\allowbreak E1\_\allowbreak three\_\allowbreak nsmul\_\allowbreak eq\_\allowbreak zero\_\allowbreak iff}.
+
+\emph{Reduction at $37$.}  Since $37=1^2+6^2$ splits in $K$ and
+$6^2\equiv31^2\equiv-1\pmod{37}$, Hensel's lemma gives two embeddings
+\leanref{gaussian\allowbreak To\allowbreak Padic\allowbreak Plus} \leanref{gaussian\allowbreak To\allowbreak Padic\allowbreak Minus}
+\[
+ \sigma_+:K\to\Q_{37},\ i\mapsto r_+\equiv6,\qquad
+ \sigma_-:K\to\Q_{37},\ i\mapsto r_-=-r_+\equiv31\pmod{37} .
+\]
+Under $\sigma_\pm$ the curves have integral models with good reduction
+\leanref{gaussian\allowbreak E0\allowbreak Padic\allowbreak Plus\_\allowbreak has\allowbreak Good\allowbreak Reduction} \leanref{gaussian\allowbreak E0\allowbreak Padic\allowbreak Minus\_\allowbreak has\allowbreak Good\allowbreak Reduction};
+the special fibres are\leanref{gaussian\allowbreak E0\allowbreak Residue\allowbreak Plus\_\allowbreak coefficients} \leanref{gaussian\allowbreak E0\allowbreak Residue\allowbreak Minus\_\allowbreak coefficients} \leanref{e1\allowbreak Plus\allowbreak Coefficients} \leanref{e1\allowbreak Minus\allowbreak Coefficients}
+\[
+\begin{array}{llll}
+ E_0^{\sigma_+}: y^2=x^3+12x^2+11x, & \#=48, & \text{exponent }12; &
+ E_0^{\sigma_-}: y^2=x^3+25x^2+22x, \ \#=42,\ \text{cyclic};\\
+ E_1'^{\,\sigma_+}: y^2=x^3+2x^2+26x, & \#=28; &&
+ E_1'^{\,\sigma_-}: y^2=x^3+2x^2+15x, \ \#=34 .
+\end{array}
+\]
+The point counts and exponents are exhaustive enumerations over $\F_{37}$
+\leanref{plus\_\allowbreak all\_\allowbreak twelve} \leanref{minus\_\allowbreak all\_\allowbreak forty\allowbreak Two} \leanref{e1\allowbreak Plus\_\allowbreak all\_\allowbreak twenty\allowbreak Eight} \leanref{e1\allowbreak Minus\_\allowbreak all\_\allowbreak thirty\allowbreak Four}.
+The reduction map $E(\Q_{37})\to\tilde E(\F_{37})$ is a group homomorphism
+\cite[VII.2.1]{Silverman} \leanref{reduce\allowbreak E0\allowbreak Plus\_\allowbreak add} \leanref{reduce\allowbreak E0\allowbreak Minus\_\allowbreak add} \leanref{reduce\allowbreak E1\allowbreak Plus\_\allowbreak add} \leanref{reduce\allowbreak E1\allowbreak Minus\_\allowbreak add},
+its kernel $E^{(1)}$ (points with $|x|_{37}>1$, together with $\Oinf$) is
+torsion-free \cite[IV.6.1, VII.3.1]{Silverman} \leanref{infinity\allowbreak Kernel\_\allowbreak is\allowbreak Add\allowbreak Torsion\allowbreak Free},
+and $E(K)\to E(\Q_{37})$ is injective\leanref{map\allowbreak E0\allowbreak Point\allowbreak Plus\allowbreak Local\allowbreak Hom\_\allowbreak injective}.
+Hence for torsion $R\in E_0(K)$, $12R$ and $42R$ lie in the kernel and are
+torsion, so $12R=42R=\Oinf$ and $6R=\Oinf$
+\leanref{gaussian\allowbreak E0\_\allowbreak torsion\_\allowbreak twelve} \leanref{gaussian\allowbreak E0\_\allowbreak torsion\_\allowbreak forty\allowbreak Two} \leanref{gaussian\allowbreak E0\_\allowbreak torsion\_\allowbreak six};
+for $E_1'$, $28R=34R=\Oinf$ gives $2R=\Oinf$\leanref{gaussian\allowbreak E1\_\allowbreak torsion\_\allowbreak two}.
+Together with $E[2]=\{\Oinf,T\}$ and $E[3]=0$
+\leanref{eq\_\allowbreak zero\_\allowbreak or\_\allowbreak eq\_\allowbreak two\allowbreak Torsion\_\allowbreak of\_\allowbreak six\_\allowbreak nsmul}:
+
+\begin{proposition}\label{prop:groups}
+\leanref{gaussian\allowbreak E0\_\allowbreak equiv} \leanref{gaussian\allowbreak E1\_\allowbreak point\_\allowbreak classified}
+$E_0(K)\cong\Z\times\Z/2$ with torsion $\{\Oinf,T\}$, and $E_1'(K)=\{\Oinf,T\}$.
+\end{proposition}
+This proves~\eqref{eq:C1-goal} \leanref{gaussian\allowbreak Cover\allowbreak One\allowbreak Elliptic\allowbreak Classified}.
+It remains to prove~\eqref{eq:C0-goal}.
+
+\subsection{The formal group at \texorpdfstring{$37$}{37}}\label{sec:formal}
+
+Fix one of the models $E:y^2=x^3+Ax^2+Bx$ over $\Z_{37}$ with good reduction.
+On the kernel $E^{(1)}$ of reduction use the parameter
+$t:=-x/y$ and $w:=-1/y$ (both $0$ at $\Oinf$)\leanref{parameter} \leanref{auxiliary};
+then $w=t^3+At^2w+Btw^2$\leanref{auxiliary\_\allowbreak eq\_\allowbreak parameter}, $|t|<1$ and
+$|w|=|t|^3$\leanref{norm\_\allowbreak parameter\_\allowbreak lt\_\allowbreak one\_\allowbreak of\_\allowbreak mem\_\allowbreak kernel} \leanref{norm\_\allowbreak auxiliary\_\allowbreak eq\_\allowbreak parameter\_\allowbreak cube\_\allowbreak of\_\allowbreak mem\_\allowbreak kernel},
+$t(-S)=-t(S)$\leanref{parameter\_\allowbreak neg}, and $t$ determines the point
+\leanref{parameter\_\allowbreak eq\_\allowbreak zero\_\allowbreak iff}.  Writing the chord through two kernel points
+as $w=ct+h$, an exact computation of the group law gives
+\leanref{chord\_\allowbreak parameter\_\allowbreak identity}
+\[
+ t(S_1+S_2)=t_1+t_2+\frac{h\,(A+2Bc)}{1+Ac+Bc^2},\qquad
+ |c|\le\max(|t_1|,|t_2|)^2,\quad |h|\le\max(|t_1|,|t_2|)^3 ,
+\]
+and similarly for the tangent.  Hence\leanref{norm\_\allowbreak parameter\_\allowbreak add\_\allowbreak sub\_\allowbreak le\_\allowbreak max\_\allowbreak cube}
+\begin{equation}\label{eq:formal-estimate}
+ |t(S_1+S_2)-t(S_1)-t(S_2)|\le\max(|t(S_1)|,|t(S_2)|)^3 ,
+\end{equation}
+and by induction\leanref{norm\_\allowbreak parameter\_\allowbreak nsmul\_\allowbreak sub\_\allowbreak le\_\allowbreak cube} \leanref{norm\_\allowbreak parameter\_\allowbreak nsmul\_\allowbreak eq\_\allowbreak of\_\allowbreak not\_\allowbreak dvd} \leanref{norm\_\allowbreak parameter\_\allowbreak 37\_\allowbreak nsmul\_\allowbreak eq}
+\begin{equation}\label{eq:formal-scaling}
+ |t(nS)-n\,t(S)|\le|t(S)|^3,\qquad
+ |t(nS)|=|t(S)|\ \ (37\nmid n),\qquad
+ |t(37S)|=37^{-1}|t(S)| .
+\end{equation}
+(The last uses $|t|\le37^{-1}$, so $|t|^3<37^{-1}|t|$.)  In particular
+$nS=\Oinf$ implies $S=\Oinf$: this is the torsion-freeness used above
+\leanref{infinity\allowbreak Kernel\_\allowbreak nsmul\_\allowbreak right\_\allowbreak injective}.  No $p$-adic elliptic
+logarithm is used anywhere; \eqref{eq:formal-scaling} is all that is needed.
+
+\medskip\noindent\textbf{Translation by $\pm P$.}
+For a kernel point $S$ with parameter $t$ and $r:=1/x(S)=t^2(1+Ar+Br^2)$
+\leanref{reciprocal\_\allowbreak eq\_\allowbreak parameter\_\allowbreak sq\_\allowbreak mul}, the abscissa of $S\pm P$ (where
+$P=(2,2)$) is\leanref{exists\_\allowbreak integral\_\allowbreak translation\_\allowbreak at\_\allowbreak P} \leanref{exists\_\allowbreak integral\_\allowbreak translation\_\allowbreak at\_\allowbreak neg\allowbreak P}
+\begin{equation}\label{eq:translation}
+ x(S\pm P)=2\pm4t+t^2\,\theta_\pm,\qquad \theta_\pm\in\Z_{37} .
+\end{equation}
+
+\medskip\noindent\textbf{Paired separation.}
+Let $S_+\in E_0^{\sigma_+}(\Q_{37})$ and $S_-\in E_0^{\sigma_-}(\Q_{37})$ be
+kernel points.  Call the pair \emph{separated} if
+\leanref{Paired\allowbreak Kernel\allowbreak Separated}
+\[
+ |t(S_+)|=|t(S_-)|=|t(S_+)-t(S_-)|=:\rho>0 .
+\]
+By~\eqref{eq:formal-scaling}, separation is preserved by $n\cdot$ for every
+nonzero integer $n$ (for $37\nmid n$ all three norms are unchanged and the
+error is $\le\rho^3<\rho$; for $n=37$ all three scale by $37^{-1}$)
+\leanref{Paired\allowbreak Kernel\allowbreak Separated.zsmul}, and it is \emph{reflected} by $n\cdot$
+when $37\nmid n$: if $(nS_+,nS_-)$ is separated, so is $(S_+,S_-)$
+\leanref{paired\allowbreak Kernel\allowbreak Separated\_\allowbreak of\_\allowbreak nsmul\_\allowbreak of\_\allowbreak not\_\allowbreak dvd}.
+
+\begin{lemma}\label{lem:base-separated}
+\leanref{actual\allowbreak Base\_\allowbreak pair\allowbreak Separated}
+The pair $(12\,\sigma_+(P),\,12\,\sigma_-(P))$ is separated, with $\rho=37^{-1}$.
+\end{lemma}
+\begin{proof}
+Both points reduce to $\Oinf$ since $\bar P=(2,2)$ has order $12$ and $6$ in
+the two special fibres.  Computing $P\to2P\to3P\to6P\to12P$ in weighted
+projective coordinates modulo $37^2$ (with $r_+\equiv117$, $r_-\equiv1252$
+mod $1369$\leanref{split\allowbreak Root\allowbreak Plus\_\allowbreak to\allowbreak ZMod\allowbreak Pow\_\allowbreak two} \leanref{split\allowbreak Root\allowbreak Minus\_\allowbreak to\allowbreak ZMod\allowbreak Pow\_\allowbreak two}),
+one finds\leanref{plus\_\allowbreak actual\_\allowbreak formal\_\allowbreak parameter\_\allowbreak first\_\allowbreak layer} \leanref{minus\_\allowbreak actual\_\allowbreak formal\_\allowbreak parameter\_\allowbreak first\_\allowbreak layer}
+\[
+ t(12\,\sigma_+(P))=37\,q_+,\quad q_+\equiv17,\qquad
+ t(12\,\sigma_-(P))=37\,q_-,\quad q_-\equiv19\pmod{37}.
+\]
+Both norms are $37^{-1}$, and $q_+-q_-\equiv-2$ is a unit.
+\end{proof}
+
+\begin{lemma}\label{lem:no-separated}
+\leanref{no\_\allowbreak paired\allowbreak Kernel\allowbreak Separated\_\allowbreak sub\_\allowbreak P} \leanref{no\_\allowbreak paired\allowbreak Kernel\allowbreak Separated\_\allowbreak sub\_\allowbreak neg\allowbreak P}
+Let $C\in C_0(\Q)$ with image $R\in E_0(K)$, and suppose $\sigma_\pm(R\mp P)$
+are kernel points (same sign choice on both sides).  Then the pair
+$(\sigma_+(R\mp P),\sigma_-(R\mp P))$ is not separated.
+\end{lemma}
+\begin{proof}
+The abscissa $x(R)=2u^2$ is rational, so $\sigma_+$ and $\sigma_-$ send it to
+the same element of $\Q_{37}$.  By~\eqref{eq:translation} applied to
+$S_\pm=\sigma_\pm(R\mp P)$, with $t_\pm=t(S_\pm)$,
+\[
+ 2\pm4t_++t_+^2\theta_+=x(R)=2\pm4t_-+t_-^2\theta_- .
+\]
+If the pair were separated with parameter $\rho<1$, the left-hand side minus
+the right-hand side would have $|4(t_+-t_-)|=\rho$ while
+$|t_+^2\theta_+-t_-^2\theta_-|\le\rho^2<\rho$, a contradiction
+\leanref{first\allowbreak Order\allowbreak Translation\_\allowbreak eq\_\allowbreak impossible}.
+\end{proof}
+Note that both embeddings are essential here: a single embedding gives no
+contradiction, and the invariant $|t_+-t_-|=|t_+|$ rests on $17\not\equiv19$.
+
+\subsection{Saturation of the visible point}\label{sec:saturation}
+
+Fix an isomorphism $e:E_0(K)\cong\Z\times\Z/2$ and let $G$ be a generator of
+the free part\leanref{free\allowbreak Generator}; then $e(T)=(0,1)$\leanref{gaussian\allowbreak E0\allowbreak T\_\allowbreak image},
+and every point is $kG+\epsilon T$ with $\epsilon\in\{0,1\}$
+\leanref{exists\_\allowbreak normal\allowbreak Form}.  Write\leanref{exists\_\allowbreak visible\_\allowbreak and\_\allowbreak point\_\allowbreak normal\allowbreak Forms}
+\[
+ P=mG+\delta T,\qquad m\in\Z,\ \delta\in\{0,1\}.
+\]
+We do \emph{not} assume $m=\pm1$; instead we show $\gcd(m,84\cdot37)=1$
+\leanref{is\allowbreak Coprime\_\allowbreak 84\_\allowbreak and\_\allowbreak 37\_\allowbreak of\_\allowbreak saturation}.
+
+\begin{itemize}
+\item \emph{$m$ is odd} \leanref{visible\allowbreak Coefficient\_\allowbreak odd}: if $m$ were even,
+$\alpha(P)=\alpha(\delta T)\in\{1,[i\pisym]\}$, but $\alpha(P)=[i]$ is neither
+\leanref{class\allowbreak I\_\allowbreak ne\_\allowbreak one} \leanref{class\allowbreak I\_\allowbreak ne\_\allowbreak class\allowbreak IPi}.
+\item For odd $\ell$, $\ell\mid m$ implies $P=\ell(aG+\delta T)$ since $\ell T=T$
+\leanref{visible\allowbreak Point\_\allowbreak divisible\_\allowbreak of\_\allowbreak odd\_\allowbreak dvd\_\allowbreak coefficient}.
+\item \emph{$3\nmid m$} \leanref{three\_\allowbreak not\_\allowbreak dvd\_\allowbreak visible\allowbreak Point\_\allowbreak coefficient}: if
+$3R=P$, reduce under $\sigma_+$; an enumeration of the $48$ points of
+$E_0^{\sigma_+}(\F_{37})$ shows that $(2,2)$ is not $3$ times any of them
+\leanref{p37\_\allowbreak not\_\allowbreak three\_\allowbreak divisible}.
+\item \emph{$7\nmid m$} \leanref{seven\_\allowbreak not\_\allowbreak dvd\_\allowbreak visible\allowbreak Point\_\allowbreak coefficient}: if
+$7R=P$ with $R=(x,y)$, then $x(7R)=\Phi_7(x)/\Psi_7(x)^2=2$, so $x$ is a root of
+the monic degree-$49$ polynomial $\Phi_7-2\Psi_7^2$ over $\Z[i]$
+\leanref{seven\allowbreak Preimage\allowbreak Polynomial\_\allowbreak monic}, hence $x\in\Z[i]$; but modulo the
+prime $i\mapsto12$ above $29$ (curve $y^2=x^3+24x^2+8x$) this polynomial has no
+root in $\F_{29}$\leanref{p29\_\allowbreak seven\allowbreak Preimage\allowbreak Polynomial\_\allowbreak no\_\allowbreak root}.
+\item \emph{$37\nmid m$} \leanref{thirty\allowbreak Seven\_\allowbreak not\_\allowbreak dvd\_\allowbreak visible\allowbreak Point\_\allowbreak coefficient}:
+if $37R=P$ then $V:=\sigma_+(12R)$ is a kernel point (as $12$ kills the special
+fibre) with $37V=\sigma_+(12P)$, so $|t(37V)|=37^{-1}|t(V)|<37^{-1}$
+by~\eqref{eq:formal-scaling}; but $|t(\sigma_+(12P))|=37^{-1}$ by
+Lemma~\ref{lem:base-separated}.
+\end{itemize}
+
+\subsection{Paired reductions and the endgame}\label{sec:endgame}
+
+Let $C\in C_0(\Q)$ with image $R=kG+\epsilon T\in E_0(K)$.  Since
+$84=\operatorname{lcm}(12,42)$, $84G$ reduces to $\Oinf$ under both
+$\sigma_\pm$, whatever $G$ is
+\leanref{reduce\allowbreak E0\allowbreak Plus\_\allowbreak eighty\allowbreak Four\_\allowbreak nsmul\_\allowbreak free\allowbreak Generator} \leanref{reduce\allowbreak E0\allowbreak Minus\_\allowbreak eighty\allowbreak Four\_\allowbreak nsmul\_\allowbreak free\allowbreak Generator}.
+With $n$ an inverse of $m$ modulo $84$\leanref{inverse\allowbreak Mod84},
+\leanref{exists\_\allowbreak row\_\allowbreak error\_\allowbreak multiple}
+\[
+ R=(kn)P+(\epsilon-kn\delta)T+c\cdot84G\quad(c\in\Z),
+\]
+so the reductions of $R$ are those of $(kn)P$, possibly twisted by $\bar T$
+\leanref{actual\_\allowbreak reductions\_\allowbreak eq\_\allowbreak reindexed\_\allowbreak rows}.  The multiples $j\bar P$,
+$0\le j<12$, in the two special fibres are tabulated in
+Appendix~\ref{app:certificates}; their abscissae agree only for
+$j\equiv0,\pm1\pmod{12}$ in the plain row and $j\equiv0$ in the $\bar T$-twisted
+row\leanref{common\allowbreak X\_\allowbreak row\_\allowbreak classification\_\allowbreak fin}.  Since $x(R)=2u^2$ is
+rational, $\sigma_+(R)$ and $\sigma_-(R)$ have the same projective abscissa
+\leanref{reduce\allowbreak E0\_\allowbreak common\_\allowbreak of\_\allowbreak rational}, so $(kn\bmod12,\text{twist})$ must be
+one of these\leanref{actual\_\allowbreak reindexed\_\allowbreak allowed\allowbreak Row}.  Two of them are excluded
+by residue non-squares\leanref{cover\allowbreak Zero\_\allowbreak index\allowbreak Independent\_\allowbreak surviving\allowbreak Rows\_\allowbreak actual}:
+reduction to $\Oinf$ means $|u|_{37}>1$, and then with $t=1/u$,
+$(v/u^2)^2=2-t^4+r_+(2t^2-2t^4)$ is a $37$-adic integer reducing to $2$, which is
+not a square mod $37$\leanref{infinity\_\allowbreak forces\_\allowbreak leading\_\allowbreak square\_\allowbreak actual};
+reduction to $(0,0)$ means $\bar u=0$ and $v^2=q(u)$ reduces to
+$q(0)=-1-2i\mapsto-1-12\equiv24$, not a square mod $37$
+\leanref{torsion\_\allowbreak forces\_\allowbreak q0\_\allowbreak square\_\allowbreak actual}.  So the row is plain and
+$kn\equiv\pm1\pmod{12}$, hence $k\equiv\pm m\pmod{12}$
+\leanref{coefficient\_\allowbreak mod\allowbreak Eq\_\allowbreak of\_\allowbreak inverse\allowbreak Mod84\_\allowbreak row\_\allowbreak one} \leanref{coefficient\_\allowbreak mod\allowbreak Eq\_\allowbreak of\_\allowbreak inverse\allowbreak Mod84\_\allowbreak row\_\allowbreak eleven},
+$m\epsilon\equiv k\delta\pmod2$\leanref{torsion\allowbreak Coefficient\_\allowbreak mod\allowbreak Eq\_\allowbreak of\_\allowbreak plain}, and
+the exact identity $mR=kP$ holds in $E_0(K)$\leanref{index\allowbreak Cleared\_\allowbreak point\_\allowbreak eq}.
+
+\begin{theorem}\label{thm:C0}
+\leanref{cover\allowbreak Zero\_\allowbreak to\allowbreak E0\_\allowbreak eq\_\allowbreak visible\_\allowbreak or\_\allowbreak neg} \leanref{gaussian\allowbreak Cover\allowbreak Zero\allowbreak Classified}
+For every $C\in C_0(\Q)$, the image $R$ of $C$ in $E_0(K)$ is $P$ or $-P$.
+\end{theorem}
+\begin{proof}
+Take the row $kn\equiv1$ (the row $kn\equiv11$ is symmetric, with $-P$ in place
+of $P$).  Put $a:=(k-m)/12\in\Z$.  If $a=0$ then $mR=mP$, and multiplication
+by $m$ is injective on $\Z\times\Z/2$ because $\gcd(m,84)=1$ (in particular $m$
+is odd)\leanref{zsmul\_\allowbreak injective\_\allowbreak of\_\allowbreak is\allowbreak Coprime\_\allowbreak 84}; so $R=P$.  If $a\ne0$: both
+$\sigma_\pm(R)$ reduce to $(2,2)=\overline{P}$, so $\sigma_\pm(R-P)$ are kernel
+points\leanref{finite\allowbreak Reduce\allowbreak Point\_\allowbreak sub\_\allowbreak eq\_\allowbreak none\_\allowbreak of\_\allowbreak eq}, and
+$m\,\sigma_\pm(R-P)=a\cdot12\,\sigma_\pm(P)$.  The base pair is separated
+(Lemma~\ref{lem:base-separated}), $a\cdot$ preserves separation, and $m\cdot$
+reflects it since $37\nmid m$; hence $(\sigma_+(R-P),\sigma_-(R-P))$ is
+separated\leanref{pair\allowbreak Separated\_\allowbreak sub\_\allowbreak visible\_\allowbreak of\_\allowbreak row\_\allowbreak one}, contradicting
+Lemma~\ref{lem:no-separated}.
+\end{proof}
+
+This is~\eqref{eq:C0-goal}; with~\eqref{eq:C1-goal} it proves
+Theorem~\ref{thm:octic}, and with Theorem~\ref{thm:quad-conditional} it proves
+Theorem~\ref{thm:quad}.
+\section{The symmetric \texorpdfstring{$5+5$}{5+5} case}\label{sec:fivefive}
+
+\begin{theorem}\label{thm:fivefive}
+\leanref{symmetric\_\allowbreak five\_\allowbreak five\_\allowbreak impossible\_\allowbreak from\_\allowbreak reduced}
+For rational $s>0$, $s\ne1$, there is no monic $R\in\Q[X]$ of degree $5$ with
+$P_s(X^2)=R(X)\cdot(-R(-X))$.
+\end{theorem}
+The proof uses only polynomial identities, exact rational arithmetic, two
+finite checks over $\F_7$ and elementary real analysis; no
+\texttt{native\_\allowbreak decide} is involved.  Irreducibility of $R$ is not needed.
+
+\subsection{Coefficient equations and normalization}
+
+Write $R=X^5+aX^4+bX^3+cX^2+dX+e$\leanref{quintic\allowbreak Factor}.  Then
+\leanref{quintic\allowbreak Factor\_\allowbreak symmetric\_\allowbreak product}
+\[
+R(X)\cdot(-R(-X))=X^{10}+(2b-a^2)X^8+(b^2+2d-2ac)X^6+(2bd-c^2-2ae)X^4+(d^2-2ce)X^2-e^2,
+\]
+while $P_s(X^2)=X^{10}+c_8X^8+c_6X^6+c_4X^4+c_2X^2-s^5$ with the coefficients
+of~\eqref{eq:Ps} \leanref{normalized\allowbreak Even\allowbreak Polynomial\_\allowbreak explicit}.  Comparing
+coefficients gives five equations\leanref{Five\allowbreak Five\allowbreak Coefficient\allowbreak Solution} \leanref{coefficient\allowbreak Solution\_\allowbreak of\_\allowbreak symmetric\allowbreak Five\allowbreak Five\allowbreak Case}
+\begin{equation}\label{eq:E}
+ 2b-a^2=c_8,\quad b^2+2d-2ac=c_6,\quad 2bd-c^2-2ae=c_4,\quad d^2-2ce=c_2,\quad e^2=s^5 .
+\end{equation}
+Put $r:=e/s^2$; then $r^2=s$ and $e=r^5$
+\leanref{r\_\allowbreak sq} \leanref{e\_\allowbreak eq\_\allowbreak r\_\allowbreak pow\_\allowbreak five}, so $s$ is a rational square and
+$r\ne0$.  Eliminate $b=(a^2+c_8)/2$ and $c=(d^2-c_2)/(2r^5)$
+\leanref{b\_\allowbreak formula} \leanref{c\_\allowbreak formula} and normalize $y:=a/r$, $z:=d/r^4$
+\leanref{a\_\allowbreak eq\_\allowbreak r\_\allowbreak mul\_\allowbreak y} \leanref{d\_\allowbreak eq\_\allowbreak r\_\allowbreak pow\_\allowbreak four\_\allowbreak mul\_\allowbreak z}.  The remaining two
+equations become, after clearing the powers of $r$
+\leanref{Five\allowbreak Five\allowbreak Coefficient\allowbreak Solution.g2\_\allowbreak zero} \leanref{Five\allowbreak Five\allowbreak Coefficient\allowbreak Solution.g3\_\allowbreak zero},
+$G_2(s,y,z)=G_3(s,y,z)=0$ with\leanref{five\allowbreak Five\allowbreak G2} \leanref{five\allowbreak Five\allowbreak G3}
+\begin{align*}
+G_2&=-4s^3y^2-24s^3y+60s^3+s^2y^4-2s^2y^2-4s^2yz^2+4s^2y+8s^2z-39s^2+12sy^2+8sy-52s+32,\\
+G_3&=-32s^3-12s^2z^2-8s^2z+52s^2+4sy^2z-8sy-sz^4+2sz^2-4sz+39s+4z^2+24z-60 .
+\end{align*}
+(Replacing $R$ by $-R(-X)$ changes $r$ to $-r$ and leaves $(y,z)$ unchanged.)
+So a symmetric factorization produces a rational point of the affine curve
+$G_2=G_3=0$ over $\Q$\leanref{reduced\allowbreak Point\_\allowbreak of\_\allowbreak symmetric\allowbreak Five\allowbreak Five\allowbreak Case}.
+
+\subsection{Elimination of \texorpdfstring{$z$}{z}}
+
+There are explicit polynomials $\mathcal{U},\mathcal{V}\in\Z[s,y,z]$ (of
+degree $9$ in $s$; file \leanfile{Five\allowbreak Five/\allowbreak Resultant\allowbreak Certificate.\allowbreak lean}) and a
+polynomial $F\in\Z[s,y]$ with $104$ terms, $\deg_yF=16$, $\deg_sF=12$,
+leading coefficient $s^8$ in $y$ and constant term $2^{20}$
+\leanref{five\allowbreak Five\allowbreak Resultant\allowbreak Factor}, such that
+\leanref{five\allowbreak Five\_\allowbreak bezout\_\allowbreak identity}
+\[
+ \mathcal{U}\,G_2+\mathcal{V}\,G_3=F(s,y).
+\]
+Hence every
+rational point of $G_2=G_3=0$ has $F(s,y)=0$
+\leanref{five\allowbreak Five\allowbreak Resultant\allowbreak Factor\_\allowbreak eq\_\allowbreak zero\_\allowbreak of\_\allowbreak common\_\allowbreak root}, and
+Theorem~\ref{thm:fivefive} follows from
+\begin{theorem}\label{thm:Fnonzero}
+\leanref{five\allowbreak Five\allowbreak Resultant\allowbreak Factor\_\allowbreak ne\_\allowbreak zero}
+For rational $s>0$, $s\ne1$ and all $y\in\Q$, $F(s,y)\ne0$.
+\end{theorem}
+The proof shows that the real fibre $y\mapsto F(s,y)$ has no real zero: strict
+positivity is verified on sample fibres and transported along $s$, which is
+possible as long as no fibre in between acquires a multiple root.
+
+\subsection{The critical locus}
+
+Let $P_6(s):=s^6+15s^5-1585s^4+3052s^3-1585s^2+15s+1$
+\leanref{five\allowbreak Five\allowbreak Discriminant\allowbreak P6} and let $P_{28}$ be an explicit polynomial of
+degree $28$ with leading coefficient $103680000$ and constant term $-2^{21}$
+\leanref{five\allowbreak Five\allowbreak Discriminant\allowbreak P28} (29 integer coefficients, file
+\leanfile{Five\allowbreak Five/\allowbreak Discriminant\allowbreak Roots.\allowbreak lean}).  There are explicit
+$\mathcal{U}_c,\mathcal{V}_c\in\Z[s,y]$ ($\deg_y\le15$, $\deg_s\le69$,
+coefficients of up to $80$ digits, file \leanfile{Five\allowbreak Five/\allowbreak Resultant\allowbreak Critical.\allowbreak lean})
+with the \emph{critical identity} \leanref{five\allowbreak Five\_\allowbreak critical\_\allowbreak bezout\_\allowbreak identity}
+\begin{equation}\label{eq:critical}
+ \mathcal{U}_c\,F+\mathcal{V}_c\,\partial_yF=2^{38}\,s^5(s-1)^{10}(s+1)^3\,P_6(s)\,P_{28}(s)^2 .
+\end{equation}
+Therefore, for real $s>0$ with $s\ne1$, $P_6(s)\ne0$, $P_{28}(s)\ne0$, the fibre
+$F(s,\cdot)$ has no multiple real root\leanref{five\allowbreak Five\allowbreak Resultant\allowbreak Factor\allowbreak Poly\allowbreak Real\_\allowbreak no\_\allowbreak multiple\_\allowbreak root}.
+Note the factor $(s-1)^{10}$: $s=1$ is a genuine cut and positivity cannot be
+transported across it.
+
+\begin{lemma}\label{lem:norational}
+\leanref{five\allowbreak Five\_\allowbreak discriminant\_\allowbreak factors\_\allowbreak have\_\allowbreak no\_\allowbreak rational\_\allowbreak roots}
+$P_6$ and $P_{28}$ have no rational root.
+\end{lemma}
+\begin{proof}
+Homogenize and write a putative root as $n/d$ in lowest terms; $n,d$ are not
+both divisible by $7$.  An exhaustive check of the $48$ pairs
+$(n,d)\in\F_7^2\setminus\{(0,0)\}$ shows that neither homogeneous form
+vanishes\leanref{five\allowbreak Five\allowbreak Discriminant\allowbreak P6\allowbreak Hom\allowbreak Mod7\_\allowbreak nonzero} \leanref{five\allowbreak Five\allowbreak Discriminant\allowbreak P28\allowbreak Hom\allowbreak Mod7\_\allowbreak nonzero}.
+\end{proof}
+
+\begin{lemma}[Isolation of the cuts]\label{lem:cuts}
+\leanref{five\allowbreak Five\allowbreak Discriminant\allowbreak P6\_\allowbreak exists\allowbreak Unique\_\allowbreak low\_\allowbreak root} \leanref{five\allowbreak Five\allowbreak Discriminant\allowbreak P6\_\allowbreak exists\allowbreak Unique\_\allowbreak high\_\allowbreak root} \leanref{five\allowbreak Five\allowbreak Discriminant\allowbreak P28\_\allowbreak exactly\_\allowbreak three\_\allowbreak positive\_\allowbreak roots}
+$P_6$ has exactly two positive real roots, $c_1\in[\tfrac{31}{1000},\tfrac{32}{1000}]$
+and $c_5\in[\tfrac{159}{5},\tfrac{319}{10}]$; $P_{28}$ has exactly three,
+$c_2\in[\tfrac{47}{100},\tfrac{471}{1000}]$, $c_3\in[\tfrac{786}{25},\tfrac{629}{20}]$,
+$c_4\in[\tfrac{1583}{50},\tfrac{3167}{100}]$.  Thus
+$0<c_1<c_2<1<c_3<c_4<c_5$\leanref{five\allowbreak Five\_\allowbreak critical\_\allowbreak cut\_\allowbreak order}.
+\end{lemma}
+\begin{proof}
+Exact rational evaluation gives the signs at the ten endpoints
+\leanref{five\allowbreak Five\_\allowbreak discriminant\_\allowbreak bracket\_\allowbreak order}.  On each complementary
+interval $[a,b]$ the sign of $P$ (of $P'$ on a bracket) is certified by
+writing $\pm P(a+(b-a)x)$ in the Bernstein basis $\sum_k\beta_kx^k(1-x)^{n-k}$
+with all $\beta_k>0$ (an identity checked by \texttt{ring}; on $[b,\infty)$
+the power basis is used).  Strict monotonicity on a bracket gives existence
+and uniqueness of the root there, and the sign certificates exclude roots
+elsewhere (files \leanfile{Five\allowbreak Five/\allowbreak Discriminant\allowbreak P6\allowbreak Roots.\allowbreak lean},
+\leanfile{Discriminant\allowbreak P28\allowbreak Local.\allowbreak lean}, \leanfile{Discriminant\allowbreak P28\allowbreak Roots.\allowbreak lean}).
+\end{proof}
+
+By Lemma~\ref{lem:norational} a rational $s>0$, $s\ne1$ is never one of the
+cuts $c_1,\dots,c_5$; so it lies in one of the seven open cells
+$(0,c_1),(c_1,c_2),(c_2,1),(1,c_3),(c_3,c_4),(c_4,c_5),(c_5,\infty)$
+\leanref{five\allowbreak Five\_\allowbreak critical\_\allowbreak free\_\allowbreak of\_\allowbreak ne\_\allowbreak cuts}.
+
+\subsection{Sample fibres}
+
+\begin{lemma}\label{lem:samples}
+\leanref{five\allowbreak Five\_\allowbreak sample\_\allowbreak one\_\allowbreak hundredth\_\allowbreak pos\_\allowbreak real} \leanref{five\allowbreak Five\_\allowbreak sample\_\allowbreak one\_\allowbreak fifth\_\allowbreak pos\_\allowbreak real} \leanref{five\allowbreak Five\_\allowbreak sample\_\allowbreak four\_\allowbreak fifths\_\allowbreak pos\_\allowbreak real} \leanref{five\allowbreak Five\_\allowbreak sample\_\allowbreak two\_\allowbreak pos\_\allowbreak real} \leanref{five\allowbreak Five\_\allowbreak sample\_\allowbreak sixty\_\allowbreak three\_\allowbreak halves\_\allowbreak pos\_\allowbreak real} \leanref{five\allowbreak Five\_\allowbreak sample\_\allowbreak three\_\allowbreak hundred\_\allowbreak seventeen\_\allowbreak tenths\_\allowbreak pos\_\allowbreak real} \leanref{five\allowbreak Five\_\allowbreak sample\_\allowbreak forty\_\allowbreak pos\_\allowbreak real}
+For $s_0\in\{\tfrac1{100},\tfrac15,\tfrac45,2,\tfrac{63}{2},\tfrac{317}{10},40\}$
+and all real $y$, $F(s_0,y)>0$.
+\end{lemma}
+\begin{proof}
+One sample lies in each of the seven cells
+\leanref{five\allowbreak Five\_\allowbreak sample\_\allowbreak real\_\allowbreak parameter\_\allowbreak cells}.  For each $s_0$, after a
+scaling $y=c\,x$ ($c\in\{30,3,1,3,7,7,10\}$), $F(s_0,cx)$ is written as an
+explicit positive combination of squares of polynomials in $x$ plus a positive
+constant (an exact rational Gram/LDL decomposition), an identity checked by
+\texttt{ring}; see \leanfile{Five\allowbreak Five/\allowbreak Sample\allowbreak Positivity\allowbreak Real.\allowbreak lean}.
+\end{proof}
+
+\subsection{First contact}
+
+\begin{lemma}[First contact]\label{lem:first-contact}
+\leanref{no\_\allowbreak root\_\allowbreak along\_\allowbreak critical\_\allowbreak free\_\allowbreak segment}
+Let $F:\R\times\R\to\R$ be a polynomial in $y$ of degree $16$ with leading
+coefficient $s^8$ and with continuous homogenization
+$H(s,u,v)$, $H(s,y,1)=F(s,y)$, $H(s,u,v)=v^{16}F(s,u/v)$ for $v\ne0$,
+$H(s,u,0)=s^8u^{16}$.  Let $0<q,s$ and suppose (i) $F(q,y)>0$ for all $y$,
+and (ii) for every $a$ on the segment between $q$ and $s$ there is no $y$
+with $F(a,y)=\partial_yF(a,y)=0$.  Then $F(s,y)\ne0$ for all $y$.
+\end{lemma}
+\begin{proof}
+Let $a(\tau)=q+\tau(s-q)$, $\tau\in[0,1]$, and let $\Delta=\{(u,v):|u|+v=1,\ v\ge0\}$
+be the compact projective diamond\leanref{projective\allowbreak Diamond\_\allowbreak compact}; every
+real $y$ corresponds to the point $(y,1)/(|y|+1)\in\Delta$
+\leanref{projective\allowbreak Point\_\allowbreak mem\_\allowbreak diamond}.  The set
+$Z=\{(\tau,(u,v))\in[0,1]\times\Delta:H(a(\tau),u,v)=0\}$ is compact.  If
+$F(s,\cdot)$ had a zero, $Z$ would be nonempty, and there would be a least
+$\tau^*$ with a zero $(u^*,v^*)$.  Since $a(\tau)>0$ we have
+$H(a(\tau),u,0)=a(\tau)^8u^{16}\ne0$ on $\Delta$, so $v^*\ne0$ and the zero is
+affine, $y^*=u^*/v^*$ with $F(a(\tau^*),y^*)=0$; by (i) $\tau^*>0$.  For every
+$y$, the continuous function $\tau\mapsto F(a(\tau),y)$ is positive at $0$
+and has no zero on $[0,\tau^*)$, hence $F(a(\tau^*),y)\ge0$ for all $y$.
+Thus $y^*$ is a global minimum of $F(a(\tau^*),\cdot)$ with value $0$, so
+$\partial_yF(a(\tau^*),y^*)=0$, contradicting (ii).
+\end{proof}
+Strict positivity of the sample fibre in (i) is essential: mere
+nonvanishing would not give the sign information used in the last step.
+
+\subsection{Proof of Theorem~\ref{thm:Fnonzero}}
+
+Let $s\in\Q$, $s>0$, $s\ne1$, and view $s$ as a real number.  By
+Lemma~\ref{lem:norational} and Lemma~\ref{lem:cuts}, $s$ lies in an open cell,
+which also contains one of the samples $q$ of Lemma~\ref{lem:samples}.  The
+closed segment between $q$ and $s$ contains none of $0,1,c_1,\dots,c_5$, so
+by~\eqref{eq:critical} hypothesis (ii) of Lemma~\ref{lem:first-contact} holds
+along it\leanref{five\allowbreak Five\allowbreak Resultant\allowbreak Factor\allowbreak Real\_\allowbreak ne\_\allowbreak zero\_\allowbreak of\_\allowbreak segment}
+(seven cell lemmas \leanref{five\allowbreak Five\_\allowbreak critical\_\allowbreak free\_\allowbreak below\_\allowbreak p6\_\allowbreak low} through
+\leanref{five\allowbreak Five\_\allowbreak critical\_\allowbreak free\_\allowbreak above\_\allowbreak p6\_\allowbreak high}), and (i) holds at $q$.
+Hence $F(s,y)\ne0$ for all real $y$, in particular for rational $y$.  \qed
+
+Combining with the reduction of the first two subsections,
+$G_2=G_3=0$ has no rational point with $s>0$, $s\ne1$
+\leanref{five\allowbreak Five\_\allowbreak reduced\_\allowbreak locus\_\allowbreak empty}, which proves Theorem~\ref{thm:fivefive}.
+\section{Proof of the main theorem and the Lean formalization}\label{sec:lean}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let $p\ne q$ be coprime positive integers and $s=(p/q)^2$.  By
+Theorem~\ref{thm:classification}, if $Q_{p,q}$ were reducible over $\Q$ then
+one of $\mathrm{Lin}(s)$, $\mathrm{Quad}(s)$, $\mathrm{Sym}(s)$ would hold.
+Theorem~\ref{thm:linear} excludes the first, Theorem~\ref{thm:quad} the
+second, and Theorem~\ref{thm:fivefive} (applied with $s>0$, $s\ne1$) the
+third.  Hence $Q_{p,q}$ is irreducible in $\Q[t]$
+\leanref{sharipov\allowbreak Polynomial\allowbreak Q\_\allowbreak irreducible}, and by Gauss's lemma
+(Proposition~\ref{prop:scaling}) in $\Z[t]$.  Equivalently, $Q_{p,q}$ admits
+no factorization into two non-units\leanref{no\_\allowbreak nontrivial\_\allowbreak factorization}.
+\end{proof}
+
+\subsection{What is formalized}
+
+The Lean development lives in \texttt{lean/\allowbreak Cuboid2/\allowbreak } and is built with
+Lean~\texttt{v4.33.0} against mathlib at revision
+\texttt{db584cd6d46c92f209a44c0f1c829460d327499d} \cite{mathlib}, pinned in
+\texttt{lakefile.toml}; the complete dependency graph is in
+\texttt{lake-manifest.json}.  The public statement is
+\begin{quote}\ttfamily
+theorem sharipov\_second\_cuboid\_conjecture\\
+\phantom{xxxx}\{p q : Nat\} (hp : 0 < p) (hq : 0 < q)\\
+\phantom{xxxx}(hcop : Nat.Coprime p q) (hne : p $\neq$ q) :\\
+\phantom{xxxx}Irreducible (sharipovPolynomial p q)
+\end{quote}
+where \texttt{sharipov\allowbreak Polynomial p q : Polynomial Int} is defined coefficient
+by coefficient as in~\eqref{eq:Qpq}.  The import closure of \texttt{Main.\allowbreak lean}
+consists of $112$ files; none contains \texttt{sorry}, \texttt{axiom} or
+\texttt{opaque}.  The axiom audit (\texttt{Cuboid2/\allowbreak Axiom\allowbreak Audit.\allowbreak lean}) of the
+public theorem reports only the standard foundational axioms
+(\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}) and the
+closed-computation axioms generated by \texttt{native\_\allowbreak decide}.  To reproduce:
+\begin{verbatim}
+bash scripts/reproduce_lean.sh complete
+\end{verbatim}
+from the repository root.
+
+\subsection{Trust model}
+
+Three kinds of steps occur.
+\begin{enumerate}
+\item Ordinary mathematics and polynomial identities, checked by the Lean
+kernel (\texttt{ring}, \texttt{field\_\allowbreak simp}, \texttt{linear\_\allowbreak combination},
+\texttt{nlinarith}, \texttt{omega}, and mathlib lemmas).  This covers all of
+Sections~\ref{sec:reduction}, \ref{sec:linear} and~\ref{sec:fivefive} and most
+of Sections~\ref{sec:quad1}--\ref{sec:quad2}.
+\item Finite enumerations checked by kernel evaluation (\texttt{decide}):
+three lemmas over $\F_3$ in the $1+4$ case, two over $\F_7$ in the $5+5$ case,
+the residue checks modulo $8,16,32,64$ of \S\ref{sec:valuation-descent}, and the
+factorizations of $B_0,B_1,A^2-4B$ in $\Z[i]$.
+\item Finite enumerations checked by compiled evaluation
+(\texttt{native\_\allowbreak decide}), which trusts the Lean compiler in addition to the
+kernel.  These occur \emph{only} in the $2+3$ branch, in $22$ files under
+\texttt{Quadratic\allowbreak Reduction/\allowbreak }: the sparse-polynomial certificates of
+\texttt{Quotient\allowbreak Inverse.\allowbreak lean} and \texttt{Transport\allowbreak Exceptions.\allowbreak lean}
+(\S\ref{sec:E1}), and the Gaussian files (\S\S\ref{sec:descent}--\ref{sec:endgame}):
+the $22$ homogeneous-space tables modulo $4,8,16,32$, the point counts and
+exponents over $\F_{37}$ and $\F_{121}$, the multiples of $\bar P$, the
+weighted chain modulo $37^2$, the $\F_{29}$ root check of $\Phi_7-2\Psi_7^2$,
+and the agreement of the executable $\F_{37}$ formulas with the field
+operations.  Appendix~\ref{app:certificates} lists them.
+\end{enumerate}
+The $1+4$ and $5+5$ branches and the top-level shell use no
+\texttt{native\_\allowbreak decide}.
+
+\subsection{Where the article is shorter than the formalization}
+
+Three standard results are cited in Section~\ref{sec:quad2} but proved from
+scratch in Lean, because mathlib (at the pinned revision) does not provide
+them for our situation:
+(a) the reduction map $E(\Q_{37})\to\tilde E(\F_{37})$ is a group
+homomorphism \cite[VII.2.1]{Silverman}: Lean proves additivity by a valuation
+analysis of secant and tangent slopes, the delicate case being two integral
+points with the same reduction on the residue $2$-torsion
+\leanref{finite\allowbreak Reduce\allowbreak Point\_\allowbreak add};
+(b) the kernel of reduction is torsion-free \cite[IV.6.1, VII.3.1]{Silverman}:
+Lean proves the estimates~\eqref{eq:formal-scaling} from the exact chord and
+tangent formulas\leanref{infinity\allowbreak Kernel\_\allowbreak is\allowbreak Add\allowbreak Torsion\allowbreak Free};
+(c) the Mordell--Weil theorem \cite[VIII.6.7]{Silverman}: Lean combines
+$[E:2E]<\infty$ with the naive $x$-height and mathlib's abstract descent
+theorem\leanref{fg\_\allowbreak of\_\allowbreak finite\allowbreak Index\_\allowbreak two}.
+Conversely, three classical facts are taken from mathlib: Fermat's
+$a^4+b^4\ne c^2$ (\texttt{not\_\allowbreak fermat\_\allowbreak 42}), the classification of primitive
+Pythagorean triples, and Hensel's lemma; the variant $a^4-b^4\ne c^2$ is
+proved in Lean by descent\leanref{not\_\allowbreak fermat\_\allowbreak 4\_\allowbreak sub}.
+
+\subsection{Interfaces and dead code}
+
+The Lean proof of the $2+3$ case passes the octic classification through an
+equivalent interface phrased on the curve $R^2=4a^5-8a^2+5a$
+\leanref{dplus\_\allowbreak classified\_\allowbreak iff\_\allowbreak octic\_\allowbreak classified}; this curve plays no
+mathematical role and is not used in this article.  Files outside the
+import closure of \texttt{Main.\allowbreak lean} (most of \texttt{DPlus/\allowbreak }, all of
+\texttt{Genus2/\allowbreak }, alternative certificates under \texttt{Linear\allowbreak Quartic/\allowbreak } and
+\texttt{Five\allowbreak Five/\allowbreak }) record earlier approaches and are not part of the proof.
+
+\clearpage
+\appendix
+
+\section{Paper statements and Lean theorems}\label{app:table}
+
+The table lists, for each numbered statement of the article, the Lean
+declaration that proves it and the file (relative to \texttt{lean/\allowbreak Cuboid2/\allowbreak })
+containing it.  Auxiliary Lean names cited inline in the text are not repeated.
+
+\begin{small}
+\begin{longtable}{@{}p{3.6cm}p{6.3cm}p{5.4cm}@{}}
+\toprule
+Statement & Lean declaration & File\\
+\midrule
+\endhead
+Theorem~\ref{thm:main} & \texttt{sharipov\_\allowbreak second\_\allowbreak cuboid\_\allowbreak conjecture} & \texttt{Main.\allowbreak lean}\\
+Prop.~\ref{prop:scaling} & \texttt{eval\_\allowbreak sharipov\_\allowbreak scaling}, \texttt{sharipov\allowbreak Polynomial\allowbreak Q\_\allowbreak irreducible\_\allowbreak iff\_\allowbreak normalized\allowbreak Even}, \texttt{sharipov\allowbreak Polynomial\_\allowbreak irreducible\_\allowbreak iff\_\allowbreak rational} & \texttt{Polynomial.\allowbreak lean}, \texttt{Scaling.\allowbreak lean}\\
+Prop.~\ref{prop:quintic-cases} & \texttt{monic\_\allowbreak quintic\_\allowbreak reducible\_\allowbreak cases} & \texttt{Factorization\allowbreak Classification.\allowbreak lean}\\
+Lemma~\ref{lem:not-associated} & \texttt{not\_\allowbreak associated\_\allowbreak reflect\_\allowbreak of\_\allowbreak irreducible\_\allowbreak quintic\_\allowbreak factor} & \texttt{Capell\allowbreak Factor.\allowbreak lean}\\
+Prop.~\ref{prop:capell} & \texttt{normalized\allowbreak Even\_\allowbreak capell\_\allowbreak reduction} & \texttt{Capell\allowbreak Quintic.\allowbreak lean}\\
+Theorem~\ref{thm:classification} & \texttt{sharipov\_\allowbreak factorization\_\allowbreak classification}, \texttt{irreducible\_\allowbreak of\_\allowbreak factorization\_\allowbreak cases} & \texttt{Main.\allowbreak lean}, \texttt{Factorization.\allowbreak lean}\\
+\midrule
+Theorem~\ref{thm:linear} & \texttt{linear\_\allowbreak quartic\_\allowbreak impossible\_\allowbreak sharipov} & \texttt{Linear\allowbreak Quartic/\allowbreak Sharipov\allowbreak Impossibility.\allowbreak lean}\\
+Lemma~\ref{lem:integral-root} & \texttt{exists\_\allowbreak integral\_\allowbreak scaled\_\allowbreak linear\_\allowbreak root} & \texttt{Linear\allowbreak Quartic/\allowbreak Sharipov\allowbreak Completion.\allowbreak lean}\\
+Lemma~\ref{lem:newton} & \texttt{integral\_\allowbreak linear\_\allowbreak root\_\allowbreak factorization\_\allowbreak even} & \texttt{Linear\allowbreak Quartic/\allowbreak Sharipov\allowbreak Completion.\allowbreak lean}\\
+Prop.~\ref{prop:signed-square-root} & \texttt{normalized\allowbreak Quintic\_\allowbreak root\_\allowbreak signed\allowbreak Square\_\allowbreak sharipov} & \texttt{Linear\allowbreak Quartic/\allowbreak Sharipov\allowbreak Completion.\allowbreak lean}\\
+Identities~\eqref{eq:RM}--\eqref{eq:NV} & \texttt{linear\allowbreak Quartic\_\allowbreak reciprocal\allowbreak Quotient\_\allowbreak identity}, \texttt{linear\allowbreak Quartic\_\allowbreak inverse\allowbreak Slope\_\allowbreak U/\allowbreak V}, \texttt{linear\allowbreak Quartic\_\allowbreak V\_\allowbreak square\_\allowbreak identity} & \texttt{Linear\allowbreak Quartic/\allowbreak Root\allowbreak Map.\allowbreak lean}\\
+Lemma~\ref{lem:char1} & \texttt{linear\allowbreak Quartic\_\allowbreak square\allowbreak Parameter\_\allowbreak character} & \texttt{Linear\allowbreak Quartic/\allowbreak Direct\allowbreak Square\allowbreak Reduction.\allowbreak lean}\\
+Lemma~\ref{lem:char2} & \texttt{normalized\allowbreak Root\allowbreak To\allowbreak Linear\allowbreak Quartic\_\allowbreak signed\allowbreak Square\_\allowbreak t} & \texttt{Linear\allowbreak Quartic/\allowbreak Sharipov\allowbreak Impossibility.\allowbreak lean}\\
+Lemma~\ref{lem:fermat-two} & \texttt{fourth\_\allowbreak add\_\allowbreak fourth\_\allowbreak eq\_\allowbreak two\_\allowbreak square}, \texttt{not\_\allowbreak fermat\_\allowbreak 4\_\allowbreak sub} & \texttt{Linear\allowbreak Quartic/\allowbreak Fermat\allowbreak Auxiliary.\allowbreak lean}\\
+Prop.~\ref{prop:Dplus} & \texttt{positive\allowbreak Slope\_\allowbreak cover\_\allowbreak classification} & \texttt{Linear\allowbreak Quartic/\allowbreak Signed\allowbreak Square\allowbreak Covers.\allowbreak lean}\\
+Prop.~\ref{prop:Dminus} & \texttt{negative\allowbreak Slope\_\allowbreak cover\_\allowbreak pair\_\allowbreak classification} & \texttt{Linear\allowbreak Quartic/\allowbreak Signed\allowbreak Square\allowbreak Covers.\allowbreak lean}\\
+\midrule
+Theorem~\ref{thm:quad} & \texttt{quadratic\_\allowbreak cubic\_\allowbreak impossible\_\allowbreak sharipov} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Gaussian\allowbreak Session1\allowbreak Completion.\allowbreak lean}\\
+Prop.~\ref{prop:C012} & \texttt{quadratic\allowbreak Factor\allowbreak Constants\allowbreak Signed\allowbreak Square\_\allowbreak sharipov} & \texttt{Quadratic\allowbreak Reduction/\allowbreak C012.\allowbreak lean}\\
+Compact model, \S\ref{sec:compact} & \texttt{quadratic\allowbreak Cubic\allowbreak Case\_\allowbreak to\_\allowbreak compact\_\allowbreak sharipov}, \texttt{compact\allowbreak Projection\allowbreak Positive\_\allowbreak bezout}, \texttt{compact\_\allowbreak square\_\allowbreak chart\_\allowbreak denominators} & \texttt{C012.\allowbreak lean}, \texttt{Projection\allowbreak Certificate.\allowbreak lean}, \texttt{Compact\allowbreak Boundary.\allowbreak lean}\\
+Curve $C_8$, \eqref{eq:characters} & \texttt{compact\_\allowbreak equations\_\allowbreak to\_\allowbreak reciprocal\allowbreak Quotient\allowbreak C8}, \texttt{compact\_\allowbreak common\_\allowbreak character\_\allowbreak facts} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Compact\allowbreak Boundary.\allowbreak lean}\\
+Prop.~\ref{prop:forward} & \texttt{quotient\allowbreak Forward\_\allowbreak on\_\allowbreak reciprocal\allowbreak Quotient\allowbreak C8} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Quotient\allowbreak Transport.\allowbreak lean}\\
+Prop.~\ref{prop:exceptional} & \texttt{reciprocal\allowbreak Quotient\allowbreak C8\_\allowbreak admissible\_\allowbreak denominators}, \texttt{compact\_\allowbreak to\_\allowbreak E1\allowbreak Affine\allowbreak Point} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Transport\allowbreak Exceptions.\allowbreak lean}\\
+Identity~\eqref{eq:common} & \texttt{e1\_\allowbreak common\_\allowbreak character} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Character\allowbreak Descent.\allowbreak lean}\\
+Relation~\eqref{eq:hk} & \texttt{e1\_\allowbreak hk\_\allowbreak relation} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Character\allowbreak Descent.\allowbreak lean}\\
+Prop.~\ref{prop:valuation} & \texttt{e1\_\allowbreak hk\_\allowbreak signed\_\allowbreak squareclasses} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Valuation\allowbreak Descent.\allowbreak lean}\\
+Prop.~\ref{prop:negative} & \texttt{e1\_\allowbreak negative\_\allowbreak squareclass\_\allowbreak impossible} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Squareclass\allowbreak Descent.\allowbreak lean}\\
+Prop.~\ref{prop:to-octic} & \texttt{e1\_\allowbreak hk\_\allowbreak to\_\allowbreak octic} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Completion.\allowbreak lean}\\
+Theorem~\ref{thm:quad-conditional} & \texttt{quadratic\_\allowbreak cubic\_\allowbreak impossible\_\allowbreak sharipov\_\allowbreak of\_\allowbreak octic\_\allowbreak classified} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Gaussian\allowbreak Completion.\allowbreak lean}\\
+\midrule
+Theorem~\ref{thm:octic} & \texttt{octic\allowbreak Rational\allowbreak Points\allowbreak Classified} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Gaussian\allowbreak Session1\allowbreak Completion.\allowbreak lean}\\
+Prop.~\ref{prop:split} & \texttt{octic\_\allowbreak to\_\allowbreak gaussian\_\allowbreak cover} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Gaussian\allowbreak Split.\allowbreak lean}\\
+Isogeny, Kummer maps & \texttt{phi\allowbreak Hat\_\allowbreak phi}, \texttt{alpha\_\allowbreak add}, \texttt{alpha\_\allowbreak eq\_\allowbreak one\_\allowbreak iff\_\allowbreak phi\allowbreak Hat\_\allowbreak image} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Gaussian\allowbreak Descent.\allowbreak lean}\\
+Exact images of $\alpha,\alpha'$ & \texttt{gaussian\allowbreak E0\_\allowbreak alpha\_\allowbreak range} etc. & \texttt{Quadratic\allowbreak Reduction/\allowbreak Gaussian\allowbreak Exact\allowbreak Ranges.\allowbreak lean}\\
+Prop.~\ref{prop:mw} & \texttt{gaussian\allowbreak E0\_\allowbreak fg}, \texttt{gaussian\allowbreak E0\_\allowbreak doubling\_\allowbreak index}, \texttt{gaussian\allowbreak E0\_\allowbreak free\allowbreak Rank} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Gaussian\allowbreak Mordell\allowbreak Weil.\allowbreak lean}\\
+Torsion, \S\ref{sec:torsion} & \texttt{gaussian\allowbreak E0\_\allowbreak two\_\allowbreak torsion\_\allowbreak classified}, \texttt{gaussian\allowbreak E0\_\allowbreak three\_\allowbreak nsmul\_\allowbreak eq\_\allowbreak zero\_\allowbreak iff}, \texttt{gaussian\allowbreak E0\_\allowbreak torsion\_\allowbreak six} & \texttt{Gaussian\allowbreak Two\allowbreak Torsion.\allowbreak lean}, \texttt{Gaussian\allowbreak Three\allowbreak Torsion.\allowbreak lean}, \texttt{Gaussian\allowbreak Actual\allowbreak Torsion.\allowbreak lean}\\
+Prop.~\ref{prop:groups} & \texttt{gaussian\allowbreak E0\_\allowbreak equiv}, \texttt{gaussian\allowbreak E1\_\allowbreak point\_\allowbreak classified} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Gaussian\allowbreak Actual\allowbreak Torsion.\allowbreak lean}\\
+Estimates~\eqref{eq:formal-estimate}, \eqref{eq:formal-scaling} & \texttt{norm\_\allowbreak parameter\_\allowbreak add\_\allowbreak sub\_\allowbreak le\_\allowbreak max\_\allowbreak cube}, \texttt{norm\_\allowbreak parameter\_\allowbreak 37\_\allowbreak nsmul\_\allowbreak eq} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Gaussian\allowbreak Formal\allowbreak Kernel\allowbreak Torsion.\allowbreak lean}\\
+Translation~\eqref{eq:translation} & \texttt{exists\_\allowbreak integral\_\allowbreak translation\_\allowbreak at\_\allowbreak P} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Gaussian\allowbreak Formal\allowbreak Local.\allowbreak lean}\\
+Lemma~\ref{lem:base-separated} & \texttt{actual\allowbreak Base\_\allowbreak pair\allowbreak Separated} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Gaussian\allowbreak Paired\allowbreak Formal\allowbreak Norm.\allowbreak lean}\\
+Lemma~\ref{lem:no-separated} & \texttt{no\_\allowbreak paired\allowbreak Kernel\allowbreak Separated\_\allowbreak sub\_\allowbreak P} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Gaussian\allowbreak Cover\allowbreak Zero\allowbreak Translation\allowbreak Actual.\allowbreak lean}\\
+Saturation, \S\ref{sec:saturation} & \texttt{visible\allowbreak Coefficient\_\allowbreak odd}, \texttt{three\_\allowbreak not\_\allowbreak dvd\_\allowbreak visible\allowbreak Point\_\allowbreak coefficient}, \texttt{seven\_\allowbreak not\_\allowbreak dvd\_\allowbreak visible\allowbreak Point\_\allowbreak coefficient}, \texttt{thirty\allowbreak Seven\_\allowbreak not\_\allowbreak dvd\_\allowbreak visible\allowbreak Point\_\allowbreak coefficient} & \texttt{Gaussian\allowbreak Index\allowbreak Independent.\allowbreak lean}, \texttt{Gaussian\allowbreak P37\allowbreak Saturation\allowbreak Actual.\allowbreak lean}, \texttt{Gaussian\allowbreak P29\allowbreak Polynomial\allowbreak Root\allowbreak Bridge.\allowbreak lean}, \texttt{Gaussian\allowbreak P37\allowbreak Index\allowbreak Saturation\allowbreak Actual.\allowbreak lean}\\
+Paired rows, \S\ref{sec:endgame} & \texttt{cover\allowbreak Zero\_\allowbreak index\allowbreak Independent\_\allowbreak surviving\allowbreak Rows\_\allowbreak actual}, \texttt{index\allowbreak Cleared\_\allowbreak point\_\allowbreak eq} & \texttt{Gaussian\allowbreak Index\allowbreak Independent\allowbreak Reduction.\allowbreak lean}, \texttt{Gaussian\allowbreak Index\allowbreak Independent.\allowbreak lean}\\
+Theorem~\ref{thm:C0} & \texttt{cover\allowbreak Zero\_\allowbreak to\allowbreak E0\_\allowbreak eq\_\allowbreak visible\_\allowbreak or\_\allowbreak neg} & \texttt{Quadratic\allowbreak Reduction/\allowbreak Gaussian\allowbreak Cover\allowbreak Zero\allowbreak Row\allowbreak Completion.\allowbreak lean}\\
+\midrule
+Theorem~\ref{thm:fivefive} & \texttt{symmetric\_\allowbreak five\_\allowbreak five\_\allowbreak impossible\_\allowbreak from\_\allowbreak reduced} & \texttt{Five\allowbreak Five/\allowbreak Root\allowbreak Exclusion.\allowbreak lean}\\
+Equations~\eqref{eq:E}, $G_2,G_3$ & \texttt{coefficient\allowbreak Solution\_\allowbreak of\_\allowbreak symmetric\allowbreak Five\allowbreak Five\allowbreak Case}, \texttt{reduced\allowbreak Point\_\allowbreak of\_\allowbreak symmetric\allowbreak Five\allowbreak Five\allowbreak Case} & \texttt{Five\allowbreak Five/\allowbreak Basic.\allowbreak lean}, \texttt{Five\allowbreak Five/\allowbreak Reduction.\allowbreak lean}\\
+B\'ezout identity for $F$ & \texttt{five\allowbreak Five\_\allowbreak bezout\_\allowbreak identity} & \texttt{Five\allowbreak Five/\allowbreak Resultant\allowbreak Certificate.\allowbreak lean}\\
+Theorem~\ref{thm:Fnonzero} & \texttt{five\allowbreak Five\allowbreak Resultant\allowbreak Factor\_\allowbreak ne\_\allowbreak zero} & \texttt{Five\allowbreak Five/\allowbreak Root\allowbreak Exclusion.\allowbreak lean}\\
+Critical identity~\eqref{eq:critical} & \texttt{five\allowbreak Five\_\allowbreak critical\_\allowbreak bezout\_\allowbreak identity} & \texttt{Five\allowbreak Five/\allowbreak Resultant\allowbreak Critical.\allowbreak lean}\\
+Lemma~\ref{lem:norational} & \texttt{five\allowbreak Five\_\allowbreak discriminant\_\allowbreak factors\_\allowbreak have\_\allowbreak no\_\allowbreak rational\_\allowbreak roots} & \texttt{Five\allowbreak Five/\allowbreak Discriminant\allowbreak Roots.\allowbreak lean}\\
+Lemma~\ref{lem:cuts} & \texttt{five\allowbreak Five\allowbreak Discriminant\allowbreak P6\_\allowbreak exists\allowbreak Unique\_\allowbreak low\_\allowbreak root}, \texttt{five\allowbreak Five\allowbreak Discriminant\allowbreak P28\_\allowbreak exactly\_\allowbreak three\_\allowbreak positive\_\allowbreak roots} & \texttt{Five\allowbreak Five/\allowbreak Discriminant\allowbreak P6\allowbreak Roots.\allowbreak lean}, \texttt{Discriminant\allowbreak P28\allowbreak Roots.\allowbreak lean}\\
+Lemma~\ref{lem:samples} & \texttt{five\allowbreak Five\_\allowbreak sample\_\allowbreak *\_\allowbreak pos\_\allowbreak real} & \texttt{Five\allowbreak Five/\allowbreak Sample\allowbreak Positivity\allowbreak Real.\allowbreak lean}\\
+Lemma~\ref{lem:first-contact} & \texttt{no\_\allowbreak root\_\allowbreak along\_\allowbreak critical\_\allowbreak free\_\allowbreak segment} & \texttt{Five\allowbreak Five/\allowbreak Root\allowbreak Transport.\allowbreak lean}\\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\section{Finite certificates}\label{app:certificates}
+
+Each item names the finite set enumerated and the property checked.
+Items marked ($\dagger$) use \texttt{native\_\allowbreak decide}; the others use kernel
+\texttt{decide} or \texttt{norm\_\allowbreak num}.
+
+\begin{itemize}
+\item \texttt{Linear\allowbreak Quartic/\allowbreak Signed\allowbreak Square\allowbreak Covers.\allowbreak lean}: all $(m,n,K,L)\in\F_3^4$
+with $(m,n)\ne0$ satisfy $\delta D=K^2\wedge-\delta G=L^2\Rightarrow\delta=0$;
+all $(m,n,e,K,L)\in\F_3^5$ with $m,n,e\ne0$ violate $eD=K^2\wedge-eG=L^2$;
+$D,G\ne0$ for $m,n\ne0$.
+\item \texttt{Five\allowbreak Five/\allowbreak Discriminant\allowbreak Roots.\allowbreak lean}: the homogenizations of $P_6$
+and $P_{28}$ do not vanish on the $48$ pairs $(n,d)\in\F_7^2\setminus\{0\}$.
+\item \texttt{Quadratic\allowbreak Reduction/\allowbreak Valuation\allowbreak Descent.\allowbreak lean}, \texttt{Squareclass\allowbreak Descent.\allowbreak lean}:
+residues of $m^4-16mn^3+20n^4$ in $\Z/8,\Z/32$ and of
+$-(m^2+2n^2)(m^4+m^2n^2-4n^4)$ in $\Z/8,\Z/16,\Z/64$ by parity class, compared
+with the lists of squares.
+\item ($\dagger$) \texttt{Quotient\allowbreak Inverse.\allowbreak lean}: the sparse normal forms of
+$\mathcal{A}^5R_5$ and $\mathcal{A}^6E_6$ at $x=-\mathcal{B}/\mathcal{A}$ equal
+stored lists ($1398$ and $1962$ terms), and each equals a stored quotient
+($1005$, $1485$ terms) times $C_8$.
+\item ($\dagger$) \texttt{Transport\allowbreak Exceptions.\allowbreak lean}: two B\'ezout identities
+for $(C_8,\mathcal{A})$ and $(C_8,352225\mathcal{A}+576\mathcal{B})$ (cofactors
+with $214$ and $219$ terms); absence of projective zeros of $D_1,D_2,D_8$ and
+two cubics mod $13$, of three quintics mod $2$, of $f_3^y$ mod $41$, of
+$S_{19}$ mod $31$.
+\item \texttt{Gaussian\allowbreak Primes.\allowbreak lean}, \texttt{Gaussian\allowbreak Exact\allowbreak Ranges.\allowbreak lean}:
+the factorizations $B_0=i\lam^2\pisym$, $B_1=-i\lam^2\pisym$,
+$A^2-4B=\mp\lam^4\rhosym$ and each identity $B=de$ in $\Z[i]$.
+\item ($\dagger$) \texttt{Gaussian\allowbreak Finite.\allowbreak lean}: the $22$ rows of
+Table~\ref{tab:lambda}.  For each row all $n^4$ pairs $(U,V)\in((\Z/n)[i])^2$
+are enumerated, pairs with both $U,V$ divisible by $\lam$ (both coordinate
+sums even) are discarded, $dU^4+AU^2V^2+eV^4$ is computed in $(\Z/n)[i]$ and
+tested against the list of squares of $(\Z/n)[i]$.
+\item ($\dagger$) \texttt{Gaussian\allowbreak Cover.\allowbreak lean}: $\Delta(E_0)=-4864-2048i$,
+$\Delta(E_1')=4864+2048i$.
+\item ($\dagger$) \texttt{Gaussian\allowbreak Three\allowbreak Torsion.\allowbreak lean}: $x^2\ne-1$ for
+$x\in\F_{11}$; $\psi_3\ne0$ on all $121$ elements of $\F_{11}(i)$ for both curves.
+\item ($\dagger$) \texttt{Gaussian\allowbreak Good\allowbreak Reduction.\allowbreak lean}, \texttt{Gaussian\allowbreak E1\allowbreak Local\allowbreak Reduction.\allowbreak lean}:
+$6^2\equiv31^2\equiv-1\pmod{37}$; residue coefficients $(12,11)$, $(25,22)$,
+$(2,26)$, $(2,15)$; nonzero discriminants.
+\item ($\dagger$) \texttt{Gaussian\allowbreak Finite\allowbreak Exponent.\allowbreak lean}: enumeration of all
+points of the four special fibres over $\F_{37}$ ($48,42,28,34$ points) and
+verification that $12$, $42$, $28$, $34$ times each point is $\Oinf$.
+\item ($\dagger$) \texttt{Gaussian\allowbreak Split37\allowbreak Reduction\allowbreak Actual.\allowbreak lean}: the executable
+formulas for $\F_{37}$ arithmetic, secant and tangent slopes and the addition
+law agree with the field operations on all inputs ($37^k$ cases, $k\le4$).
+\item ($\dagger$) \texttt{Gaussian\allowbreak P37.\allowbreak lean}: the rows of Table~\ref{tab:rows};
+the indices with equal abscissae; $2$ and $24$ are non-squares mod $37$;
+$117^2\equiv1252^2\equiv-1\pmod{1369}$.
+\item ($\dagger$) \texttt{Gaussian\allowbreak P37\allowbreak Actual\allowbreak Trace.\allowbreak lean}: the weighted chain
+$P\to2P\to3P\to6P\to12P$ modulo $37^2$ for $i\mapsto117$ and $i\mapsto1252$,
+giving $t(12P)\equiv629=37\cdot17$ and $703=37\cdot19$.
+\item ($\dagger$) \texttt{Gaussian\allowbreak Saturation\allowbreak Finite.\allowbreak lean}: no point $Q$ of
+$E_0^{\sigma_+}(\F_{37})$ has $3Q=(2,2)$ or $3Q=(24,13)$.
+\item ($\dagger$) \texttt{Gaussian\allowbreak P29\allowbreak Saturation\allowbreak Actual.\allowbreak lean}: $12^2\equiv-1\pmod{29}$;
+the reduction of $\Phi_7-2\Psi_7^2$ at $(A,B)=(24,8)$ has no root in $\F_{29}$.
+\item ($\dagger$) \texttt{Gaussian\allowbreak Visible\allowbreak Reduction.\allowbreak lean}, \texttt{Gaussian\allowbreak P37\allowbreak Bridge.\allowbreak lean},
+\texttt{Gaussian\allowbreak Index\allowbreak Independent\allowbreak Reduction.\allowbreak lean}, \texttt{Gaussian\allowbreak Cover\allowbreak Zero\allowbreak Index\allowbreak Pair.\allowbreak lean},
+\texttt{Gaussian\allowbreak Paired\allowbreak Formal\allowbreak Norm.\allowbreak lean}, \texttt{Gaussian\allowbreak Cover\allowbreak Reduction\allowbreak Actual.\allowbreak lean},
+\texttt{Gaussian\allowbreak P37\allowbreak Index\allowbreak Saturation\allowbreak Actual.\allowbreak lean}, \texttt{Gaussian\allowbreak Reduction\allowbreak Surjective.\allowbreak lean}:
+evaluations of the reduction map at $P$, $T$, $P+T$; row lookups; and the
+residue facts $17,19,17-19,2\ne0$ in $\F_{37}$.
+\end{itemize}
+
+\begin{table}[ht]
+\centering\small
+\caption{The $22$ $\lam$-adic obstructions.  Each row asserts that
+$W^2=dU^4+AU^2V^2+eV^4$ has no solution modulo $n$ with $U,V$ not both
+divisible by $\lam$; the last column gives $(A,d,e)$ modulo $n$ as pairs
+(real part, imaginary part).}\label{tab:lambda}
+\begin{tabular}{@{}llllll@{}}
+\toprule
+Curve & $A$ & $d$ & $e=B/d$ & $n$ & $(A,d,e)\bmod n$\\
+\midrule
+$E_0$ & $2i$ & $\lam$ & $-3-i$ & 4 & $(0,2),(1,1),(1,3)$\\
+$E_0$ & & $i\lam$ & $-1+3i$ & 4 & $(0,2),(3,1),(3,3)$\\
+$E_0$ & & $\lam\pisym$ & $-1+i$ & 4 & $(0,2),(3,3),(3,1)$\\
+$E_0$ & & $i\lam\pisym$ & $1+i$ & 4 & $(0,2),(1,3),(1,1)$\\
+$E_0'$ & $-4i$ & $\lam$ & $10+6i$ & 4 & $(0,0),(1,1),(2,2)$\\
+$E_0'$ & & $i\lam$ & $6-10i$ & 4 & $(0,0),(3,1),(2,2)$\\
+$E_0'$ & & $\lam\rhosym$ & $2-2i$ & 4 & $(0,0),(1,1),(2,2)$\\
+$E_0'$ & & $i\lam\rhosym$ & $-2-2i$ & 4 & $(0,0),(3,1),(2,2)$\\
+$E_0'$ & & $i$ & $16-4i$ & 16 & $(0,12),(0,1),(0,12)$\\
+$E_0'$ & & $i\rhosym$ & $-4i$ & 16 & $(0,12),(12,1),(0,12)$\\
+$E_1'$ & $2$ & $\lam$ & $3+i$ & 4 & $(2,0),(1,1),(3,1)$\\
+$E_1'$ & & $i\lam$ & $1-3i$ & 4 & $(2,0),(3,1),(1,1)$\\
+$E_1'$ & & $\lam\pisym$ & $1-i$ & 4 & $(2,0),(3,3),(1,3)$\\
+$E_1'$ & & $i\lam\pisym$ & $-1-i$ & 4 & $(2,0),(1,3),(3,3)$\\
+$E_1'$ & & $i$ & $4-2i$ & 8 & $(2,0),(0,1),(4,6)$\\
+$E_1'$ & & $\pisym$ & $2$ & 4 & $(2,0),(1,2),(2,0)$\\
+$E_1'^{\,\prime}$ & $-4$ & $\lam$ & $-10-6i$ & 4 & $(0,0),(1,1),(2,2)$\\
+$E_1'^{\,\prime}$ & & $i\lam$ & $-6+10i$ & 4 & $(0,0),(3,1),(2,2)$\\
+$E_1'^{\,\prime}$ & & $\lam\rhosym$ & $-2+2i$ & 4 & $(0,0),(1,1),(2,2)$\\
+$E_1'^{\,\prime}$ & & $i\lam\rhosym$ & $2+2i$ & 4 & $(0,0),(3,1),(2,2)$\\
+$E_1'^{\,\prime}$ & & $i$ & $-16+4i$ & 32 & $(28,0),(0,1),(16,4)$\\
+$E_1'^{\,\prime}$ & & $i\rhosym$ & $4i$ & 32 & $(28,0),(28,1),(0,4)$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering\small
+\caption{Multiples $j\bar P$ of $\bar P=(2,2)$ in the special fibres at $37$
+($i\mapsto6$: $y^2=x^3+12x^2+11x$; $i\mapsto31$: $y^2=x^3+25x^2+22x$), and the
+$\bar T$-twisted rows $j\bar P+\bar T$.  The abscissae of the two plain rows
+agree only for $j\in\{0,1,11\}$, those of the twisted rows only for $j=0$.}\label{tab:rows}
+\begin{tabular}{@{}rllll@{}}
+\toprule
+$j$ & $j\bar P$ ($i\mapsto6$) & $j\bar P+\bar T$ ($i\mapsto6$) & $j\bar P$ ($i\mapsto31$) & $j\bar P+\bar T$ ($i\mapsto31$)\\
+\midrule
+0 & $\infty$ & $(0,0)$ & $\infty$ & $(0,0)$\\
+1 & $(2,2)$ & $(24,13)$ & $(2,2)$ & $(11,26)$\\
+2 & $(10,4)$ & $(27,4)$ & $(11,11)$ & $(2,35)$\\
+3 & $(20,12)$ & $(32,3)$ & $(0,0)$ & $\infty$\\
+4 & $(33,26)$ & $(25,33)$ & $(11,26)$ & $(2,2)$\\
+5 & $(6,14)$ & $(8,6)$ & $(2,35)$ & $(11,11)$\\
+6 & $(26,0)$ & $(36,0)$ & $\infty$ & $(0,0)$\\
+7 & $(6,23)$ & $(8,31)$ & $(2,2)$ & $(11,26)$\\
+8 & $(33,11)$ & $(25,4)$ & $(11,11)$ & $(2,35)$\\
+9 & $(20,25)$ & $(32,34)$ & $(0,0)$ & $\infty$\\
+10 & $(10,33)$ & $(27,33)$ & $(11,26)$ & $(2,2)$\\
+11 & $(2,35)$ & $(24,24)$ & $(2,35)$ & $(11,11)$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{thebibliography}{9}
+\bibitem{Sharipov2011} R.~A. Sharipov, \emph{Perfect cuboids and irreducible polynomials}, Ufa Math.\ J.\ 4 (2012), no.~1; arXiv:1108.5348 (2011).
+\bibitem{Sharipov2012} R.~A. Sharipov, \emph{A note on the second cuboid conjecture. Part I}, arXiv:1201.1229 (2012).
+\bibitem{Asiryan2026a} V.~Asiryan, \emph{Non-existence of quintic factorization for the second cuboid polynomial $Q_{p,q}(t)$}, arXiv:2601.04240 (2026).
+\bibitem{Asiryan2026b} V.~Asiryan, \emph{Non-existence of linear-quartic factorization for the second cuboid quintic}, arXiv:2601.04241 (2026).
+\bibitem{AsiryanRathbun2026} V.~Asiryan and R.~L. Rathbun, \emph{Computational evidence against quadratic-cubic factorization for the second cuboid quintic}, arXiv:2601.07899 (2026).
+\bibitem{Silverman} J.~H. Silverman, \emph{The Arithmetic of Elliptic Curves}, 2nd ed., Graduate Texts in Mathematics 106, Springer, 2009.
+\bibitem{mathlib} The mathlib Community, \emph{mathlib4}, \url{https://github.com/leanprover-community/mathlib4}, revision \texttt{db584cd6d46c92f209a44c0f1c829460d327499d} (tag \texttt{v4.33.0}).
+\end{thebibliography}
+
+\end{document}

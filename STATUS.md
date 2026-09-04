@@ -21,7 +21,7 @@ The factorization classification C003 leaves only `1+4`, `2+3`, and symmetric
 certificate for the third, and C010 proves that the residual `2+3` locus has
 no admissible rational point.
 
-The recommended paper is `paper/clean3.tex` (4 pages).  It replaces the old
+The recommended paper is now `paper/sharipov.tex`, which follows the Lean formalization; the superseded `paper/archive/clean3.tex` (4 pages) replaced the old
 `7/23` square-abscissa/Coleman block by a direct `p=3` argument on `D_+` and
 retains the old proof as an independent verification.
 
@@ -150,7 +150,7 @@ Thus neither physical sign has an admissible point, proving C010 and C020.
 
 The older `7/23` C041 scripts, the direct genus-three C043 certificate, and
 the Richelot C044 certificate remain independently runnable audit results,
-but are not dependencies of `paper/clean3.tex`.
+but are not dependencies of `paper/sharipov.tex`.
 
 ## Claims deliberately left unchanged
 

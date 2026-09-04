@@ -34,7 +34,7 @@ C035 signed-square compact locus
   -> C003 + C004 + C005.
 ```
 
-Read `paper/clean3.tex` first for the concise proof, then
+Read `paper/sharipov.tex` first for the proof (it follows the Lean route; `paper/archive/clean3.tex` is the superseded draft), then
 `notes/c041_direct_dplus_simplification.md` for the arithmetic details.
 `CLAIMS.md` is the conservative claim ledger and `STATUS.md` records the
 current dependency graph.
@@ -189,7 +189,7 @@ data only.
 ## Archived / independent routes
 
 The following remain useful audit material but are not dependencies of the
-recommended `clean3` proof:
+current `paper/sharipov.tex` proof:
 
 - the original index-independent `7/23` square-abscissa sieve and `p=7`
   Coleman proof of C041;
