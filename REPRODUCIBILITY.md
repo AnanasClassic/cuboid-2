@@ -2,7 +2,7 @@
 
 The reference revision is `9b0e8517e00609ec364cef3860b0962d6ac5f568`. The final paper revision is `d162753f5bd41a21131a5ff9c6bea09ab7dbc9c0`. At both revisions the Git tree of `lean/` is `26d2f1b36ff28017a54c229affcf9b3c1b17b643`. The reproduction script and Lean workflow blobs are respectively `1b6b36dc5134480e488dc29c21f4e894a2b1b5fa` and `709ae7a6f3607bc3b2a4f439ea582fa76f7624f2`.
 
-Install [elan](https://github.com/leanprover/elan) and Git. Use a new checkout. For the preserved private copy, substitute the local bundle path for the GitHub URL. Historical GitHub links require access to the repository while it is private.
+Install [elan](https://github.com/leanprover/elan) and Git. Use a new checkout. A preserved Git bundle can also be used as the clone source.
 
 ```bash
 git clone https://github.com/AnanasClassic/cuboid-2.git cuboid-replay

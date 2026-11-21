@@ -74,7 +74,7 @@ Vladislav Kuznetsov is the scientific author. The manuscript gives the arithmeti
 
 Valery Asiryan's October 2026 preprint gives a rank-one Chabauty–Coleman argument for the broader classification over every rational parameter outside $\{0,1,-1\}$. The Lean theorem here treats the classical cuboid parameters $s=(p/q)^2$. The September manuscript cites Asiryan’s earlier work and his joint computational study with Randall L. Rathbun. [Asiryan, v2](https://arxiv.org/abs/2610.25319v2) · [Asiryan and Rathbun](https://arxiv.org/abs/2601.07899)
 
-GitHub recorded a successful formal build and axiom audit on 2 September 2026 at 20:31:18 UTC while this repository was private. The manuscript revision was pushed on 4 September. [Chronology and evidence](PRIORITY_EVIDENCE.md) · [Reproduction at the historical revision](REPRODUCIBILITY.md)
+GitHub recorded a successful formal build and axiom audit on 2 September 2026 at 20:31:18 UTC. The manuscript revision was pushed on 4 September. [Chronology and evidence](PRIORITY_EVIDENCE.md) · [Reproduction at the historical revision](REPRODUCIBILITY.md)
 
 ## Verify the Lean proof
 
