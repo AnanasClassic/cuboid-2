@@ -2,7 +2,7 @@
 \usepackage[a4paper,margin=0.75in]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,amsthm,booktabs,array,longtable}
-\usepackage{microtype}
+\usepackage{microtype,placeins}
 \usepackage[hidelinks]{hyperref}
 
 \newtheorem{theorem}{Theorem}[section]
@@ -32,8 +32,13 @@
 
 \title{A proof of Sharipov's second cuboid conjecture,\\
 with a complete Lean formalization}
-\author{}
-\date{September 4, 2026}
+\author{Vladislav Kuznetsov}
+\hypersetup{pdftitle={A proof of Sharipov's second cuboid conjecture, with a complete Lean formalization},
+  pdfauthor={Vladislav Kuznetsov}}
+\date{Manuscript of 4 September 2026\\[2pt]
+  \small Revised for publication on 21 November 2026\\[2pt]
+  \footnotesize \textcopyright~2026 Vladislav Kuznetsov. Manuscript licensed under
+  \href{https://creativecommons.org/licenses/by/4.0/}{CC BY 4.0}.}
 
 \AtBeginDocument{\setlength{\abovedisplayskip}{6pt plus 2pt minus 3pt}\setlength{\belowdisplayskip}{6pt plus 2pt minus 3pt}\setlength{\abovedisplayshortskip}{2pt plus 1pt}\setlength{\belowdisplayshortskip}{3pt plus 1pt minus 1pt}}
 \begin{document}
@@ -51,10 +56,10 @@ reduced, through an explicit octic plane curve and an elliptic curve
 $y^2=x^3-5x+4$, to the determination of the rational points on
 $r^2=4u^8-8u^2+5$, which is carried out by a $2$-isogeny descent over
 $\Q(i)$ combined with a formal-group argument at the split prime $37$; the
-third is excluded by exact real root isolation.  Every statement corresponds
-to a theorem of a Lean~4 development (\texttt{lean/\allowbreak Cuboid2/\allowbreak }, checked against
-mathlib) with no \texttt{sorry} and no project-specific axiom; the Lean name
-of each result is printed next to it.
+third is excluded by exact real root isolation.  A Lean~4 formalization proves the theorem for the
+classical cuboid parameters. Appendix~\ref{app:table} identifies the Lean
+declarations for the main steps. Section~\ref{sec:lean} describes the finite
+computations verified using Lean's native evaluator.
 \end{abstract}
 
 
@@ -110,27 +115,32 @@ that $F(s,\cdot)$ has no real zero for real $s>0$, $s\ne1$.
 \end{itemize}
 
 \paragraph{Relation to the literature.}
-Asiryan \cite{Asiryan2026a} treats the symmetric $5+5$ case and
-\cite{Asiryan2026b} the $1+4$ case, the latter with a Magma computation of
-Chabauty type on the genus-two curve; Asiryan and Rathbun
-\cite{AsiryanRathbun2026} give computational evidence for the $2+3$ case (a
-search up to large height).  Relative to these, the present proof of the
-$1+4$ case is elementary and avoids any Jacobian computation, the $2+3$ case
-is proved unconditionally, and the $5+5$ case is closed by exact certificates
-rather than by computer-algebra Sturm sequences.
+Asiryan excluded the $5+5$ case by real root counts \cite{Asiryan2026a} and
+the $1+4$ case using a genus-two curve \cite{Asiryan2026b}. Asiryan and
+Rathbun studied the $2+3$ case by elimination and a height-bounded search
+\cite{AsiryanRathbun2026}. In a preprint submitted on 18 October 2026,
+Asiryan proves that $P_s(x)$ and $P_s(t^2)$ are irreducible over $\Q$ for
+all $s\in\Q\setminus\{0,1,-1\}$ \cite[Corollary~3]{Asiryan2026c}. His
+proof uses rank-one Chabauty--Coleman at $3$. Here we treat the classical
+parameters $s=(p/q)^2$. Our proof of the $2+3$ case uses descent over
+$\Q(i)$ and the formal group at $37$.
 
 \paragraph{The Lean formalization.}
-Every statement of this article corresponds to a theorem of the Lean~4
-development in \texttt{lean/\allowbreak Cuboid2/\allowbreak } of the accompanying repository, built
-against mathlib \cite{mathlib} at a pinned revision; the import closure of the
-public theorem consists of $112$ files with no \texttt{sorry}, no
-project-specific axiom and no \texttt{opaque}.  Each statement carries the
-name of its Lean declaration in brackets (collected in Appendix~\ref{app:table}).
-The text follows the Lean proof step by step; where Lean re-derives a textbook
-result, the article cites the textbook and Section~\ref{sec:lean} records the
-difference.  Polynomials with more than about fifteen terms are described, not
-printed; finite enumerations are summarized in Appendix~\ref{app:certificates}.
-Section~\ref{sec:lean} describes the trust model.
+The Lean~4 development in \texttt{lean/\allowbreak Cuboid2/\allowbreak } uses
+a pinned revision of mathlib \cite{mathlib}. Appendix~\ref{app:table} maps the
+paper's statements to declarations, and Section~\ref{sec:lean} explains the
+trust model and places where the formal proof expands a textbook argument.
+GitHub Actions recorded a successful
+\href{https://github.com/AnanasClassic/cuboid-2/actions/runs/33671888493}{verification
+run} on 2 September 2026, while the repository was private.
+Appendix~\ref{app:certificates} lists the finite checks.
+
+\paragraph{AI assistance.}
+The commit containing the 4 September manuscript credits Claude Fable~5.1
+with assistance in preparing that revision. OpenAI Codex assisted with
+editing the November revision. Vladislav Kuznetsov is responsible for the
+mathematical content and the presentation.
+
 \section{Reduction to three factorization types}\label{sec:reduction}
 
 Throughout, $p,q$ are positive integers with $\gcd(p,q)=1$ and $p\ne q$, and
@@ -1830,12 +1840,14 @@ $j$ & $j\bar P$ ($i\mapsto6$) & $j\bar P+\bar T$ ($i\mapsto6$) & $j\bar P$ ($i\m
 \end{tabular}
 \end{table}
 
+\FloatBarrier
 \begin{thebibliography}{9}
 \bibitem{Sharipov2011} R.~A. Sharipov, \emph{Perfect cuboids and irreducible polynomials}, Ufa Math.\ J.\ 4 (2012), no.~1; arXiv:1108.5348 (2011).
 \bibitem{Sharipov2012} R.~A. Sharipov, \emph{A note on the second cuboid conjecture. Part I}, arXiv:1201.1229 (2012).
 \bibitem{Asiryan2026a} V.~Asiryan, \emph{Non-existence of quintic factorization for the second cuboid polynomial $Q_{p,q}(t)$}, arXiv:2601.04240 (2026).
 \bibitem{Asiryan2026b} V.~Asiryan, \emph{Non-existence of linear-quartic factorization for the second cuboid quintic}, arXiv:2601.04241 (2026).
 \bibitem{AsiryanRathbun2026} V.~Asiryan and R.~L. Rathbun, \emph{Computational evidence against quadratic-cubic factorization for the second cuboid quintic}, arXiv:2601.07899 (2026).
+\bibitem{Asiryan2026c} V.~Asiryan, \emph{Irreducibility of the Cuboid Polynomial $Q_{p,q}(t)$ via the Rank-One Chabauty--Coleman Method}, \href{https://arxiv.org/abs/2610.25319v2}{arXiv:2610.25319v2} (2026).
 \bibitem{Silverman} J.~H. Silverman, \emph{The Arithmetic of Elliptic Curves}, 2nd ed., Graduate Texts in Mathematics 106, Springer, 2009.
 \bibitem{mathlib} The mathlib Community, \emph{mathlib4}, \url{https://github.com/leanprover-community/mathlib4}, revision \texttt{db584cd6d46c92f209a44c0f1c829460d327499d} (tag \texttt{v4.33.0}).
 \end{thebibliography}

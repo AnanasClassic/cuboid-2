@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "Please cite this software when using the Lean formalization or its certificates."
+title: "A proof of Sharipov's second cuboid conjecture, with a complete Lean formalization"
+type: software
+authors:
+  - family-names: Kuznetsov
+    given-names: Vladislav
+repository-code: "https://github.com/AnanasClassic/cuboid-2"
+abstract: >-
+  A Lean 4 formalization of the irreducibility of Sharipov's second cuboid
+  polynomial for distinct coprime positive integers p and q. The repository
+  includes a mathematical manuscript, licensed separately under CC BY 4.0,
+  and exact computational certificates.
+keywords:
+  - Lean 4
+  - formalized mathematics
+  - irreducible polynomials
+  - Diophantine equations
+version: "0.1.0"
+license: Apache-2.0

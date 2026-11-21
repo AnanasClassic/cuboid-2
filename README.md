@@ -23,9 +23,11 @@ P_s(x)={}&x^5+(2+s)(3-2s)x^4 \\
 \end{aligned}
 $$
 
+Sharipov states the conjecture in Conjecture 5.2, equation (5.13), and restates it as Conjecture 1.1, equation (1.1). [Sharipov, 2011, p. 6](https://arxiv.org/pdf/1108.5348v1#page=6) · [Sharipov, 2012, p. 1](https://arxiv.org/pdf/1201.1229v1#page=1)
+
 ## Status
 
-The conjecture is proved. The public Lean theorem is
+The Lean theorem for the conjecture is
 [`Cuboid2.sharipov_second_cuboid_conjecture`](lean/Cuboid2/Main.lean):
 
 ```lean
@@ -55,7 +57,7 @@ calculation.
 - [Lean formalization](lean/README.md) — build instructions, trust model, and
   source map.
 - [`paper/sharipov.tex`](paper/sharipov.tex) — the mathematical proof,
-  following the Lean formalization step by step (older drafts are in
+  with a map from statements to Lean declarations (older drafts are in
   `paper/archive/`).
 - [Formalization status](lean/FORMALIZATION_STATUS.md) — the precise Lean
   completion and axiom audit.
@@ -64,9 +66,15 @@ calculation.
 - [Research archive](research/README.md) — certificate generators,
   alternative routes, and historical investigations.
 
-The Lean development proves the same final irreducibility theorem as the
-paper, but it is not a line-by-line transcription: its three factorization
-branches use specialized proof structures chosen for formal verification.
+The paper follows the three branches of the Lean proof. The research archive also preserves alternative arguments for the quadratic-factor branch.
+
+## Manuscript and related work
+
+Vladislav Kuznetsov is the scientific author. The manuscript gives the arithmetic route used by the Lean development. Its quadratic-factor argument reduces to the rational points of an octic curve and uses descent over the Gaussian rationals and a formal-group calculation at the split prime 37. The historical paper revision records AI assistance in its Git co-authorship trailer. [Manuscript PDF](paper/sharipov.pdf) · [TeX source](paper/sharipov.tex) · [Citation metadata](CITATION.cff)
+
+Valery Asiryan's October 2026 preprint gives a rank-one Chabauty–Coleman argument for the broader classification over every rational parameter outside $\{0,1,-1\}$. The Lean theorem here treats the classical cuboid parameters $s=(p/q)^2$. The September manuscript cites Asiryan’s earlier work and his joint computational study with Randall L. Rathbun. [Asiryan, v2](https://arxiv.org/abs/2610.25319v2) · [Asiryan and Rathbun](https://arxiv.org/abs/2601.07899)
+
+GitHub recorded a successful formal build and axiom audit on 2 September 2026 at 20:31:18 UTC while this repository was private. The manuscript revision was pushed on 4 September. [Chronology and evidence](PRIORITY_EVIDENCE.md) · [Reproduction at the historical revision](REPRODUCIBILITY.md)
 
 ## Verify the Lean proof
 
@@ -81,8 +89,7 @@ bash scripts/reproduce_lean.sh complete
 
 This builds the project, rejects source placeholders and project-specific
 axioms, prints the axiom set of the public theorem, and rejects anything
-outside the documented foundational and `native_decide` allowlist. The
-equivalent manual commands are:
+outside the documented foundational and `native_decide` allowlist. To inspect the compiled project and print the axiom lists manually, run the following commands. The strict script above also checks its allowlist and source restrictions.
 
 ```bash
 cd lean
@@ -127,3 +134,7 @@ PYTHON_BIN=.venv/bin/python bash scripts/replay_5plus5.sh
 This result concerns an intermediate irreducibility conjecture arising in
 the perfect-cuboid program. It does **not** prove or disprove the existence of
 a perfect cuboid.
+
+## License
+
+Original code is available under Apache-2.0. The manuscript and its PDF are available under CC BY 4.0. [Scope and license texts](LICENSE.md)
