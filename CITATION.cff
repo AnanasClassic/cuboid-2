@@ -17,5 +17,6 @@ keywords:
   - irreducible polynomials
   - Diophantine equations
 version: "0.1.0"
+doi: "10.5281/zenodo.24410597"
 license: Apache-2.0
 date-released: "2026-11-21"

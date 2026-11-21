@@ -76,6 +76,8 @@ Valery Asiryan's October 2026 preprint gives a rank-one Chabauty–Coleman argum
 
 GitHub recorded a successful formal build and axiom audit on 2 September 2026 at 20:31:18 UTC. The manuscript revision was pushed on 4 September. [Chronology and evidence](PRIORITY_EVIDENCE.md) · [Reproduction at the historical revision](REPRODUCIBILITY.md)
 
+Cite this version as Vladislav Kuznetsov (2026), *A proof of Sharipov's second cuboid conjecture, with a complete Lean formalization*, v0.1.0. [Zenodo DOI 10.5281/zenodo.24410597](https://doi.org/10.5281/zenodo.24410597) · [GitHub release](https://github.com/AnanasClassic/cuboid-2/releases/tag/v0.1.0)
+
 ## Verify the Lean proof
 
 The project pins Lean 4.33.0 and mathlib at
